@@ -116,10 +116,12 @@ export function customUrlFor(link, context) {
     const [path, anchor] = href.split("#");
     return sitePathLink(path, anchor || null, link.openInNewTab, context);
   }
-  if (href === "#" || href.startsWith("#")) {
+  if (href === "#") {
     context.note("dropped", `a link to "${href}", which goes nowhere`);
     return null;
   }
+  // An anchor on the same page.
+  if (href.startsWith("#")) return external(href, link.openInNewTab);
   let url;
   try {
     url = new URL(href);
@@ -128,6 +130,8 @@ export function customUrlFor(link, context) {
     return null;
   }
   if (OLD_HOSTS.has(url.hostname)) {
+    // A query string has no place on a reference: keep the whole site path.
+    if (url.search) return external(`${normalizeSitePath(url.pathname)}${url.search}${url.hash}`, link.openInNewTab);
     return sitePathLink(url.pathname, url.hash.slice(1) || null, link.openInNewTab, context);
   }
   return external(href, link.openInNewTab);

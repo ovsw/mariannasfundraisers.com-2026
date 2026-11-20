@@ -3,6 +3,7 @@
 // (docs/agents/sanity-cli.md, "Authorized dataset writes").
 
 import { spawnSync } from "node:child_process";
+import { existsSync, realpathSync } from "node:fs";
 import { chmod, mkdir } from "node:fs/promises";
 import path from "node:path";
 
@@ -21,6 +22,13 @@ export async function verifyTarget(client, target = TARGET) {
   return { projectId, dataset };
 }
 
+/** A path with symlinks resolved; the part that does not exist yet is kept as written. */
+function realLocation(location) {
+  let existing = location;
+  while (!existsSync(existing) && path.dirname(existing) !== existing) existing = path.dirname(existing);
+  return path.join(realpathSync(existing), path.relative(existing, location));
+}
+
 /**
  * Exports the dataset as a raw backup (every document with its asset
  * references; the asset files stay in Sanity) to a timestamped file under
@@ -28,9 +36,10 @@ export async function verifyTarget(client, target = TARGET) {
  * write, when a step fails or when `root` is inside the repository.
  */
 export async function backupDataset({ studioDirectory, root, dataset = TARGET.dataset, label = "storyblok-import", run = spawnSync }) {
-  const repository = path.resolve(studioDirectory, "..");
+  const repository = realLocation(path.resolve(studioDirectory, ".."));
   const target = path.resolve(root);
-  if (target === repository || target.startsWith(repository + path.sep)) {
+  const realTarget = realLocation(target);
+  if (realTarget === repository || realTarget.startsWith(repository + path.sep)) {
     throw new Error("Dataset backups must stay outside the repository");
   }
   await mkdir(target, { recursive: true, mode: 0o700 });

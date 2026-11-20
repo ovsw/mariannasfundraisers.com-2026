@@ -52,6 +52,18 @@ async function allStories(version, token, fetchJson) {
   return stories.sort((a, b) => a.full_slug.localeCompare(b.full_slug));
 }
 
+/** Every page of a paginated list endpoint, `key` naming the array in its body. */
+async function allPages(endpoint, params, key, token, fetchJson) {
+  const items = [];
+  for (let page = 1; ; page++) {
+    const { body, total } = await getJson(endpoint, { ...params, page }, token, fetchJson);
+    const batch = body[key] ?? [];
+    items.push(...batch);
+    if (batch.length < params.per_page || (total && items.length >= total)) break;
+  }
+  return items;
+}
+
 async function allLinks(version, token, fetchJson) {
   const { body } = await getJson("links", { version, per_page: 1000 }, token, fetchJson);
   return Object.values(body.links).sort((a, b) => a.slug.localeCompare(b.slug));
@@ -63,12 +75,11 @@ export async function exportStoryblok(folder, { token, fetchJson = fetch } = {})
     allStories("published", token, fetchJson),
     allLinks("draft", token, fetchJson),
     allLinks("published", token, fetchJson),
-    getJson("datasources", { per_page: 100 }, token, fetchJson).then(({ body }) => body.datasources),
+    allPages("datasources", { per_page: 100 }, "datasources", token, fetchJson),
   ]);
   const entries = {};
   for (const datasource of datasources) {
-    const { body } = await getJson("datasource_entries", { datasource: datasource.slug, per_page: 1000 }, token, fetchJson);
-    entries[datasource.slug] = body.datasource_entries;
+    entries[datasource.slug] = await allPages("datasource_entries", { datasource: datasource.slug, per_page: 1000 }, "datasource_entries", token, fetchJson);
   }
   await mkdir(folder, { recursive: true, mode: 0o700 });
   const write = (name, value) => writeFile(path.join(folder, name), typeof value === "string" ? value : `${JSON.stringify(value, null, 1)}\n`);

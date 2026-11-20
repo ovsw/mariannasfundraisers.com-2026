@@ -255,7 +255,7 @@ function richTextSection(row, theme, context) {
           context.note("needs a hand", "a button row stood above more text; the Rich Text section draws its buttons under the text");
         }
         for (const item of block.content ?? []) {
-          const result = item.component === "button" ? button(item, context) : null;
+          const result = item.component === "button" && !item.hidden ? button(item, context) : null;
           if (result) buttons.push(result);
         }
         break;
@@ -336,13 +336,22 @@ function pageSections(story, context) {
     const theme = THEMES[block.background ?? ""];
     if (!theme) throw new Error(`Unknown section background "${block.background}" in ${story.full_slug}`);
     recordDroppedOptions(context, context.at, droppedOptions({ ...block, content: [] }));
+    if (block.hidden) {
+      context.drop(context.at, "hidden section", "hidden blocks");
+      return;
+    }
 
-    block.content.forEach((row, rowIndex) => {
-      context.at = `body[${blockIndex}] section > content[${rowIndex}] ${row.component}`;
-      recordDroppedOptions(context, context.at, droppedOptions(row));
-      if (row.hidden) {
-        context.drop(context.at, `hidden ${row.component}`, "hidden blocks");
+    block.content.forEach((sourceRow, rowIndex) => {
+      context.at = `body[${blockIndex}] section > content[${rowIndex}] ${sourceRow.component}`;
+      recordDroppedOptions(context, context.at, droppedOptions(sourceRow));
+      if (sourceRow.hidden) {
+        context.drop(context.at, `hidden ${sourceRow.component}`, "hidden blocks");
         return;
+      }
+      // Hidden children neither shape the row nor reach the page.
+      const row = Array.isArray(sourceRow.content) ? { ...sourceRow, content: sourceRow.content.filter((child) => !child.hidden) } : sourceRow;
+      for (const child of sourceRow.content ?? []) {
+        if (child.hidden) context.drop(context.at, `hidden ${child.component}`, "hidden blocks");
       }
       const names = pageRowSections(row);
       const faqLists = row.content?.filter((b) => b.component === "faq-list") ?? [];
@@ -351,7 +360,11 @@ function pageSections(story, context) {
         if (name === "Page heading") push(pageHeading(row, theme, context));
         else if (name === "Rich Text") push(richTextSection(row, theme, context));
         else {
-          const source = names.length > 1 && faqLists[index] ? faqLists[index] : row;
+          // A row with several FAQ lists: one Scaffold per list; the row's
+          // other content goes once, into the first.
+          const source = names.length > 1 && faqLists[index]
+            ? { ...row, content: row.content.filter((b) => (b.component === "faq-list" ? b === faqLists[index] : index === 0)) }
+            : row;
           push(scaffold(key, name, theme, `${row.component} row`, blockToPortableText(source, context), context));
         }
       });
