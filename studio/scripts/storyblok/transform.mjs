@@ -436,6 +436,10 @@ function pageSections(story, context, { post = false } = {}) {
         push(scaffold(block._uid, "Home hero", null, "home hero", blockToPortableText(block, context), context));
         return;
       }
+      if (block.component === "hero" && post) {
+        context.note("needs a hand", "a top-level hero would be a Page banner, which a news post cannot hold; it is not imported");
+        return;
+      }
       if (block.component === "hero") {
         const next = body.slice(blockIndex + 1).find((b) => b.component === "section");
         const banner = pageBanner(block, THEMES[next?.background ?? ""], context);

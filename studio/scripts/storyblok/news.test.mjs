@@ -170,6 +170,17 @@ test("a post with an unknown author, no main image or no date still imports, and
   assert.match(issues, /no publish date/);
 });
 
+test("a top-level hero with a photo in a post is left out, and the report says so", () => {
+  const source = story("winner:-2024-hometown-favorite-sandwich");
+  const hero = { _uid: "post-hero", component: "hero", title: "Hero", background_image: source.content.main_image };
+  const withHero = { ...source, content: { ...source.content, body: [hero, ...source.content.body] } };
+  const { documents, report } = plan([withHero]);
+  const post = documents.find((document) => document._type === "post");
+  assert.ok(post.blocks.length);
+  assert.ok(post.blocks.every((block) => block._type !== "pageBanner"));
+  assert.match(report.needsHand.map((item) => item.issue).join("\n"), /top-level hero/);
+});
+
 test("Storyblok dates become UTC datetimes", () => {
   assert.equal(publishedAtFrom("2025-10-31 00:00"), "2025-10-31T00:00:00.000Z");
   assert.equal(publishedAtFrom("2024-03-08"), "2024-03-08T00:00:00.000Z");
