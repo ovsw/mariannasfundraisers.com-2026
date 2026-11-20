@@ -1,18 +1,39 @@
 import { describe, expect, it } from "vitest";
+import { sectionThemes } from "../../../shared/site-design";
 import {
   resolveSectionBands,
   resolveSectionBoundaries,
   resolveSectionTheme,
+  sectionSceneClassName,
+  sectionThemeValues,
 } from "./section-boundaries";
 
 describe("Page Builder section boundaries", () => {
+  it("knows the same four themes as the Studio's theme field", () => {
+    expect([...sectionThemeValues]).toEqual(
+      sectionThemes.map(({ value }) => value),
+    );
+  });
+
   it.each([
     [undefined, "light"],
     [null, "light"],
     ["invalid", "light"],
-    ["dark", "dark"],
+    ["dark", "light"],
+    ["light", "light"],
+    ["shaded", "shaded"],
+    ["muslin", "muslin"],
+    ["primary", "primary"],
   ])("resolves %s to %s", (value, expected) => {
     expect(resolveSectionTheme(value)).toBe(expected);
+  });
+
+  it("gives each theme its own scene class", () => {
+    for (const theme of sectionThemeValues) {
+      expect(sectionSceneClassName(theme, "outer", "outer")).toContain(
+        `section-scene-${theme}`,
+      );
+    }
   });
 
   it("resolves visible joins and preserves outer boundaries", () => {
@@ -20,27 +41,27 @@ describe("Page Builder section boundaries", () => {
       resolveSectionBoundaries([
         { key: "first", theme: "light" },
         { key: "same", theme: "light" },
-        { key: "different", theme: "dark" },
+        { key: "different", theme: "muslin" },
         { key: "unknown", theme: null },
         { key: "untitled" },
       ]),
     ).toEqual([
-      { key: "first", theme: "light", top: "outer", bottom: "seam", topTreatment: "none", topTuck: false },
-      { key: "same", theme: "light", top: "seam", bottom: "edge", topTreatment: "none", topTuck: false },
-      { key: "different", theme: "dark", top: "edge", bottom: "edge", topTreatment: "none", topTuck: false },
-      { key: "unknown", theme: null, top: "edge", bottom: "edge", topTreatment: "none", topTuck: false },
-      { key: "untitled", theme: null, top: "edge", bottom: "outer", topTreatment: "none", topTuck: false },
+      { key: "first", theme: "light", top: "outer", bottom: "seam" },
+      { key: "same", theme: "light", top: "seam", bottom: "edge" },
+      { key: "different", theme: "muslin", top: "edge", bottom: "edge" },
+      { key: "unknown", theme: null, top: "edge", bottom: "edge" },
+      { key: "untitled", theme: null, top: "edge", bottom: "outer" },
     ]);
   });
 
   it("compares preview-encoded themes after cleaning them", () => {
     const hidden = String.fromCodePoint(8203, 8203, 8203, 8203);
-    const encodedDark = `dark${hidden}`;
-    expect(resolveSectionTheme(encodedDark)).toBe("dark");
+    const encodedShaded = `shaded${hidden}`;
+    expect(resolveSectionTheme(encodedShaded)).toBe("shaded");
     expect(
       resolveSectionBoundaries([
-        { key: "one", theme: encodedDark },
-        { key: "two", theme: "dark", edgeTreatment: "wave" },
+        { key: "one", theme: encodedShaded },
+        { key: "two", theme: "shaded" },
       ]).map(({ top, bottom }) => [top, bottom]),
     ).toEqual([
       ["outer", "seam"],
@@ -48,34 +69,23 @@ describe("Page Builder section boundaries", () => {
     ]);
   });
 
-  it("enables a wave tuck only at a different-background join", () => {
-    const [, edge, matching] = resolveSectionBoundaries([
-      { key: "light", theme: "light" },
-      { key: "dark-wave", theme: "dark", edgeTreatment: "wave" },
-      { key: "dark-wave-2", theme: "dark", edgeTreatment: "wave" },
-    ]);
-    expect(edge).toMatchObject({ top: "edge", topTreatment: "wave", topTuck: true });
-    expect(matching).toMatchObject({ top: "seam", topTreatment: "none", topTuck: false });
-  });
-
-  it("groups seam-joined sections into bands and marks a tucked lead", () => {
+  it("groups seam-joined sections into bands", () => {
     expect(
       resolveSectionBands(
         resolveSectionBoundaries([
           { key: "lead" },
           { key: "a", theme: "light" },
           { key: "b", theme: "light" },
-          { key: "c", theme: "dark", edgeTreatment: "wave" },
-          { key: "d", theme: "dark" },
-          { key: "e", theme: "dark", edgeTreatment: "wave" },
-          { key: "f", theme: "light" },
+          { key: "c", theme: "primary" },
+          { key: "d", theme: "primary" },
+          { key: "e", theme: "shaded" },
         ]),
       ),
     ).toEqual([
-      { keys: ["lead"], theme: null, tuck: false },
-      { keys: ["a", "b"], theme: "light", tuck: false },
-      { keys: ["c", "d", "e"], theme: "dark", tuck: true },
-      { keys: ["f"], theme: "light", tuck: false },
+      { keys: ["lead"], theme: null },
+      { keys: ["a", "b"], theme: "light" },
+      { keys: ["c", "d"], theme: "primary" },
+      { keys: ["e"], theme: "shaded" },
     ]);
   });
 });

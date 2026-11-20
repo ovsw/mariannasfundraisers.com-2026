@@ -190,7 +190,10 @@ test("homepage seed demonstrates a seam and a straight edge", () => {
   const home = starterDocuments.find((document) => document._id === "homePage");
   const themed = home.blocks.filter((block) => block._type !== "scaffold");
   for (const block of themed) {
-    assert.ok(["light", "dark"].includes(block.theme), block._key);
+    assert.ok(
+      ["light", "shaded", "muslin", "primary"].includes(block.theme),
+      block._key,
+    );
   }
   const joins = themed.slice(1).map((block, index) => ({
     match: themed[index].theme === block.theme,

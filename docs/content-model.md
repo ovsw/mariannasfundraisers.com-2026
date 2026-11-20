@@ -31,8 +31,9 @@ change that adds, removes, renames, or changes a section.
 sections than `studio/schemas/blocks/page-builder.ts`.
 
 Each entry starts with the section's `_type`. Every section has one design;
-the only look setting is `theme` (Light or Dark background) where a section
-has one.
+the only look setting is `theme` (Light, Shaded, Muslin or Primary
+background) where a section has one. A button inside a section also has a
+colour and an optional icon; see `docs/design.md`.
 
 - `richTextBlock` (Rich Text). Long-form editorial content with an optional
   label, heading and introduction. Use it for running text, and as a valid

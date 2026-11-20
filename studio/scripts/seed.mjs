@@ -93,6 +93,8 @@ const button = (key, text, _ref) => ({
   _type: "button",
   text,
   url: internalUrl(_ref),
+  colour: "accent",
+  icon: "chevron-right",
 });
 const meta = (title, description) => ({
   title,
@@ -349,11 +351,11 @@ export const starterDocuments = [
       {
         _key: "starter-home-edge",
         _type: "richTextBlock",
-        theme: "dark",
+        theme: "shaded",
         title: "A different theme forms an edge.",
         richText: simpleText(
           "starter-home-edge-copy",
-          "This Dark section keeps full padding on both sides of the join.",
+          "This Shaded section keeps full padding on both sides of the join and paints a brushed edge across it.",
         ),
       },
       {

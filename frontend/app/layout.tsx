@@ -33,6 +33,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* The Adobe Fonts kit of the old site: Acumin Pro and its condensed
+            cuts (--font-* in globals.css). */}
+        <link rel="preconnect" href="https://use.typekit.net" crossOrigin="" />
+        <link rel="stylesheet" href="https://use.typekit.net/ops4vzn.css" />
+      </head>
       <link rel="icon" href="/brand/mark.svg" type="image/svg+xml" />
       <body>
         {children}
