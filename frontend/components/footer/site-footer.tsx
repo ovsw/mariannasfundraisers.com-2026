@@ -246,7 +246,7 @@ export function SiteFooter({
             </span>{" "}
             All rights reserved. | Website by{" "}
             <a
-              className="text-foreground underline-offset-4 hover:underline"
+              className="text-foreground underline underline-offset-2 hover:no-underline"
               href={CREDIT.href}
               rel="noopener noreferrer"
               target="_blank"
