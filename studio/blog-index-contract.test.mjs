@@ -23,7 +23,20 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
   );
   assert.deepEqual(
     [...pageBuilderBlockTypes],
-    ["pageBanner", "richTextBlock", "scaffold", "pageHeading"],
+    [
+      "pageBanner",
+      "richTextBlock",
+      "scaffold",
+      "pageHeading",
+      "photoLeftAndText",
+      "photoRightAndText",
+      "cutoutLeftAndText",
+      "cutoutRightAndText",
+      "badgeAndText",
+      "videoLeftAndText",
+      "videoRightAndText",
+      "imageAndIconList",
+    ],
   );
   assert.equal(
     blocksField.of.some(({ hidden }) => hidden),

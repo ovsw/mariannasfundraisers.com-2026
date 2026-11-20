@@ -74,6 +74,9 @@ const schema = createSchema({
         { name: "scaffold", type: "scaffold" },
         { name: "pageHeading", type: "pageHeading" },
         { name: "pageBanner", type: "pageBanner" },
+        { name: "photoLeftAndText", type: "photoLeftAndText" },
+        { name: "videoRightAndText", type: "videoRightAndText" },
+        { name: "imageAndIconList", type: "imageAndIconList" },
         { name: "richText", type: "richTextContent" },
       ],
     },
@@ -262,5 +265,83 @@ test("rich text with only a non-text member counts as content", async () => {
       },
     }),
     [],
+  );
+});
+
+const image = { _type: "image", asset: { _type: "reference", _ref: "image-abc-800x600-jpg" } };
+
+test("an image-and-text Section needs its image and a heading or text", async () => {
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      photoLeftAndText: { _type: "photoLeftAndText", theme: "light", richText: [block("  ")] },
+    }),
+    ["photoLeftAndText.image", "photoLeftAndText.richText"],
+  );
+  // The renderer draws a heading on its own, so a heading is enough.
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      photoLeftAndText: { _type: "photoLeftAndText", theme: "light", title: "Freshest Ingredients", image },
+    }),
+    {},
+  );
+});
+
+test("a video Section needs a link to one YouTube video", async () => {
+  for (const youTubeUrl of [undefined, "https://vimeo.com/123456", "https://www.youtube.com/channel/abc"]) {
+    const found = await errors({
+      _type: "testHost",
+      videoRightAndText: { _type: "videoRightAndText", theme: "light", title: "How To", image, youTubeUrl },
+    });
+    assert.deepEqual(Object.keys(found), ["videoRightAndText.youTubeUrl"], String(youTubeUrl));
+    assert.match(found["videoRightAndText.youTubeUrl"], /YouTube video/);
+  }
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      videoRightAndText: {
+        _type: "videoRightAndText",
+        theme: "light",
+        title: "How To",
+        image,
+        youTubeUrl: "https://youtu.be/Uil1c8p_jV0",
+      },
+    }),
+    {},
+  );
+});
+
+test("an Image and icon list needs items, each with an icon and a heading, but no heading of its own", async () => {
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      imageAndIconList: { _type: "imageAndIconList", theme: "light", image },
+    }),
+    ["imageAndIconList.items"],
+  );
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      imageAndIconList: {
+        _type: "imageAndIconList",
+        theme: "light",
+        image,
+        items: [{ _key: "one", _type: "iconListItem", heading: "  " }],
+      },
+    }),
+    ["imageAndIconList.items.[one].heading", "imageAndIconList.items.[one].icon"],
+  );
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      imageAndIconList: {
+        _type: "imageAndIconList",
+        theme: "light",
+        image,
+        items: [{ _key: "one", _type: "iconListItem", icon: "phone-ringing", heading: "Call Us" }],
+      },
+    }),
+    {},
   );
 });

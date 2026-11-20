@@ -3,8 +3,9 @@
 // `fileRef`, which the importer supplies (dry run: a placeholder; --apply: the
 // matched or uploaded asset).
 //
-// Built here: the home page and every page, with Page banner, Page heading and
-// Rich Text (with its button row). Every other row becomes a Scaffold that
+// Built here: the home page and every page, with Page banner, Page heading,
+// Rich Text (with its button row) and the eight image-and-text sections of
+// the old "big image" row (issue #15). Every other row becomes a Scaffold that
 // holds the row's text and names its intended section. Product pages and news
 // posts are counted and left to their own tickets. The site shell (settings,
 // navigation, footer) comes from the seed file, through site-shell.mjs.
@@ -20,6 +21,7 @@ import { customUrlFor, normalizeMultilink, normalizeSitePath } from "./links.mjs
 import { outlineHeadings, paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
 import { blockToPortableText } from "./scaffold-text.mjs";
 import { siteShellDocuments, siteShellFiles } from "./site-shell.mjs";
+import { youTubeVideoId } from "../../../shared/youtube.ts";
 
 /** Story components and the document type each becomes. */
 export const STORY_TYPES = { page: "page", "menu-item-page": "product", "blog-post": "post" };
@@ -215,11 +217,16 @@ function pageHeading(row, theme, context) {
   return section;
 }
 
-/** A single-column row of headings, text and buttons as the Rich Text section. */
-function richTextSection(row, theme, context) {
-  const section = { _key: row._uid, _type: "richTextBlock", theme };
+/**
+ * The content of a row of headings, text and buttons: a leading heading group
+ * becomes the section's eyebrow, title and anchor ID; headings, text and
+ * tables become its rich text; button groups its buttons. With
+ * `featureGroups`, the old feature groups (icon, heading, text) become items.
+ */
+function rowContent(row, context, { section, featureGroups = false }) {
   const body = [];
   const buttons = [];
+  const items = [];
   row.content.forEach((block, index) => {
     if (block.hidden) return;
     switch (block.component) {
@@ -253,8 +260,8 @@ function richTextSection(row, theme, context) {
         body.push(...richTextToBlocks(block.text, context));
         break;
       case "button-group":
-        if (index !== row.content.length - 1) {
-          context.note("needs a hand", "a button row stood above more text; the Rich Text section draws its buttons under the text");
+        if (row.content.slice(index + 1).some((later) => !later.hidden && !["button-group", "button"].includes(later.component))) {
+          context.note("needs a hand", "a button row stood above more text; the section draws its buttons under the text");
         }
         for (const item of block.content ?? []) {
           const result = item.component === "button" && !item.hidden ? button(item, context) : null;
@@ -271,13 +278,87 @@ function richTextSection(row, theme, context) {
         if (table) body.push(table);
         break;
       }
+      case "feature-group":
+        if (featureGroups) {
+          const item = iconListItem(block, context);
+          if (item) items.push(item);
+          break;
+        }
+      // falls through: a feature group outside an icon list has no field
       default:
-        context.note("needs a hand", `a ${block.component} block inside a Rich Text row is not imported`);
+        context.note("needs a hand", `a ${block.component} block inside a ${section._type} row is not imported`);
     }
   });
   const content = outlineHeadings(body.filter(Boolean), section.title ? 2 : 1);
   if (content.length) section.richText = withKeys(content, "b");
+  if (featureGroups && items.length) section.items = items;
   if (buttons.length) section.buttons = buttons;
+  return section;
+}
+
+/** A single-column row of headings, text and buttons as the Rich Text section. */
+function richTextSection(row, theme, context) {
+  return rowContent(row, context, { section: { _key: row._uid, _type: "richTextBlock", theme } });
+}
+
+/** An old feature group (icon, heading, text) as an item of the Image and icon list. */
+function iconListItem(block, context) {
+  const heading = block.heading?.trim();
+  if (!heading) {
+    context.note("needs a hand", "a feature group has no heading; it is not imported");
+    return null;
+  }
+  if (!isSiteIconName(block.icon)) {
+    context.note("needs a hand", `the feature group "${heading}" has the icon "${block.icon ?? ""}", which is not in the icon list; it is not imported`);
+    return null;
+  }
+  const item = { _key: block._uid, _type: "iconListItem", icon: block.icon, heading };
+  const text = simpleRichText(richTextToBlocks(block.text, context), context);
+  if (text.length) item.text = withKeys(text, "b");
+  return item;
+}
+
+/** The image-and-text section each old "big image" row becomes (spec decision 12, issue #15). */
+export const IMAGE_AND_TEXT_TYPES = {
+  "Photo left and text": "photoLeftAndText",
+  "Photo right and text": "photoRightAndText",
+  "Cutout left and text": "cutoutLeftAndText",
+  "Cutout right and text": "cutoutRightAndText",
+  "Badge and text": "badgeAndText",
+  "Video left and text": "videoLeftAndText",
+  "Video right and text": "videoRightAndText",
+  "Image and icon list": "imageAndIconList",
+};
+
+/**
+ * An old "big image" row as its image-and-text section, or null when it
+ * cannot be one (no image, or a video link that is not a YouTube video): the
+ * row then stays a Scaffold and the report says why.
+ */
+function imageAndTextSection(row, name, theme, context) {
+  const type = IMAGE_AND_TEXT_TYPES[name];
+  const image = imageFromAsset(row.image, context);
+  if (!image) {
+    context.note("needs a hand", `the ${name} row has no image; it stays a Scaffold`);
+    return null;
+  }
+  const section = { _key: row._uid, _type: type, theme };
+  if (type === "videoLeftAndText" || type === "videoRightAndText") {
+    const link = row.youTubeLink.trim();
+    if (!youTubeVideoId(link)) {
+      context.note("needs a hand", `the video link "${link}" is not a YouTube video link; the row stays a Scaffold`);
+      return null;
+    }
+    // The Studio field takes an absolute http(s) URL; the parser also accepts
+    // a link typed without its scheme, so store it with one.
+    section.youTubeUrl = /^[a-z]+:\/\//i.test(link) ? link : `https://${link}`;
+  }
+  rowContent(row, context, { section, featureGroups: type === "imageAndIconList" });
+  section.image = image;
+  if (type === "imageAndIconList" ? !section.items?.length : !(section.title || section.eyebrow || section.richText?.length)) {
+    context.note("needs a hand", `the ${name} row has no ${type === "imageAndIconList" ? "items" : "heading or text"}; it stays a Scaffold`);
+    return null;
+  }
   return section;
 }
 
@@ -359,8 +440,10 @@ function pageSections(story, context) {
       const faqLists = row.content?.filter((b) => b.component === "faq-list") ?? [];
       names.forEach((name, index) => {
         const key = index === 0 ? row._uid : `${row._uid}-${index + 1}`;
+        const imageAndText = IMAGE_AND_TEXT_TYPES[name] ? imageAndTextSection(row, name, theme, context) : null;
         if (name === "Page heading") push(pageHeading(row, theme, context));
         else if (name === "Rich Text") push(richTextSection(row, theme, context));
+        else if (imageAndText) push(imageAndText);
         else {
           // A row with several FAQ lists: one Scaffold per list; the row's
           // other content goes once, into the first.

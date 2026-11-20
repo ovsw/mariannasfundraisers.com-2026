@@ -15,6 +15,14 @@ import {
 import Scaffold, { hasScaffoldContent } from "@/components/blocks/scaffold";
 import PageBanner, { hasPageBannerContent } from "@/components/blocks/page-banner";
 import PageHeading, { hasPageHeadingContent } from "@/components/blocks/page-heading";
+import PhotoLeftAndText, { hasPhotoLeftAndTextContent } from "@/components/blocks/photo-left-and-text";
+import PhotoRightAndText, { hasPhotoRightAndTextContent } from "@/components/blocks/photo-right-and-text";
+import CutoutLeftAndText, { hasCutoutLeftAndTextContent } from "@/components/blocks/cutout-left-and-text";
+import CutoutRightAndText, { hasCutoutRightAndTextContent } from "@/components/blocks/cutout-right-and-text";
+import BadgeAndText, { hasBadgeAndTextContent } from "@/components/blocks/badge-and-text";
+import VideoLeftAndText, { hasVideoLeftAndTextContent } from "@/components/blocks/video-left-and-text";
+import VideoRightAndText, { hasVideoRightAndTextContent } from "@/components/blocks/video-right-and-text";
+import ImageAndIconList, { hasImageAndIconListContent } from "@/components/blocks/image-and-icon-list";
 // page-builder-generator:component-imports
 import { dataset, projectId } from "@/sanity/lib/env";
 
@@ -31,6 +39,14 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "scaffold",
   "pageBanner",
   "pageHeading",
+  "photoLeftAndText",
+  "photoRightAndText",
+  "cutoutLeftAndText",
+  "cutoutRightAndText",
+  "badgeAndText",
+  "videoLeftAndText",
+  "videoRightAndText",
+  "imageAndIconList",
   // page-builder-generator:editing-types
 ]);
 
@@ -43,6 +59,14 @@ const componentMap: Partial<{
   scaffold: Scaffold,
   pageBanner: PageBanner,
   pageHeading: PageHeading,
+  photoLeftAndText: PhotoLeftAndText,
+  photoRightAndText: PhotoRightAndText,
+  cutoutLeftAndText: CutoutLeftAndText,
+  cutoutRightAndText: CutoutRightAndText,
+  badgeAndText: BadgeAndText,
+  videoLeftAndText: VideoLeftAndText,
+  videoRightAndText: VideoRightAndText,
+  imageAndIconList: ImageAndIconList,
   // page-builder-generator:component-map
 };
 
@@ -198,6 +222,14 @@ function isRenderableBlock(block: Block) {
   if (block._type === "scaffold") return hasScaffoldContent(block);
   if (block._type === "pageBanner") return hasPageBannerContent(block);
   if (block._type === "pageHeading") return hasPageHeadingContent(block);
+  if (block._type === "photoLeftAndText") return hasPhotoLeftAndTextContent(block);
+  if (block._type === "photoRightAndText") return hasPhotoRightAndTextContent(block);
+  if (block._type === "cutoutLeftAndText") return hasCutoutLeftAndTextContent(block);
+  if (block._type === "cutoutRightAndText") return hasCutoutRightAndTextContent(block);
+  if (block._type === "badgeAndText") return hasBadgeAndTextContent(block);
+  if (block._type === "videoLeftAndText") return hasVideoLeftAndTextContent(block);
+  if (block._type === "videoRightAndText") return hasVideoRightAndTextContent(block);
+  if (block._type === "imageAndIconList") return hasImageAndIconListContent(block);
   // page-builder-generator:visible-blocks
   return true;
 }

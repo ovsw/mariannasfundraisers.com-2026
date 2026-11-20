@@ -10,14 +10,17 @@ What the importer (`pnpm storyblok:import`, ticket #13) found in the Storyblok e
 | Page stories | 34 |
 | Product stories | 16 |
 | News stories | 18 |
-| Files | 158 (154 images, 4 documents) |
+| Files | 160 (156 images, 4 documents) |
 
 ## Documents
 
 | Type | Count |
 | --- | --- |
+| footer | 1 |
 | homePage | 1 |
+| navigation | 1 |
 | page | 31 |
+| settings | 1 |
 
 Imported as published although unpublished in Storyblok (spec decision 4): /flavored-salsas/menu, /special-fundraising-events.
 
@@ -25,35 +28,35 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 
 | Section | Count |
 | --- | --- |
+| badgeAndText | 2 |
+| cutoutLeftAndText | 19 |
+| cutoutRightAndText | 12 |
+| imageAndIconList | 6 |
 | pageBanner | 27 |
 | pageHeading | 21 |
+| photoLeftAndText | 11 |
+| photoRightAndText | 8 |
 | richTextBlock | 19 |
-| scaffold | 83 |
+| scaffold | 19 |
+| videoLeftAndText | 3 |
+| videoRightAndText | 3 |
 
 Scaffolds by the section that will replace them:
 
 | Intended section | Scaffolds |
 | --- | --- |
-| Badge and text | 2 |
 | Call to action with image | 2 |
 | Cognito form | 4 |
-| Cutout left and text | 19 |
-| Cutout right and text | 12 |
 | FAQ list | 2 |
 | Hoagie menu | 1 |
 | Home hero | 1 |
-| Image and icon list | 6 |
 | Latest news | 1 |
 | Menu teaser | 1 |
-| Photo left and text | 11 |
-| Photo right and text | 8 |
 | Pizza menu | 1 |
 | Salsa menu | 2 |
 | Steps | 1 |
 | Testimonials | 1 |
 | Two text columns | 2 |
-| Video left and text | 3 |
-| Video right and text | 3 |
 
 ## Not imported here
 
@@ -100,6 +103,7 @@ Scaffolds by the section that will replace them:
 
 | Story | Where | What |
 | --- | --- | --- |
+| /our-leadership | body[7] section > content[0] row-big-image | button "Our Team" has no destination; it is not imported |
 | /schedule-a-free-tasting | body[1] section > content[1] row-two-columns | the text column beside the Cognito form has no field in the Cognito form section |
 
 ## Overrides

@@ -63,6 +63,39 @@ colour and an optional icon; see `docs/design.md`.
   buttons below. An optional Anchor ID lets a link land on the section
   (`/page#anchor-id`). Use it for running text, and as a valid final match
   for a Scaffold. Available on every page.
+
+The image-and-text sections below share their fields: an optional eyebrow
+(the short line above the heading), an optional heading, text (headings,
+lists and tables; required when there is no heading or eyebrow), up to four
+buttons, an image with alt text (required), and an optional Anchor ID
+(`/page#anchor-id`). No field picks the image's side or how it fills its
+frame: choose the section that has the design you want. On a phone the image
+sits under the text. Each is available on every page.
+
+- `photoLeftAndText` (Photo left and text). A photo on the left, cropped to
+  fill its frame (set the hotspot), beside the text. Use it for a real photo:
+  people, food, the kitchen.
+- `photoRightAndText` (Photo right and text). The same with the photo on the
+  right.
+- `cutoutLeftAndText` (Cutout left and text). An illustration or cutout on the
+  left, shown whole and never cropped, beside the text. Use it for drawings,
+  product shots on a transparent background and document previews.
+- `cutoutRightAndText` (Cutout right and text). The same with the image on the
+  right.
+- `badgeAndText` (Badge and text). A smaller image on the right, shown whole,
+  such as a logo, badge or product line-up, beside the text.
+- `videoLeftAndText` (Video left and text). A YouTube video on the left, drawn
+  as its poster image (the section's image) with a play button; it plays in a
+  window over the page once the visitor's privacy choice allows it. Takes one
+  YouTube link (required) besides the shared fields.
+- `videoRightAndText` (Video right and text). The same with the video on the
+  right.
+- `imageAndIconList` (Image and icon list). An illustration on the left, shown
+  whole, beside one to three items, each an icon from the site's icon list, a
+  heading and a few sentences (paragraphs with bold, italic and links). The
+  eyebrow, heading and text are optional here. Use it for a step's three
+  parts, as on How it Works.
+
 - `scaffold` (Scaffold). A placeholder with `name`, `richText`, and
   `proposedSectionShape`. It renders its rich text with a visible internal
   marker so nobody mistakes it for a finished section, and a published page
