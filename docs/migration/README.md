@@ -15,6 +15,7 @@ screenshots: Ovi gives the visual verdict.
 | `seed/hard-coded-content.json` | What the old code hard-codes: navigation groups, action buttons, phone menu, footer columns, legal links, privacy controls, social links, phone, email, address, copyright owner, the four authors, the news headings and the 11 redirects. Dropped links carry `dropped: true` and a reason. | The importer (tickets #13, #14, #17, #20) |
 | `seed/authors/` | The four author photos from the old code. | The importer (ticket #17) |
 | `import.md` | How to run the Storyblok importer and what it does. | People and the importer tickets |
+| `parity-report.md`, `parity-report.json` | The URL and SEO parity of the new site with this inventory: every difference, and the differences that are on purpose with their reason. Rewritten by every run of the parity script. | Ovi, and the launch-readiness ticket (#21) |
 | `import-report.md`, `import-report.json` | The importer's report: what it found, built, dropped and left for a hand, and every image without alt text. Rewritten by every run of `pnpm storyblok:import`. | Ovi, and the tickets that replace Scaffolds |
 
 ## Refresh
@@ -36,11 +37,44 @@ the top of the page, and closes the iubenda consent banner when iubenda shows
 one (from some regions it shows none). Add `--only <path>` to capture one page.
 `node --test scripts/migration-reference.test.mjs` checks the counts.
 
+## Parity
+
+`node scripts/migration/parity.mjs <new origin>` (spec testing seam 2, ticket
+#20) asks the new site for every URL of `url-inventory.json`, every old
+redirect and its sitemap, without following redirects, and writes
+`parity-report.md` and `.json`. Status, redirect target, title, description,
+noindex and sitemap membership compare by value; sharing images by presence
+only; a redirect by permanence (301 and 308 are both permanent) and target.
+Sitemap entries compare by path, so the host a build names does not matter.
+
+The differences on purpose are listed apart, with their reason: the five
+malformed news addresses (the post moves to its clean address, the old one
+redirects there), the `NOTITLE` titles of 13 news posts (the new site names
+the post), the sharing-image alt text the new site adds, the generated
+sharing card on pages that had no sharing image, and the three noindex pages
+the old sitemap listed (the new sitemap leaves out noindex pages). Every
+other difference is printed, and the run exits with 1.
+
+To check a local production build, build and start the Website as production
+with the real site URL, then point the script at it:
+
+```sh
+cd frontend
+NEXT_PUBLIC_SITE_ENV=production NEXT_PUBLIC_SITE_URL=https://www.mariannasfundraisers.com pnpm build
+NEXT_PUBLIC_SITE_ENV=production NEXT_PUBLIC_SITE_URL=https://www.mariannasfundraisers.com pnpm exec next start --port 3460
+cd ..
+node scripts/migration/parity.mjs http://localhost:3460
+```
+
+Without `NEXT_PUBLIC_SITE_ENV=production` every page is noindex. The
+redirects come from the dataset when the build runs, so build after an import.
+`node --test scripts/migration-parity.test.mjs` tests the comparison.
+
 ## Findings for later tickets
 
 - 13 of the 18 news posts have no title or description in the old HTML: the
   title is `NOTITLE Marianna's Fundraisers`. The other five have a real title
-  and description. The parity script must expect a real title on the new site.
+  and description. The parity script expects a real title on the new site.
 - Five URLs are noindex: `/flavored-salsas`, `/flavored-salsas/menu`,
   `/ingredients-list`, `/accessibility-statement`, `/accessibility-policy`.
 - The canonicals of `/flavored-salsas` and `/products` end in a slash; every

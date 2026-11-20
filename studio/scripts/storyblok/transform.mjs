@@ -37,6 +37,7 @@ import {
   publishedAtFrom,
 } from "./news.mjs";
 import { planProducts, PRODUCT_MENU_TYPES, productMenuSection } from "./products.mjs";
+import { seedRedirects } from "./redirects.mjs";
 import { youTubeVideoId } from "../../../shared/youtube.ts";
 
 /** Story components and the document type each becomes. */
@@ -47,8 +48,8 @@ const KIND = { page: "page", "menu-item-page": "product", "blog-post": "news" };
 
 /** Page stories whose URL the old site redirects away (spec decision 6). */
 export const REDIRECTED_PAGES = {
-  "/privacy-policy": "the old site redirects this URL to iubenda; it becomes a redirect (ticket #20)",
-  "/terms-and-conditions": "the old site redirects this URL to iubenda; it becomes a redirect (ticket #20)",
+  "/privacy-policy": "the old site redirects this URL to iubenda; so does the Website's config (ticket #20)",
+  "/terms-and-conditions": "the old site redirects this URL to iubenda; so does the Website's config (ticket #20)",
 };
 
 const THEMES = { "": "light", light: "light", shaded: "shaded", muslin: "muslin", primary: "primary" };
@@ -119,6 +120,7 @@ function createReport() {
     needsHand: [],
     movedStoryLinks: [],
     newsRedirects: [],
+    seedRedirects: { documents: [], external: [] },
     overrides: { applied: [], unused: [] },
   };
 }
@@ -818,6 +820,15 @@ export function planImport(source, options = {}) {
     for (const file of siteShellFiles(options.seed)) files.set(file.url, file);
     for (const file of authorFiles(options.seed)) files.set(file.url, file);
     shell.push(...authorDocuments(options.seed, { fileRef: shared.fileRef }), blogIndexDocument(options.seed));
+    // The old site's redirects (spec decision 6, ticket #20).
+    const redirects = seedRedirects(options.seed, {
+      site: shared.site,
+      missingPath(source, destination) {
+        report.needsHand.push({ story: "seed", at: `redirect ${source}`, issue: `the destination ${destination} is no imported page` });
+      },
+    });
+    shell.push(...redirects.documents);
+    report.seedRedirects = { documents: redirects.internal, external: redirects.external };
     for (const document of shell) {
       count(report.documents, document._type);
       documents.push(document);
