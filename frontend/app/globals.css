@@ -336,6 +336,11 @@
   --color-secondary-foreground: var(--brand-white);
   --color-secondary-hover: var(--brand-green-dark);
 }
+/* The site footer: the Primary theme on the old footer's darker green. */
+.section-scene-primary.footer-scene {
+  --color-background: var(--brand-green-dark);
+  --color-muted: var(--brand-green);
+}
 .section-scene.section-scene-muslin {
   background-image: var(--muslin-image);
   background-position: center;

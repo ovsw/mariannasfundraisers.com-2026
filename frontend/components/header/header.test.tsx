@@ -21,6 +21,7 @@ const model: HeaderModel = {
         key: "services",
         kind: "group",
         label: "Services",
+        description: "What we do for our clients.",
         links: [
           {
             key: "strategy",
@@ -73,7 +74,8 @@ describe("Site Header", () => {
       "/strategy",
     );
 
-    const action = screen.getByRole("link", { name: "Start a project" });
+    // The desktop menu and the tablet-width bar each draw the action.
+    const action = screen.getAllByRole("link", { name: "Start a project" })[0];
     expect(action).toHaveAttribute("href", "https://example.com/book");
     expect(action).toHaveAttribute("rel", "noopener noreferrer");
     expect(action).toHaveAttribute("target", "_blank");

@@ -66,6 +66,28 @@ describe("createFooterModel", () => {
     expect(model?.copyrightYears).toBe("2024-2026");
   });
 
+  it("links the parent company's name inside its sentence and keeps the button", () => {
+    const model = createFooterModel(
+      {
+        ...rawFooter,
+        affiliation: {
+          text: "Northline is a part of the Example Group.",
+          link: { label: "Example Group", destination: { href: "https://example.com", openInNewTab: false } },
+        },
+        action: { label: "Book a call", destination: { href: "/book", openInNewTab: false } },
+      },
+      settings,
+      2026,
+    );
+    expect(model?.affiliation).toEqual({
+      before: "Northline is a part of the ",
+      link: { key: "affiliation", label: "Example Group", href: "https://example.com", openInNewTab: false },
+      after: ".",
+    });
+    expect(model?.action).toEqual({ key: "action", label: "Book a call", href: "/book", openInNewTab: false });
+    expect(createFooterModel(rawFooter, settings, 2026)?.affiliation).toBeNull();
+  });
+
   it("supports settings documents from before siteName", () => {
     expect(
       createFooterModel(rawFooter, { ...settings, siteName: null }, 2026)

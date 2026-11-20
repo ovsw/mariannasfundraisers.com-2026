@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/site-url";
 import { siteName } from "@/lib/site-name";
 import { Toaster } from "@/components/ui/sonner";
+import Script from "next/script";
+import { IUBENDA_WIDGET_SRC } from "@/lib/privacy/iubenda";
 
 const isProduction = process.env.NEXT_PUBLIC_SITE_ENV === "production";
 
@@ -24,6 +26,18 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: !isProduction ? "noindex, nofollow" : "index, follow",
+  // The old site's favicons and web manifest, at their old paths.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#00764f" }],
+  },
+  manifest: "/site.webmanifest",
+  other: { "msapplication-config": "/browserconfig.xml" },
 };
 
 export default function RootLayout({
@@ -39,8 +53,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://use.typekit.net" crossOrigin="" />
         <link rel="stylesheet" href="https://use.typekit.net/ops4vzn.css" />
       </head>
-      <link rel="icon" href="/brand/mark.svg" type="image/svg+xml" />
       <body>
+        {/* The consent widget (spec decision 17). The bootstrap hooks the
+            widget's callbacks, so it runs first; analytics waits for both. */}
+        <Script src="/privacy-controls.js" strategy="beforeInteractive" />
+        <Script src={IUBENDA_WIDGET_SRC} strategy="beforeInteractive" />
         {children}
         <Toaster position="top-center" richColors />
       </body>

@@ -29,6 +29,7 @@ export type HeaderNavigationItem =
       key: string;
       kind: "group";
       label: string;
+      description: string | null;
       links: HeaderChildLinkModel[];
     };
 
@@ -66,6 +67,7 @@ type RawItem = {
   _key?: string | null;
   kind?: string | null;
   label?: string | null;
+  description?: string | null;
   destination?: RawDestination | null;
   links?: RawChildLink[] | null;
 };
@@ -177,7 +179,15 @@ export function createHeaderNavigationModel(
           },
         ];
       });
-      if (links.length) items.push({ key, kind: "group", label, links });
+      if (links.length) {
+        items.push({
+          key,
+          kind: "group",
+          label,
+          description: item.description?.trim() || null,
+          links,
+        });
+      }
     }
   }
 

@@ -23,6 +23,11 @@ export const FOOTER_QUERY = defineQuery(`
   *[_type == "footer" && _id == "footer"][0]{
     _id,
     intro,
+    affiliation{
+      text,
+      link${linkProjection}
+    },
+    action${linkProjection},
     columns[]{
       _key,
       heading,

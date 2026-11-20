@@ -153,3 +153,36 @@ An icon is 1.5 times the button's text height. Its side is not a field:
 `chevron-right` sits after the label, every other icon before it
 (`buttonIconSide`). On the old site one button had `people` on the right; it
 moves to the left.
+
+## Header, footer and privacy
+
+The site shell (spec decisions 16 to 18) draws only Sanity data; see
+`docs/content-model.md`, "Shared content".
+
+- **Header** (`frontend/components/header/`): white and sticky, with the logo
+  for light backgrounds. Each dropdown opens a Primary-themed panel with the
+  group's name and description (from the `xl` breakpoint) beside two columns of
+  links, each with its icon in green, bold label and description. The action
+  button is the old outlined green button. Below `lg`, the phone menu draws the
+  same groups as an accordion.
+- **Footer** (`frontend/components/footer/`): the Primary theme on the old
+  footer's darker green (`.footer-scene`), the logo for dark backgrounds, the
+  DelGrosso kitchen badge (`public/images/delgrosso-badge.webp`, decorative),
+  the phone number, the tagline and parent company, contact details, the
+  privacy choices control, the white-with-red button, social icons, the link
+  columns and a Legal column, and the copyright line with the computed years
+  and the credit link.
+- **Privacy and analytics** (`frontend/lib/privacy/`): the iubenda consent
+  widget loads in the root layout after `public/privacy-controls.js`, which
+  hooks the widget's callbacks and fires `marianna:privacy`. The consent rule
+  is `analyticsAllowed` in `consent.ts` (unit-tested): allowed only when the
+  widget is ready, has preferences, no US purpose is refused, and the browser
+  sends no Global Privacy Control. Google Analytics (`analytics.ts`) loads
+  through that rule only, with the measurement ID from `settings`; withdrawing
+  consent disables it and clears its cookies. iubenda policy links open in
+  iubenda's lightbox. No other third-party script loads in the shell.
+- **404**: `components/404.tsx`, on the Shaded ground between the header and
+  footer.
+- **Static files** in `frontend/public/`: the seven order tally spreadsheets
+  at their old `/downloads/...` paths, the favicons, `site.webmanifest` and
+  `browserconfig.xml`.

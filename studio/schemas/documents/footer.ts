@@ -62,6 +62,44 @@ const footer = defineType({
       description: "A short closing statement shown beside the site identity.",
     }),
     defineField({
+      name: "affiliation",
+      title: "Parent company",
+      type: "object",
+      description:
+        "Optional. A sentence about the parent company, with a link on its name.",
+      fields: [
+        defineField({
+          name: "text",
+          title: "Sentence",
+          type: "string",
+          description:
+            "The whole sentence, e.g. “Marianna's Fundraisers is a part of the DelGrosso Family of Companies.”",
+          validation: (rule) => requiredText(rule),
+        }),
+        defineField({
+          name: "link",
+          type: "footerLink",
+          description:
+            "The link label must appear in the sentence word for word; that part of the sentence becomes the link.",
+          validation: (rule) =>
+            rule.custom((value, context) => {
+              const label = (value as { label?: string } | undefined)?.label?.trim();
+              const text = (context.parent as { text?: string } | undefined)?.text;
+              if (!label) return true;
+              return text?.includes(label)
+                ? true
+                : "Use a label that appears in the sentence";
+            }),
+        }),
+      ],
+    }),
+    defineField({
+      name: "action",
+      title: "Button",
+      type: "footerLink",
+      description: "Optional. One prominent link shown under the contact details.",
+    }),
+    defineField({
       name: "columns",
       title: "Navigation columns",
       type: "array",

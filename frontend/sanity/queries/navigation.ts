@@ -25,6 +25,7 @@ export const NAVIGATION_QUERY = defineQuery(`
       _type == "navigationGroup" => {
         "kind": "group",
         label,
+        description,
         links[]{
           _key,
           label,

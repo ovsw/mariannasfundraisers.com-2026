@@ -4,6 +4,8 @@ import { DisableDraftMode } from "@/components/disable-draft-mode";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
 import { SanityLive } from "@/sanity/lib/live";
+import { SiteAnalytics } from "@/components/privacy/site-analytics";
+import { Suspense } from "react";
 
 export default async function MainLayout({
   children,
@@ -40,6 +42,13 @@ export default async function MainLayout({
           <DisableDraftMode />
           <VisualEditing />
         </>
+      )}
+      {/* Google Analytics, only while the visitor's privacy choice allows
+          it. Editors previewing drafts are not counted. */}
+      {!isDraftMode && (
+        <Suspense fallback={null}>
+          <SiteAnalytics />
+        </Suspense>
       )}
       {isDraftMode ? (
         <DynamicFooter />

@@ -10,6 +10,15 @@ import {
 // built site's sitemap, so a new page or page type is tested without editing
 // this file, and an editor who renames a slug cannot break CI.
 
+// The iubenda consent widget and Google Analytics are third-party scripts the
+// smoke does not test (spec #3, testing decisions): blocking them keeps the
+// banner out of the accessibility, keyboard and overflow checks.
+test.beforeEach(async ({ page }) => {
+  await page.route(/^https:\/\/([a-z0-9-]+\.)*(iubenda\.com|googletagmanager\.com)\//, (route) =>
+    route.abort(),
+  );
+});
+
 const desktop = { height: 720, width: 1280 };
 const mobile = { height: 844, width: 390 };
 
