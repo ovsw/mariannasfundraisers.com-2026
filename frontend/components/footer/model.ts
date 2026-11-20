@@ -24,6 +24,9 @@ export type FooterModel = {
     } | null;
   };
   intro: string | null;
+  /** The parent company sentence, split around its linked name. */
+  affiliation: { before: string; link: FooterLinkModel; after: string } | null;
+  action: FooterLinkModel | null;
   columns: FooterColumnModel[];
   contact: {
     email: FooterLinkModel | null;
@@ -46,6 +49,8 @@ type RawLink = {
 export type RawFooter = {
   _id?: string | null;
   intro?: string | null;
+  affiliation?: { text?: string | null; link?: RawLink | null } | null;
+  action?: RawLink | null;
   columns?: Array<{
     _key?: string | null;
     heading?: string | null;
@@ -114,7 +119,8 @@ type RawImage = {
 };
 
 function logo(settings: RawFooterSettings): FooterModel["brand"]["image"] {
-  const source = settings?.logo?.light ?? settings?.logo?.dark;
+  // The footer sits on green: the logo for dark backgrounds comes first.
+  const source = settings?.logo?.dark ?? settings?.logo?.light;
   if (!source) return null;
   const dimensions = (source as RawImage).asset?.metadata?.dimensions;
   try {
@@ -126,6 +132,19 @@ function logo(settings: RawFooterSettings): FooterModel["brand"]["image"] {
   } catch {
     return null;
   }
+}
+
+function affiliation(raw: RawFooter): FooterModel["affiliation"] {
+  const sentence = text(raw?.affiliation?.text);
+  const value = link(raw?.affiliation?.link, "affiliation");
+  if (!sentence || !value) return null;
+  const at = sentence.indexOf(value.label);
+  if (at === -1) return { before: `${sentence} `, link: value, after: "" };
+  return {
+    before: sentence.slice(0, at),
+    link: value,
+    after: sentence.slice(at + value.label.length),
+  };
 }
 
 function contactLink(
@@ -190,6 +209,8 @@ export function createFooterModel(
   return {
     brand: { label, image: logo(settings) },
     intro: text(raw.intro),
+    affiliation: affiliation(raw),
+    action: link(raw.action, "action"),
     columns,
     contact: {
       email: contactLink("email", settings.contact?.email),

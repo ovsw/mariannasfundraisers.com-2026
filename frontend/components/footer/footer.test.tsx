@@ -13,6 +13,12 @@ const link = (
 const model: FooterModel = {
   brand: { label: "Northline", image: null },
   intro: "Clear thinking for complicated work.",
+  affiliation: {
+    before: "Northline is a part of the ",
+    link: link("affiliation", "Example Group", "https://example.com"),
+    after: ".",
+  },
+  action: link("action", "Book a call", "/book"),
   columns: [
     {
       key: "company",
@@ -62,6 +68,23 @@ describe("SiteFooter", () => {
     ).toHaveAttribute("target", "_blank");
     expect(within(footer).getByText("10 Main Street")).toBeInTheDocument();
     expect(document.querySelector('a[href="#"]')).not.toBeInTheDocument();
+  });
+
+  it("renders the parent company link, the button, legal links and the privacy choices control", () => {
+    render(<SiteFooter model={{ ...model, legalLinks: [link("terms", "Terms", "https://www.iubenda.com/terms-and-conditions/1")] }} />);
+    const footer = screen.getByRole("contentinfo");
+
+    expect(within(footer).getByText(/Northline is a part of the/)).toHaveTextContent(
+      "Northline is a part of the Example Group.",
+    );
+    expect(within(footer).getByRole("link", { name: "Example Group" })).toHaveAttribute("href", "https://example.com");
+    expect(within(footer).getByRole("link", { name: "Book a call" })).toHaveAttribute("href", "/book");
+    expect(within(footer).getByRole("heading", { name: "Legal" })).toBeInTheDocument();
+    expect(within(footer).getByRole("link", { name: "Terms" })).toHaveClass("iubenda-embed");
+    expect(within(footer).getByRole("link", { name: /Your Privacy Choices/ })).toHaveClass(
+      "iubenda-cs-preferences-link",
+    );
+    expect(within(footer).getByRole("link", { name: "Notice at Collection" })).toHaveClass("iubenda-cs-uspr-link");
   });
 
   it("maps editable footer copy to its Sanity paths", () => {

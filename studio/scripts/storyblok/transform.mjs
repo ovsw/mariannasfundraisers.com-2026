@@ -6,7 +6,8 @@
 // Built here: the home page and every page, with Page banner, Page heading and
 // Rich Text (with its button row). Every other row becomes a Scaffold that
 // holds the row's text and names its intended section. Product pages and news
-// posts are counted and left to their own tickets.
+// posts are counted and left to their own tickets. The site shell (settings,
+// navigation, footer) comes from the seed file, through site-shell.mjs.
 
 import {
   droppedOptions,
@@ -18,6 +19,7 @@ import { collectFiles, imageFromAsset } from "./files.mjs";
 import { customUrlFor, normalizeMultilink, normalizeSitePath } from "./links.mjs";
 import { outlineHeadings, paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
 import { blockToPortableText } from "./scaffold-text.mjs";
+import { siteShellDocuments, siteShellFiles } from "./site-shell.mjs";
 
 /** Story components and the document type each becomes. */
 export const STORY_TYPES = { page: "page", "menu-item-page": "product", "blog-post": "post" };
@@ -416,7 +418,10 @@ function canonicalOverrides(overrides) {
  * Plans the import of a Storyblok export: the documents to write and the
  * report. `source`: `{ stories, published }` (draft stories; the UUIDs of the
  * published ones). `options.fileRef(url, kind)` gives the asset ID of a file;
- * `options.overrides` holds the fixes that survive a second run.
+ * `options.overrides` holds the fixes that survive a second run. With
+ * `options.seed` (the hard-coded content seed) the plan also holds the
+ * `settings`, `navigation` and `footer` documents (`site-shell.mjs`), with
+ * `options.iconSvg(name)` and `options.gaMeasurementId`.
  */
 export function planImport(source, options = {}) {
   const stories = [...source.stories].sort((a, b) => a.full_slug.localeCompare(b.full_slug));
@@ -437,10 +442,6 @@ export function planImport(source, options = {}) {
     if (!kind) throw new Error(`Unknown story component ${story.content.component} (${story.full_slug})`);
     report.found[kind]++;
   }
-  report.found.files = files.size;
-  report.found.images = [...files.values()].filter((file) => file.asImage).length;
-  report.found.documentFiles = files.size - report.found.images;
-
   const documents = [];
   const published = source.published ? new Set(source.published) : null;
   for (const story of stories) {
@@ -458,6 +459,30 @@ export function planImport(source, options = {}) {
     count(report.documents, document._type);
     documents.push(document);
   }
+
+  if (options.seed) {
+    const shell = siteShellDocuments(options.seed, {
+      site: shared.site,
+      fileRef: shared.fileRef,
+      iconSvg: options.iconSvg ?? ((name) => `<svg data-icon="${name}"></svg>`),
+      gaMeasurementId: options.gaMeasurementId,
+      missingPath(path, label) {
+        report.needsHand.push({ story: "seed", at: "site shell", issue: `the link ${label} goes to ${path}, which no story owns` });
+      },
+    });
+    if (!options.gaMeasurementId?.trim()) {
+      report.needsHand.push({ story: "seed", at: "settings", issue: "no Google Analytics measurement ID: set MFR_GA_MEASUREMENT_ID" });
+    }
+    for (const file of siteShellFiles(options.seed)) files.set(file.url, file);
+    for (const document of shell) {
+      count(report.documents, document._type);
+      documents.push(document);
+    }
+  }
+  // Counted after the shell logos join the story files.
+  report.found.files = files.size;
+  report.found.images = [...files.values()].filter((file) => file.asImage).length;
+  report.found.documentFiles = files.size - report.found.images;
 
   for (const override of overrides.links) {
     if (!shared.usedOverrides.has(JSON.stringify([override.story, override.from]))) {

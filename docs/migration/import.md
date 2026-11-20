@@ -73,6 +73,23 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   post until its ticket imports it) is its path. Email, phone and external
   links keep their kind; links to the old site's own address become site
   links; links to Storyblok files point at the uploaded file.
+- **Site shell** (spec decisions 16 and 17, ticket #14). The `settings`,
+  `navigation` and `footer` documents come from the reference capture's seed
+  file, `docs/migration/seed/hard-coded-content.json`, through
+  `studio/scripts/storyblok/site-shell.mjs`: the three dropdown groups with
+  their descriptions, each link with its description and icon (the old
+  Heroicons mapped to the nearest Lucide icon), the action button, the three
+  footer columns, the legal links, the tagline, the parent company sentence,
+  the footer button, phone, email, address, social links, the copyright owner
+  and start year, and the two logos (uploaded from the old repository at the
+  seed's commit). Links the seed marks `dropped` (they went nowhere, or were
+  commented out) are left out; the footer's stale `/blog/` link points at
+  `/news`. A link to an imported page is a reference; `/news` and outside
+  addresses stay URLs. `_key`s come from the labels, so a second run writes
+  nothing. The Google Analytics measurement ID is read by name,
+  `MFR_GA_MEASUREMENT_ID`, from the shell, `studio/.env.local` or the shared
+  secrets file; without it the report says so, and `--apply` keeps the ID the
+  dataset already holds.
 - **Not imported here:** product pages (ticket #16) and news posts (ticket
   #17). They are counted and listed in the report.
 
@@ -91,5 +108,6 @@ matched nothing in this run (for example in a news post, before its ticket).
 | `studio/scripts/import-storyblok.mjs` | The command: dry run, `--apply`, the report |
 | `studio/scripts/storyblok/transform.mjs` | The pure mapping from stories to documents |
 | `studio/scripts/storyblok/rich-text.mjs`, `links.mjs`, `files.mjs`, `scaffold-text.mjs` | Rich text, links, files and Scaffold text |
+| `studio/scripts/storyblok/site-shell.mjs` | Settings, navigation and footer from the seed file |
 | `studio/scripts/storyblok/write.mjs`, `safety.mjs` | Uploads, idempotent writes, the target check and the backup |
 | `studio/scripts/storyblok/fixtures/` | Stories and rich text cut from the real export, for the tests |

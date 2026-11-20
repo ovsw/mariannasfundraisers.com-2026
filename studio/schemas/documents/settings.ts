@@ -2,6 +2,9 @@ import { Contact, Globe2, ImageIcon, Settings } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { requiredText } from "../validation/required-text";
 
+/** A Google Analytics 4 measurement ID (the Website checks the same shape). */
+const GA_MEASUREMENT_ID = /^G-[A-Z0-9]{4,}$/;
+
 const socialLink = defineType({
   name: "socialLink",
   title: "Social link",
@@ -54,6 +57,7 @@ const settings = defineType({
   groups: [
     { name: "identity", title: "Identity", default: true },
     { name: "contact", title: "Contact" },
+    { name: "analytics", title: "Analytics" },
   ],
   fields: [
     defineField({
@@ -98,6 +102,20 @@ const settings = defineType({
       group: "contact",
       of: [defineArrayMember({ type: "socialLink" })],
       validation: (rule) => rule.unique(),
+    }),
+    defineField({
+      name: "googleAnalyticsMeasurementId",
+      title: "Google Analytics measurement ID",
+      type: "string",
+      group: "analytics",
+      description:
+        "Optional. The ID of the Google Analytics web stream, e.g. G-ABC123XYZ9. Analytics runs only for visitors whose privacy choice allows it; leave empty to switch it off.",
+      validation: (rule) =>
+        rule.custom((value) =>
+          !value || GA_MEASUREMENT_ID.test(value)
+            ? true
+            : "Use the measurement ID of a web stream: G- followed by letters and digits",
+        ),
     }),
   ],
   preview: {

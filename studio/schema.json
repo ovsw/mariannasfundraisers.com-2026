@@ -2278,6 +2278,38 @@
         },
         "optional": true
       },
+      "affiliation": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "text": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
+            "link": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "footerLink"
+              },
+              "optional": true
+            }
+          }
+        },
+        "optional": true
+      },
+      "action": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "footerLink"
+        },
+        "optional": true
+      },
       "columns": {
         "type": "objectAttribute",
         "value": {
@@ -2960,6 +2992,13 @@
           }
         },
         "optional": true
+      },
+      "googleAnalyticsMeasurementId": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
       }
     }
   },
@@ -3008,6 +3047,13 @@
           }
         },
         "label": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "description": {
           "type": "objectAttribute",
           "value": {
             "type": "string"

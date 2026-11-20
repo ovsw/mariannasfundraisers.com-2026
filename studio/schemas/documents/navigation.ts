@@ -92,6 +92,13 @@ const group = defineType({
       validation: (rule) => requiredText(rule),
     }),
     defineField({
+      name: "description",
+      type: "text",
+      rows: 3,
+      description:
+        "Optional. A sentence or two shown beside the links when the menu opens on a wide screen.",
+    }),
+    defineField({
       name: "links",
       type: "array",
       of: [defineArrayMember({ type: "navigationChildLink" })],

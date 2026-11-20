@@ -16,6 +16,20 @@ The Website reads structured content from one Sanity project and dataset.
 ## Shared content
 
 - `settings`, `navigation`, `footer`, and `blogPostSettings` are global documents.
+  The header and footer render only from `settings`, `navigation` and
+  `footer`; no link list lives in code (spec decision 16).
+  - `settings`: site name, the two logos (light backgrounds for the header,
+    dark for the footer), phone, email, address, social links, and the Google
+    Analytics measurement ID (`googleAnalyticsMeasurementId`, read by the
+    layout; analytics runs only when the visitor's privacy choice allows it).
+  - `navigation`: the header's direct links and dropdown groups (each with an
+    optional `description` shown beside its links on wide screens; each link
+    with a description and an icon), and the action button. The phone menu
+    draws the same data.
+  - `footer`: the tagline (`intro`), the parent company sentence with its
+    linked name (`affiliation`), the button (`action`), the link columns, the
+    legal links, and the copyright owner and start year. The copyright year is
+    computed.
 - `author`, `faq`, `teamMember`, and `testimonial` are reusable records.
 - Pages compose top-level sections through their `blocks` array.
 - `homePage`, `page`, and `blogIndex` also carry a `blocksArchive` array that
