@@ -16,6 +16,7 @@ What the importer (`pnpm storyblok:import`, ticket #13) found in the Storyblok e
 
 | Type | Count |
 | --- | --- |
+| faq | 14 |
 | footer | 1 |
 | homePage | 1 |
 | navigation | 1 |
@@ -29,15 +30,18 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | Section | Count |
 | --- | --- |
 | badgeAndText | 2 |
+| cognitoForm | 4 |
 | cutoutLeftAndText | 19 |
 | cutoutRightAndText | 12 |
+| faqList | 2 |
 | imageAndIconList | 6 |
 | pageBanner | 27 |
 | pageHeading | 21 |
 | photoLeftAndText | 11 |
 | photoRightAndText | 8 |
 | richTextBlock | 19 |
-| scaffold | 19 |
+| scaffold | 11 |
+| twoTextColumns | 2 |
 | videoLeftAndText | 3 |
 | videoRightAndText | 3 |
 
@@ -46,8 +50,6 @@ Scaffolds by the section that will replace them:
 | Intended section | Scaffolds |
 | --- | --- |
 | Call to action with image | 2 |
-| Cognito form | 4 |
-| FAQ list | 2 |
 | Hoagie menu | 1 |
 | Home hero | 1 |
 | Latest news | 1 |
@@ -56,7 +58,6 @@ Scaffolds by the section that will replace them:
 | Salsa menu | 2 |
 | Steps | 1 |
 | Testimonials | 1 |
-| Two text columns | 2 |
 
 ## Not imported here
 
@@ -104,7 +105,6 @@ Scaffolds by the section that will replace them:
 | Story | Where | What |
 | --- | --- | --- |
 | /our-leadership | body[7] section > content[0] row-big-image | button "Our Team" has no destination; it is not imported |
-| /schedule-a-free-tasting | body[1] section > content[1] row-two-columns | the text column beside the Cognito form has no field in the Cognito form section |
 
 ## Overrides
 
@@ -162,6 +162,7 @@ None.
 | option: table.remove_margins | 2 |
 | rich text: pasted class | 13 |
 | rich text: pasted text colour | 32 |
+| unused field: faq-item.answer | 8 |
 
 ## Images without alt text (95)
 
@@ -265,7 +266,7 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /video-guides | body[2] section > content[1] row-big-image | https://a.storyblok.com/f/133593/3024x4032/c5205c3c67/mfs-delivery-day.jpeg |
 | /video-guides | body[2] section > content[2] row-big-image | https://a.storyblok.com/f/133593/562x511/e76e4f06fd/mariannas-how-it-works-call-us.png |
 
-## Every dropped item (948)
+## Every dropped item (956)
 
 | Story | Where | Item |
 | --- | --- | --- |
@@ -550,12 +551,20 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /fundraiser-frequently-asked-questions | body[2] section section | section.decoration_top = "default" |
 | /fundraiser-frequently-asked-questions | body[2] section section | section.decoration_bottom = "none" |
 | /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column row-single-column | row-single-column.name = "FAQs" |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[2] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[3] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[4] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[5] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[6] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[0] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[1] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[2] | faq-item.answer (the old site shows answer_single): 1 block(s) |
 | /fundraiser-resources | body[0] hero hero | hero.height = "short" |
 | /fundraiser-resources | body[0] hero hero | hero.is_tall = true |
 | /fundraiser-resources | body[0] hero hero | hero.background_color = "shaded" |

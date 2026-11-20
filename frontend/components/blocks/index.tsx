@@ -23,6 +23,9 @@ import BadgeAndText, { hasBadgeAndTextContent } from "@/components/blocks/badge-
 import VideoLeftAndText, { hasVideoLeftAndTextContent } from "@/components/blocks/video-left-and-text";
 import VideoRightAndText, { hasVideoRightAndTextContent } from "@/components/blocks/video-right-and-text";
 import ImageAndIconList, { hasImageAndIconListContent } from "@/components/blocks/image-and-icon-list";
+import CognitoForm, { hasCognitoFormContent } from "@/components/blocks/cognito-form";
+import FaqList, { hasFaqListContent } from "@/components/blocks/faq-list";
+import TwoTextColumns, { hasTwoTextColumnsContent } from "@/components/blocks/two-text-columns";
 // page-builder-generator:component-imports
 import { dataset, projectId } from "@/sanity/lib/env";
 
@@ -47,6 +50,9 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "videoLeftAndText",
   "videoRightAndText",
   "imageAndIconList",
+  "cognitoForm",
+  "faqList",
+  "twoTextColumns",
   // page-builder-generator:editing-types
 ]);
 
@@ -67,6 +73,9 @@ const componentMap: Partial<{
   videoLeftAndText: VideoLeftAndText,
   videoRightAndText: VideoRightAndText,
   imageAndIconList: ImageAndIconList,
+  cognitoForm: CognitoForm,
+  faqList: FaqList,
+  twoTextColumns: TwoTextColumns,
   // page-builder-generator:component-map
 };
 
@@ -230,6 +239,9 @@ function isRenderableBlock(block: Block) {
   if (block._type === "videoLeftAndText") return hasVideoLeftAndTextContent(block);
   if (block._type === "videoRightAndText") return hasVideoRightAndTextContent(block);
   if (block._type === "imageAndIconList") return hasImageAndIconListContent(block);
+  if (block._type === "cognitoForm") return hasCognitoFormContent(block);
+  if (block._type === "faqList") return hasFaqListContent(block);
+  if (block._type === "twoTextColumns") return hasTwoTextColumnsContent(block);
   // page-builder-generator:visible-blocks
   return true;
 }

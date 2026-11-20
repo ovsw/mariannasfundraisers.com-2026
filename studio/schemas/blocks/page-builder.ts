@@ -17,6 +17,9 @@ export const contentPageBuilderBlockTypes = [
 
 const generalOnlyPageBuilderBlockTypes = [
   "pageBanner",
+  "cognitoForm",
+  "faqList",
+  "twoTextColumns",
   // page-builder-generator:general-types
 ] as const;
 
@@ -50,6 +53,9 @@ const previewBlockTypes = new Set<string>([
   "videoLeftAndText",
   "videoRightAndText",
   "imageAndIconList",
+  "cognitoForm",
+  "faqList",
+  "twoTextColumns",
   // page-builder-generator:preview-types
 ]);
 

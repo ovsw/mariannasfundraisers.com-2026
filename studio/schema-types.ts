@@ -44,6 +44,9 @@ import badgeAndText from "./schemas/blocks/badge-and-text";
 import videoLeftAndText from "./schemas/blocks/video-left-and-text";
 import videoRightAndText from "./schemas/blocks/video-right-and-text";
 import imageAndIconList from "./schemas/blocks/image-and-icon-list";
+import cognitoForm from "./schemas/blocks/cognito-form";
+import faqList from "./schemas/blocks/faq-list";
+import twoTextColumns from "./schemas/blocks/two-text-columns";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -91,5 +94,8 @@ export const schemaTypes = [
   videoLeftAndText,
   videoRightAndText,
   imageAndIconList,
+  cognitoForm,
+  faqList,
+  twoTextColumns,
   // page-builder-generator:block-types
 ];

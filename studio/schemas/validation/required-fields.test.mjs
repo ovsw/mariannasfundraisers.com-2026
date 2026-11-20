@@ -77,13 +77,16 @@ const schema = createSchema({
         { name: "photoLeftAndText", type: "photoLeftAndText" },
         { name: "videoRightAndText", type: "videoRightAndText" },
         { name: "imageAndIconList", type: "imageAndIconList" },
+        { name: "cognitoForm", type: "cognitoForm" },
+        { name: "faqList", type: "faqList" },
+        { name: "twoTextColumns", type: "twoTextColumns" },
         { name: "richText", type: "richTextContent" },
       ],
     },
   ],
 });
 
-// No test document references another document, so no request is made.
+// Every referenced document exists (getDocumentExists), so no request is made.
 const client = {
   config: () => ({}),
   fetch: async () => null,
@@ -341,6 +344,63 @@ test("an Image and icon list needs items, each with an icon and a heading, but n
         image,
         items: [{ _key: "one", _type: "iconListItem", icon: "phone-ringing", heading: "Call Us" }],
       },
+    }),
+    {},
+  );
+});
+
+test("a Cognito form needs a form ID (the number only, never embed code) and an accessible title", async () => {
+  assert.deepEqual(
+    await errorPaths({ _type: "testHost", cognitoForm: { _type: "cognitoForm", theme: "light", title: "  " } }),
+    ["cognitoForm.formId", "cognitoForm.title"],
+  );
+  for (const formId of [
+    '<script src="https://www.cognitoforms.com/f/seamless.js" data-form="1"></script>',
+    "https://www.cognitoforms.com/f/xPoircp7HEGoNo_tpFEirg/114",
+    "114a",
+  ]) {
+    const found = await errors({ _type: "testHost", cognitoForm: { _type: "cognitoForm", theme: "light", title: "Contact form", formId } });
+    assert.deepEqual(Object.keys(found), ["cognitoForm.formId"], formId);
+    assert.match(found["cognitoForm.formId"], /number only/);
+  }
+  // The introduction is optional.
+  assert.deepEqual(
+    await errors({ _type: "testHost", cognitoForm: { _type: "cognitoForm", theme: "light", title: "Contact form", formId: "114" } }),
+    {},
+  );
+});
+
+test("an FAQ list needs a title and at least one FAQ", async () => {
+  assert.deepEqual(
+    await errorPaths({ _type: "testHost", faqList: { _type: "faqList", theme: "light", title: " ", faqs: [] } }),
+    ["faqList.faqs", "faqList.title"],
+  );
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      faqList: {
+        _type: "faqList",
+        theme: "light",
+        title: "Selling",
+        faqs: [{ _key: "one", _type: "reference", _ref: "faq-one" }],
+      },
+    }),
+    {},
+  );
+});
+
+test("Two text columns needs both texts, so it never draws one column", async () => {
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      twoTextColumns: { _type: "twoTextColumns", theme: "light", leftText: [block("Our hoagies")], rightText: [block("  ")] },
+    }),
+    ["twoTextColumns.rightText"],
+  );
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      twoTextColumns: { _type: "twoTextColumns", theme: "light", leftText: [block("Our hoagies")], rightText: [block("Plus")] },
     }),
     {},
   );

@@ -3,8 +3,10 @@
 // wrappers of several rows (how-it-works), a page with a banner title and
 // pasted marks (contact-us), a story link with an anchor that an override
 // fixes (how-it-is-made, to products/), one product and one news story, a
-// rich text with every node kind, and one "big image" row of each of the eight
-// image-and-text kinds (fixtures/image-and-text.json, issue #15).
+// rich text with every node kind, one "big image" row of each of the eight
+// image-and-text kinds (fixtures/image-and-text.json, issue #15), and the
+// Cognito form rows (one by ID, one with pasted embed code), the FAQ row and a
+// two-column text row (fixtures/forms-faq-columns.json, issue #19).
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -36,13 +38,14 @@ test("a dry run counts the stories by kind and the files", () => {
   assert.equal(files.size, 10);
   assert.deepEqual(report.documents, { page: 4 });
   assert.deepEqual(report.sections, {
+    cognitoForm: 1,
     cutoutLeftAndText: 1,
     imageAndIconList: 3,
     pageBanner: 3,
     pageHeading: 1,
     photoLeftAndText: 1,
     richTextBlock: 4,
-    scaffold: 2,
+    scaffold: 1,
   });
   assert.deepEqual(
     report.skipped.map(({ story }) => story),
@@ -323,4 +326,111 @@ test("a big image row that cannot be its section stays a Scaffold and the report
   assert.equal(blocks[5].name, "Video left and text");
   assert.ok(report.needsHand.some(({ issue }) => /not a YouTube video link/.test(issue)));
   assert.ok(report.needsHand.some(({ issue }) => /has no image/.test(issue)));
+});
+
+// The Cognito form rows, the FAQ row and a two-column text row, cut from the
+// real export (issue #19): get-assistance (a heading group over the one form
+// block that stores pasted embed code), schedule-a-free-tasting (a text column
+// beside the form), the FAQ page (two lists) and products (two text columns).
+const formStories = read("./fixtures/forms-faq-columns.json");
+const formPlan = (stories = formStories) => planImport({ stories }, { overrides, fileRef });
+const formRow = (index) => formStories[0].content.body[index].content[0];
+const textOf = (blocks) => blocks.map((block) => (block.children ?? []).map((span) => span.text).join("")).join("\n");
+
+test("the form, FAQ and two-column rows become their sections, with no Scaffold", () => {
+  const { documents, report } = formPlan();
+  const page = documents.find((document) => document._type === "page");
+  assert.deepEqual(
+    page.blocks.map((block) => [block._type, block.theme, block._key]),
+    [
+      ["cognitoForm", "shaded", formRow(0)._uid],
+      ["cognitoForm", "light", formRow(1)._uid],
+      // A row with two FAQ lists becomes two sections.
+      ["faqList", "light", formRow(2)._uid],
+      ["faqList", "light", `${formRow(2)._uid}-2`],
+      ["twoTextColumns", "shaded", formRow(3)._uid],
+    ],
+  );
+  assert.equal(report.sections.scaffold, undefined);
+  assert.deepEqual(report.scaffolds, {});
+  assert.deepEqual(report.needsHand, []);
+  assert.deepEqual(formPlan().documents, documents);
+});
+
+test("a Cognito form is imported by its form ID and no document holds embed code", () => {
+  const { documents, report } = formPlan();
+  const [byEmbed, beside] = documents.find((document) => document._type === "page").blocks;
+  // The one old block that stores pasted embed code keeps only its form ID.
+  assert.ok(formRow(0).content.find((block) => block.component === "form_cognito").embed_code.includes("<script"));
+  assert.deepEqual(
+    [byEmbed.formId, byEmbed.title, beside.formId, beside.title],
+    ["114", "Contact form", "168", "Schedule a free tasting form"],
+  );
+  const stored = JSON.stringify(documents);
+  for (const fragment of ["embed_code", "<script", "seamless.js", "data-key"]) assert.ok(!stored.includes(fragment), fragment);
+  assert.equal(report.dropped["option: form_cognito.embed_code"], 1);
+  // The heading group above the form is its introduction: eyebrow, then heading.
+  assert.deepEqual(
+    byEmbed.intro.map((block) => [block.style, textOf([block])]),
+    [["normal", "Marianna's Fundraisers"], ["h2", "Contact Form"]],
+  );
+  // The text column beside the form is its introduction, word for word.
+  const column = richTextToBlocks(formRow(1).column_1[0].text, richTextContext().context);
+  assert.equal(textOf(beside.intro), textOf(column));
+  assert.ok(beside.intro.every((block) => block._key));
+});
+
+test("a Cognito form without a form ID stays a Scaffold and the report says why", () => {
+  const story = structuredClone(formStories[0]);
+  story.content.body[0].content[0].content[1].cognito_form_id = "";
+  const { documents, report } = formPlan([story]);
+  const blocks = documents[0].blocks;
+  assert.deepEqual([blocks[0]._type, blocks[0].name], ["scaffold", "Cognito form"]);
+  assert.ok(report.needsHand.some(({ issue }) => /has no form ID/.test(issue)));
+});
+
+test("the 14 old FAQ items become faq records, listed in the old order under the two titles", () => {
+  const { documents, report } = formPlan();
+  const faqs = documents.filter((document) => document._type === "faq");
+  const lists = formRow(2).content;
+  const items = lists.flatMap((list) => list.items);
+  assert.equal(faqs.length, 14);
+  assert.equal(report.documents.faq, 14);
+  assert.deepEqual(faqs.map((faq) => faq._id), items.map((item) => `faq-${item._uid}`));
+  assert.deepEqual(faqs.map((faq) => faq.title), items.map((item) => item.question.trim()));
+  const sections = documents.find((document) => document._type === "page").blocks.filter((block) => block._type === "faqList");
+  assert.deepEqual(sections.map((section) => section.title), ["Selling", "Product Info"]);
+  sections.forEach((section, index) => {
+    assert.deepEqual(
+      section.faqs.map((ref) => [ref._type, ref._ref, ref._key]),
+      lists[index].items.map((item) => ["reference", `faq-${item._uid}`, item._uid]),
+    );
+  });
+  // The answer is the rich text the old site shows (`answer_single`), lists
+  // and underline kept; the unused `answer` blocks (placeholder text) are
+  // dropped.
+  for (const faq of faqs) {
+    assert.ok(faq.body.length > 0);
+    assert.ok(faq.body.every((block) => block._type === "block" && block._key));
+    assert.ok(!textOf(faq.body).includes("Lorem ipsum"));
+  }
+  const submit = faqs.find((faq) => faq.title === "How do I submit my order?");
+  assert.deepEqual(
+    submit.body.filter((block) => block.listItem).map((block) => [block.listItem, textOf([block])]).slice(0, 2),
+    [["bullet", "Online Ordering System"], ["bullet", "Order Tally Spreadsheet"]],
+  );
+  assert.ok(faqs.some((faq) => faq.body.some((block) => block.children.some((span) => span.marks.includes("underline")))));
+  assert.equal(Object.keys(report.dropped).filter((label) => /simple text field/.test(label)).length, 0);
+  assert.equal(textOf(faqs[0].body).slice(0, 49), "Yes, we do have a minimum requirement of at least");
+  assert.equal(report.dropped["unused field: faq-item.answer"], items.filter((item) => item.answer?.length).length);
+});
+
+test("a two-column text row keeps each column's text in its own field", () => {
+  const section = formPlan().documents.find((document) => document._type === "page").blocks[4];
+  const row = formRow(3);
+  const { context } = richTextContext();
+  assert.equal(textOf(section.leftText), textOf(richTextToBlocks(row.column_1[0].text, context)));
+  assert.equal(textOf(section.rightText), textOf(richTextToBlocks(row.column_2[0].text, context)));
+  assert.match(textOf(section.leftText), /^Our hoagies are made on freshly baked Italian rolls/);
+  assert.match(textOf(section.rightText), /^Plus, our hoagies come with either/);
 });

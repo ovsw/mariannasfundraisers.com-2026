@@ -41,7 +41,8 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
 
 - **IDs.** A document's ID comes from its story UUID: `page-<uuid>`
   (`product-<uuid>` and `post-<uuid>` for the later tickets); the home story
-  is the `homePage` singleton. A section's `_key` is its row's `_uid`.
+  is the `homePage` singleton. An FAQ record's ID comes from its old item's
+  `_uid`, as FAQ items live in one story. A section's `_key` is its row's `_uid`.
 - **Files.** Every Storyblok file the stories use (158) is downloaded once and
   uploaded with `source.url` set to its Storyblok URL; later runs match it by
   that URL. An image field keeps its alt text and focal point (as the
@@ -59,7 +60,8 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   in `scripts/migration/block-inventory.mjs`. Built: the hero as **Page
   banner** (its edge colour as theme), **Page heading**, **Rich Text**
   with its button row, and the old "big image" rows as their image-and-text
-  sections (below). Every other row becomes a **Scaffold** that holds the
+  sections, Cognito form, FAQ list and Two text columns (below). Every other
+  row becomes a **Scaffold** that holds the
   row's text and names its intended section; the home page also gets a
   "Latest news" Scaffold. A later ticket replaces them by mapping its rows in
   `studio/scripts/storyblok/transform.mjs`.
@@ -77,6 +79,20 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   no image, no text, or a video link that is not a YouTube link stays a
   Scaffold and is listed under "needs a hand". Rows inside product pages and
   news posts are left to tickets #16 and #17.
+- **Forms, FAQs and two text columns** (spec decisions 12 and 15, ticket
+  #19). A row that holds a Cognito form becomes **Cognito form**: the form by
+  its `cognito_form_id` (114, 168 or 173), never the pasted embed code one old
+  block stores (dropped and counted), and an accessible title from the form's
+  name in Cognito (`COGNITO_FORM_TITLES` in `transform.mjs`). The row's text
+  becomes the introduction: the heading group above the form (its eyebrow as
+  a paragraph, its title as a heading), or on `schedule-a-free-tasting` the
+  text column beside it. Each old FAQ list becomes **FAQ list** with its title,
+  and each of its items a `faq` record (`faq-<item _uid>`): the question, and
+  the `answer_single` rich text the old site shows, lists and underline kept;
+  the old `answer` blocks hold placeholder text the old site never shows and
+  are dropped and counted. A row of two text columns becomes **Two text
+  columns**. A form without an ID, a list without a title or FAQs, or a row
+  with an empty column stays a Scaffold and is listed under "needs a hand".
 - **Rich text** (spec decision 14): paragraphs, headings (an old level n is
   h(n+1), then raised where a Rich Text section's headings would skip a
   level, so the page outline never jumps), lists, bold, italic, underline, line breaks and links. Pasted colour

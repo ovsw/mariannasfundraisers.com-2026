@@ -96,6 +96,23 @@ sits under the text. Each is available on every page.
   eyebrow, heading and text are optional here. Use it for a step's three
   parts, as on How it Works.
 
+- `twoTextColumns` (Two text columns). Two blocks of text side by side
+  (headings, lists, tables and links; both required); on a phone the left one
+  comes first. Use it for two short texts that belong together, as under the
+  menu headings on Products. Available on pages, not the home page.
+- `faqList` (FAQ list). A centred title (required) over a list of FAQs that a
+  visitor opens one by one. The FAQs are `faq` records (a question, and an
+  answer of text, lists and links),
+  picked in the order they are shown, so an FAQ used twice is edited once. Use
+  one per topic, as Selling and Product Info on the FAQ page. Available on
+  pages, not the home page.
+- `cognitoForm` (Cognito form). One of the site's Cognito forms, drawn by
+  Cognito, with an optional introduction (headings, text and links) above it.
+  Takes the form ID (the number at the end of the form's address in Cognito
+  Forms, as in 114; never embed code) and an accessible title that names the
+  form for screen readers and is not shown. Use it for the contact, tasting
+  and support forms. Available on pages, not the home page.
+
 - `scaffold` (Scaffold). A placeholder with `name`, `richText`, and
   `proposedSectionShape`. It renders its rich text with a visible internal
   marker so nobody mistakes it for a finished section, and a published page
