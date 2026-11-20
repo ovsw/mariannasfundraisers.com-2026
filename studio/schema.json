@@ -200,7 +200,15 @@
               },
               {
                 "type": "string",
-                "value": "dark"
+                "value": "shaded"
+              },
+              {
+                "type": "string",
+                "value": "muslin"
+              },
+              {
+                "type": "string",
+                "value": "primary"
               }
             ]
           },
@@ -882,6 +890,128 @@
           "value": {
             "type": "inline",
             "name": "customUrl"
+          },
+          "optional": true
+        },
+        "colour": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "accent"
+              },
+              {
+                "type": "string",
+                "value": "primary"
+              },
+              {
+                "type": "string",
+                "value": "light-accent"
+              },
+              {
+                "type": "string",
+                "value": "light-primary"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "icon": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "book-spells"
+              },
+              {
+                "type": "string",
+                "value": "chef-hat"
+              },
+              {
+                "type": "string",
+                "value": "chevron-left"
+              },
+              {
+                "type": "string",
+                "value": "chevron-right"
+              },
+              {
+                "type": "string",
+                "value": "delivery-truck"
+              },
+              {
+                "type": "string",
+                "value": "documents"
+              },
+              {
+                "type": "string",
+                "value": "documents-checked"
+              },
+              {
+                "type": "string",
+                "value": "envelope"
+              },
+              {
+                "type": "string",
+                "value": "info"
+              },
+              {
+                "type": "string",
+                "value": "info-round"
+              },
+              {
+                "type": "string",
+                "value": "hand-asking"
+              },
+              {
+                "type": "string",
+                "value": "hand-heart"
+              },
+              {
+                "type": "string",
+                "value": "hand-helping"
+              },
+              {
+                "type": "string",
+                "value": "heart"
+              },
+              {
+                "type": "string",
+                "value": "hoagie"
+              },
+              {
+                "type": "string",
+                "value": "price-tag"
+              },
+              {
+                "type": "string",
+                "value": "paper-plane"
+              },
+              {
+                "type": "string",
+                "value": "people"
+              },
+              {
+                "type": "string",
+                "value": "phone-ringing"
+              },
+              {
+                "type": "string",
+                "value": "pizza"
+              },
+              {
+                "type": "string",
+                "value": "search"
+              },
+              {
+                "type": "string",
+                "value": "share"
+              }
+            ]
           },
           "optional": true
         }

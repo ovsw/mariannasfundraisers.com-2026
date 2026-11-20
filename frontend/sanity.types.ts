@@ -51,7 +51,7 @@ export type Scaffold = {
 
 export type RichTextBlock = {
   _type: "richTextBlock";
-  theme?: "light" | "dark";
+  theme?: "light" | "shaded" | "muslin" | "primary";
   eyebrow?: string;
   title?: string;
   richText?: RichTextContent;
@@ -155,6 +155,30 @@ export type Button = {
   _type: "button";
   text?: string;
   url?: CustomUrl;
+  colour?: "accent" | "primary" | "light-accent" | "light-primary";
+  icon?:
+    | "book-spells"
+    | "chef-hat"
+    | "chevron-left"
+    | "chevron-right"
+    | "delivery-truck"
+    | "documents"
+    | "documents-checked"
+    | "envelope"
+    | "info"
+    | "info-round"
+    | "hand-asking"
+    | "hand-heart"
+    | "hand-helping"
+    | "heart"
+    | "hoagie"
+    | "price-tag"
+    | "paper-plane"
+    | "people"
+    | "phone-ringing"
+    | "pizza"
+    | "search"
+    | "share";
 };
 
 export type CustomLink = {
@@ -876,7 +900,7 @@ export type BLOG_INDEX_QUERY_RESULT =
         | {
             _key: string;
             _type: "richTextBlock";
-            theme: "dark" | "light" | null;
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
             eyebrow: string | null;
             title: string | null;
             richText: Array<
@@ -1126,7 +1150,7 @@ export type BLOG_INDEX_QUERY_RESULT =
         | {
             _key: string;
             _type: "richTextBlock";
-            theme: "dark" | "light" | null;
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
             eyebrow: string | null;
             title: string | null;
             richText: Array<
@@ -1376,7 +1400,7 @@ export type BLOG_INDEX_QUERY_RESULT =
         | {
             _key: string;
             _type: "richTextBlock";
-            theme: "dark" | "light" | null;
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
             eyebrow: string | null;
             title: string | null;
             richText: Array<
@@ -1820,7 +1844,7 @@ export type HOME_PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "richTextBlock";
-        theme: "dark" | "light" | null;
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
         eyebrow: string | null;
         title: string | null;
         richText: Array<
@@ -2135,7 +2159,7 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "richTextBlock";
-        theme: "dark" | "light" | null;
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
         eyebrow: string | null;
         title: string | null;
         richText: Array<

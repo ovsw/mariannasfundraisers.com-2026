@@ -6,8 +6,12 @@ import {
   resolveSectionBands,
   resolveSectionBoundaries,
   type SectionBand,
-  type SectionEdgeTreatment,
 } from "@/components/blocks/section-boundaries";
+import {
+  resolveSectionBrushes,
+  SectionBrush,
+  type SectionBrushShape,
+} from "@/components/blocks/section-brush";
 import Scaffold, { hasScaffoldContent } from "@/components/blocks/scaffold";
 // page-builder-generator:component-imports
 import { dataset, projectId } from "@/sanity/lib/env";
@@ -36,10 +40,11 @@ const componentMap: Partial<{
   // page-builder-generator:component-map
 };
 
-// Code owns irregular top edges. A section listed here overlaps the section
-// above it at a different-background join; the renderer must pass
-// `topTreatment` to `sectionSceneClassName`. The Starter registers none.
-const sectionEdgeTreatments: Partial<Record<Block["_type"], SectionEdgeTreatment>> =
+// Code owns brushed edges (see section-brush.tsx). Which edge a section
+// paints follows from the themes around it; which brush shape it paints is
+// part of its design. A section listed here paints the "menu" stroke of the
+// old menu sections; every other section paints the default "brush" stroke.
+const sectionBrushShapes: Partial<Record<Block["_type"], SectionBrushShape>> =
   {};
 
 export default function Blocks({
@@ -60,14 +65,16 @@ export default function Blocks({
       {
         key: block._key,
         theme: "theme" in block ? (block.theme as string | null) : null,
-        edgeTreatment: sectionEdgeTreatments[block._type] ?? "none",
       },
     ];
   });
   const resolvedBoundaries = resolveSectionBoundaries(visibleSections);
+  const brushes = new Map(
+    resolveSectionBrushes(visibleSections).map((brush) => [brush.key, brush]),
+  );
 
   // A band is a run of visible sections joined by seams: one continuous
-  // surface. The stylesheet paints surface texture on the band, so the
+  // surface. The stylesheet paints a surface texture on the band, so the
   // texture does not restart at every seam. A block that renders nothing
   // stays inside the band around it; a leading one gets a plain wrapper.
   const bandStarts = new Map(
@@ -115,16 +122,28 @@ export default function Blocks({
       ? { dataAttribute }
       : {};
     const boundary = resolvedBoundaries.find(({ key }) => key === block._key);
+    const brush = brushes.get(block._key);
+    const brushTheme = boundary?.theme;
+    const brushShape = sectionBrushShapes[block._type];
 
     return (
       // scripts/verify-no-skeleton.mjs reads `data-section-key` to find a
       // published section that drew nothing.
       <div
+        className={
+          brushTheme && (brush?.top || brush?.bottom) ? "relative" : undefined
+        }
         data-sanity={dataSanity}
         data-section-key={block._key}
         key={block._key}
       >
         <Component {...block} {...editingProps} {...boundary} />
+        {brushTheme && brush?.top ? (
+          <SectionBrush edge="top" shape={brushShape} theme={brushTheme} />
+        ) : null}
+        {brushTheme && brush?.bottom ? (
+          <SectionBrush edge="bottom" shape={brushShape} theme={brushTheme} />
+        ) : null}
       </div>
     );
   }
@@ -134,7 +153,6 @@ export default function Blocks({
       {groups.map(({ band, blocks: bandBlocks }) => (
         <div
           data-band={band?.theme ?? undefined}
-          data-band-tuck={band?.tuck ? "" : undefined}
           key={bandBlocks[0]._key}
         >
           {bandBlocks.map(renderBlock)}
