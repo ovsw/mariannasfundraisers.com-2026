@@ -85,10 +85,29 @@ export function hasImageAndTextContent(block: ImageAndTextBlock) {
   return hasTextContent(block);
 }
 
-function objectPosition(hotspot: { x?: number | null; y?: number | null } | null | undefined) {
-  return hotspot?.x != null && hotspot?.y != null
-    ? `${Math.round(hotspot.x * 100)}% ${Math.round(hotspot.y * 100)}%`
-    : "50% 50%";
+type Crop = { top?: number | null; bottom?: number | null; left?: number | null; right?: number | null };
+
+/** The crop saved in Studio, with every side set, or undefined when there is none. */
+function savedCrop(crop: Crop | null | undefined) {
+  if (!crop) return undefined;
+  return { top: crop.top ?? 0, bottom: crop.bottom ?? 0, left: crop.left ?? 0, right: crop.right ?? 0 };
+}
+
+/**
+ * The hotspot as a CSS object position. Studio stores the hotspot against the
+ * whole image, so it is moved into the cropped area the URL serves.
+ */
+function objectPosition(
+  hotspot: { x?: number | null; y?: number | null } | null | undefined,
+  crop: ReturnType<typeof savedCrop>,
+) {
+  if (hotspot?.x == null || hotspot?.y == null) return "50% 50%";
+  const { top = 0, bottom = 0, left = 0, right = 0 } = crop ?? {};
+  const within = (value: number, start: number, end: number) => {
+    const size = 1 - start - end;
+    return size > 0 ? Math.min(1, Math.max(0, (value - start) / size)) : 0.5;
+  };
+  return `${Math.round(within(hotspot.x, left, right) * 100)}% ${Math.round(within(hotspot.y, top, bottom) * 100)}%`;
 }
 
 export function ImageAndText({
@@ -128,6 +147,7 @@ export function ImageAndText({
       : null;
   const cover = design.media === "photo" || design.media === "video";
   const alt = stegaClean(image?.alt)?.trim() || "";
+  const crop = savedCrop(image?.crop);
 
   const picture = (
     <Image
@@ -138,8 +158,8 @@ export function ImageAndText({
       fill
       placeholder={asset.metadata?.lqip ? "blur" : undefined}
       sizes="(min-width: 1024px) 50vw, 100vw"
-      src={urlFor({ asset }).width(1600).fit("max").url()}
-      style={cover ? { objectPosition: objectPosition(image?.hotspot) } : undefined}
+      src={urlFor({ asset, crop }).width(1600).fit("max").url()}
+      style={cover ? { objectPosition: objectPosition(image?.hotspot, crop) } : undefined}
     />
   );
 

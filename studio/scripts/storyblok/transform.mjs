@@ -349,7 +349,9 @@ function imageAndTextSection(row, name, theme, context) {
       context.note("needs a hand", `the video link "${link}" is not a YouTube video link; the row stays a Scaffold`);
       return null;
     }
-    section.youTubeUrl = link;
+    // The Studio field takes an absolute http(s) URL; the parser also accepts
+    // a link typed without its scheme, so store it with one.
+    section.youTubeUrl = /^[a-z]+:\/\//i.test(link) ? link : `https://${link}`;
   }
   rowContent(row, context, { section, featureGroups: type === "imageAndIconList" });
   section.image = image;

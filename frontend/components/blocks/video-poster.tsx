@@ -26,6 +26,10 @@ export default function VideoPoster({
   const [allowed, setAllowed] = useState(false);
   const [open, setOpen] = useState(false);
   const [privacyUnavailable, setPrivacyUnavailable] = useState(false);
+  // Set once the visitor tries to play without consent. A choice that can
+  // never allow the embed (Global Privacy Control) must still leave a way to
+  // watch, so the YouTube link then stays in view.
+  const [asked, setAsked] = useState(false);
 
   useEffect(() => {
     const update = () => setAllowed(analyticsAllowed(readConsentState()));
@@ -45,6 +49,7 @@ export default function VideoPoster({
       setOpen(true);
       return;
     }
+    setAsked(true);
     const openPreferences = (window as PreferencesWindow)._iub?.cs?.api?.openPreferences;
     if (typeof openPreferences !== "function") {
       setPrivacyUnavailable(true);
@@ -75,12 +80,14 @@ export default function VideoPoster({
           <span className="sr-only">: {title}</span>
         </span>
       </button>
-      {privacyUnavailable && !allowed ? (
+      {asked && !allowed ? (
         <p
           className="absolute inset-x-4 bottom-4 rounded-lg bg-card p-4 text-card-foreground shadow-lg"
           role="status"
         >
-          Privacy controls could not open. Reload this page to try again, or{" "}
+          {privacyUnavailable
+            ? "Privacy controls could not open. Reload this page to try again, or "
+            : "The video plays here once your privacy choices allow it. You can also "}
           <a
             className="underline"
             href={youTubeWatchUrl(videoId)}
@@ -94,7 +101,7 @@ export default function VideoPoster({
       ) : null}
       <dialog
         aria-label={title}
-        className="m-auto w-[min(92vw,80rem)] overflow-visible bg-transparent p-0 backdrop:bg-scrim/90"
+        className="m-auto w-[min(92vw,80rem,calc((100dvh_-_5rem)_*_16_/_9))] overflow-visible bg-transparent p-0 backdrop:bg-scrim/90"
         onClick={(event) => {
           if (event.target === event.currentTarget) event.currentTarget.close();
         }}
