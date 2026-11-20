@@ -1,0 +1,209 @@
+{
+  "$comment": "Content the old site hard-codes, for the importer (spec decisions 9, 16 and 20 of issue #3). Copied from https://github.com/ovsw/mfr-web-next2 at commit 750b5111466403e2dcd60f2b0e5101c790fb04c8. An href is the new path (no trailing slash); oldHref is the old value where it differs. A link with dropped: true is not carried over. oldIcon names the Heroicons outline icon the old code draws; it is reference, not content.",
+  "source": {
+    "repository": "https://github.com/ovsw/mfr-web-next2",
+    "commit": "750b5111466403e2dcd60f2b0e5101c790fb04c8",
+    "files": [
+      "components/Header/index.js",
+      "components/Header/nav/mobile.js",
+      "components/Footer.js",
+      "utils/blogAuthors.js",
+      "components/posts-list-featured.js",
+      "pages/news.js",
+      "next.config.js",
+      "next-seo.config"
+    ]
+  },
+  "settings": {
+    "siteName": "Marianna's Fundraisers",
+    "titleTemplate": "%s | Marianna's Fundraisers",
+    "phone": { "display": "1-814-684-2666", "href": "tel:18146842666" },
+    "email": "mariannas@delgrossos.com",
+    "address": ["627 Sauce Factory Drive", "PO Box 332, Tipton, PA 16684"],
+    "logos": {
+      "header": { "oldFile": "public/images/mariannas-fundraisers_2022_alt_wordmark.png", "alt": "Marianna's Fundraisers Logo" },
+      "footer": { "oldFile": "public/images/mariannas-fundraisers_2022_alt_white_wordmark.png", "alt": "Marianna's Fundraisers" },
+      "footerBadge": { "oldFile": "public/images/from-the-kitchens-of-delgrosso-badge.png", "alt": "" }
+    },
+    "social": [
+      { "label": "Facebook", "href": "https://www.facebook.com/MariannasFundraisers" },
+      { "label": "YouTube", "href": "https://www.youtube.com/channel/UCLpRCvfCBybdYsCyOGbU-bw" },
+      { "label": "Instagram", "oldHref": "#", "dropped": true, "reason": "goes nowhere (#); commented out in the old code" },
+      { "label": "Twitter", "oldHref": "#", "dropped": true, "reason": "goes nowhere (#); commented out in the old code" },
+      { "label": "GitHub", "oldHref": "#", "dropped": true, "reason": "goes nowhere (#); commented out in the old code" },
+      { "label": "Dribbble", "oldHref": "#", "dropped": true, "reason": "goes nowhere (#); commented out in the old code" }
+    ],
+    "googleAnalyticsMeasurementId": { "$comment": "Not in the old code as a literal; the importer seeds it from the MFR_GA_MEASUREMENT_ID secret (issue #14)." }
+  },
+  "navigation": {
+    "$comment": "Desktop order: Fundraisers, Menu, About Us, Selling Tools, Contact Us, then the action buttons.",
+    "items": [
+      {
+        "type": "group",
+        "title": "Fundraisers",
+        "description": "We offer 14” famous hoagies and 12” delicious pizzas for your fundraising needs. You'll love how easy they are to sell and your customers will love the variety.",
+        "links": [
+          { "label": "How it Works", "description": "A full rundown of the process, from first contact to delivery.", "href": "/how-it-works", "oldIcon": "QuestionMarkCircleIcon" },
+          { "label": "Pricing Info", "description": "Our pricing structure and our suggested pricing “You” based concept.", "href": "/pricing-info", "oldIcon": "CurrencyDollarIcon" },
+          { "label": "The Fundraiser That Sells Itself", "description": "Why Marianna's truly is 'The Fundraiser That Sells Itself.'", "href": "/the-fundraiser-that-sells-itself", "oldIcon": "ClipboardCheckIcon" },
+          { "label": "Fundraiser Resources", "description": "Guides and Info on how to run a successful fundraiser.", "href": "/fundraiser-resources", "oldIcon": "BookOpenIcon" },
+          { "label": "Get Assistance", "description": "Have a question? Need help with your fundraiser? We're one phone call away!", "href": "/get-assistance", "oldIcon": "PhoneIcon" },
+          { "label": "Schedule a Free Tasting", "description": "Sample our famous food, and get a personal consultation from our experts.", "href": "/schedule-a-free-tasting", "oldIcon": "CalendarIcon" },
+          { "label": "Find a Sale", "description": "Would you like to purchase a fundraiser but don’t know who is selling? We can help.", "href": "/find-a-sale", "oldIcon": "SearchIcon" },
+          { "label": "Fund Fiesta Salsa", "description": "A new tasty fundraising option.", "href": "/flavored-salsas", "oldIcon": "StarIcon" },
+          { "label": "Special Fundraising Events", "description": "Non Profit Groups hosting online sales.", "href": "/special-fundraising-events", "oldIcon": "StarIcon", "dropped": true, "reason": "commented out in the old code; not shown in the menu" }
+        ]
+      },
+      { "type": "link", "label": "Menu", "href": "/products" },
+      {
+        "type": "group",
+        "title": "About Us",
+        "description": "We have over 40 years of experience helping groups like yours raise money. We guide you through every step to help you have the best fundraiser possible.",
+        "links": [
+          { "label": "Fresh & Clean Obsessed", "description": "We only use quality ingredients, prepared fresh daily in the highest standard of cleanliness.", "href": "/fresh-and-clean-obsessed", "oldIcon": "SparklesIcon" },
+          { "label": "Hoagie Heroes", "description": "How we empower people to make a difference for the causes they believe in.", "href": "/hoagie-heroes", "oldIcon": "UserGroupIcon" },
+          { "label": "How it's Made", "description": "A look behind the scenes at how the Famous Hoagies are made.", "href": "/how-it-is-made", "oldIcon": "HeartIcon" },
+          { "label": "Our Leadership", "description": "Meet some of the team at Marianna's!", "href": "/our-leadership", "oldIcon": "UsersIcon" },
+          { "label": "Our Story and Promise", "description": "Marianna's is now over 40 years old! How it all began and why we do it.", "href": "/our-story-and-promise", "oldIcon": "ChatAltIcon" },
+          { "label": "News & Events", "description": "News about our events, promotions, and special offers.", "href": "/news", "oldIcon": "NewspaperIcon" },
+          { "label": "Success Stories", "description": "Hear from some of our Hoagie Heroes.", "href": "/success-stories", "oldIcon": "StarIcon" },
+          { "label": "Hours of Operation", "description": "for office and delivery.", "href": "/hours-of-operation", "oldIcon": "ClockIcon" }
+        ]
+      },
+      {
+        "type": "group",
+        "title": "Selling Tools",
+        "description": "Tools to help you throughout the fundraising process.",
+        "links": [
+          { "label": "10 Steps to Success", "description": "We've laid out an easy 10 step process to get you to a successful fundraiser.", "href": "/10-steps-to-success", "oldIcon": "ChartBarIcon" },
+          { "label": "Documents and Forms", "description": "Tools to help you throughout the fundraising process.", "href": "/documents-and-forms", "oldHref": "/documents-and-forms/", "oldIcon": "DocumentTextIcon" },
+          { "label": "Advertising Templates", "description": "Advertising posters and social media images to help you spread the word about your fundraiser.", "href": "/advertising-templates", "oldIcon": "TemplateIcon" },
+          { "label": "Fundraiser FAQs", "description": "Frequent questions and just as many answers – useful info about running a Marianna's Fundraiser.", "href": "/fundraiser-frequently-asked-questions", "oldIcon": "QuestionMarkCircleIcon" },
+          { "label": "Get Assistance", "description": "Have a question? Need help with your fundraiser? We're one phone call away!", "href": "/get-assistance", "oldIcon": "PhoneIcon" },
+          { "label": "Submit Your Order", "description": "Use this to submit your order to us, once you're done selling.", "href": "/submit-your-order", "oldIcon": "DocumentAddIcon" },
+          { "label": "Video Guides", "description": "Watch our helpful video guides to learn more about running your fundraiser.", "href": "/video-guides", "oldIcon": "PlayIcon" }
+        ]
+      },
+      { "type": "link", "label": "Contact Us", "href": "/contact-us" }
+    ],
+    "actionButtons": [
+      { "label": "Submit Order", "href": "/submit-your-order", "oldStyle": "btn-outlined-primary btn-small" },
+      { "label": "Book Free Tasting", "href": "/schedule-a-free-tasting", "oldStyle": "btn-outlined-accent btn-small", "dropped": true, "reason": "commented out in the old code; not shown" }
+    ],
+    "phoneMenu": {
+      "$comment": "The old phone menu (below the lg breakpoint) picks links from the groups above. Spec decision 16 draws it from the same navigation data.",
+      "main": [
+        { "label": "The Fundraiser That Sells Itself", "href": "/the-fundraiser-that-sells-itself", "oldIcon": "ClipboardCheckIcon" },
+        { "label": "How it Works", "href": "/how-it-works", "oldIcon": "QuestionMarkCircleIcon" },
+        { "label": "Pricing Info", "href": "/pricing-info", "oldIcon": "CurrencyDollarIcon" },
+        { "label": "Food Menu", "href": "/products", "oldIcon": "HeartIcon" }
+      ],
+      "secondary": [
+        { "label": "Fundraiser Resources", "href": "/fundraiser-resources" },
+        { "label": "Fresh & Clean Obsessed", "href": "/fresh-and-clean-obsessed" },
+        { "label": "How it's Made", "href": "/how-it-is-made" },
+        { "label": "News & Events", "href": "/news" },
+        { "label": "Hoagie Heroes", "href": "/hoagie-heroes" },
+        { "label": "Success Stories", "href": "/success-stories" }
+      ],
+      "buttons": [
+        { "label": "Submit Order", "href": "/submit-your-order", "oldIcon": "PhoneIcon", "oldStyle": "btn-primary btn-small" },
+        { "label": "Book Free Tasting", "href": "/schedule-a-free-tasting", "oldIcon": "CalendarIcon", "dropped": true, "reason": "commented out in the old code; not shown" }
+      ],
+      "supportLink": { "label": "Get Support / Contact", "href": "/get-assistance", "oldIcon": "PhoneIcon" }
+    }
+  },
+  "footer": {
+    "tagline": "The Fundraiser that Sells Itself",
+    "parentCompany": {
+      "text": "Marianna's Fundraisers is a part of the DelGrosso Family of Companies.",
+      "link": { "label": "DelGrosso Family of Companies", "href": "https://www.delgrossos.com/" }
+    },
+    "button": { "label": "Submit Order", "href": "/submit-your-order", "oldStyle": "btn-small btn-inverted-accent" },
+    "columns": [
+      {
+        "title": "Fundraisers",
+        "links": [
+          { "label": "How it Works", "href": "/how-it-works", "oldHref": "/how-it-works/" },
+          { "label": "Benefits", "href": "/the-fundraiser-that-sells-itself", "oldHref": "/the-fundraiser-that-sells-itself/" },
+          { "label": "Menu", "href": "/products" },
+          { "label": "Schedule Free Tasting", "href": "/schedule-a-free-tasting", "oldHref": "/schedule-a-free-tasting/" }
+        ]
+      },
+      {
+        "title": "Support",
+        "links": [
+          { "label": "Pricing Info", "href": "/pricing-info" },
+          { "label": "Resources", "href": "/fundraiser-resources" },
+          { "label": "Get Assistance", "href": "/get-assistance" },
+          { "label": "Contact", "href": "/contact-us" }
+        ]
+      },
+      {
+        "title": "Company",
+        "links": [
+          { "label": "Hoagie Heroes", "href": "/hoagie-heroes" },
+          { "label": "Our Story", "href": "/our-story-and-promise" },
+          { "label": "News & Events", "href": "/news", "oldHref": "/blog/", "note": "The old footer code still holds a News & Events link to the stale /blog/ path (commented out); the link points at /news." },
+          { "label": "Jobs", "href": "/jobs" },
+          { "label": "Press", "oldHref": "#", "dropped": true, "reason": "goes nowhere (#); commented out in the old code" },
+          { "label": "Partners", "oldHref": "#", "dropped": true, "reason": "goes nowhere (#); commented out in the old code" }
+        ]
+      }
+    ],
+    "legalLinks": [
+      { "label": "Accessibility Statement", "href": "/accessibility-statement" },
+      { "label": "Accessibility Policy", "href": "/accessibility-policy" },
+      { "label": "Privacy Policy", "href": "https://www.iubenda.com/privacy-policy/52141374", "oldNote": "opens in the iubenda lightbox (class iubenda-embed)" },
+      { "label": "Cookie Policy", "href": "https://www.iubenda.com/privacy-policy/52141374/cookie-policy", "oldNote": "opens in the iubenda lightbox (class iubenda-embed)" },
+      { "label": "Terms & Conditions", "href": "https://www.iubenda.com/terms-and-conditions/52141374", "oldNote": "opens in the iubenda lightbox (class iubenda-embed)" }
+    ],
+    "privacyControls": [
+      { "label": "Notice at Collection", "href": "https://www.iubenda.com/privacy-policy/52141374/cookie-policy?an=no&s_ck=false&newmarkup=yes", "oldClass": "iubenda-cs-uspr-link" },
+      { "label": "Your Privacy Choices", "href": "https://www.iubenda.com/privacy-policy/52141374/legal?an=no&s_ck=false&newmarkup=yes#privacy_rights_under_us_state_laws", "oldClass": "iubenda-cs-preferences-link", "oldIcon": "public/images/privacy-choices.svg" }
+    ],
+    "copyright": {
+      "owner": "DelGrosso Foods, Inc.",
+      "startYear": 2022,
+      "text": "All rights reserved.",
+      "oldText": "© 2022 DelGrosso Foods, Inc. All rights reserved.",
+      "note": "The old footer fixes the year at 2022; the Starter computes the current year (spec decision 21)."
+    },
+    "credit": { "label": "Website by Studio Rovst", "href": "https://studiorovst.com/" }
+  },
+  "authors": {
+    "$comment": "The four authors of utils/blogAuthors.js, keyed by the value stored in a post's author field. The photo files sit next to this file in authors/. Their bios in the old code are a placeholder (\"short bio goes here.\"), so no bio is carried over. The old code gives every author photo the alt text \"Amy Mearkle\"; the alt text is the author's name (spec decision 21).",
+    "items": [
+      { "key": "amy", "name": "Amy Mearkle", "title": "Director of Marketing", "photo": "authors/amy-mearkle.jpg", "oldPhoto": "public/images/avatars/amy-mearkle.jpg" },
+      { "key": "amie", "name": "Amie Uliano-Parisi", "title": "Marketing Coordinator", "photo": "authors/amie-uliano-parisi-2.jpg", "oldPhoto": "public/images/avatars/amie-uliano-parisi-2.jpg", "note": "The Storyblok authors option list names her \"Amie Uliano\"; the site shows the name from the code." },
+      { "key": "juls", "name": "Juls Bratton", "title": "Sales Manager", "photo": "authors/juls-bratton.jpg", "oldPhoto": "public/images/avatars/juls-bratton.jpg", "note": "Not in the Storyblok authors option list; two posts use the value juls." },
+      { "key": "todd", "name": "Todd Hill", "title": "General Manager", "photo": "authors/todd-hill.jpg", "oldPhoto": "public/images/avatars/todd-hill.jpg" }
+    ]
+  },
+  "news": {
+    "latestNews": { "eyebrow": "Marianna's", "title": "News & Events", "count": 3, "position": "last section of the home page" },
+    "newsList": {
+      "eyebrow": "Marianna's",
+      "title": "News & Events",
+      "seoTitle": "News and Events",
+      "seoDescription": "Get the latest company news, events and promotions.",
+      "perPage": 20
+    }
+  },
+  "redirects": {
+    "$comment": "The redirects of the old next.config.js, all permanent (the old site answers 308). The three iubenda ones are external (spec decision 6).",
+    "items": [
+      { "source": "/terms-and-conditions", "destination": "https://www.iubenda.com/terms-and-conditions/52141374", "permanent": true, "external": true },
+      { "source": "/cookie-policy", "destination": "https://www.iubenda.com/privacy-policy/52141374/cookie-policy", "permanent": true, "external": true },
+      { "source": "/privacy-policy", "destination": "https://www.iubenda.com/privacy-policy/52141374", "permanent": true, "external": true },
+      { "source": "/about-us/our-history", "destination": "/our-story-and-promise", "permanent": true, "external": false },
+      { "source": "/about-us/our-promise", "destination": "/our-story-and-promise", "permanent": true, "external": false },
+      { "source": "/about-us/our-team", "destination": "/hoagie-heroes", "permanent": true, "external": false },
+      { "source": "/testimonials", "destination": "/success-stories", "permanent": true, "external": false },
+      { "source": "/about-us/join-our-team", "destination": "/jobs", "permanent": true, "external": false },
+      { "source": "/about-us/in-the-news", "destination": "/news", "permanent": true, "external": false },
+      { "source": "/about-us/contact-us", "destination": "/contact-us", "permanent": true, "external": false },
+      { "source": "/selling-tools", "destination": "/fundraiser-resources", "permanent": true, "external": false }
+    ]
+  }
+}
