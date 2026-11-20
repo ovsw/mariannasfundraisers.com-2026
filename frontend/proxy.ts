@@ -82,8 +82,8 @@ export async function proxy(request: NextRequest) {
   } catch {
     return NextResponse.next();
   }
-  const regularPostCount = Math.max(postCount - 1, 0);
-  const { totalPages } = calculateBlogPagination(regularPostCount, page);
+  // Every page lists 20 posts, newest first (spec decision 9).
+  const { totalPages } = calculateBlogPagination(postCount, page);
   return isBlogPageOutOfRange(page, totalPages)
     ? notFoundResponse()
     : NextResponse.next();

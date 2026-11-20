@@ -40,6 +40,9 @@ export function reportMarkdown(report, { source }) {
   lines.push(table(sorted(report.sections), ["Section", "Count"]));
   lines.push("Scaffolds by the section that will replace them:", "");
   lines.push(table(sorted(report.scaffolds), ["Intended section", "Scaffolds"]));
+  lines.push("## News addresses that change", "");
+  lines.push("Malformed old news slugs get a clean one and a permanent redirect from the old address (spec decision 5).", "");
+  lines.push(table((report.newsRedirects ?? []).map((r) => [r.from, r.to]), ["Old address", "New address"]));
   lines.push("## Not imported here", "");
   lines.push(table(report.skipped.map((s) => [s.story, s.reason]), ["Story", "Why"]));
   lines.push("## Needs a hand", "");

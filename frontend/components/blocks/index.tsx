@@ -1,4 +1,8 @@
-import { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
+import {
+  HOME_PAGE_QUERY_RESULT,
+  PAGE_QUERY_RESULT,
+  POST_QUERY_RESULT,
+} from "@/sanity.types";
 import { type LivePerspective } from "next-sanity/live";
 import { createDataAttribute, stegaClean } from "next-sanity";
 import RichTextBlock from "@/components/blocks/rich-text-block";
@@ -23,6 +27,7 @@ import BadgeAndText, { hasBadgeAndTextContent } from "@/components/blocks/badge-
 import VideoLeftAndText, { hasVideoLeftAndTextContent } from "@/components/blocks/video-left-and-text";
 import VideoRightAndText, { hasVideoRightAndTextContent } from "@/components/blocks/video-right-and-text";
 import ImageAndIconList, { hasImageAndIconListContent } from "@/components/blocks/image-and-icon-list";
+import LatestNews, { hasLatestNewsContent } from "@/components/blocks/latest-news";
 import CognitoForm, { hasCognitoFormContent } from "@/components/blocks/cognito-form";
 import FaqList, { hasFaqListContent } from "@/components/blocks/faq-list";
 import TwoTextColumns, { hasTwoTextColumnsContent } from "@/components/blocks/two-text-columns";
@@ -34,7 +39,8 @@ import { dataset, projectId } from "@/sanity/lib/env";
 
 type Block =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
-  | NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number];
+  | NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number]
+  | NonNullable<NonNullable<POST_QUERY_RESULT>["blocks"]>[number];
 
 type BlockEditingProps = {
   dataAttribute?: (path: string) => string | undefined;
@@ -53,6 +59,7 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "videoLeftAndText",
   "videoRightAndText",
   "imageAndIconList",
+  "latestNews",
   "cognitoForm",
   "faqList",
   "twoTextColumns",
@@ -79,6 +86,7 @@ const componentMap: Partial<{
   videoLeftAndText: VideoLeftAndText,
   videoRightAndText: VideoRightAndText,
   imageAndIconList: ImageAndIconList,
+  latestNews: LatestNews,
   cognitoForm: CognitoForm,
   faqList: FaqList,
   twoTextColumns: TwoTextColumns,
@@ -112,7 +120,7 @@ export default function Blocks({
 }: {
   blocks: Block[];
   documentId: string;
-  documentType?: "blogIndex" | "homePage" | "page";
+  documentType?: "blogIndex" | "homePage" | "page" | "post";
   perspective: LivePerspective;
   stega: boolean;
 }) {
@@ -252,6 +260,7 @@ function isRenderableBlock(block: Block) {
   if (block._type === "videoLeftAndText") return hasVideoLeftAndTextContent(block);
   if (block._type === "videoRightAndText") return hasVideoRightAndTextContent(block);
   if (block._type === "imageAndIconList") return hasImageAndIconListContent(block);
+  if (block._type === "latestNews") return hasLatestNewsContent(block);
   if (block._type === "cognitoForm") return hasCognitoFormContent(block);
   if (block._type === "faqList") return hasFaqListContent(block);
   if (block._type === "twoTextColumns") return hasTwoTextColumnsContent(block);

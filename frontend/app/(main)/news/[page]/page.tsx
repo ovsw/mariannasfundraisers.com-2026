@@ -46,8 +46,7 @@ export async function generateStaticParams() {
       data: POSTS_SLUGS_QUERY_RESULT;
     }>,
   ]);
-  const regularPostCount = Math.max(Number(count) - 1, 0);
-  const { totalPages } = calculateBlogPagination(regularPostCount, 1);
+  const { totalPages } = calculateBlogPagination(Number(count), 1);
   const params = Array.from(
     { length: Math.max(totalPages - 1, 0) },
     (_, index) => ({ page: String(index + 2) }),

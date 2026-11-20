@@ -112,6 +112,13 @@ export type CognitoForm = {
   intro?: RichTextContent;
 };
 
+export type LatestNews = {
+  _type: "latestNews";
+  theme?: "light" | "shaded" | "muslin" | "primary";
+  eyebrow?: string;
+  title?: string;
+};
+
 export type ImageAndIconList = {
   _type: "imageAndIconList";
   theme?: "light" | "shaded" | "muslin" | "primary";
@@ -980,6 +987,7 @@ export type BlogIndex = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  eyebrow?: string;
   title?: string;
   description?: string;
   blocks?: Array<
@@ -1066,6 +1074,9 @@ export type HomePage = {
   blocks?: Array<
     | ({
         _key: string;
+      } & LatestNews)
+    | ({
+        _key: string;
       } & RichTextBlock)
     | ({
         _key: string;
@@ -1099,6 +1110,9 @@ export type HomePage = {
       } & ImageAndIconList)
   >;
   blocksArchive?: Array<
+    | ({
+        _key: string;
+      } & LatestNews)
     | ({
         _key: string;
       } & RichTextBlock)
@@ -1227,7 +1241,36 @@ export type Post = {
     caption?: string;
     _type: "image";
   };
-  body?: RichTextContent;
+  readingTime?: number;
+  blocks?: Array<
+    | ({
+        _key: string;
+      } & RichTextBlock)
+    | ({
+        _key: string;
+      } & PhotoLeftAndText)
+    | ({
+        _key: string;
+      } & PhotoRightAndText)
+    | ({
+        _key: string;
+      } & CutoutLeftAndText)
+    | ({
+        _key: string;
+      } & CutoutRightAndText)
+    | ({
+        _key: string;
+      } & BadgeAndText)
+    | ({
+        _key: string;
+      } & VideoLeftAndText)
+    | ({
+        _key: string;
+      } & VideoRightAndText)
+    | ({
+        _key: string;
+      } & ImageAndIconList)
+  >;
   meta?: Meta;
 };
 
@@ -1509,6 +1552,7 @@ export type AllSanitySchemaTypes =
   | FaqReference
   | FaqList
   | CognitoForm
+  | LatestNews
   | ImageAndIconList
   | VideoRightAndText
   | VideoLeftAndText
@@ -1587,11 +1631,12 @@ export type AllSanitySchemaTypes =
 
 // Source: ../frontend/sanity/queries/blog-index.ts
 // Variable: BLOG_INDEX_QUERY
-// Query: *[_id == "blogIndex"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  }  }
+// Query: *[_id == "blogIndex"][0]{    _id,    _type,    eyebrow,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "latestNews" => {    theme,    eyebrow,    title,    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{        _id,  _type,  title,  slug,  publishedAt,  readingTime,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  author->{    _id,    name,    image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  }  }
 export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "author";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -1601,6 +1646,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "blogIndex";
+      eyebrow: string | null;
       title: string | null;
       description: string | null;
       blocks: Array<
@@ -3101,6 +3147,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "blogPostSettings";
+      eyebrow: null;
       title: string | null;
       description: string | null;
       blocks: null;
@@ -3110,6 +3157,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "faq";
+      eyebrow: null;
       title: string | null;
       description: null;
       blocks: null;
@@ -3119,6 +3167,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "footer";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -3128,6 +3177,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "homePage";
+      eyebrow: null;
       title: string | null;
       description: string | null;
       blocks: Array<
@@ -3762,6 +3812,65 @@ export type BLOG_INDEX_QUERY_RESULT =
                 _key: string;
               }> | null;
             }> | null;
+          }
+        | {
+            _key: string;
+            _type: "latestNews";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            posts: Array<{
+              _id: string;
+              _type: "post";
+              title: string | null;
+              slug: Slug | null;
+              publishedAt: string | null;
+              readingTime: number | null;
+              excerpt: string;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+              } | null;
+              author: {
+                _id: string;
+                name: string | null;
+                image: {
+                  asset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  _type: "image";
+                } | null;
+              } | null;
+            }>;
           }
         | {
             _key: string;
@@ -4628,6 +4737,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "media.folder";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -4637,6 +4747,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "media.tag";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -4646,6 +4757,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "navigation";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -4655,6 +4767,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "page";
+      eyebrow: null;
       title: string | null;
       description: string | null;
       blocks: Array<
@@ -6646,9 +6759,1356 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "post";
+      eyebrow: null;
       title: string | null;
       description: null;
-      blocks: null;
+      blocks: Array<
+        | {
+            _key: string;
+            _type: "badgeAndText";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "cutoutLeftAndText";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "cutoutRightAndText";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "imageAndIconList";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            items: Array<{
+              _key: string;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              heading: string | null;
+              text: Array<{
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "normal";
+                listItem?: never;
+                markDefs: Array<{
+                  _key: string;
+                  _type: "customLink";
+                  customLink?: CustomUrl;
+                  href: string | null | "/" | "/news";
+                  openInNewTab: boolean | null;
+                }> | null;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "photoLeftAndText";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "photoRightAndText";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "richTextBlock";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "videoLeftAndText";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            youTubeUrl: string | null;
+          }
+        | {
+            _key: string;
+            _type: "videoRightAndText";
+            theme: "light" | "muslin" | "primary" | "shaded" | null;
+            eyebrow: string | null;
+            title: string | null;
+            anchorId: string | null;
+            richText: Array<
+              | {
+                  children: Array<{
+                    marks?: Array<string>;
+                    text?: string;
+                    _type: "span";
+                    _key: string;
+                  }> | null;
+                  style?:
+                    | "blockquote"
+                    | "h2"
+                    | "h3"
+                    | "h4"
+                    | "h5"
+                    | "h6"
+                    | "inline"
+                    | "normal";
+                  listItem?: "bullet" | "number";
+                  markDefs: Array<
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "buttonLink";
+                        customLink?: CustomUrl;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                        href: string | null | "/" | "/news";
+                        openInNewTab: boolean | null;
+                      }
+                    | {
+                        _key: string;
+                        _type: "customLink";
+                        customLink?: CustomUrl;
+                      }
+                  > | null;
+                  level?: number;
+                  _type: "block";
+                  _key: string;
+                }
+              | {
+                  title: string | null;
+                  body: string | null;
+                  _type: "callout";
+                  _key: string;
+                }
+              | {
+                  asset?: SanityImageAssetReference;
+                  media?: unknown;
+                  hotspot?: SanityImageHotspot;
+                  crop?: SanityImageCrop;
+                  alt?: string;
+                  caption?: string;
+                  _type: "image";
+                  _key: string;
+                  resolvedAsset: {
+                    _id: string;
+                    url: string | null;
+                    mimeType: string | null;
+                    metadata: {
+                      lqip: string | null;
+                      dimensions: {
+                        width: number | null;
+                        height: number | null;
+                      } | null;
+                    } | null;
+                  } | null;
+                }
+              | {
+                  title?: string;
+                  rows: Array<{
+                    cells: Array<string> | null;
+                    _type: "tableRow";
+                    _key: string;
+                  }> | null;
+                  _type: "table";
+                  _key: string;
+                }
+            > | null;
+            buttons: Array<{
+              _key: string;
+              text: string | null;
+              colour:
+                "accent" | "light-accent" | "light-primary" | "primary" | null;
+              icon:
+                | "book-spells"
+                | "chef-hat"
+                | "chevron-left"
+                | "chevron-right"
+                | "delivery-truck"
+                | "documents-checked"
+                | "documents"
+                | "envelope"
+                | "hand-asking"
+                | "hand-heart"
+                | "hand-helping"
+                | "heart"
+                | "hoagie"
+                | "info-round"
+                | "info"
+                | "paper-plane"
+                | "people"
+                | "phone-ringing"
+                | "pizza"
+                | "price-tag"
+                | "search"
+                | "share"
+                | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/news";
+            }> | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            youTubeUrl: string | null;
+          }
+      > | null;
       sharingPhoto: {
         asset: SanityImageAssetReference | null;
         crop: SanityImageCrop | null;
@@ -6681,6 +8141,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "product";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -6716,6 +8177,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "productPageSettings";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -6725,6 +8187,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "redirect";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -6734,6 +8197,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "sanity.fileAsset";
+      eyebrow: null;
       title: string | null;
       description: string | null;
       blocks: null;
@@ -6743,6 +8207,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "sanity.imageAsset";
+      eyebrow: null;
       title: string | null;
       description: string | null;
       blocks: null;
@@ -6752,6 +8217,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "settings";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -6761,6 +8227,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "teamMember";
+      eyebrow: null;
       title: null;
       description: null;
       blocks: null;
@@ -6770,6 +8237,7 @@ export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
       _type: "testimonial";
+      eyebrow: null;
       title: string | null;
       description: null;
       blocks: null;
@@ -6779,13 +8247,15 @@ export type BLOG_INDEX_QUERY_RESULT =
   | null;
 
 // Source: ../frontend/sanity/queries/blog-index.ts
-// Variable: LATEST_POST_QUERY
-// Query: *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0]{      _id,  title,  slug,  publishedAt,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }
-export type LATEST_POST_QUERY_RESULT = {
+// Variable: NEWS_POSTS_QUERY
+// Query: *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{      _id,  _type,  title,  slug,  publishedAt,  readingTime,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  author->{    _id,    name,    image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }  }
+export type NEWS_POSTS_QUERY_RESULT = Array<{
   _id: string;
+  _type: "post";
   title: string | null;
   slug: Slug | null;
   publishedAt: string | null;
+  readingTime: number | null;
   excerpt: string;
   image: {
     asset: {
@@ -6807,43 +8277,30 @@ export type LATEST_POST_QUERY_RESULT = {
     caption?: string;
     _type: "image";
   } | null;
-} | null;
-
-// Source: ../frontend/sanity/queries/blog-index.ts
-// Variable: REGULAR_POSTS_QUERY
-// Query: *[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId]    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{        _id,  title,  slug,  publishedAt,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}    }
-export type REGULAR_POSTS_QUERY_RESULT = Array<{
-  _id: string;
-  title: string | null;
-  slug: Slug | null;
-  publishedAt: string | null;
-  excerpt: string;
-  image: {
-    asset: {
-      _id: string;
-      url: string | null;
-      mimeType: string | null;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number | null;
-          height: number | null;
+  author: {
+    _id: string;
+    name: string | null;
+    image: {
+      asset: {
+        _id: string;
+        url: string | null;
+        mimeType: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
         } | null;
       } | null;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
     } | null;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    caption?: string;
-    _type: "image";
   } | null;
 }>;
-
-// Source: ../frontend/sanity/queries/blog-index.ts
-// Variable: REGULAR_POSTS_COUNT_QUERY
-// Query: count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId])
-export type REGULAR_POSTS_COUNT_QUERY_RESULT = number;
 
 // Source: ../frontend/sanity/queries/blog-index.ts
 // Variable: ELIGIBLE_BLOG_POSTS_COUNT_QUERY
@@ -6926,7 +8383,7 @@ export type FOOTER_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/home-page.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "homePage" && _type == "homePage"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
+// Query: *[_id == "homePage" && _type == "homePage"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "latestNews" => {    theme,    eyebrow,    title,    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{        _id,  _type,  title,  slug,  publishedAt,  readingTime,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  author->{    _id,    name,    image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
 export type HOME_PAGE_QUERY_RESULT = {
   _id: "homePage";
   _type: "homePage";
@@ -7564,6 +9021,65 @@ export type HOME_PAGE_QUERY_RESULT = {
             _key: string;
           }> | null;
         }> | null;
+      }
+    | {
+        _key: string;
+        _type: "latestNews";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        posts: Array<{
+          _id: string;
+          _type: "post";
+          title: string | null;
+          slug: Slug | null;
+          publishedAt: string | null;
+          readingTime: number | null;
+          excerpt: string;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            caption?: string;
+            _type: "image";
+          } | null;
+          author: {
+            _id: string;
+            name: string | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          } | null;
+        }>;
       }
     | {
         _key: string;
@@ -8542,7 +10058,7 @@ export type BLOG_INDEX_OG_IMAGE_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/page.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    _id,    _type,    title,    description,    "slug": slug.current,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
+// Query: *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    _id,    _type,    title,    description,    "slug": slug.current,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "latestNews" => {    theme,    eyebrow,    title,    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{        _id,  _type,  title,  slug,  publishedAt,  readingTime,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  author->{    _id,    name,    image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
 export type PAGE_QUERY_RESULT = {
   _id: string;
   _type: "page";
@@ -10552,7 +12068,7 @@ export type PAGES_SLUGS_QUERY_RESULT = Array<{
 
 // Source: ../frontend/sanity/queries/post.ts
 // Variable: POST_PROJECTION
-// Query: {    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
+// Query: {    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    readingTime,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "latestNews" => {    theme,    eyebrow,    title,    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{        _id,  _type,  title,  slug,  publishedAt,  readingTime,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  author->{    _id,    name,    image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
 export type POST_PROJECTION_RESULT = {
   _id: never;
   _type: never;
@@ -10561,7 +12077,8 @@ export type POST_PROJECTION_RESULT = {
   publishedAt: never;
   excerpt: string;
   image: never;
-  body: never;
+  readingTime: never;
+  blocks: never;
   author: never;
   _createdAt: never;
   _updatedAt: never;
@@ -10571,7 +12088,7 @@ export type POST_PROJECTION_RESULT = {
 
 // Source: ../frontend/sanity/queries/post.ts
 // Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
+// Query: *[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    readingTime,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "latestNews" => {    theme,    eyebrow,    title,    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{        _id,  _type,  title,  slug,  publishedAt,  readingTime,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  author->{    _id,    name,    image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
 export type POST_QUERY_RESULT = {
   _id: string;
   _type: "post";
@@ -10599,84 +12116,1352 @@ export type POST_QUERY_RESULT = {
     caption?: string;
     _type: "image";
   } | null;
-  body: Array<
+  readingTime: number | null;
+  blocks: Array<
     | {
-        children: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }> | null;
-        style?:
-          "blockquote" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
-        listItem?: "bullet" | "number";
-        markDefs: Array<
+        _key: string;
+        _type: "badgeAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
           | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
               _key: string;
-              _type: "buttonLink";
-              customLink?: CustomUrl;
-              href: string | null | "/" | "/news";
-              openInNewTab: boolean | null;
             }
           | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
               _key: string;
-              _type: "buttonLink";
-              customLink?: CustomUrl;
             }
           | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
               _key: string;
-              _type: "customLink";
-              customLink?: CustomUrl;
-              href: string | null | "/" | "/news";
-              openInNewTab: boolean | null;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
             }
           | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
               _key: string;
-              _type: "customLink";
-              customLink?: CustomUrl;
             }
         > | null;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        title: string | null;
-        body: string | null;
-        _type: "callout";
-        _key: string;
-      }
-    | {
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        _type: "image";
-        _key: string;
-        resolvedAsset: {
-          _id: string;
-          url: string | null;
-          mimeType: string | null;
-          metadata: {
-            lqip: string | null;
-            dimensions: {
-              width: number | null;
-              height: number | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
             } | null;
-          } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
         } | null;
       }
     | {
-        title?: string;
-        rows: Array<{
-          cells: Array<string> | null;
-          _type: "tableRow";
-          _key: string;
-        }> | null;
-        _type: "table";
         _key: string;
+        _type: "cutoutLeftAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "cutoutRightAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "imageAndIconList";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+        items: Array<{
+          _key: string;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          heading: string | null;
+          text: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal";
+            listItem?: never;
+            markDefs: Array<{
+              _key: string;
+              _type: "customLink";
+              customLink?: CustomUrl;
+              href: string | null | "/" | "/news";
+              openInNewTab: boolean | null;
+            }> | null;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }> | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "photoLeftAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "photoRightAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "richTextBlock";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "videoLeftAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+        youTubeUrl: string | null;
+      }
+    | {
+        _key: string;
+        _type: "videoRightAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+        youTubeUrl: string | null;
       }
   > | null;
   author: {
@@ -10744,7 +13529,7 @@ export type POST_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/post.ts
 // Variable: PUBLISHED_POST_QUERY
-// Query: *[  _type == "post" && defined(slug.current) && defined(publishedAt) && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
+// Query: *[  _type == "post" && defined(slug.current) && defined(publishedAt) && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    readingTime,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "pageBanner" => {    theme,    title,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "pageHeading" => {    theme,    title,    intro[]{        ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }    }  },      _type == "photoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "photoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "cutoutRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "badgeAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "videoLeftAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "videoRightAndText" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    youTubeUrl  },      _type == "imageAndIconList" => {        theme,    eyebrow,    title,    anchorId,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    buttons[]{        _key,  text,  colour,  icon,  "openInNewTab": url.openInNewTab,  "href": select(  url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")) + select(defined(url.anchor) => "#" + url.anchor, ""),  url.type == "external" => url.external,  url.type == "file" => url.file.asset->url,  url.href)    },    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },        items[]{      _key,      icon,      heading,      text[]{          ...,    markDefs[]{    ...,    _type == "customLink" => {        "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab    }  }      }    }  },      _type == "latestNews" => {    theme,    eyebrow,    title,    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{        _id,  _type,  title,  slug,  publishedAt,  readingTime,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  author->{    _id,    name,    image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }    }  },      _type == "cognitoForm" => {    theme,    formId,    title,    intro[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "faqList" => {    theme,    title,    "faqs": faqs[]->{      _id,      title,      body[]{          ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }      }    }  },      _type == "twoTextColumns" => {    theme,    leftText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    rightText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(  customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),  customLink.type == "external" => customLink.external,  customLink.type == "file" => customLink.file.asset->url,  customLink.href),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "hoagieMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "pizzaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      _type == "salsaMenu" => {        theme,    "products": products[]->{        _id,  kind,  "slug": slug.current,  "shortName": menuCard.shortName,  "shortDescription": menuCard.shortDescription,  "dressing": menuCard.dressing,  "image": menuCard.image{      ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }  }    }  },      },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
 export type PUBLISHED_POST_QUERY_RESULT = {
   _id: string;
   _type: "post";
@@ -10772,84 +13557,1352 @@ export type PUBLISHED_POST_QUERY_RESULT = {
     caption?: string;
     _type: "image";
   } | null;
-  body: Array<
+  readingTime: number | null;
+  blocks: Array<
     | {
-        children: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }> | null;
-        style?:
-          "blockquote" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
-        listItem?: "bullet" | "number";
-        markDefs: Array<
+        _key: string;
+        _type: "badgeAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
           | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
               _key: string;
-              _type: "buttonLink";
-              customLink?: CustomUrl;
-              href: string | null | "/" | "/news";
-              openInNewTab: boolean | null;
             }
           | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
               _key: string;
-              _type: "buttonLink";
-              customLink?: CustomUrl;
             }
           | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
               _key: string;
-              _type: "customLink";
-              customLink?: CustomUrl;
-              href: string | null | "/" | "/news";
-              openInNewTab: boolean | null;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
             }
           | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
               _key: string;
-              _type: "customLink";
-              customLink?: CustomUrl;
             }
         > | null;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        title: string | null;
-        body: string | null;
-        _type: "callout";
-        _key: string;
-      }
-    | {
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        _type: "image";
-        _key: string;
-        resolvedAsset: {
-          _id: string;
-          url: string | null;
-          mimeType: string | null;
-          metadata: {
-            lqip: string | null;
-            dimensions: {
-              width: number | null;
-              height: number | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
             } | null;
-          } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
         } | null;
       }
     | {
-        title?: string;
-        rows: Array<{
-          cells: Array<string> | null;
-          _type: "tableRow";
-          _key: string;
-        }> | null;
-        _type: "table";
         _key: string;
+        _type: "cutoutLeftAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "cutoutRightAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "imageAndIconList";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+        items: Array<{
+          _key: string;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          heading: string | null;
+          text: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal";
+            listItem?: never;
+            markDefs: Array<{
+              _key: string;
+              _type: "customLink";
+              customLink?: CustomUrl;
+              href: string | null | "/" | "/news";
+              openInNewTab: boolean | null;
+            }> | null;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }> | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "photoLeftAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "photoRightAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "richTextBlock";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "videoLeftAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+        youTubeUrl: string | null;
+      }
+    | {
+        _key: string;
+        _type: "videoRightAndText";
+        theme: "light" | "muslin" | "primary" | "shaded" | null;
+        eyebrow: string | null;
+        title: string | null;
+        anchorId: string | null;
+        richText: Array<
+          | {
+              children: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }> | null;
+              style?:
+                | "blockquote"
+                | "h2"
+                | "h3"
+                | "h4"
+                | "h5"
+                | "h6"
+                | "inline"
+                | "normal";
+              listItem?: "bullet" | "number";
+              markDefs: Array<
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "buttonLink";
+                    customLink?: CustomUrl;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                    href: string | null | "/" | "/news";
+                    openInNewTab: boolean | null;
+                  }
+                | {
+                    _key: string;
+                    _type: "customLink";
+                    customLink?: CustomUrl;
+                  }
+              > | null;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              title: string | null;
+              body: string | null;
+              _type: "callout";
+              _key: string;
+            }
+          | {
+              asset?: SanityImageAssetReference;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              caption?: string;
+              _type: "image";
+              _key: string;
+              resolvedAsset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+            }
+          | {
+              title?: string;
+              rows: Array<{
+                cells: Array<string> | null;
+                _type: "tableRow";
+                _key: string;
+              }> | null;
+              _type: "table";
+              _key: string;
+            }
+        > | null;
+        buttons: Array<{
+          _key: string;
+          text: string | null;
+          colour:
+            "accent" | "light-accent" | "light-primary" | "primary" | null;
+          icon:
+            | "book-spells"
+            | "chef-hat"
+            | "chevron-left"
+            | "chevron-right"
+            | "delivery-truck"
+            | "documents-checked"
+            | "documents"
+            | "envelope"
+            | "hand-asking"
+            | "hand-heart"
+            | "hand-helping"
+            | "heart"
+            | "hoagie"
+            | "info-round"
+            | "info"
+            | "paper-plane"
+            | "people"
+            | "phone-ringing"
+            | "pizza"
+            | "price-tag"
+            | "search"
+            | "share"
+            | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/news";
+        }> | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+        youTubeUrl: string | null;
       }
   > | null;
   author: {
@@ -11970,23 +16023,21 @@ export type SETTINGS_QUERY_RESULT = {
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_id == "blogIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n\n  }\n': BLOG_INDEX_QUERY_RESULT;
-    '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0]{\n    \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n\n  }\n': LATEST_POST_QUERY_RESULT;
-    '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId]\n    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{\n      \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n\n    }\n': REGULAR_POSTS_QUERY_RESULT;
-    '\n  count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId])\n': REGULAR_POSTS_COUNT_QUERY_RESULT;
+    '\n  *[_id == "blogIndex"][0]{\n    _id,\n    _type,\n    eyebrow,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "latestNews" => {\n    theme,\n    eyebrow,\n    title,\n    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{\n      \n  _id,\n  _type,\n  title,\n  slug,\n  publishedAt,\n  readingTime,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  author->{\n    _id,\n    name,\n    image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n  }\n\n    }\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n\n  }\n': BLOG_INDEX_QUERY_RESULT;
+    '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{\n    \n  _id,\n  _type,\n  title,\n  slug,\n  publishedAt,\n  readingTime,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  author->{\n    _id,\n    name,\n    image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n  }\n\n  }\n': NEWS_POSTS_QUERY_RESULT;
     '\n  count(*[_type == "post" && defined(slug.current) && defined(publishedAt)])\n': ELIGIBLE_BLOG_POSTS_COUNT_QUERY_RESULT;
     '*[\n  _type == "blogPostSettings" &&\n  _id == "blogPostSettings" &&\n  defined(actions)\n][0]{\n  _id,\n  _type,\n  title,\n  description,\n  "actions": array::compact(actions[]{\n  _key,\n  title,\n  description,\n  ...button{\n    "text": text,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n  }\n})\n}': BLOG_POST_SETTINGS_QUERY_RESULT;
     '\n  *[_type == "footer" && _id == "footer"][0]{\n    _id,\n    intro,\n    affiliation{\n      text,\n      link{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/news",\n      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n}\n    },\n    action{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/news",\n      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n},\n    columns[]{\n      _key,\n      heading,\n      links[]{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/news",\n      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n}\n    },\n    "legalLinks": coalesce(legalLinks, compliance.legalLinks)[]{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/news",\n      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n},\n    "copyrightStartYear": coalesce(copyrightStartYear, compliance.copyrightStartYear),\n    "copyrightOwner": coalesce(copyrightOwner, compliance.copyrightOwner)\n  }\n': FOOTER_QUERY_RESULT;
-    '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': HOME_PAGE_QUERY_RESULT;
+    '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "latestNews" => {\n    theme,\n    eyebrow,\n    title,\n    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{\n      \n  _id,\n  _type,\n  title,\n  slug,\n  publishedAt,\n  readingTime,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  author->{\n    _id,\n    name,\n    image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n  }\n\n    }\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': HOME_PAGE_QUERY_RESULT;
     '\n  *[_type == "navigation" && _id == "navigation"][0]{\n    _id,\n    items[]{\n      _key,\n      _type == "navigationLink" => {\n        "kind": "link",\n        label,\n        destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/news",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",\n  internal->_type == "product" && defined(internal->slug.current) => select(internal->kind == "salsa" => "/flavored-salsas/", "/products/") + internal->slug.current,\n  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n      },\n      _type == "navigationGroup" => {\n        "kind": "group",\n        label,\n        description,\n        links[]{\n          _key,\n          label,\n          description,\n          // Legacy documents store the icon as a bare string name; surface it\n          // as {name, svg: null} so the link survives until the doc is re-saved.\n          "icon": select(\n            defined(icon.name) => icon{ name, svg },\n            defined(icon) => { "name": icon, "svg": null }\n          ),\n          destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/news",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",\n  internal->_type == "product" && defined(internal->slug.current) => select(internal->kind == "salsa" => "/flavored-salsas/", "/products/") + internal->slug.current,\n  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n        }\n      }\n    },\n    actions[]{\n      _key,\n      label,\n      destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/news",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",\n  internal->_type == "product" && defined(internal->slug.current) => select(internal->kind == "salsa" => "/flavored-salsas/", "/products/") + internal->slug.current,\n  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n    }\n  }\n': NAVIGATION_QUERY_RESULT;
     '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    "overrideTitle": meta.title,\n    title,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image\n){ asset, crop, hotspot }\n  }\n': HOME_PAGE_OG_IMAGE_QUERY_RESULT;
     '\n  coalesce(\n    *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n      "title": coalesce(title, meta.title),\n      "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image\n){ asset, crop, hotspot }\n    },\n    *[_type == "product" && select(kind == "salsa" => "/flavored-salsas/", "/products/") + slug.current == "/" + $slug][0]{\n      "title": coalesce(name, meta.title),\n      "sharingPhoto": select(\n        defined(meta.image.asset) => meta.image,\n        defined(heroImage.asset) => heroImage\n      ){ asset, crop, hotspot }\n    }\n  )\n': PAGE_OG_IMAGE_QUERY_RESULT;
     '\n  *[_id == "blogIndex" && _type == "blogIndex"][0]{\n    "title": coalesce(title, meta.title),\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot }\n  }\n': BLOG_INDEX_OG_IMAGE_QUERY_RESULT;
-    '\n  *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
+    '\n  *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "latestNews" => {\n    theme,\n    eyebrow,\n    title,\n    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{\n      \n  _id,\n  _type,\n  title,\n  slug,\n  publishedAt,\n  readingTime,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  author->{\n    _id,\n    name,\n    image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n  }\n\n    }\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
     '*[_type == "page" && defined(slug)]{slug}': PAGES_SLUGS_QUERY_RESULT;
-    '{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_PROJECTION_RESULT;
-    '*[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_QUERY_RESULT;
-    '*[\n  _type == "post" && defined(slug.current) && defined(publishedAt) && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]\n][0]{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': PUBLISHED_POST_QUERY_RESULT;
+    '{\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    readingTime,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "latestNews" => {\n    theme,\n    eyebrow,\n    title,\n    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{\n      \n  _id,\n  _type,\n  title,\n  slug,\n  publishedAt,\n  readingTime,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  author->{\n    _id,\n    name,\n    image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n  }\n\n    }\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_PROJECTION_RESULT;
+    '*[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    readingTime,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "latestNews" => {\n    theme,\n    eyebrow,\n    title,\n    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{\n      \n  _id,\n  _type,\n  title,\n  slug,\n  publishedAt,\n  readingTime,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  author->{\n    _id,\n    name,\n    image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n  }\n\n    }\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_QUERY_RESULT;
+    '*[\n  _type == "post" && defined(slug.current) && defined(publishedAt) && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]\n][0]{\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    readingTime,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "pageBanner" => {\n    theme,\n    title,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "pageHeading" => {\n    theme,\n    title,\n    intro[]{\n      \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n    }\n  }\n,\n    \n  _type == "photoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "photoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "cutoutRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "badgeAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n\n  }\n,\n    \n  _type == "videoLeftAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "videoRightAndText" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    youTubeUrl\n  }\n,\n    \n  _type == "imageAndIconList" => {\n    \n    theme,\n    eyebrow,\n    title,\n    anchorId,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    buttons[]{\n      \n  _key,\n  text,\n  colour,\n  icon,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n  url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "product" && defined(url.internal->slug.current) => select(url.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + url.internal->slug.current,\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(url.anchor) => "#" + url.anchor, ""),\n  url.type == "external" => url.external,\n  url.type == "file" => url.file.asset->url,\n  url.href\n)\n\n    },\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n,\n    \n    items[]{\n      _key,\n      icon,\n      heading,\n      text[]{\n        \n  ...,\n  \n  markDefs[]{\n    ...,\n    _type == "customLink" => {\n      \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n    }\n  }\n\n\n      }\n    }\n\n  }\n,\n    \n  _type == "latestNews" => {\n    theme,\n    eyebrow,\n    title,\n    "posts": *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0...3]{\n      \n  _id,\n  _type,\n  title,\n  slug,\n  publishedAt,\n  readingTime,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  author->{\n    _id,\n    name,\n    image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n  }\n\n    }\n  }\n,\n    \n  _type == "cognitoForm" => {\n    theme,\n    formId,\n    title,\n    intro[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "faqList" => {\n    theme,\n    title,\n    "faqs": faqs[]->{\n      _id,\n      title,\n      body[]{\n        \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "twoTextColumns" => {\n    theme,\n    leftText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    rightText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n  customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "product" && defined(customLink.internal->slug.current) => select(customLink.internal->kind == "salsa" => "/flavored-salsas/", "/products/") + customLink.internal->slug.current,\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n) + select(defined(customLink.anchor) => "#" + customLink.anchor, ""),\n  customLink.type == "external" => customLink.external,\n  customLink.type == "file" => customLink.file.asset->url,\n  customLink.href\n),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "hoagieMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "pizzaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  _type == "salsaMenu" => {\n    \n    theme,\n    "products": products[]->{\n      \n  _id,\n  kind,\n  "slug": slug.current,\n  "shortName": menuCard.shortName,\n  "shortDescription": menuCard.shortDescription,\n  "dressing": menuCard.dressing,\n  "image": menuCard.image{\n    \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n  }\n\n    }\n\n  }\n,\n    \n  }\n,\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': PUBLISHED_POST_QUERY_RESULT;
     '*[\n  _type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]\n][0]{\n  title,\n  publishedAt,\n  "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot }\n}': POST_OG_IMAGE_QUERY_RESULT;
     '*[_type == "post" && defined(slug)] | order(_createdAt desc){\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n}': POSTS_QUERY_RESULT;
     '*[_type == "post" && defined(slug)]{slug}': POSTS_SLUGS_QUERY_RESULT;

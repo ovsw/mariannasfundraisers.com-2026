@@ -20,6 +20,12 @@ export default defineType({
   ],
   fields: [
     defineField({
+      name: "eyebrow",
+      type: "string",
+      group: "content",
+      description: "Optional. A short line above the title, for example the company name.",
+    }),
+    defineField({
       name: "title",
       type: "string",
       group: "content",

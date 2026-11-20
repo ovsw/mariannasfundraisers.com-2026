@@ -53,6 +53,7 @@ import badgeAndText from "./schemas/blocks/badge-and-text";
 import videoLeftAndText from "./schemas/blocks/video-left-and-text";
 import videoRightAndText from "./schemas/blocks/video-right-and-text";
 import imageAndIconList from "./schemas/blocks/image-and-icon-list";
+import latestNews from "./schemas/blocks/latest-news";
 import cognitoForm from "./schemas/blocks/cognito-form";
 import faqList from "./schemas/blocks/faq-list";
 import twoTextColumns from "./schemas/blocks/two-text-columns";
@@ -113,6 +114,7 @@ export const schemaTypes = [
   videoLeftAndText,
   videoRightAndText,
   imageAndIconList,
+  latestNews,
   cognitoForm,
   faqList,
   twoTextColumns,

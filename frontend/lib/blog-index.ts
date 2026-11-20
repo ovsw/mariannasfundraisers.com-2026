@@ -20,10 +20,6 @@ export function getBlogPostWindow(page: number) {
   return { start, end: start + BLOG_POSTS_PER_PAGE };
 }
 
-export function getRegularPostQueryParams(latestPostId: string, page: number) {
-  return { latestPostId, ...getBlogPostWindow(page) };
-}
-
 export function isBlogPageOutOfRange(page: number, totalPages: number) {
   return page > 1 && (totalPages === 0 || page > totalPages);
 }

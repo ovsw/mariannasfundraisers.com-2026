@@ -10,6 +10,7 @@ import { badgeAndTextQuery } from "./badge-and-text";
 import { videoLeftAndTextQuery } from "./video-left-and-text";
 import { videoRightAndTextQuery } from "./video-right-and-text";
 import { imageAndIconListQuery } from "./image-and-icon-list";
+import { latestNewsQuery } from "./latest-news";
 import { cognitoFormQuery } from "./cognito-form";
 import { faqListQuery } from "./faq-list";
 import { twoTextColumnsQuery } from "./two-text-columns";
@@ -34,6 +35,7 @@ export const pageBuilderQuery = `
     ${videoLeftAndTextQuery},
     ${videoRightAndTextQuery},
     ${imageAndIconListQuery},
+    ${latestNewsQuery},
     ${cognitoFormQuery},
     ${faqListQuery},
     ${twoTextColumnsQuery},

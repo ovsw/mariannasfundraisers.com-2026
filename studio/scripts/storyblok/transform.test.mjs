@@ -2,7 +2,8 @@
 // real Storyblok export of 2026-11-20 (fixtures/): a page with a hero and
 // wrappers of several rows (how-it-works), a page with a banner title and
 // pasted marks (contact-us), a story link with an anchor that an override
-// fixes (how-it-is-made, to products/), one news story, a rich text with every
+// fixes (how-it-is-made, to products/), one news story (news posts in full
+// are in fixtures/news.json, tested in news.test.mjs), a rich text with every
 // node kind, one "big image" row of each of the eight image-and-text kinds
 // (fixtures/image-and-text.json, issue #15), and the Cognito form rows (one by
 // ID, one with pasted embed code), the FAQ row and a two-column text row
@@ -37,7 +38,8 @@ test("a dry run counts the stories by kind and the files", () => {
   const { report, files } = plan();
   assert.deepEqual(report.found, { stories: 5, page: 4, product: 0, news: 1, files: 10, images: 10, documentFiles: 0 });
   assert.equal(files.size, 10);
-  assert.deepEqual(report.documents, { page: 4 });
+  // The news story is a post; its malformed slug adds a redirect (issue #17).
+  assert.deepEqual(report.documents, { page: 4, post: 1, redirect: 1 });
   assert.deepEqual(report.sections, {
     cognitoForm: 1,
     cutoutLeftAndText: 1,
@@ -50,7 +52,7 @@ test("a dry run counts the stories by kind and the files", () => {
   });
   assert.deepEqual(
     report.skipped.map(({ story }) => story),
-    ["/news/winner:-2024-hometown-favorite-sandwich"],
+    [],
   );
 });
 
@@ -197,13 +199,13 @@ test("file links keep their kind and point at the matched file asset", () => {
   assert.equal(customUrlFor({ linktype: "url", href: "#", openInNewTab: false }, context), null);
 });
 
-test("links to stories that are not documents yet are site paths", () => {
-  const site = createSite(stories);
-  const post = stories.find((story) => story.content.component === "blog-post");
+test("links to stories that are not documents are site paths", () => {
+  const redirected = { name: "Privacy Policy", uuid: "privacy-fixture", full_slug: "privacy-policy", slug: "privacy-policy", content: { component: "page", _uid: "privacy", body: [] } };
+  const site = createSite([...stories, redirected]);
   const target = stories.find((story) => story.full_slug === "products/");
-  assert.deepEqual(site.byUuid(post.uuid), { path: `/${post.full_slug}` });
-  const link = { linktype: "story", uuid: post.uuid, href: post.full_slug, anchor: null, openInNewTab: false };
-  assert.equal(customUrlFor(link, { story: "x", site, fileRef, overrides: [], note: () => {} }).external, `/${post.full_slug}`);
+  assert.deepEqual(site.byUuid(redirected.uuid), { path: "/privacy-policy" });
+  const link = { linktype: "story", uuid: redirected.uuid, href: redirected.full_slug, anchor: null, openInNewTab: false };
+  assert.equal(customUrlFor(link, { story: "x", site, fileRef, overrides: [], note: () => {} }).external, "/privacy-policy");
   assert.deepEqual(site.byUuid(target.uuid).ref, { _type: "reference", _ref: `page-${target.uuid}` });
   assert.equal(site.byPath("/products").path, "/products");
 });

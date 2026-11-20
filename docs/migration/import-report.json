@@ -4,34 +4,39 @@
     "page": 34,
     "product": 16,
     "news": 18,
-    "files": 160,
-    "images": 156,
+    "files": 164,
+    "images": 160,
     "documentFiles": 4
   },
   "documents": {
     "page": 31,
     "homePage": 1,
+    "post": 18,
+    "redirect": 5,
     "faq": 14,
     "product": 16,
     "productPageSettings": 1,
     "settings": 1,
     "navigation": 1,
-    "footer": 1
+    "footer": 1,
+    "author": 4,
+    "blogIndex": 1
   },
   "sections": {
     "pageBanner": 27,
     "pageHeading": 21,
-    "richTextBlock": 19,
-    "photoLeftAndText": 11,
-    "cutoutLeftAndText": 19,
-    "photoRightAndText": 8,
+    "richTextBlock": 27,
+    "photoLeftAndText": 19,
+    "cutoutLeftAndText": 23,
+    "photoRightAndText": 14,
     "cutoutRightAndText": 12,
     "cognitoForm": 4,
     "badgeAndText": 2,
     "salsaMenu": 2,
     "faqList": 2,
-    "scaffold": 7,
-    "videoRightAndText": 3,
+    "scaffold": 6,
+    "videoRightAndText": 4,
+    "latestNews": 1,
     "imageAndIconList": 6,
     "videoLeftAndText": 3,
     "twoTextColumns": 2,
@@ -43,82 +48,9 @@
     "Steps": 1,
     "Menu teaser": 1,
     "Call to action with image": 2,
-    "Testimonials": 1,
-    "Latest news": 1
+    "Testimonials": 1
   },
   "skipped": [
-    {
-      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/a-positive-partnership",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/a-scary-successful-sampling",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/exciting-promotion-",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/fund-fiesta-is-here-",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/mariannas-hoagies-on-tv",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/national-hoagie-day",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/national-pizza-day-february-9th-2022",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/promotion-spotlight-",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/salsa-sales-supporting-waly-warmth-",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/we-re-hiring-february-2022",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/winner-2022-hometown-favorite-sandwich",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/winner-2023-hometown-favorite-sandwich",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/winner-2025-hometown-favorite-sandwich",
-      "reason": "news post: imported by ticket #17"
-    },
-    {
-      "story": "/news/winner:-2024-hometown-favorite-sandwich",
-      "reason": "news post: imported by ticket #17"
-    },
     {
       "story": "/privacy-policy",
       "reason": "the old site redirects this URL to iubenda; it becomes a redirect (ticket #20)"
@@ -135,23 +67,23 @@
   "dropped": {
     "option: hero.height": 28,
     "option: hero.background_color": 28,
-    "option: section.name": 85,
-    "option: section.width": 87,
-    "option: section.margin_top": 87,
-    "option: section.margin_bottom": 87,
-    "option: section.padding_top": 78,
-    "option: section.padding_bottom": 79,
-    "option: section.decoration_top": 77,
-    "option: section.decoration_bottom": 74,
-    "option: row-big-image.extra_padding": 52,
-    "option: button.icon_position": 86,
-    "rich text: pasted text colour": 50,
-    "option: heading-group.heading_level": 40,
+    "option: section.name": 103,
+    "option: section.width": 108,
+    "option: section.margin_top": 108,
+    "option: section.margin_bottom": 108,
+    "option: section.padding_top": 99,
+    "option: section.padding_bottom": 100,
+    "option: section.decoration_top": 98,
+    "option: section.decoration_bottom": 95,
+    "option: row-big-image.extra_padding": 66,
+    "option: button.icon_position": 89,
+    "rich text: pasted text colour": 84,
+    "option: heading-group.heading_level": 47,
     "hero text": 3,
     "rich text: pasted class": 24,
-    "option: row-single-column.name": 7,
+    "option: row-single-column.name": 8,
     "option: hero.type": 3,
-    "option: row-big-image.name": 14,
+    "option: row-big-image.name": 19,
     "option: hero.content": 8,
     "option: section.overflow_hidden": 5,
     "option: table.remove_margins": 2,
@@ -161,6 +93,8 @@
     "option: heading.style": 17,
     "option: row-two-columns-cta.name": 2,
     "option: feature-group.heading_level": 18,
+    "news: post heading unlike the story name": 10,
+    "news: body_rte": 5,
     "links that go nowhere": 1,
     "option: row-two-columns.name": 2,
     "option: row-menu-listing.menu_items": 1,
@@ -3268,6 +3202,1226 @@
       "item": "button.icon_position = \"left\""
     },
     {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "title",
+      "item": "post heading \"A New Hoagie Is Coming To Fall Fundraising!\" (the old post page's heading; the post's title is the story name \"A New Hoagie Is Joining The Marianna's Lineup\")"
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section section",
+      "item": "section.name = \"heading\""
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section > content[0] row-big-image row-big-image.content[0] heading-group",
+      "item": "heading-group.heading_level = \"h2\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section section",
+      "item": "section.name = \"Main Page Heading\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section section",
+      "item": "section.width = \"default\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"none\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"small\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"small\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"brushed2\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section > content[0] row-big-image row-big-image.content[0] heading-group",
+      "item": "heading-group.heading_level = \"h2\""
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section > content[2] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.name = \"A \\\"Scary\\\" Successful Sampling\""
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "title",
+      "item": "post heading \"Promotion Announcement!\" (the old post page's heading; the post's title is the story name \"Exciting Promotion!\")"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "title",
+      "item": "post heading \"Join The Fund Fiesta!\" (the old post page's heading; the post's title is the story name \"Fund Fiesta is Here!\")"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section section",
+      "item": "section.name = \"Fund Fiesta\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.name = \"Fund Fiesta\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image row-big-image.content[0] heading-group",
+      "item": "heading-group.heading_level = \"h2\""
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "title",
+      "item": "post heading \"Proud to Partner with Four Diamonds Mini-THON®\" (the old post page's heading; the post's title is the story name \"Marianna's Teaming Up With The Four Diamonds Mini-THON\")"
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.name = \"Mini-THON\""
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body_rte",
+      "item": "body_rte (the old news template never drew it)"
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body[0] section section",
+      "item": "section.width = \"narrow\""
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"none\""
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "title",
+      "item": "post heading \"As seen on TV :)\" (the old post page's heading; the post's title is the story name \"Hoagies on TV\")"
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body_rte",
+      "item": "body_rte (the old news template never drew it)"
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[0] section section",
+      "item": "section.width = \"default\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"small\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"small\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section section",
+      "item": "section.width = \"narrow\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section section",
+      "item": "section.padding_top = \"none\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/mariannas-hoagies-on-tv",
+      "at": "body[1] section > content[0] row-single-column row-single-column.content[1] button-group.content[0] button",
+      "item": "button.icon_position = \"right\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "title",
+      "item": "post heading \"Marianna’s Fundraisers Celebrates National Hoagie Day!\" (the old post page's heading; the post's title is the story name \"National Hoagie Day\")"
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body_rte",
+      "item": "body_rte (the old news template never drew it)"
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section section",
+      "item": "section.width = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"small\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"small\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section > content[0] row-big-image row-big-image.content[0] heading-group",
+      "item": "heading-group.heading_level = \"h2\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section section",
+      "item": "section.width = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section section",
+      "item": "section.padding_top = \"small\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section section",
+      "item": "section.padding_bottom = \"small\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section > content[0] row-big-image row-big-image.content[0] heading-group",
+      "item": "heading-group.heading_level = \"h2\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section section",
+      "item": "section.width = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section section",
+      "item": "section.padding_top = \"small\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section section",
+      "item": "section.padding_bottom = \"small\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section > content[0] row-big-image row-big-image.content[0] heading-group",
+      "item": "heading-group.heading_level = \"h2\""
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section > content[0] row-big-image row-big-image.content[2] button",
+      "item": "button.icon_position = \"right\""
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "title",
+      "item": "post heading \"National Pizza Day – February 9, 2022\" (the old post page's heading; the post's title is the story name \"National Pizza Day – February 9th 2022\")"
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body_rte",
+      "item": "body_rte (the old news template never drew it)"
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body[0] section section",
+      "item": "section.width = \"narrow\""
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"none\""
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "title",
+      "item": "post heading \"Proud To Partner With SkillsUSA PA!\" (the old post page's heading; the post's title is the story name \"Proud To Partner With SkillsUSA Pennsylvania\")"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.name = \"SkillsUSA PA article\""
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "title",
+      "item": "post heading \"Raising Funds with Fund Fiesta!\" (the old post page's heading; the post's title is the story name \"Salsa Sales Supporting Waly Warmth!\")"
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section > content[0] row-big-image",
+      "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "title",
+      "item": "post heading \"Marianna’s Fundraisers is growing and we're adding members to our team.\" (the old post page's heading; the post's title is the story name \"We're hiring!\")"
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body_rte",
+      "item": "body_rte (the old news template never drew it)"
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section section",
+      "item": "section.width = \"default\""
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"none\""
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section > content[1] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/we-re-hiring-february-2022",
+      "at": "body[0] section > content[1] row-big-image row-big-image.content[1] button-group.content[0] button",
+      "item": "button.icon_position = \"right\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/winner-2022-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-single-column row-single-column",
+      "item": "row-single-column.name = \"2022 Hometown Favorite Sandwich\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-big-image row-big-image.content[0] heading-group",
+      "item": "heading-group.heading_level = \"h2\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.name = \"Winner\""
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.name = \"Hoagie Heroes\""
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.width = \"full\""
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.margin_top = \"default\""
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.margin_bottom = \"default\""
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.padding_top = \"default\""
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.padding_bottom = \"default\""
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.decoration_top = \"default\""
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section section",
+      "item": "section.decoration_bottom = \"none\""
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-big-image row-big-image",
+      "item": "row-big-image.extra_padding = true"
+    },
+    {
       "story": "/order-received",
       "at": "body[0] section section",
       "item": "section.name = \"Hoagie Heroes\""
@@ -6180,6 +7334,151 @@
       "file": "https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg"
     },
     {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/3000x2159/a446f0adc2/mfs-lebanon-group-1.jpg"
+    },
+    {
+      "story": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/3000x2178/1b2f253585/mfs-lebanon-half-hoagie-smoky.jpg"
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/2382x1822/91922c922f/always-be-loco-assembly.jpeg"
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/1537x2048/8613617386/buddy-loco-school-visit.jpg"
+    },
+    {
+      "story": "/news/a-positive-partnership",
+      "at": "body[0] section > content[2] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/1536x2048/d7fe917d21/buddy-district-sales-manager.jpg"
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/1778x1073/3c34b3a259/mfs-south-side-elem-pic-for-news-page-cover.jpg"
+    },
+    {
+      "story": "/news/a-scary-successful-sampling",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/2047x1563/05c2f5eaed/mfs-south-side-elementary-rev.jpg"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/960x504/b952265ffb/congratulations.jpeg"
+    },
+    {
+      "story": "/news/exciting-promotion-",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/2400x3619/63535440f3/dianne-pizza-box-hoagie-wrapped.jpg"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/1800x1200/40685008bd/mfs_salsa_social_seller_ad_2025.jpg"
+    },
+    {
+      "story": "/news/fund-fiesta-is-here-",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/3300x2550/ef12cf3b02/mfs-salsa-presentation-slide-2.jpg"
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/1200x900/abccbdec8e/mini-thon-1.png"
+    },
+    {
+      "story": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/1000x768/f083297f74/best-of-mini-thon-2015-1-nr-1.jpeg"
+    },
+    {
+      "story": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/1485x1020/2f1b46c4a9/mfs-hometown.jpg"
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/2550x3300/63562393e0/hoagie-dude-01.jpg"
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/1280x962/b484790fad/hoagie-day-juls-and-kc-o-day-pic.jpg"
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[1] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/1512x2016/0b819f6c0b/hoagie-day-ba-school-pic.jpg"
+    },
+    {
+      "story": "/news/national-hoagie-day",
+      "at": "body[2] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/1512x2016/645a0e32c5/hoagie-day-psp-pic.jpg"
+    },
+    {
+      "story": "/news/national-pizza-day-february-9th-2022",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/720x960/7edea82237/national-pizza-day-froggy-98.jpg"
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/960x504/19b0c4e299/marianna-s-congratulations.jpg"
+    },
+    {
+      "story": "/news/promotion-spotlight-",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/2991x2868/9fed14431e/arlana-mccracken-promotion.jpg"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/1200x900/14c4a78b61/skillsusa-pa.jpg"
+    },
+    {
+      "story": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/600x450/a47c060687/untitled-design-2.png"
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/4032x3024/53a66cb7e2/amy-diane-waly-warmth-salsa-fundraiser.jpg"
+    },
+    {
+      "story": "/news/salsa-sales-supporting-waly-warmth-",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/5712x4284/86eb002d08/mfs-salsa-waly.jpg"
+    },
+    {
+      "story": "/news/winner-2023-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/3945x4847/431d31291f/juls-bratton-mark-mccraken-todd-hill-hometown-favorites.jpg"
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "main_image",
+      "file": "https://a.storyblok.com/f/133593/3033x1042/aab692d039/728x250-mfs-hometown-2025-winner-ad-01.jpg"
+    },
+    {
+      "story": "/news/winner-2025-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/3800x4305/f627c090ca/hometown-favorite-awards-representatives.JPG"
+    },
+    {
+      "story": "/news/winner:-2024-hometown-favorite-sandwich",
+      "at": "body[0] section > content[0] row-big-image",
+      "file": "https://a.storyblok.com/f/133593/4032x3024/c866d1b2c4/2024-hometown-favorites-award.jpeg"
+    },
+    {
       "story": "/order-received",
       "at": "body[0] section > content[0] row-big-image",
       "file": "https://a.storyblok.com/f/133593/1956x1602/f18f74712a/eblh64cc.jpg"
@@ -6677,6 +7976,28 @@
       "now": "/flavored-salsas/menu"
     }
   ],
+  "newsRedirects": [
+    {
+      "from": "/news/exciting-promotion-",
+      "to": "/news/exciting-promotion"
+    },
+    {
+      "from": "/news/fund-fiesta-is-here-",
+      "to": "/news/fund-fiesta-is-here"
+    },
+    {
+      "from": "/news/promotion-spotlight-",
+      "to": "/news/promotion-spotlight"
+    },
+    {
+      "from": "/news/salsa-sales-supporting-waly-warmth-",
+      "to": "/news/salsa-sales-supporting-waly-warmth"
+    },
+    {
+      "from": "/news/winner:-2024-hometown-favorite-sandwich",
+      "to": "/news/winner-2024-hometown-favorite-sandwich"
+    }
+  ],
   "overrides": {
     "applied": [
       {
@@ -6687,14 +8008,16 @@
           "story": "products/",
           "anchor": "hoagies"
         }
+      },
+      {
+        "story": "/news/national-pizza-day-february-9th-2022",
+        "at": "body[0] section > content[2] row-single-column",
+        "from": "/menu/",
+        "to": {
+          "story": "products/"
+        }
       }
     ],
-    "unused": [
-      {
-        "story": "news/national-pizza-day-february-9th-2022",
-        "from": "/menu/",
-        "reason": "news post: imported by ticket #17"
-      }
-    ]
+    "unused": []
   }
 }

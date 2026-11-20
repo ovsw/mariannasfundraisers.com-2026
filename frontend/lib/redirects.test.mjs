@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createRequire } from "node:module";
 import test from "node:test";
 
 import { compileNextRedirects } from "./redirects.mjs";
@@ -91,4 +92,50 @@ test("rejects unsafe paths and application-owned sources", () => {
     () => compileNextRedirects([{ source: "/source", destination: "/bad#target" }]),
     /missing a valid internal/,
   );
+});
+
+// Next.js matches a redirect source with its own copy of path-to-regexp.
+const { pathToRegexp } = createRequire(import.meta.url)(
+  "next/dist/compiled/path-to-regexp",
+);
+
+test("a source with a colon compiles to a rule that matches the literal path", () => {
+  const oldPath = "/news/winner:-2024-hometown-favorite-sandwich";
+  const [rule] = compileNextRedirects([
+    {
+      source: { current: oldPath },
+      destination: "/news/winner-2024-hometown-favorite-sandwich",
+      permanent: "true",
+      status: "active",
+    },
+  ]);
+  assert.deepEqual(rule, {
+    source: "/news/winner\\:-2024-hometown-favorite-sandwich",
+    destination: "/news/winner-2024-hometown-favorite-sandwich",
+    statusCode: 301,
+  });
+  // Unescaped, Next.js would read ":" as the start of a parameter and fail.
+  assert.throws(() => pathToRegexp(oldPath));
+  const pattern = pathToRegexp(rule.source);
+  assert.ok(pattern.test(oldPath));
+  assert.ok(!pattern.test("/news/winner-2024-hometown-favorite-sandwich"));
+  assert.ok(!pattern.test("/news/winnerX-2024-hometown-favorite-sandwich"));
+});
+
+test("a source that ends in a hyphen keeps its hyphen and matches only itself", () => {
+  const [rule] = compileNextRedirects([
+    {
+      source: "/news/fund-fiesta-is-here-",
+      destination: "/news/fund-fiesta-is-here",
+      permanent: "true",
+    },
+  ]);
+  assert.deepEqual(rule, {
+    source: "/news/fund-fiesta-is-here-",
+    destination: "/news/fund-fiesta-is-here",
+    statusCode: 301,
+  });
+  const pattern = pathToRegexp(rule.source);
+  assert.ok(pattern.test("/news/fund-fiesta-is-here-"));
+  assert.ok(!pattern.test("/news/fund-fiesta-is-here"));
 });

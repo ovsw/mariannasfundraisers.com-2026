@@ -6,9 +6,16 @@ The Website reads structured content from one Sanity project and dataset.
 
 - `homePage` owns `/`.
 - `page` owns normal page slugs such as `/about/`.
-- `blogIndex` is the news index and owns `/news` (20 posts per page, then
-  `/news/2` and onward).
-- `post` is a news post and owns `/news/<slug>`.
+- `blogIndex` is the news index and owns `/news`: its eyebrow and title above
+  every published post as a card, newest first by publish date, 20 per page,
+  then `/news/2` and onward.
+- `post` is a news post and owns `/news/<slug>`. It has a title, slug,
+  excerpt, author, publish date, main image (the card and sharing photo) and
+  reading time in minutes (`readingTime`). The post page draws a fixed header
+  (title, the author's photo and name, the date and the reading time) above
+  its sections, `blocks`: the Rich Text section and the image-and-text
+  sections only. A post card shows the main image, title, excerpt, author,
+  date and reading time.
 - `product` is a hoagie, pizza or salsa (spec decision 8). Its kind sets its
   address: hoagies and pizzas own `/products/<slug>`, salsas
   `/flavored-salsas/<slug>`. A page can own a path under the same prefix
@@ -43,7 +50,9 @@ The Website reads structured content from one Sanity project and dataset.
     "Preparing a fundraiser?" call to action (heading, text, buttons, photo),
     and for each kind (hoagies, pizzas, salsas) the two hero buttons and the
     optional "full ingredients list" button.
-- `author`, `faq`, `teamMember`, and `testimonial` are reusable records.
+- `author`, `faq`, `teamMember`, and `testimonial` are reusable records. An
+  `author` has a name, a slug and a photo; the photo's alt text is the
+  author's name.
 - Pages compose top-level sections through their `blocks` array.
 - `homePage`, `page`, and `blogIndex` also carry a `blocksArchive` array that
   accepts the same section types. Replaced Scaffolds move there. The Website
@@ -125,6 +134,11 @@ sits under the text. Each is available on every page.
   Forms, as in 114; never embed code) and an accessible title that names the
   form for screen readers and is not shown. Use it for the contact, tasting
   and support forms. Available on pages, not the home page.
+- `latestNews` (Latest news). The three newest news posts as cards, newest
+  first, under an optional eyebrow and a title (required). The posts are not
+  chosen: the section always shows the newest. With no published posts it
+  shows nothing. Use it once, near the end of the home page. Available on the
+  home page.
 
 The three menus list products. Each holds an ordered list of references to
 products of its kind and draws each product's menu card (short name, short
@@ -140,6 +154,9 @@ page.
   reads "<short name> Pizza".
 - `salsaMenu` (Salsa menu). The salsas you choose, in your order: each card
   shows the short name as written.
+
+A news post's `blocks` take only Rich Text and the image-and-text sections
+above; its header is drawn by the post page.
 
 - `scaffold` (Scaffold). A placeholder with `name`, `richText`, and
   `proposedSectionShape`. It renders its rich text with a visible internal

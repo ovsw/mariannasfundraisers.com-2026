@@ -25,12 +25,11 @@ import type {
   PRODUCT_QUERY_RESULT,
   SETTINGS_QUERY_RESULT,
 } from "@/sanity.types";
-import type { BlogPost } from "@/sanity/queries/blog-index";
+import type { NewsCardPost } from "@/sanity/queries/blog-index";
 import {
   BLOG_INDEX_QUERY,
-  LATEST_POST_QUERY,
-  REGULAR_POSTS_COUNT_QUERY,
-  REGULAR_POSTS_QUERY,
+  ELIGIBLE_BLOG_POSTS_COUNT_QUERY,
+  NEWS_POSTS_QUERY,
 } from "@/sanity/queries/blog-index";
 
 async function fetchCached<QueryResult>({
@@ -86,40 +85,29 @@ export function fetchBlogIndex({
   return fetchCached({ query: BLOG_INDEX_QUERY, perspective, stega });
 }
 
-export function fetchLatestPost({
-  perspective,
-  stega,
-}: DynamicFetchOptions): Promise<BlogPost | null> {
-  return fetchCached({ query: LATEST_POST_QUERY, perspective, stega });
-}
-
-export function fetchRegularPosts({
+export function fetchNewsPosts({
   end,
-  latestPostId,
   perspective,
   start,
   stega,
 }: {
   end: number;
-  latestPostId: string;
   start: number;
-} & DynamicFetchOptions): Promise<BlogPost[]> {
+} & DynamicFetchOptions): Promise<NewsCardPost[]> {
   return fetchCached({
-    query: REGULAR_POSTS_QUERY,
-    params: { end, latestPostId, start },
+    query: NEWS_POSTS_QUERY,
+    params: { end, start },
     perspective,
     stega,
   });
 }
 
-export function fetchRegularPostsCount({
-  latestPostId,
+export function fetchNewsPostCount({
   perspective,
   stega,
-}: { latestPostId: string } & DynamicFetchOptions): Promise<number> {
+}: DynamicFetchOptions): Promise<number> {
   return fetchCached({
-    query: REGULAR_POSTS_COUNT_QUERY,
-    params: { latestPostId },
+    query: ELIGIBLE_BLOG_POSTS_COUNT_QUERY,
     perspective,
     stega,
   });
