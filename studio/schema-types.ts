@@ -26,6 +26,7 @@ import button from "./schemas/blocks/shared/button";
 import buttonLink from "./schemas/blocks/shared/button-link";
 import richTextContent from "./schemas/blocks/shared/rich-text-content";
 import simpleRichText from "./schemas/blocks/shared/simple-rich-text";
+import { iconListItem } from "./schemas/blocks/shared/image-and-text";
 import {
   blogPostSidebar,
   blogPostSidebarAction,
@@ -35,6 +36,14 @@ import richTextBlock from "./schemas/blocks/rich-text-block";
 import scaffold from "./schemas/blocks/scaffold";
 import pageBanner from "./schemas/blocks/page-banner";
 import pageHeading from "./schemas/blocks/page-heading";
+import photoLeftAndText from "./schemas/blocks/photo-left-and-text";
+import photoRightAndText from "./schemas/blocks/photo-right-and-text";
+import cutoutLeftAndText from "./schemas/blocks/cutout-left-and-text";
+import cutoutRightAndText from "./schemas/blocks/cutout-right-and-text";
+import badgeAndText from "./schemas/blocks/badge-and-text";
+import videoLeftAndText from "./schemas/blocks/video-left-and-text";
+import videoRightAndText from "./schemas/blocks/video-right-and-text";
+import imageAndIconList from "./schemas/blocks/image-and-icon-list";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -66,6 +75,7 @@ export const schemaTypes = [
   buttonLink,
   richTextContent,
   simpleRichText,
+  iconListItem,
   blogPostSidebarAction,
   blogPostSidebar,
   // blocks
@@ -73,5 +83,13 @@ export const schemaTypes = [
   scaffold,
   pageBanner,
   pageHeading,
+  photoLeftAndText,
+  photoRightAndText,
+  cutoutLeftAndText,
+  cutoutRightAndText,
+  badgeAndText,
+  videoLeftAndText,
+  videoRightAndText,
+  imageAndIconList,
   // page-builder-generator:block-types
 ];

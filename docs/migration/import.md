@@ -57,11 +57,26 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   order, with its wrapper's background as theme; margins, paddings, widths and
   names are dropped and counted. The row-to-section rule is `pageRowSections`
   in `scripts/migration/block-inventory.mjs`. Built: the hero as **Page
-  banner** (its edge colour as theme), **Page heading**, and **Rich Text**
-  with its button row. Every other row becomes a **Scaffold** that holds the
+  banner** (its edge colour as theme), **Page heading**, **Rich Text**
+  with its button row, and the old "big image" rows as their image-and-text
+  sections (below). Every other row becomes a **Scaffold** that holds the
   row's text and names its intended section; the home page also gets a
   "Latest news" Scaffold. A later ticket replaces them by mapping its rows in
   `studio/scripts/storyblok/transform.mjs`.
+- **Big image rows** (spec decision 12, ticket #15). The old switches pick
+  the section, in this order (`bigImageSection` in
+  `scripts/migration/block-inventory.mjs`): a YouTube link makes **Video
+  left/right and text**; else `badge_image` makes **Badge and text**; else
+  feature group children make **Image and icon list**; else `contain_image`
+  makes **Cutout left/right and text**; else **Photo left/right and text**.
+  `is_reversed` puts the image on the left (the old code and the reference
+  screenshots agree); `extra_padding` is dropped and counted. A leading
+  heading group gives the eyebrow, heading and anchor ID; the text, any old
+  table and the button rows go into the section's rich text and buttons; each
+  feature group becomes an item of icon, heading and simple text. A row with
+  no image, no text, or a video link that is not a YouTube link stays a
+  Scaffold and is listed under "needs a hand". Rows inside product pages and
+  news posts are left to tickets #16 and #17.
 - **Rich text** (spec decision 14): paragraphs, headings (an old level n is
   h(n+1), then raised where a Rich Text section's headings would skip a
   level, so the page outline never jumps), lists, bold, italic, underline, line breaks and links. Pasted colour

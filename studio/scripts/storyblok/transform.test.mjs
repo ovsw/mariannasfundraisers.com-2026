@@ -2,8 +2,9 @@
 // real Storyblok export of 2026-11-20 (fixtures/): a page with a hero and
 // wrappers of several rows (how-it-works), a page with a banner title and
 // pasted marks (contact-us), a story link with an anchor that an override
-// fixes (how-it-is-made, to products/), one product and one news story, and a
-// rich text with every node kind.
+// fixes (how-it-is-made, to products/), one product and one news story, a
+// rich text with every node kind, and one "big image" row of each of the eight
+// image-and-text kinds (fixtures/image-and-text.json, issue #15).
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -34,7 +35,15 @@ test("a dry run counts the stories by kind and the files", () => {
   assert.deepEqual(report.found, { stories: 6, page: 4, product: 1, news: 1, files: 10, images: 10, documentFiles: 0 });
   assert.equal(files.size, 10);
   assert.deepEqual(report.documents, { page: 4 });
-  assert.deepEqual(report.sections, { pageBanner: 3, pageHeading: 1, richTextBlock: 4, scaffold: 7 });
+  assert.deepEqual(report.sections, {
+    cutoutLeftAndText: 1,
+    imageAndIconList: 3,
+    pageBanner: 3,
+    pageHeading: 1,
+    photoLeftAndText: 1,
+    richTextBlock: 4,
+    scaffold: 2,
+  });
   assert.deepEqual(
     report.skipped.map(({ story }) => story),
     ["/news/winner:-2024-hometown-favorite-sandwich", "/products/italian-hoagie"],
@@ -64,17 +73,16 @@ test("each row becomes one section, with its wrapper's background as theme", () 
       ["pageBanner", "shaded", null],
       ["pageHeading", "shaded", "How it Works"],
       ["richTextBlock", "light", "Contact Us"],
-      ["scaffold", null, "Image and icon list"],
+      ["imageAndIconList", "light", null],
       ["richTextBlock", "shaded", "Start Selling"],
-      ["scaffold", null, "Image and icon list"],
+      ["imageAndIconList", "shaded", null],
       ["richTextBlock", "light", "Submit & Receive  Order"],
-      ["scaffold", null, "Image and icon list"],
+      ["imageAndIconList", "light", null],
       ["scaffold", null, "Call to action with image"],
     ],
   );
   // A Scaffold names its intended section and keeps the wrapper's theme in words.
-  assert.match(document.blocks[3].proposedSectionShape, /^Image and icon list, theme light\./);
-  assert.ok(document.blocks[3].richText.some((item) => item._type === "image"));
+  assert.match(document.blocks[8].proposedSectionShape, /^Call to action with image, theme muslin\./);
   // The Page heading keeps its introduction as simple rich text.
   assert.equal(document.blocks[1].intro[0].children[0].text.slice(0, 22), "It's as easy as 1, 2, ");
 });
@@ -230,4 +238,89 @@ test("a section's headings never skip a level", () => {
       }
     }
   }
+});
+
+// One "big image" row of each kind, cut from the real export (issue #15).
+const imageAndTextStories = read("./fixtures/image-and-text.json");
+const imageAndTextPlan = () => planImport({ stories: imageAndTextStories }, { overrides, fileRef });
+const rowOf = (index) => imageAndTextStories[0].content.body[index].content[0];
+
+test("each kind of big image row becomes its image-and-text section", () => {
+  const { documents, report } = imageAndTextPlan();
+  const [document] = documents;
+  assert.deepEqual(
+    document.blocks.map((block) => [block._type, block.theme, block.eyebrow ?? null, block.title ?? null]),
+    [
+      // No switch: a photo, cropped; the image on the right.
+      ["photoRightAndText", "shaded", "Only the", "Freshest Ingredients"],
+      // `is_reversed` puts the image on the left, as the old code and the
+      // reference screenshots show.
+      ["photoLeftAndText", "light", "Only the", "Cleanest Environment"],
+      // `contain_image`: a cutout, shown whole.
+      ["cutoutLeftAndText", "light", "Fundraiser Pricing", "You Control"],
+      ["cutoutRightAndText", "shaded", "Please", "Note"],
+      // `badge_image` wins over `contain_image`.
+      ["badgeAndText", "light", "Available Now", "In Select Counties"],
+      // A YouTube link wins over every other switch.
+      ["videoLeftAndText", "light", "How To", "Start a Sale"],
+      ["videoRightAndText", "light", "That's it!", "We Take Care of the Rest"],
+      // Feature groups make the icon list.
+      ["imageAndIconList", "light", null, null],
+    ],
+  );
+  assert.equal(report.sections.scaffold, undefined);
+  // Keys are the row _uids.
+  assert.deepEqual(document.blocks.map((block) => block._key), imageAndTextStories[0].content.body.map((_, index) => rowOf(index)._uid));
+});
+
+test("an image-and-text section keeps its image, text, buttons and anchor ID, and stores no side, fit or spacing", () => {
+  const blocks = imageAndTextPlan().documents[0].blocks;
+  blocks.forEach((block, index) => {
+    const row = rowOf(index);
+    assert.equal(block.image.asset._ref, fileRef(row.image.filename, "image"));
+    for (const field of ["is_reversed", "contain_image", "badge_image", "extra_padding", "side", "fit", "padding"]) {
+      assert.equal(field in block, false, `${block._type} stores ${field}`);
+    }
+  });
+  const video = blocks.find((block) => block._type === "videoRightAndText");
+  assert.equal(video.image.alt, rowOf(6).image.alt);
+  assert.equal(video.youTubeUrl, "https://youtu.be/Uil1c8p_jV0");
+  assert.deepEqual(video.buttons.map((button) => button.text), ["Pricing Info", "Step-by-Step Guide"]);
+  assert.equal(video.richText.length, 3);
+  // The old headings' anchor IDs are kept.
+  assert.equal(blocks.find((block) => block._type === "badgeAndText").anchorId, "available-now");
+  assert.equal(blocks.find((block) => block._type === "videoLeftAndText").anchorId, "how-to-start-a-sale");
+  // An old table in the row becomes a table in the section's rich text, and
+  // the row's heading sits under the section heading.
+  const cutout = blocks.find((block) => block._type === "cutoutLeftAndText");
+  assert.ok(cutout.richText.some((item) => item._type === "table" && item.rows.length > 1));
+  assert.equal(cutout.richText.find((item) => item.style?.startsWith("h")).style, "h3");
+});
+
+test("feature groups become the icon list's items of icon, heading and text", () => {
+  const list = imageAndTextPlan().documents[0].blocks.find((block) => block._type === "imageAndIconList");
+  assert.deepEqual(
+    list.items.map((item) => [item._key, item._type, item.icon, item.heading]),
+    rowOf(7).content.map((group) => [group._uid, "iconListItem", group.icon, group.heading]),
+  );
+  for (const item of list.items) {
+    assert.ok(item.text.length > 0);
+    assert.ok(item.text.every((block) => block._type === "block" && block.style === "normal" && !block.listItem));
+  }
+  assert.equal(list.richText, undefined);
+  assert.equal(list.title, undefined);
+});
+
+test("a big image row that cannot be its section stays a Scaffold and the report says why", () => {
+  const story = structuredClone(imageAndTextStories[0]);
+  story.content.body[5].content[0].youTubeLink = "https://vimeo.com/123456";
+  delete story.content.body[0].content[0].image;
+  const { documents, report } = planImport({ stories: [story] }, { overrides, fileRef });
+  const blocks = documents[0].blocks;
+  assert.equal(blocks[0]._type, "scaffold");
+  assert.equal(blocks[0].name, "Photo right and text");
+  assert.equal(blocks[5]._type, "scaffold");
+  assert.equal(blocks[5].name, "Video left and text");
+  assert.ok(report.needsHand.some(({ issue }) => /not a YouTube video link/.test(issue)));
+  assert.ok(report.needsHand.some(({ issue }) => /has no image/.test(issue)));
 });

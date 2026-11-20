@@ -255,6 +255,53 @@ export const starterDocuments = [
           },
         ],
       },
+      // The image-and-text family: one of each design.
+      ...[
+        ["photoLeftAndText", "shaded", "landscape"],
+        ["photoRightAndText", "shaded", "landscape"],
+        ["cutoutLeftAndText", "light", "square"],
+        ["cutoutRightAndText", "light", "square"],
+        ["badgeAndText", "shaded", "square"],
+        ["videoLeftAndText", "light", "landscape"],
+        ["videoRightAndText", "light", "landscape"],
+      ].map(([type, theme, image]) => ({
+        _key: `starter-page-${type}`,
+        _type: type,
+        theme,
+        eyebrow: "Image and text",
+        title: `A ${type.replace(/([A-Z])/g, " $1").toLowerCase()} section`,
+        richText: simpleText(
+          `starter-page-${type}-copy`,
+          "This tests one design of the image-and-text family.",
+        ),
+        ...(type.startsWith("video")
+          ? { youTubeUrl: "https://youtu.be/Uil1c8p_jV0" }
+          : {}),
+        buttons: [
+          button(`starter-page-${type}-button`, "Read more", "starter-page-about"),
+        ],
+        image: placeholder(image),
+      })),
+      {
+        _key: "starter-page-imageAndIconList",
+        _type: "imageAndIconList",
+        theme: "shaded",
+        image: placeholder("square"),
+        items: [
+          ["phone-ringing", "Call us"],
+          ["documents", "Send the forms"],
+          ["envelope", "Receive the order forms"],
+        ].map(([icon, heading], index) => ({
+          _key: `starter-icon-list-item-${index + 1}`,
+          _type: "iconListItem",
+          icon,
+          heading,
+          text: simpleText(
+            `starter-icon-list-item-${index + 1}-text`,
+            "This tests one item of the icon list.",
+          ),
+        })),
+      },
     ],
     // A replaced Scaffold lives here. The Website never renders this array.
     blocksArchive: [

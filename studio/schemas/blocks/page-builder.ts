@@ -4,6 +4,14 @@ export const contentPageBuilderBlockTypes = [
   "richTextBlock",
   "scaffold",
   "pageHeading",
+  "photoLeftAndText",
+  "photoRightAndText",
+  "cutoutLeftAndText",
+  "cutoutRightAndText",
+  "badgeAndText",
+  "videoLeftAndText",
+  "videoRightAndText",
+  "imageAndIconList",
   // page-builder-generator:content-types
 ] as const;
 
@@ -34,6 +42,14 @@ type PageBuilderBlockType =
 const previewBlockTypes = new Set<string>([
   "pageBanner",
   "pageHeading",
+  "photoLeftAndText",
+  "photoRightAndText",
+  "cutoutLeftAndText",
+  "cutoutRightAndText",
+  "badgeAndText",
+  "videoLeftAndText",
+  "videoRightAndText",
+  "imageAndIconList",
   // page-builder-generator:preview-types
 ]);
 
