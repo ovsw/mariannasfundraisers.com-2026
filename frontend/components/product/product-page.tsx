@@ -8,7 +8,7 @@ import { createDataAttribute, stegaClean } from "next-sanity";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import BreadcrumbJsonLd from "@/components/breadcrumb-json-ld";
-import { ImageAndText, type ImageAndTextProps } from "@/components/blocks/image-and-text";
+import { ImageAndText, savedCrop, type ImageAndTextProps } from "@/components/blocks/image-and-text";
 import {
   resolveSectionBoundaries,
   sectionSceneClassName,
@@ -90,7 +90,7 @@ function ProductHero({ product, edit }: { product: Product; edit: DataAttribute 
               placeholder={asset.metadata?.lqip ? "blur" : undefined}
               preload
               sizes="(min-width: 1024px) 60vw, 100vw"
-              src={urlFor({ asset }).width(1800).fit("max").url()}
+              src={urlFor({ asset, crop: savedCrop(product.heroImage?.crop) }).width(1800).fit("max").url()}
             />
           </div>
         ) : null}
@@ -216,7 +216,7 @@ function CallToAction({
               data-sanity={edit("callToAction.image")}
               fill
               sizes="(min-width: 1024px) 28rem, 100vw"
-              src={urlFor({ asset }).width(900).fit("max").url()}
+              src={urlFor({ asset, crop: savedCrop(block.image?.crop) }).width(900).fit("max").url()}
             />
           </div>
         ) : null}

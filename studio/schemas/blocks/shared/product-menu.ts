@@ -41,12 +41,30 @@ export function defineProductMenuSection({
             options: { filter: "kind == $kind", filterParams: { kind } },
           },
         ],
-        validation: (rule) =>
+        validation: (rule) => [
           rule
             .required()
             .min(1)
             .unique()
             .error(`Choose at least one of the ${plural}, each once. The section is not shown without them.`),
+          // The picker's filter only limits what can be chosen; a product's
+          // kind can change after it is listed, so check what is listed now.
+          rule.custom(async (value, context) => {
+            const ids = (value as Array<{ _ref?: string }> | undefined)
+              ?.map((item) => item?._ref)
+              .filter((id): id is string => Boolean(id));
+            if (!ids?.length) return true;
+            const others = await context
+              .getClient({ apiVersion: "2026-03-23" })
+              .fetch<Array<{ name?: string }>>(
+                `*[_id in $ids && kind != $kind]{ name }`,
+                { ids, kind },
+              );
+            if (!others.length) return true;
+            const names = [...new Set(others.map((item) => item.name || "Untitled product"))].join(", ");
+            return `Only ${plural} belong in this menu. Remove ${names}, which is not of this kind now.`;
+          }),
+        ],
       }),
     ],
     preview: {

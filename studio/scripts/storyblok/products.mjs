@@ -78,9 +78,11 @@ export function menuCardsByProduct(stories) {
   const cards = new Map();
   for (const story of stories) {
     for (const section of story.content.body ?? []) {
+      if (section.hidden) continue;
       for (const row of section.content ?? []) {
-        if (row.component !== "row-menu-listing") continue;
+        if (row.hidden || row.component !== "row-menu-listing") continue;
         for (const item of row.items ?? []) {
+          if (item.hidden) continue;
           const target = productsByUuid.get(item.link?.id) ?? productsByPath.get(normalizeSitePath(item.link?.cached_url ?? ""));
           if (!target) continue;
           if (!cards.has(target.uuid)) cards.set(target.uuid, []);
@@ -421,6 +423,12 @@ export function planProducts(stories, shared, helpers) {
         }
         links.ingredientsListButton = list.value;
       }
+    } else {
+      shared.report.needsHand.push({
+        story: "products",
+        at: `${kind} hero buttons`,
+        issue: `no ${kind} product page was found, so productPageSettings has no ${kind} hero buttons; add the two by hand before publishing`,
+      });
     }
     settings[kind] = links;
   }
@@ -434,6 +442,10 @@ export function productMenuSection(row, name, theme, context) {
   const products = [];
   const used = new Set();
   for (const item of row.items ?? []) {
+    if (item.hidden) {
+      context.drop(context.at, `hidden ${item.component}${item.name ? ` "${item.name}"` : ""}`, "hidden blocks");
+      continue;
+    }
     const target = (item.link?.id && context.site.byUuid(item.link.id)) || context.site.byPath(normalizeSitePath(item.link?.cached_url ?? ""));
     const ref = target?.ref?._ref;
     if (!ref?.startsWith("product-")) {
