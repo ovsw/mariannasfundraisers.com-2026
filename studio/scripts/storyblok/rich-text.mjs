@@ -13,6 +13,29 @@ export function headingStyle(level) {
   return `h${Math.min(Math.max(Number(level) || 1, 1) + 1, 6)}`;
 }
 
+/**
+ * Raises headings that would skip a level, so a section's outline never
+ * jumps. All headings move up together until the highest sits one under
+ * `previousLevel` (sibling h3s straight under the page's h1 become sibling
+ * h2s); a heading that still skips a level is then raised on its own.
+ * `previousLevel` is the level of the heading the blocks sit under: 1 for the
+ * page's h1, 2 under the section's own title.
+ */
+export function outlineHeadings(blocks, previousLevel = 1) {
+  const levelOf = (block) => Number(/^h([1-6])$/.exec(block?.style ?? "")?.[1]) || 0;
+  const levels = blocks.map(levelOf).filter(Boolean);
+  if (!levels.length) return blocks;
+  const shift = Math.max(0, Math.min(...levels) - (previousLevel + 1));
+  let previous = previousLevel;
+  return blocks.map((block) => {
+    const original = levelOf(block);
+    if (!original) return block;
+    const level = Math.min(original - shift, previous + 1);
+    previous = level;
+    return level === original ? block : { ...block, style: `h${level}` };
+  });
+}
+
 /** Keys `<prefix>0`, `<prefix>1`, ... in order: unique within one array, the same on every run. */
 export function withKeys(items, prefix = "k") {
   return items.map((item, index) => ({ _key: `${prefix}${index}`, ...item }));

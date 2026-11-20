@@ -10,7 +10,7 @@ import test from "node:test";
 import { headingAnchorId } from "../../../shared/heading-anchor.ts";
 import { collectFiles, hotspotFromFocus } from "./files.mjs";
 import { customUrlFor } from "./links.mjs";
-import { headingStyle, richTextToBlocks } from "./rich-text.mjs";
+import { headingStyle, outlineHeadings, richTextToBlocks } from "./rich-text.mjs";
 import { createSite, planImport, storyDocumentId } from "./transform.mjs";
 
 const read = (name) => JSON.parse(readFileSync(new URL(name, import.meta.url), "utf8"));
@@ -205,4 +205,29 @@ test("the files of the stories are collected once each", () => {
 
 test("Storyblok heading anchors match the Website's heading anchors", () => {
   assert.equal(headingAnchorId("Smoked Ham & Cheddar Hoagie"), "smoked-ham-and-cheddar-hoagie");
+});
+
+test("a section's headings never skip a level", () => {
+  const heading = (style) => ({ _type: "block", style });
+  const styles = (blocks) => blocks.map((block) => block.style);
+  // An old level-2 heading with no level 1 above it sits straight under the
+  // page's h1, so it becomes an h2.
+  assert.deepEqual(styles(outlineHeadings([heading("h3"), heading("normal"), heading("h3")])), ["h2", "normal", "h2"]);
+  assert.deepEqual(styles(outlineHeadings([heading("h2"), heading("h4"), heading("h3")])), ["h2", "h3", "h3"]);
+  assert.deepEqual(styles(outlineHeadings([heading("h4"), heading("h5"), heading("h4")])), ["h2", "h3", "h2"]);
+  // Under the section's own title (an h2) an h3 is in order.
+  assert.deepEqual(styles(outlineHeadings([heading("h3")], 2)), ["h3"]);
+
+  for (const document of plan().documents) {
+    for (const section of document.blocks ?? []) {
+      if (section._type !== "richTextBlock") continue;
+      let previous = section.title ? 2 : 1;
+      for (const block of section.richText ?? []) {
+        const level = Number(/^h(\d)$/.exec(block.style ?? "")?.[1]);
+        if (!level) continue;
+        assert.ok(level <= previous + 1, `${document._id} ${section._key}: h${level} after h${previous}`);
+        previous = level;
+      }
+    }
+  }
 });

@@ -63,7 +63,8 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   "Latest news" Scaffold. A later ticket replaces them by mapping its rows in
   `studio/scripts/storyblok/transform.mjs`.
 - **Rich text** (spec decision 14): paragraphs, headings (an old level n is
-  h(n+1)), lists, bold, italic, underline, line breaks and links. Pasted colour
+  h(n+1), then raised where a Rich Text section's headings would skip a
+  level, so the page outline never jumps), lists, bold, italic, underline, line breaks and links. Pasted colour
   and class marks are dropped and counted. A heading's anchor on the Website
   is its text in hyphenated words (`shared/heading-anchor.ts`), which matches
   every anchor the old headings carried.

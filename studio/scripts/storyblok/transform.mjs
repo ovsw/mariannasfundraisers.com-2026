@@ -16,7 +16,7 @@ import { headingAnchorId } from "../../../shared/heading-anchor.ts";
 import { buttonColours, defaultButtonColour, isSiteIconName } from "../../../shared/site-design.ts";
 import { collectFiles, imageFromAsset } from "./files.mjs";
 import { customUrlFor, normalizeMultilink, normalizeSitePath } from "./links.mjs";
-import { paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
+import { outlineHeadings, paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
 import { blockToPortableText } from "./scaffold-text.mjs";
 
 /** Story components and the document type each becomes. */
@@ -273,7 +273,7 @@ function richTextSection(row, theme, context) {
         context.note("needs a hand", `a ${block.component} block inside a Rich Text row is not imported`);
     }
   });
-  const content = body.filter(Boolean);
+  const content = outlineHeadings(body.filter(Boolean), section.title ? 2 : 1);
   if (content.length) section.richText = withKeys(content, "b");
   if (buttons.length) section.buttons = buttons;
   return section;
