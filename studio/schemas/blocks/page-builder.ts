@@ -21,8 +21,24 @@ const generalOnlyPageBuilderBlockTypes = [
 ] as const;
 
 const homeOnlyPageBuilderBlockTypes = [
+  "latestNews",
   // page-builder-generator:home-types
 ] as const;
+
+// A news post is built from the Rich Text section and the image-and-text
+// sections, as the old posts were (spec decision 9, issue #17). Its header is
+// drawn by the post template, so no heading or banner section belongs here.
+export const postPageBuilderBlockTypes = [
+  "richTextBlock",
+  "photoLeftAndText",
+  "photoRightAndText",
+  "cutoutLeftAndText",
+  "cutoutRightAndText",
+  "badgeAndText",
+  "videoLeftAndText",
+  "videoRightAndText",
+  "imageAndIconList",
+] as const satisfies readonly (typeof contentPageBuilderBlockTypes)[number][];
 
 export const generalPageBuilderBlockTypes = [
   ...generalOnlyPageBuilderBlockTypes,
@@ -50,6 +66,7 @@ const previewBlockTypes = new Set<string>([
   "videoLeftAndText",
   "videoRightAndText",
   "imageAndIconList",
+  "latestNews",
   // page-builder-generator:preview-types
 ]);
 
@@ -59,10 +76,13 @@ export function getPageBuilderPreviewImageUrl(schemaTypeName: string) {
     : undefined;
 }
 
-function createBlocksField(blockTypes: readonly PageBuilderBlockType[]) {
+function createBlocksField(
+  blockTypes: readonly PageBuilderBlockType[],
+  title = "Page sections",
+) {
   return defineField({
     name: "blocks",
-    title: "Page sections",
+    title,
     type: "array",
     group: "content",
     of: blockTypes.map((type) => ({ type })),
@@ -124,6 +144,10 @@ export const contentBlocksField = createBlocksField(
 );
 export const contentBlocksArchiveField = createBlocksArchiveField(
   contentPageBuilderBlockTypes,
+);
+export const postBlocksField = createBlocksField(
+  postPageBuilderBlockTypes,
+  "Post sections",
 );
 export const homePageBlocksField = createBlocksField(
   homePagePageBuilderBlockTypes,

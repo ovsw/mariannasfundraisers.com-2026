@@ -11,6 +11,15 @@ function readSlug(value) {
   return typeof value === "string" ? value : value?.current;
 }
 
+/**
+ * Next.js reads a redirect source as a path pattern, where `(`, `)`, `{`, `}`,
+ * `:`, `*`, `+` and `?` have a meaning. A stored source is a literal path (an
+ * old news address holds a colon), so those characters are escaped.
+ */
+export function literalSourcePattern(path) {
+  return path.replace(/[(){}:*+?]/g, "\\$&");
+}
+
 function getStatusCode(permanent) {
   return permanent === false || permanent === "false" ? 302 : 301;
 }
@@ -60,7 +69,7 @@ export function compileNextRedirects(records) {
   }
 
   return [...redirectsBySource].map(([source, redirect]) => ({
-    source,
+    source: literalSourcePattern(source),
     destination: redirect.destination,
     statusCode: redirect.statusCode,
   }));

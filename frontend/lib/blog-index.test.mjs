@@ -9,13 +9,12 @@ import {
   getBlogPageTitle,
   getBlogPaginationUrl,
   getBlogPostWindow,
-  getRegularPostQueryParams,
   getBlogResultsLabel,
   parseBlogPageSegment,
   isBlogPageOutOfRange,
 } from "./blog-index.ts";
 
-test("keeps 20 regular posts per page and calculates three pages for 57 posts", () => {
+test("keeps 20 posts per page and calculates three pages for 57 posts", () => {
   assert.equal(BLOG_POSTS_PER_PAGE, 20);
   assert.deepEqual(calculateBlogPagination(57, 1), {
     currentPage: 1,
@@ -27,21 +26,15 @@ test("keeps 20 regular posts per page and calculates three pages for 57 posts", 
   });
 });
 
-test("calculates regular-post query windows independently of the latest post", () => {
+test("pages the posts 20 at a time from the newest", () => {
   assert.deepEqual(getBlogPostWindow(1), { end: 20, start: 0 });
   assert.deepEqual(getBlogPostWindow(2), { end: 40, start: 20 });
   assert.deepEqual(getBlogPostWindow(3), { end: 60, start: 40 });
+  // The old site's 18 posts fit on one page.
+  assert.equal(calculateBlogPagination(18, 1).totalPages, 1);
 });
 
-test("passes the latest post ID as an explicit regular-list exclusion", () => {
-  assert.deepEqual(getRegularPostQueryParams("latest-post", 2), {
-    end: 40,
-    latestPostId: "latest-post",
-    start: 20,
-  });
-});
-
-test("the regular-post GROQ excludes the one latest post and uses deterministic ordering", () => {
+test("the news list GROQ lists every published post, newest first, in a fixed order", () => {
   const source = readFileSync(
     new URL("../sanity/queries/blog-index.ts", import.meta.url),
     "utf8",
@@ -50,26 +43,30 @@ test("the regular-post GROQ excludes the one latest post and uses deterministic 
     new URL("../sanity/queries/blog-post-listing.ts", import.meta.url),
     "utf8",
   );
-  assert.match(source, /_id != \$latestPostId/);
   assert.match(listingSource, /publishedAt desc, _createdAt desc, _id asc/);
-  assert.match(source, /order\(\$\{blogPostOrder\}\)\[0\]/);
+  assert.match(
+    source,
+    /\*\[\$\{publishedPostFilter\}\] \| order\(\$\{blogPostOrder\}\)\[\$start\.\.\.\$end\]/,
+  );
+  assert.doesNotMatch(source, /latestPostId/);
 });
 
-test("listing cards expose every visible post field to Presentation", () => {
+test("news cards expose every visible post field to Presentation", () => {
   const cardSource = readFileSync(
     new URL("../components/blog-card.tsx", import.meta.url),
     "utf8",
   );
   const querySource = readFileSync(
-    new URL("../sanity/queries/blog-index.ts", import.meta.url),
+    new URL("../sanity/queries/shared/news-card.ts", import.meta.url),
     "utf8",
   );
 
-  for (const path of ["excerpt", "image", "publishedAt", "title"]) {
+  for (const path of ["excerpt", "image", "publishedAt", "readingTime", "title"]) {
     assert.match(cardSource, new RegExp(`dataAttribute\\?\\.\\("${path}"\\)`));
   }
-  assert.match(cardSource, /href=\{postHref\}/);
-  assert.match(cardSource, /title=\{post\.title\}/);
+  for (const field of ["readingTime", "author->", "excerpt", "image"]) {
+    assert.ok(querySource.includes(field), `the card query has no ${field}`);
+  }
   assert.doesNotMatch(querySource, /category/);
   assert.doesNotMatch(cardSource, /category/i);
 });
@@ -82,7 +79,7 @@ test("accepts only pagination route segments greater than one", () => {
   }
 });
 
-test("rejects page one aliases and pages beyond the regular-list total", () => {
+test("rejects page one aliases and pages beyond the last", () => {
   assert.equal(isBlogPageOutOfRange(1, 0), false);
   assert.equal(isBlogPageOutOfRange(2, 0), true);
   assert.equal(isBlogPageOutOfRange(5, 5), false);
@@ -101,22 +98,8 @@ test("makes metadata titles unique after page one", () => {
   assert.equal(getBlogPageTitle("Insights", 2), "Insights - Page 2");
 });
 
-test("reports result counts for the regular collection only", () => {
+test("reports result counts", () => {
   assert.equal(getBlogResultsLabel(1, 20, 57), "Showing 1–20 of 57 posts");
   assert.equal(getBlogResultsLabel(3, 17, 57), "Showing 41–57 of 57 posts");
   assert.equal(getBlogResultsLabel(1, 0, 0), "No posts");
-});
-
-test("the first news page shows a clear one-post archive empty state", () => {
-  const source = readFileSync(
-    new URL(
-      "../app/(main)/news/_components/blog-index-route.tsx",
-      import.meta.url,
-    ),
-    "utf8",
-  );
-
-  assert.match(source, /const hasRegularPosts = regularPosts\.length > 0/);
-  assert.match(source, /hasRegularPosts \?/);
-  assert.match(source, /No more posts yet\./);
 });

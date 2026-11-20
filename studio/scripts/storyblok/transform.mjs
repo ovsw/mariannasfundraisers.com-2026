@@ -6,9 +6,11 @@
 // Built here: the home page and every page, with Page banner, Page heading,
 // Rich Text (with its button row) and the eight image-and-text sections of
 // the old "big image" row (issue #15). Every other row becomes a Scaffold that
-// holds the row's text and names its intended section. Product pages and news
-// posts are counted and left to their own tickets. The site shell (settings,
-// navigation, footer) comes from the seed file, through site-shell.mjs.
+// holds the row's text and names its intended section. News posts, their
+// authors, the news list and the Latest news section (issue #17) are built
+// here too, with news.mjs. Product pages are counted and left to their own
+// ticket. The site shell (settings, navigation, footer) comes from the seed
+// file, through site-shell.mjs.
 
 import {
   droppedOptions,
@@ -21,6 +23,16 @@ import { customUrlFor, normalizeMultilink, normalizeSitePath } from "./links.mjs
 import { outlineHeadings, paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
 import { blockToPortableText } from "./scaffold-text.mjs";
 import { siteShellDocuments, siteShellFiles } from "./site-shell.mjs";
+import {
+  authorDocumentId,
+  authorDocuments,
+  authorFiles,
+  blogIndexDocument,
+  cleanPostSlug,
+  latestNewsSection,
+  postRedirect,
+  publishedAtFrom,
+} from "./news.mjs";
 import { youTubeVideoId } from "../../../shared/youtube.ts";
 
 /** Story components and the document type each becomes. */
@@ -32,7 +44,6 @@ const KIND = { page: "page", "menu-item-page": "product", "blog-post": "news" };
 /** Story kinds imported by later tickets: links to them are site paths until then. */
 const IMPORTED_LATER = {
   "menu-item-page": "product page: imported by ticket #16",
-  "blog-post": "news post: imported by ticket #17",
 };
 
 /** Page stories whose URL the old site redirects away (spec decision 6). */
@@ -65,6 +76,11 @@ function isImportedPage(story) {
   return story.content.component === "page" && !REDIRECTED_PAGES[storyPath(story)];
 }
 
+/** A news post's address: `/news/<clean slug>` (spec decision 5). */
+export function postStoryPath(story) {
+  return `/news/${cleanPostSlug(story.slug)}`;
+}
+
 /** Resolves links: to the document of an imported page, otherwise to the story's path. */
 export function createSite(stories) {
   const targets = new Map();
@@ -73,8 +89,14 @@ export function createSite(stories) {
     const path = storyPath(story);
     let target;
     if (isImportedPage(story)) target = { path, ref: { _type: "reference", _ref: storyDocumentId(story) } };
-    // A story that is not a document yet (a product page or news post, until
-    // its ticket imports it; a redirected page) is linked by its path.
+    // A news post is linked at its clean address; a link to its old address
+    // finds it too.
+    else if (story.content.component === "blog-post") {
+      target = { path: postStoryPath(story), ref: { _type: "reference", _ref: storyDocumentId(story) } };
+      byPath.set(target.path, target);
+    }
+    // A story that is not a document yet (a product page, until its ticket
+    // imports it; a redirected page) is linked by its path.
     else target = { path };
     targets.set(story.uuid, target);
     byPath.set(path, target);
@@ -96,6 +118,7 @@ function createReport() {
     imagesWithoutAlt: [],
     needsHand: [],
     movedStoryLinks: [],
+    newsRedirects: [],
     overrides: { applied: [], unused: [] },
   };
 }
@@ -383,7 +406,15 @@ function uniqueKey(used, key) {
   return candidate;
 }
 
-function pageSections(story, context) {
+/** The sections a news post may hold (spec decision 9): Rich Text and the image-and-text family. */
+const POST_SECTIONS = new Set(["Rich Text", ...Object.keys(IMAGE_AND_TEXT_TYPES)]);
+
+/**
+ * A story's rows as sections. A news post (`post: true`) takes only Rich Text
+ * and the image-and-text sections and never a Scaffold: a row that cannot be
+ * one of them is left out and listed under "needs a hand".
+ */
+function pageSections(story, context, { post = false } = {}) {
   const sections = [];
   const used = new Set();
   const push = (section) => {
@@ -440,7 +471,15 @@ function pageSections(story, context) {
       const faqLists = row.content?.filter((b) => b.component === "faq-list") ?? [];
       names.forEach((name, index) => {
         const key = index === 0 ? row._uid : `${row._uid}-${index + 1}`;
+        if (post && !POST_SECTIONS.has(name)) {
+          context.note("needs a hand", `the ${row.component} row would be a ${name} section, which a news post cannot hold; it is not imported`);
+          return;
+        }
         const imageAndText = IMAGE_AND_TEXT_TYPES[name] ? imageAndTextSection(row, name, theme, context) : null;
+        if (post && IMAGE_AND_TEXT_TYPES[name] && !imageAndText) {
+          context.note("needs a hand", `the ${name} row cannot be its section in a news post; it is not imported`);
+          return;
+        }
         if (name === "Page heading") push(pageHeading(row, theme, context));
         else if (name === "Rich Text") push(richTextSection(row, theme, context));
         else if (imageAndText) push(imageAndText);
@@ -460,8 +499,11 @@ function pageSections(story, context) {
   });
 
   if (story.full_slug === "home") {
+    // The old home page drew the three newest posts from code, last on the page.
     context.at = "old code: pages/index.jsx PostListFeatured";
-    push(scaffold("latest-news", "Latest news", null, "home page code (the three newest posts)", [paragraph("The three newest news posts, newest first. The old home page drew them from code.")], context));
+    const seed = context.shared.seed;
+    if (seed?.news?.latestNews) push(latestNewsSection(seed));
+    else context.note("needs a hand", "no seed file: the Latest news section is not added to the home page");
   }
   return sections;
 }
@@ -480,6 +522,57 @@ function meta(story, context) {
     result.image = image;
   }
   return result;
+}
+
+/** An old news post as a `post` (spec decisions 9 and 20). */
+function postDocument(story, shared) {
+  const context = storyContext(story, shared);
+  context.shared = shared;
+  const content = story.content;
+  const id = storyDocumentId(story);
+  // The story name is the title, as on pages: the old news cards showed it,
+  // and the slug, the SEO title and the sharing card follow it. The old post
+  // page drew the story's own title field as its heading; where that differs,
+  // the report lists it.
+  const title = story.name.trim();
+  const heading = content.title?.trim();
+  if (heading && heading !== title) {
+    context.drop("title", `post heading "${heading}" (the old post page's heading; the post's title is the story name "${title}")`, "news: post heading unlike the story name");
+  }
+  const document = { _id: id, _type: "post", title, slug: { _type: "slug", current: cleanPostSlug(story.slug) } };
+
+  context.at = "excerpt";
+  const excerpt = paragraph(content.excerpt);
+  if (excerpt) document.excerpt = withKeys([excerpt], "excerpt");
+
+  context.at = "author";
+  const author = shared.seed?.authors?.items.find((item) => item.key === content.author);
+  if (author) document.author = { _type: "reference", _ref: authorDocumentId(author.key) };
+  else context.note("needs a hand", `the author "${content.author ?? ""}" is not one of the authors in the seed file; the post has no author`);
+
+  context.at = "date";
+  const publishedAt = publishedAtFrom(content.date);
+  if (publishedAt) document.publishedAt = publishedAt;
+  else context.note("needs a hand", `the date "${content.date ?? ""}" is not a date; the post has no publish date and stays off the news list`);
+
+  context.at = "main_image";
+  const image = imageFromAsset(content.main_image, context);
+  if (image) document.image = image;
+  else context.note("needs a hand", "the post has no main image; its card shows none");
+
+  context.at = "reading_time";
+  const readingTime = Number.parseInt(String(content.reading_time ?? ""), 10);
+  if (readingTime > 0) document.readingTime = readingTime;
+  else context.note("needs a hand", `the reading time "${content.reading_time ?? ""}" is not a number of minutes`);
+
+  if (content.body_rte) {
+    context.drop("body_rte", "body_rte (the old news template never drew it)", "news: body_rte");
+  }
+
+  document.blocks = pageSections(story, context, { post: true });
+  // The SEO fields map as a page's; the post title is the default title.
+  document.meta = meta({ ...story, name: title }, context);
+  return document;
 }
 
 function pageDocument(story, shared) {
@@ -516,6 +609,7 @@ export function planImport(source, options = {}) {
     fileRef: options.fileRef ?? ((url, kind) => `storyblok-${kind}-${url}`),
     overrides,
     usedOverrides: new Set(),
+    seed: options.seed ?? null,
   };
 
   const files = collectFiles(stories);
@@ -529,6 +623,20 @@ export function planImport(source, options = {}) {
   const published = source.published ? new Set(source.published) : null;
   for (const story of stories) {
     const path = storyPath(story);
+    if (story.content.component === "blog-post") {
+      if (published && !published.has(story.uuid)) report.publishedFromDraft.push(path);
+      const document = postDocument(story, shared);
+      count(report.documents, document._type);
+      documents.push(document);
+      // A malformed old address (spec decision 5) redirects to the clean one.
+      if (postStoryPath(story) !== path) {
+        const redirect = postRedirect(path, document._id);
+        count(report.documents, redirect._type);
+        documents.push(redirect);
+        report.newsRedirects.push({ from: path, to: postStoryPath(story) });
+      }
+      continue;
+    }
     if (story.content.component !== "page") {
       report.skipped.push({ story: path, reason: IMPORTED_LATER[story.content.component] });
       continue;
@@ -557,6 +665,8 @@ export function planImport(source, options = {}) {
       report.needsHand.push({ story: "seed", at: "settings", issue: "no Google Analytics measurement ID: set MFR_GA_MEASUREMENT_ID" });
     }
     for (const file of siteShellFiles(options.seed)) files.set(file.url, file);
+    for (const file of authorFiles(options.seed)) files.set(file.url, file);
+    shell.push(...authorDocuments(options.seed, { fileRef: shared.fileRef }), blogIndexDocument(options.seed));
     for (const document of shell) {
       count(report.documents, document._type);
       documents.push(document);

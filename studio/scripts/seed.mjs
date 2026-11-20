@@ -334,16 +334,24 @@ export const starterDocuments = [
     author: ref("starter-author-editor"),
     publishedAt: "2026-01-15T12:00:00.000Z",
     image: { ...imageRef, caption: "Neutral placeholder image." },
-    body: [
-      block(
-        "starter-post-intro",
-        "This article proves news post rendering, author metadata, and the sidebar.",
-      ),
-      block("starter-post-heading", "What it covers", "h2"),
-      block(
-        "starter-post-body",
-        "It is intentionally short so it can be deleted once real project content exists.",
-      ),
+    readingTime: 1,
+    blocks: [
+      {
+        _key: "starter-post-rich-text",
+        _type: "richTextBlock",
+        theme: "light",
+        richText: [
+          block(
+            "starter-post-intro",
+            "This article proves news post rendering, author metadata, and the sidebar.",
+          ),
+          block("starter-post-heading", "What it covers", "h2"),
+          block(
+            "starter-post-body",
+            "It is intentionally short so it can be deleted once real project content exists.",
+          ),
+        ],
+      },
     ],
     meta: meta(
       "Starter Field Guide | Starter Example",

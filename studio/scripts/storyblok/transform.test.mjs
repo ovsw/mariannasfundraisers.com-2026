@@ -2,7 +2,8 @@
 // real Storyblok export of 2026-11-20 (fixtures/): a page with a hero and
 // wrappers of several rows (how-it-works), a page with a banner title and
 // pasted marks (contact-us), a story link with an anchor that an override
-// fixes (how-it-is-made, to products/), one product and one news story, a
+// fixes (how-it-is-made, to products/), one product and one news story (news
+// posts in full are in fixtures/news.json, tested in news.test.mjs), a
 // rich text with every node kind, and one "big image" row of each of the eight
 // image-and-text kinds (fixtures/image-and-text.json, issue #15).
 import assert from "node:assert/strict";
@@ -34,7 +35,8 @@ test("a dry run counts the stories by kind and the files", () => {
   const { report, files } = plan();
   assert.deepEqual(report.found, { stories: 6, page: 4, product: 1, news: 1, files: 10, images: 10, documentFiles: 0 });
   assert.equal(files.size, 10);
-  assert.deepEqual(report.documents, { page: 4 });
+  // The news story is a post; its malformed slug adds a redirect (issue #17).
+  assert.deepEqual(report.documents, { page: 4, post: 1, redirect: 1 });
   assert.deepEqual(report.sections, {
     cutoutLeftAndText: 1,
     imageAndIconList: 3,
@@ -46,7 +48,7 @@ test("a dry run counts the stories by kind and the files", () => {
   });
   assert.deepEqual(
     report.skipped.map(({ story }) => story),
-    ["/news/winner:-2024-hometown-favorite-sandwich", "/products/italian-hoagie"],
+    ["/products/italian-hoagie"],
   );
 });
 

@@ -39,8 +39,8 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
 
 ## What it does
 
-- **IDs.** A document's ID comes from its story UUID: `page-<uuid>`
-  (`product-<uuid>` and `post-<uuid>` for the later tickets); the home story
+- **IDs.** A document's ID comes from its story UUID: `page-<uuid>`,
+  `post-<uuid>` (and `product-<uuid>` for ticket #16); the home story
   is the `homePage` singleton. A section's `_key` is its row's `_uid`.
 - **Files.** Every Storyblok file the stories use (158) is downloaded once and
   uploaded with `source.url` set to its Storyblok URL; later runs match it by
@@ -60,9 +60,10 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   banner** (its edge colour as theme), **Page heading**, **Rich Text**
   with its button row, and the old "big image" rows as their image-and-text
   sections (below). Every other row becomes a **Scaffold** that holds the
-  row's text and names its intended section; the home page also gets a
-  "Latest news" Scaffold. A later ticket replaces them by mapping its rows in
-  `studio/scripts/storyblok/transform.mjs`.
+  row's text and names its intended section. A later ticket replaces them by
+  mapping its rows in `studio/scripts/storyblok/transform.mjs`. The home page
+  ends with the **Latest news** section, which the old home page drew from
+  code (ticket #17).
 - **Big image rows** (spec decision 12, ticket #15). The old switches pick
   the section, in this order (`bigImageSection` in
   `scripts/migration/block-inventory.mjs`): a YouTube link makes **Video
@@ -75,8 +76,8 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   table and the button rows go into the section's rich text and buttons; each
   feature group becomes an item of icon, heading and simple text. A row with
   no image, no text, or a video link that is not a YouTube link stays a
-  Scaffold and is listed under "needs a hand". Rows inside product pages and
-  news posts are left to tickets #16 and #17.
+  Scaffold and is listed under "needs a hand". Rows inside product pages are
+  left to ticket #16.
 - **Rich text** (spec decision 14): paragraphs, headings (an old level n is
   h(n+1), then raised where a Rich Text section's headings would skip a
   level, so the page outline never jumps), lists, bold, italic, underline, line breaks and links. Pasted colour
@@ -105,8 +106,31 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   `MFR_GA_MEASUREMENT_ID`, from the shell, `studio/.env.local` or the shared
   secrets file; without it the report says so, and `--apply` keeps the ID the
   dataset already holds.
-- **Not imported here:** product pages (ticket #16) and news posts (ticket
-  #17). They are counted and listed in the report.
+- **News** (spec decisions 5, 9 and 21, ticket #17; `news.mjs`). Each news
+  story becomes a `post`, `post-<uuid>`, written published. The story name is
+  the title, as on pages (the old news cards showed it); where the story's own
+  title field, which the old post page drew as its heading, differs, the
+  report lists it. The excerpt, the date (Storyblok's UTC date, as a
+  datetime), the main image, the reading time and the SEO fields carry over;
+  `body_rte`, which the old template never drew, is dropped and counted. The
+  author is a reference to one of the four `author` documents (below); a post
+  whose author, date or main image is missing still imports, and the report
+  says so. Its rows become its `blocks` by the page rules, but a post takes
+  only Rich Text and the image-and-text sections and never a Scaffold: a row
+  that cannot be one of them is left out and listed under "needs a hand".
+- **News addresses.** A news slug that does not pass the Starter's slug rule
+  (four end in a hyphen, one holds a colon) gets a clean one: lowercase words
+  joined by single hyphens (`winner:-2024-…` becomes `winner-2024-…`). A
+  `redirect` document, `redirect-post-<uuid>`, sends the old path to the post,
+  permanently. Links to a post's old address point at the post. The report
+  lists each address that changes.
+- **Authors and the news list** come from the seed file: the four authors of
+  the old code as `author-<key>` (`amy`, `amie`, `juls`, `todd`, the values a
+  post's author field holds), each with the photo from the old repository at
+  the seed's commit and the author's name as its alt text; and `blogIndex`
+  with the list's eyebrow, title and SEO title and description.
+- **Not imported here:** product pages (ticket #16). They are counted and
+  listed in the report.
 
 ## Overrides
 
@@ -124,5 +148,6 @@ matched nothing in this run (for example in a news post, before its ticket).
 | `studio/scripts/storyblok/transform.mjs` | The pure mapping from stories to documents |
 | `studio/scripts/storyblok/rich-text.mjs`, `links.mjs`, `files.mjs`, `scaffold-text.mjs` | Rich text, links, files and Scaffold text |
 | `studio/scripts/storyblok/site-shell.mjs` | Settings, navigation and footer from the seed file |
+| `studio/scripts/storyblok/news.mjs` | Clean news slugs and their redirects, authors, the news list and Latest news headings |
 | `studio/scripts/storyblok/write.mjs`, `safety.mjs` | Uploads, idempotent writes, the target check and the backup |
 | `studio/scripts/storyblok/fixtures/` | Stories and rich text cut from the real export, for the tests |

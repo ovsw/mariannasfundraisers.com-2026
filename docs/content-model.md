@@ -6,9 +6,16 @@ The Website reads structured content from one Sanity project and dataset.
 
 - `homePage` owns `/`.
 - `page` owns normal page slugs such as `/about/`.
-- `blogIndex` is the news index and owns `/news` (20 posts per page, then
-  `/news/2` and onward).
-- `post` is a news post and owns `/news/<slug>`.
+- `blogIndex` is the news index and owns `/news`: its eyebrow and title above
+  every published post as a card, newest first by publish date, 20 per page,
+  then `/news/2` and onward.
+- `post` is a news post and owns `/news/<slug>`. It has a title, slug,
+  excerpt, author, publish date, main image (the card and sharing photo) and
+  reading time in minutes (`readingTime`). The post page draws a fixed header
+  (title, the author's photo and name, the date and the reading time) above
+  its sections, `blocks`: the Rich Text section and the image-and-text
+  sections only. A post card shows the main image, title, excerpt, author,
+  date and reading time.
 - There are no categories: the site has no `category` type and no category
   routes.
 - `redirect` maps an old path to routed content or an external URL.
@@ -30,7 +37,9 @@ The Website reads structured content from one Sanity project and dataset.
     linked name (`affiliation`), the button (`action`), the link columns, the
     legal links, and the copyright owner and start year. The copyright year is
     computed.
-- `author`, `faq`, `teamMember`, and `testimonial` are reusable records.
+- `author`, `faq`, `teamMember`, and `testimonial` are reusable records. An
+  `author` has a name, a slug and a photo; the photo's alt text is the
+  author's name.
 - Pages compose top-level sections through their `blocks` array.
 - `homePage`, `page`, and `blogIndex` also carry a `blocksArchive` array that
   accepts the same section types. Replaced Scaffolds move there. The Website
@@ -95,6 +104,15 @@ sits under the text. Each is available on every page.
   heading and a few sentences (paragraphs with bold, italic and links). The
   eyebrow, heading and text are optional here. Use it for a step's three
   parts, as on How it Works.
+
+- `latestNews` (Latest news). The three newest news posts as cards, newest
+  first, under an optional eyebrow and a title (required). The posts are not
+  chosen: the section always shows the newest. With no published posts it
+  shows nothing. Use it once, near the end of the home page. Available on the
+  home page.
+
+A news post's `blocks` take only Rich Text and the image-and-text sections
+above; its header is drawn by the post page.
 
 - `scaffold` (Scaffold). A placeholder with `name`, `richText`, and
   `proposedSectionShape`. It renders its rich text with a visible internal

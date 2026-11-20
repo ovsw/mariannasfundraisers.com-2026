@@ -44,6 +44,7 @@ import badgeAndText from "./schemas/blocks/badge-and-text";
 import videoLeftAndText from "./schemas/blocks/video-left-and-text";
 import videoRightAndText from "./schemas/blocks/video-right-and-text";
 import imageAndIconList from "./schemas/blocks/image-and-icon-list";
+import latestNews from "./schemas/blocks/latest-news";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -91,5 +92,6 @@ export const schemaTypes = [
   videoLeftAndText,
   videoRightAndText,
   imageAndIconList,
+  latestNews,
   // page-builder-generator:block-types
 ];

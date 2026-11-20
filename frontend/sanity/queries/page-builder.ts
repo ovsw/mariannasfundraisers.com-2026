@@ -10,6 +10,7 @@ import { badgeAndTextQuery } from "./badge-and-text";
 import { videoLeftAndTextQuery } from "./video-left-and-text";
 import { videoRightAndTextQuery } from "./video-right-and-text";
 import { imageAndIconListQuery } from "./image-and-icon-list";
+import { latestNewsQuery } from "./latest-news";
 // page-builder-generator:query-imports
 
 export const pageBuilderQuery = `
@@ -28,6 +29,7 @@ export const pageBuilderQuery = `
     ${videoLeftAndTextQuery},
     ${videoRightAndTextQuery},
     ${imageAndIconListQuery},
+    ${latestNewsQuery},
     ${"" /* page-builder-generator:query-spreads */}
   }
 `;

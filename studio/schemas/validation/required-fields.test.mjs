@@ -77,6 +77,7 @@ const schema = createSchema({
         { name: "photoLeftAndText", type: "photoLeftAndText" },
         { name: "videoRightAndText", type: "videoRightAndText" },
         { name: "imageAndIconList", type: "imageAndIconList" },
+        { name: "latestNews", type: "latestNews" },
         { name: "richText", type: "richTextContent" },
       ],
     },
@@ -344,4 +345,54 @@ test("an Image and icon list needs items, each with an icon and a heading, but n
     }),
     {},
   );
+});
+
+test("a Latest news section needs its title, not an eyebrow", async () => {
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      latestNews: { _type: "latestNews", eyebrow: "Marianna's", title: " ", theme: "light" },
+    }),
+    ["latestNews.title"],
+  );
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      latestNews: { _type: "latestNews", title: "News & Events", theme: "light" },
+    }),
+    [],
+  );
+});
+
+test("a news post needs a reading time in whole minutes and takes only post sections", async () => {
+  const post = {
+    _type: "post",
+    title: "Fund Fiesta is Here!",
+    slug: { _type: "slug", current: "fund-fiesta-is-here" },
+    publishedAt: "2025-07-17T00:00:00.000Z",
+  };
+  const readingTimeErrors = async (readingTime) =>
+    (await errorPaths({ ...post, readingTime })).filter((path) => path.startsWith("readingTime"));
+  assert.deepEqual(await readingTimeErrors(undefined), ["readingTime"]);
+  assert.deepEqual(await readingTimeErrors(0), ["readingTime"]);
+  assert.deepEqual(await readingTimeErrors(1.5), ["readingTime"]);
+  assert.deepEqual(await readingTimeErrors(2), []);
+
+  const postType = schema.get("post");
+  const blocks = postType.fields.find((field) => field.name === "blocks");
+  assert.deepEqual(
+    blocks.type.of.map((member) => member.name),
+    [
+      "richTextBlock",
+      "photoLeftAndText",
+      "photoRightAndText",
+      "cutoutLeftAndText",
+      "cutoutRightAndText",
+      "badgeAndText",
+      "videoLeftAndText",
+      "videoRightAndText",
+      "imageAndIconList",
+    ],
+  );
+  assert.equal(postType.fields.some((field) => field.name === "body"), false);
 });
