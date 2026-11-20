@@ -16,6 +16,7 @@ What the importer (`pnpm storyblok:import`, ticket #13) found in the Storyblok e
 
 | Type | Count |
 | --- | --- |
+| faq | 14 |
 | footer | 1 |
 | homePage | 1 |
 | navigation | 1 |
@@ -31,8 +32,10 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | Section | Count |
 | --- | --- |
 | badgeAndText | 2 |
+| cognitoForm | 4 |
 | cutoutLeftAndText | 19 |
 | cutoutRightAndText | 12 |
+| faqList | 2 |
 | hoagieMenu | 1 |
 | imageAndIconList | 6 |
 | pageBanner | 27 |
@@ -42,7 +45,8 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | pizzaMenu | 1 |
 | richTextBlock | 19 |
 | salsaMenu | 2 |
-| scaffold | 15 |
+| scaffold | 7 |
+| twoTextColumns | 2 |
 | videoLeftAndText | 3 |
 | videoRightAndText | 3 |
 
@@ -51,14 +55,11 @@ Scaffolds by the section that will replace them:
 | Intended section | Scaffolds |
 | --- | --- |
 | Call to action with image | 2 |
-| Cognito form | 4 |
-| FAQ list | 2 |
 | Home hero | 1 |
 | Latest news | 1 |
 | Menu teaser | 1 |
 | Steps | 1 |
 | Testimonials | 1 |
-| Two text columns | 2 |
 
 ## Not imported here
 
@@ -90,7 +91,6 @@ Scaffolds by the section that will replace them:
 | Story | Where | What |
 | --- | --- | --- |
 | /our-leadership | body[7] section > content[0] row-big-image | button "Our Team" has no destination; it is not imported |
-| /schedule-a-free-tasting | body[1] section > content[1] row-two-columns | the text column beside the Cognito form has no field in the Cognito form section |
 | products | pizza hero buttons | the pizza pages do not all have the same hero buttons; the most common (more selections, Pricing Info) are written into productPageSettings |
 
 ## Overrides
@@ -157,6 +157,7 @@ Imported by story UUID, so they point at the story's current page.
 | product nt_* fields (unused on the old site) | 64 |
 | rich text: pasted class | 24 |
 | rich text: pasted text colour | 50 |
+| unused field: faq-item.answer | 8 |
 
 ## Images without alt text (144)
 
@@ -309,7 +310,7 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /products/white-pizza | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
 | /products/white-pizza | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
 
-## Every dropped item (1142)
+## Every dropped item (1150)
 
 | Story | Where | Item |
 | --- | --- | --- |
@@ -594,12 +595,20 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /fundraiser-frequently-asked-questions | body[2] section section | section.decoration_top = "default" |
 | /fundraiser-frequently-asked-questions | body[2] section section | section.decoration_bottom = "none" |
 | /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column row-single-column | row-single-column.name = "FAQs" |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
-| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[2] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[3] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[4] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[5] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[6] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[7] | rich text mark: pasted text colour |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[0] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[1] | faq-item.answer (the old site shows answer_single): 1 block(s) |
+| /fundraiser-frequently-asked-questions | body[2] section > content[0] row-single-column > faq-list.items[2] | faq-item.answer (the old site shows answer_single): 1 block(s) |
 | /fundraiser-resources | body[0] hero hero | hero.height = "short" |
 | /fundraiser-resources | body[0] hero hero | hero.is_tall = true |
 | /fundraiser-resources | body[0] hero hero | hero.background_color = "shaded" |

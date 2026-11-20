@@ -10,6 +10,9 @@ import { badgeAndTextQuery } from "./badge-and-text";
 import { videoLeftAndTextQuery } from "./video-left-and-text";
 import { videoRightAndTextQuery } from "./video-right-and-text";
 import { imageAndIconListQuery } from "./image-and-icon-list";
+import { cognitoFormQuery } from "./cognito-form";
+import { faqListQuery } from "./faq-list";
+import { twoTextColumnsQuery } from "./two-text-columns";
 import { hoagieMenuQuery } from "./hoagie-menu";
 import { pizzaMenuQuery } from "./pizza-menu";
 import { salsaMenuQuery } from "./salsa-menu";
@@ -31,6 +34,9 @@ export const pageBuilderQuery = `
     ${videoLeftAndTextQuery},
     ${videoRightAndTextQuery},
     ${imageAndIconListQuery},
+    ${cognitoFormQuery},
+    ${faqListQuery},
+    ${twoTextColumnsQuery},
     ${hoagieMenuQuery},
     ${pizzaMenuQuery},
     ${salsaMenuQuery},

@@ -11,6 +11,7 @@
   "documents": {
     "page": 31,
     "homePage": 1,
+    "faq": 14,
     "product": 16,
     "productPageSettings": 1,
     "settings": 1,
@@ -25,25 +26,25 @@
     "cutoutLeftAndText": 19,
     "photoRightAndText": 8,
     "cutoutRightAndText": 12,
-    "scaffold": 15,
+    "cognitoForm": 4,
     "badgeAndText": 2,
     "salsaMenu": 2,
+    "faqList": 2,
+    "scaffold": 7,
     "videoRightAndText": 3,
     "imageAndIconList": 6,
     "videoLeftAndText": 3,
+    "twoTextColumns": 2,
     "hoagieMenu": 1,
     "pizzaMenu": 1
   },
   "scaffolds": {
-    "Cognito form": 4,
-    "FAQ list": 2,
     "Home hero": 1,
     "Steps": 1,
     "Menu teaser": 1,
     "Call to action with image": 2,
     "Testimonials": 1,
-    "Latest news": 1,
-    "Two text columns": 2
+    "Latest news": 1
   },
   "skipped": [
     {
@@ -154,6 +155,7 @@
     "option: hero.content": 8,
     "option: section.overflow_hidden": 5,
     "option: table.remove_margins": 2,
+    "unused field: faq-item.answer": 8,
     "option: hero.is_tall": 4,
     "option: form_cognito.embed_code": 1,
     "option: heading.style": 17,
@@ -1577,33 +1579,73 @@
     },
     {
       "story": "/fundraiser-frequently-asked-questions",
-      "at": "body[2] section > content[0] row-single-column",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[2]",
+      "item": "faq-item.answer (the old site shows answer_single): 1 block(s)"
+    },
+    {
+      "story": "/fundraiser-frequently-asked-questions",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[3]",
+      "item": "faq-item.answer (the old site shows answer_single): 1 block(s)"
+    },
+    {
+      "story": "/fundraiser-frequently-asked-questions",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[4]",
+      "item": "faq-item.answer (the old site shows answer_single): 1 block(s)"
+    },
+    {
+      "story": "/fundraiser-frequently-asked-questions",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[5]",
+      "item": "faq-item.answer (the old site shows answer_single): 1 block(s)"
+    },
+    {
+      "story": "/fundraiser-frequently-asked-questions",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[6]",
+      "item": "faq-item.answer (the old site shows answer_single): 1 block(s)"
+    },
+    {
+      "story": "/fundraiser-frequently-asked-questions",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[7]",
       "item": "rich text mark: pasted text colour"
     },
     {
       "story": "/fundraiser-frequently-asked-questions",
-      "at": "body[2] section > content[0] row-single-column",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[7]",
       "item": "rich text mark: pasted text colour"
     },
     {
       "story": "/fundraiser-frequently-asked-questions",
-      "at": "body[2] section > content[0] row-single-column",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[7]",
       "item": "rich text mark: pasted text colour"
     },
     {
       "story": "/fundraiser-frequently-asked-questions",
-      "at": "body[2] section > content[0] row-single-column",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[7]",
       "item": "rich text mark: pasted text colour"
     },
     {
       "story": "/fundraiser-frequently-asked-questions",
-      "at": "body[2] section > content[0] row-single-column",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[7]",
       "item": "rich text mark: pasted text colour"
     },
     {
       "story": "/fundraiser-frequently-asked-questions",
-      "at": "body[2] section > content[0] row-single-column",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[7]",
       "item": "rich text mark: pasted text colour"
+    },
+    {
+      "story": "/fundraiser-frequently-asked-questions",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[0]",
+      "item": "faq-item.answer (the old site shows answer_single): 1 block(s)"
+    },
+    {
+      "story": "/fundraiser-frequently-asked-questions",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[1]",
+      "item": "faq-item.answer (the old site shows answer_single): 1 block(s)"
+    },
+    {
+      "story": "/fundraiser-frequently-asked-questions",
+      "at": "body[2] section > content[0] row-single-column > faq-list.items[2]",
+      "item": "faq-item.answer (the old site shows answer_single): 1 block(s)"
     },
     {
       "story": "/fundraiser-resources",
@@ -6608,11 +6650,6 @@
       "story": "/our-leadership",
       "at": "body[7] section > content[0] row-big-image",
       "issue": "button \"Our Team\" has no destination; it is not imported"
-    },
-    {
-      "story": "/schedule-a-free-tasting",
-      "at": "body[1] section > content[1] row-two-columns",
-      "issue": "the text column beside the Cognito form has no field in the Cognito form section"
     },
     {
       "story": "products",

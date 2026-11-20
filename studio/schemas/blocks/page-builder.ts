@@ -17,6 +17,9 @@ export const contentPageBuilderBlockTypes = [
 
 const generalOnlyPageBuilderBlockTypes = [
   "pageBanner",
+  "cognitoForm",
+  "faqList",
+  "twoTextColumns",
   "hoagieMenu",
   "pizzaMenu",
   "salsaMenu",
@@ -53,6 +56,9 @@ const previewBlockTypes = new Set<string>([
   "videoLeftAndText",
   "videoRightAndText",
   "imageAndIconList",
+  "cognitoForm",
+  "faqList",
+  "twoTextColumns",
   "hoagieMenu",
   "pizzaMenu",
   "salsaMenu",
