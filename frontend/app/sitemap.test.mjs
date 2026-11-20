@@ -16,3 +16,8 @@ test("sitemap leaves out noindex documents and has no category archives", () => 
   assert.match(source, /meta\.noindex != true/);
   assert.doesNotMatch(source, /category|\/blog/);
 });
+
+test("sitemap lists products at the address their kind sets", () => {
+  assert.match(source, /"product"/);
+  assert.match(source, /_type == "product" => \$baseUrl \+ \$\{PRODUCT_PATH_GROQ\}/);
+});

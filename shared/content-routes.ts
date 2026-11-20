@@ -25,6 +25,54 @@ export function postPath(value?: string | null) {
   return isRouteSlug(slug) ? `/news/${slug}` : null;
 }
 
+// Products (spec decision 8): the kind sets the address. Hoagies and pizzas
+// live at /products/<slug>, salsas at /flavored-salsas/<slug>. A page can own
+// a path under the same prefix (flavored-salsas/menu is a page), so the slug
+// rule (studio/schemas/validation/routed-slug.ts) keeps the two apart.
+export const productKinds = ["hoagie", "pizza", "salsa"] as const;
+export type ProductKind = (typeof productKinds)[number];
+
+export function isProductKind(value?: string | null): value is ProductKind {
+  return (productKinds as readonly string[]).includes(value ?? "");
+}
+
+/** The first path segment of a product of this kind. */
+export function productPathPrefix(kind: ProductKind) {
+  return kind === "salsa" ? "flavored-salsas" : "products";
+}
+
+export function productPath(kind?: string | null, value?: string | null) {
+  const slug = cleanSlug(value);
+  if (!isProductKind(kind) || !isRouteSlug(slug)) return null;
+  return `/${productPathPrefix(kind)}/${slug}`;
+}
+
+/**
+ * The product kinds and slug a path could belong to, or null when no product
+ * can own it: `/products/<slug>` holds a hoagie or a pizza,
+ * `/flavored-salsas/<slug>` a salsa.
+ */
+export function productRoute(value?: string | null) {
+  const path = normalizePublicPath(value);
+  const [prefix, slug, ...rest] = path.split("/").filter(Boolean);
+  if (rest.length || !slug || !isRouteSlug(slug)) return null;
+  const kinds = productKinds.filter((kind) => productPathPrefix(kind) === prefix);
+  return kinds.length ? { kinds, slug } : null;
+}
+
+/**
+ * GROQ for a product's path, read from the document at `prefix` (empty for
+ * the current document, `internal->` through a reference). Keep it in step
+ * with `productPath`.
+ */
+export function productPathGroq(prefix = "") {
+  return `select(${prefix}kind == "salsa" => "/flavored-salsas/", "/products/") + ${prefix}slug.current`;
+}
+
+/** `productPathGroq()` as a literal, for queries that TypeGen reads. */
+export const PRODUCT_PATH_GROQ =
+  'select(kind == "salsa" => "/flavored-salsas/", "/products/") + slug.current';
+
 export function routedDocumentPath(
   documentType: RoutedDocumentType,
   value?: string | null,

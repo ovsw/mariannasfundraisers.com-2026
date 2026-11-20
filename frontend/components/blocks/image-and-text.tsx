@@ -88,7 +88,7 @@ export function hasImageAndTextContent(block: ImageAndTextBlock) {
 type Crop = { top?: number | null; bottom?: number | null; left?: number | null; right?: number | null };
 
 /** The crop saved in Studio, with every side set, or undefined when there is none. */
-function savedCrop(crop: Crop | null | undefined) {
+export function savedCrop(crop: Crop | null | undefined) {
   if (!crop) return undefined;
   return { top: crop.top ?? 0, bottom: crop.bottom ?? 0, left: crop.left ?? 0, right: crop.right ?? 0 };
 }

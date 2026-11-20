@@ -160,7 +160,9 @@ test.describe("every sitemap route", () => {
     // until the sitemap lists them, those templates have nothing to scan.
     const newsRoute = routes.find((route) => route === "/news");
     const postRoute = routes.find((route) => /^\/news\/[^/]+$/.test(route));
-    const templates = ["/", pageRoute, newsRoute, postRoute].filter(
+    // The product template (issue #16) draws every hoagie, pizza and salsa.
+    const productRoute = routes.find((route) => /^\/products\/[^/]+$/.test(route));
+    const templates = ["/", pageRoute, newsRoute, postRoute, productRoute].filter(
       (route): route is string => Boolean(route),
     );
     const violations: string[] = [];

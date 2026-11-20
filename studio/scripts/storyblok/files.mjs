@@ -42,7 +42,7 @@ export function collectFiles(stories) {
       if (node.fieldtype === "asset" && isStoryblokFile(node.filename)) {
         const file = entry(node.filename);
         file.asImage = true;
-        file.alt ||= node.alt?.trim() ?? "";
+        file.alt ||= altText(node.alt);
         file.title ||= node.title?.trim() ?? "";
         file.storyblokId ??= node.id ?? null;
       }
@@ -77,13 +77,22 @@ export function hotspotFromFocus(focus, size) {
  * "image")` gives the matched asset ID; `context.missingAlt(url)` records an
  * image without alt text.
  */
+/**
+ * An asset's alt text, or "" when it has none. Some old cards store the word
+ * "null" as their alt text (spec decision 21); that is no alt text.
+ */
+export function altText(value) {
+  const alt = typeof value === "string" ? value.trim() : "";
+  return alt.toLowerCase() === "null" ? "" : alt;
+}
+
 export function imageFromAsset(asset, context) {
   if (!asset || !isStoryblokFile(asset.filename)) return null;
   const image = {
     _type: "image",
     asset: { _type: "reference", _ref: context.fileRef(asset.filename, "image") },
   };
-  const alt = asset.alt?.trim();
+  const alt = altText(asset.alt);
   if (alt) image.alt = alt;
   else context.missingAlt?.(asset.filename);
   const hotspot = hotspotFromFocus(asset.focus, imageSize(asset.filename));

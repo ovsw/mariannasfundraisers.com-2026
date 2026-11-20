@@ -11,6 +11,9 @@ import { videoLeftAndTextQuery } from "./video-left-and-text";
 import { videoRightAndTextQuery } from "./video-right-and-text";
 import { imageAndIconListQuery } from "./image-and-icon-list";
 import { latestNewsQuery } from "./latest-news";
+import { hoagieMenuQuery } from "./hoagie-menu";
+import { pizzaMenuQuery } from "./pizza-menu";
+import { salsaMenuQuery } from "./salsa-menu";
 // page-builder-generator:query-imports
 
 export const pageBuilderQuery = `
@@ -30,6 +33,9 @@ export const pageBuilderQuery = `
     ${videoRightAndTextQuery},
     ${imageAndIconListQuery},
     ${latestNewsQuery},
+    ${hoagieMenuQuery},
+    ${pizzaMenuQuery},
+    ${salsaMenuQuery},
     ${"" /* page-builder-generator:query-spreads */}
   }
 `;

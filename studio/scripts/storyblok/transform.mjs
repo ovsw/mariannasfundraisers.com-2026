@@ -6,11 +6,12 @@
 // Built here: the home page and every page, with Page banner, Page heading,
 // Rich Text (with its button row) and the eight image-and-text sections of
 // the old "big image" row (issue #15). Every other row becomes a Scaffold that
-// holds the row's text and names its intended section. News posts, their
-// authors, the news list and the Latest news section (issue #17) are built
-// here too, with news.mjs. Product pages are counted and left to their own
-// ticket. The site shell (settings, navigation, footer) comes from the seed
-// file, through site-shell.mjs.
+// holds the row's text and names its intended section. Product pages become
+// products and the old menu rows the menu sections (issue #16,
+// products.mjs). News posts, their authors, the news list and the Latest
+// news section (issue #17) are built here too, with news.mjs. The site
+// shell (settings, navigation, footer) comes from the seed file, through
+// site-shell.mjs.
 
 import {
   droppedOptions,
@@ -33,6 +34,7 @@ import {
   postRedirect,
   publishedAtFrom,
 } from "./news.mjs";
+import { planProducts, PRODUCT_MENU_TYPES, productMenuSection } from "./products.mjs";
 import { youTubeVideoId } from "../../../shared/youtube.ts";
 
 /** Story components and the document type each becomes. */
@@ -40,11 +42,6 @@ export const STORY_TYPES = { page: "page", "menu-item-page": "product", "blog-po
 
 /** Story kinds as the report names them. */
 const KIND = { page: "page", "menu-item-page": "product", "blog-post": "news" };
-
-/** Story kinds imported by later tickets: links to them are site paths until then. */
-const IMPORTED_LATER = {
-  "menu-item-page": "product page: imported by ticket #16",
-};
 
 /** Page stories whose URL the old site redirects away (spec decision 6). */
 export const REDIRECTED_PAGES = {
@@ -73,6 +70,7 @@ export function storyDocumentId(story) {
 }
 
 function isImportedPage(story) {
+  if (story.content.component === "menu-item-page") return true;
   return story.content.component === "page" && !REDIRECTED_PAGES[storyPath(story)];
 }
 
@@ -95,8 +93,8 @@ export function createSite(stories) {
       target = { path: postStoryPath(story), ref: { _type: "reference", _ref: storyDocumentId(story) } };
       byPath.set(target.path, target);
     }
-    // A story that is not a document yet (a product page, until its ticket
-    // imports it; a redirected page) is linked by its path.
+    // A story that is not a document (a redirected page) is linked by its
+    // path.
     else target = { path };
     targets.set(story.uuid, target);
     byPath.set(path, target);
@@ -484,9 +482,11 @@ function pageSections(story, context, { post = false } = {}) {
           context.note("needs a hand", `the ${name} row cannot be its section in a news post; it is not imported`);
           return;
         }
+        const menu = PRODUCT_MENU_TYPES[name] ? productMenuSection(row, name, theme, context) : null;
         if (name === "Page heading") push(pageHeading(row, theme, context));
         else if (name === "Rich Text") push(richTextSection(row, theme, context));
         else if (imageAndText) push(imageAndText);
+        else if (menu) push(menu);
         else {
           // A row with several FAQ lists: one Scaffold per list; the row's
           // other content goes once, into the first.
@@ -641,8 +641,8 @@ export function planImport(source, options = {}) {
       }
       continue;
     }
-    if (story.content.component !== "page") {
-      report.skipped.push({ story: path, reason: IMPORTED_LATER[story.content.component] });
+    if (story.content.component === "menu-item-page") {
+      if (published && !published.has(story.uuid)) report.publishedFromDraft.push(path);
       continue;
     }
     if (REDIRECTED_PAGES[path]) {
@@ -651,6 +651,13 @@ export function planImport(source, options = {}) {
     }
     if (published && !published.has(story.uuid)) report.publishedFromDraft.push(path);
     const document = pageDocument(story, shared);
+    count(report.documents, document._type);
+    documents.push(document);
+  }
+
+  // Products and Product Page Settings (issue #16).
+  const products = planProducts(stories, shared, { button, meta, storyContext, recordDroppedOptions, droppedOptions });
+  for (const document of products.documents) {
     count(report.documents, document._type);
     documents.push(document);
   }
@@ -687,7 +694,7 @@ export function planImport(source, options = {}) {
       report.overrides.unused.push({
         story: override.story,
         from: override.from,
-        reason: story && story.content.component !== "page" ? IMPORTED_LATER[story.content.component] : "no link matches",
+        reason: "no link matches",
       });
     }
   }

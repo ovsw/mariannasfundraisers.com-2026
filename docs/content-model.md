@@ -16,13 +16,21 @@ The Website reads structured content from one Sanity project and dataset.
   its sections, `blocks`: the Rich Text section and the image-and-text
   sections only. A post card shows the main image, title, excerpt, author,
   date and reading time.
+- `product` is a hoagie, pizza or salsa (spec decision 8). Its kind sets its
+  address: hoagies and pizzas own `/products/<slug>`, salsas
+  `/flavored-salsas/<slug>`. A page can own a path under the same prefix
+  (`flavored-salsas/menu` is a page), so the slug rule rejects a product whose
+  address a page already uses, and the other way round. One template in code
+  draws every product page (see "Products" below); a product has no Page
+  Builder.
 - There are no categories: the site has no `category` type and no category
   routes.
 - `redirect` maps an old path to routed content or an external URL.
 
 ## Shared content
 
-- `settings`, `navigation`, `footer`, and `blogPostSettings` are global documents.
+- `settings`, `navigation`, `footer`, `blogPostSettings` and
+  `productPageSettings` are global documents.
   The header and footer render only from `settings`, `navigation` and
   `footer`; no link list lives in code (spec decision 16).
   - `settings`: site name, the two logos (light backgrounds for the header,
@@ -37,6 +45,11 @@ The Website reads structured content from one Sanity project and dataset.
     linked name (`affiliation`), the button (`action`), the link columns, the
     legal links, and the copyright owner and start year. The copyright year is
     computed.
+  - `productPageSettings`: what is the same on every product page: the
+    Handmade food block (eyebrow, heading, text, buttons, photo), the
+    "Preparing a fundraiser?" call to action (heading, text, buttons, photo),
+    and for each kind (hoagies, pizzas, salsas) the two hero buttons and the
+    optional "full ingredients list" button.
 - `author`, `faq`, `teamMember`, and `testimonial` are reusable records. An
   `author` has a name, a slug and a photo; the photo's alt text is the
   author's name.
@@ -111,6 +124,21 @@ sits under the text. Each is available on every page.
   shows nothing. Use it once, near the end of the home page. Available on the
   home page.
 
+The three menus list products. Each holds an ordered list of references to
+products of its kind and draws each product's menu card (short name, short
+description, card photo and, for hoagies, the dressing) with a Details button
+to the product's page. The card is edited on the product, once, and every menu
+that lists the product shows it. Each is available on pages, not the home
+page.
+
+- `hoagieMenu` (Hoagie menu). The hoagies you choose, in your order: each card
+  reads "<short name> Hoagie" with its dressing under it. Use it on the
+  products page.
+- `pizzaMenu` (Pizza menu). The pizzas you choose, in your order: each card
+  reads "<short name> Pizza".
+- `salsaMenu` (Salsa menu). The salsas you choose, in your order: each card
+  shows the short name as written.
+
 A news post's `blocks` take only Rich Text and the image-and-text sections
 above; its header is drawn by the post page.
 
@@ -133,6 +161,29 @@ site), or to an uploaded file.
 The pages come from the old Storyblok site through the importer; see
 `docs/migration/import.md`. Fix imported content in the importer or its
 overrides file, never by hand in the dataset, until go-live.
+
+## Products
+
+A product page is a template, not sections. From top to bottom: the hero (the
+hero title as the page's main heading, the hero text, the two hero buttons of
+the product's kind, the hero photo, on the dark table photo), the ingredients
+(the ingredients label above an "Ingredients" heading, the ingredients text,
+the kind's "full ingredients list" button and the ingredients image shown
+whole), the optional note, the nutrition facts (the product's name above a
+"Nutrition Facts" heading, the serving text, and the label drawn from the 26
+typed values), then the Handmade food block and the call to action from
+`productPageSettings`. The "full ingredients list" button lands on the heading
+with the product's name on the page it points at (`Italian Hoagie` lands on
+`#italian-hoagie`).
+
+A product's fields: name, kind (Hoagie, Pizza or Salsa), slug, hero title,
+hero text, hero photo, ingredients label, ingredients text, ingredients image,
+note, nutrition facts (serving text and calories, total fat, saturated fat,
+trans fat, cholesterol, sodium, total carbohydrates, dietary fiber, total
+sugars, added sugars, protein, vitamin D, calcium, iron and potassium, with
+the daily value of each that has one), the menu card (short name, short
+description, card photo, and for hoagies the dressing, Italian or mayo) and
+the SEO fields.
 
 ## Page Builder path
 

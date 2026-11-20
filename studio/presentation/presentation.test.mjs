@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  getDocumentKind,
   getDocumentSlug,
   getPresentationPath,
   isPresentationDocumentType,
@@ -66,4 +67,22 @@ test("unsupported document types do not expose the action", () => {
 
 test("matches nested page paths when Presentation follows the preview", () => {
   assert.equal(resolve.mainDocuments.at(-1).route, "/:slug(.+)");
+});
+
+test("resolves a product to the address its kind sets", () => {
+  assert.equal(getPresentationPath("product", "italian-hoagie", "hoagie"), "/products/italian-hoagie");
+  assert.equal(getPresentationPath("product", "mph-salsa", "salsa"), "/flavored-salsas/mph-salsa");
+  assert.equal(getPresentationPath("product", "mph-salsa"), null);
+  assert.equal(isPresentationDocumentType("product"), true);
+  assert.equal(getDocumentKind({ kind: "pizza" }, { kind: "hoagie" }), "pizza");
+  assert.equal(getDocumentKind(undefined, { kind: "hoagie" }), "hoagie");
+});
+
+test("product addresses find a product or the page that owns them", () => {
+  const routes = resolve.mainDocuments.map(({ route }) => route);
+  assert.ok(routes.indexOf("/products/:slug") < routes.indexOf("/:slug(.+)"));
+  assert.ok(routes.indexOf("/flavored-salsas/:slug") < routes.indexOf("/:slug(.+)"));
+  const salsa = resolve.mainDocuments.find(({ route }) => route === "/flavored-salsas/:slug");
+  assert.match(salsa.filter, /_type == "product" && kind == "salsa"/);
+  assert.match(salsa.filter, /_type == "page" && slug\.current in \["flavored-salsas\/" \+ \$slug/);
 });

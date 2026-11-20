@@ -17,6 +17,9 @@ export const contentPageBuilderBlockTypes = [
 
 const generalOnlyPageBuilderBlockTypes = [
   "pageBanner",
+  "hoagieMenu",
+  "pizzaMenu",
+  "salsaMenu",
   // page-builder-generator:general-types
 ] as const;
 
@@ -67,6 +70,9 @@ const previewBlockTypes = new Set<string>([
   "videoRightAndText",
   "imageAndIconList",
   "latestNews",
+  "hoagieMenu",
+  "pizzaMenu",
+  "salsaMenu",
   // page-builder-generator:preview-types
 ]);
 

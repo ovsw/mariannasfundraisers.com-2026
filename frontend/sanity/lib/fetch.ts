@@ -1,6 +1,7 @@
 import { type QueryParams } from "next-sanity";
 import { sanityFetch, type DynamicFetchOptions } from "@/sanity/lib/live";
 import { PAGE_QUERY, PAGES_SLUGS_QUERY } from "@/sanity/queries/page";
+import { PRODUCT_QUERY, PRODUCTS_SLUGS_QUERY } from "@/sanity/queries/product";
 import { NAVIGATION_QUERY } from "@/sanity/queries/navigation";
 import { SETTINGS_QUERY } from "@/sanity/queries/settings";
 import { BLOG_POST_SETTINGS_QUERY } from "@/sanity/queries/blog-post-settings";
@@ -21,6 +22,7 @@ import type {
   PAGE_QUERY_RESULT,
   POSTS_QUERY_RESULT,
   POST_QUERY_RESULT,
+  PRODUCT_QUERY_RESULT,
   SETTINGS_QUERY_RESULT,
 } from "@/sanity.types";
 import type { NewsCardPost } from "@/sanity/queries/blog-index";
@@ -50,6 +52,16 @@ export function fetchSanityPageBySlug({
   stega,
 }: { slug: string } & DynamicFetchOptions): Promise<PAGE_QUERY_RESULT> {
   return fetchCached({ query: PAGE_QUERY, params: { slug }, perspective, stega });
+}
+
+/** The product of one of `kinds` with this slug (shared/content-routes.ts `productRoute`). */
+export function fetchSanityProduct({
+  kinds,
+  slug,
+  perspective,
+  stega,
+}: { kinds: readonly string[]; slug: string } & DynamicFetchOptions): Promise<PRODUCT_QUERY_RESULT> {
+  return fetchCached({ query: PRODUCT_QUERY, params: { kinds: [...kinds], slug }, perspective, stega });
 }
 
 export function fetchHomePage({
@@ -147,4 +159,4 @@ export async function getCurrentYear(): Promise<number> {
   return new Date().getFullYear();
 }
 
-export { PAGES_SLUGS_QUERY, POSTS_SLUGS_QUERY };
+export { PAGES_SLUGS_QUERY, POSTS_SLUGS_QUERY, PRODUCTS_SLUGS_QUERY };

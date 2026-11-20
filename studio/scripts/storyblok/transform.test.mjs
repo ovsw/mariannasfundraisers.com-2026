@@ -2,10 +2,11 @@
 // real Storyblok export of 2026-11-20 (fixtures/): a page with a hero and
 // wrappers of several rows (how-it-works), a page with a banner title and
 // pasted marks (contact-us), a story link with an anchor that an override
-// fixes (how-it-is-made, to products/), one product and one news story (news
-// posts in full are in fixtures/news.json, tested in news.test.mjs), a
-// rich text with every node kind, and one "big image" row of each of the eight
-// image-and-text kinds (fixtures/image-and-text.json, issue #15).
+// fixes (how-it-is-made, to products/), one news story (news posts in full
+// are in fixtures/news.json, tested in news.test.mjs), a rich text with every
+// node kind, and one "big image" row of each of the eight image-and-text kinds
+// (fixtures/image-and-text.json, issue #15). Products have their own fixtures
+// and tests (products.test.mjs, issue #16).
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -33,7 +34,7 @@ const page = (documents, slug) => documents.find((document) => document.slug?.cu
 
 test("a dry run counts the stories by kind and the files", () => {
   const { report, files } = plan();
-  assert.deepEqual(report.found, { stories: 6, page: 4, product: 1, news: 1, files: 10, images: 10, documentFiles: 0 });
+  assert.deepEqual(report.found, { stories: 5, page: 4, product: 0, news: 1, files: 10, images: 10, documentFiles: 0 });
   assert.equal(files.size, 10);
   // The news story is a post; its malformed slug adds a redirect (issue #17).
   assert.deepEqual(report.documents, { page: 4, post: 1, redirect: 1 });
@@ -48,7 +49,7 @@ test("a dry run counts the stories by kind and the files", () => {
   });
   assert.deepEqual(
     report.skipped.map(({ story }) => story),
-    ["/products/italian-hoagie"],
+    [],
   );
 });
 
@@ -133,7 +134,6 @@ test("an override fixes the old /menu/ link and keeps its anchor", () => {
   assert.deepEqual(report.overrides.applied.map(({ story, from }) => [story, from]), [["/how-it-is-made", "/menu/"]]);
   assert.deepEqual(report.overrides.unused.map(({ story }) => story), [
     "news/national-pizza-day-february-9th-2022",
-    "products/smoked-ham-cheddar-hoagie",
   ]);
 });
 
@@ -196,13 +196,13 @@ test("file links keep their kind and point at the matched file asset", () => {
   assert.equal(customUrlFor({ linktype: "url", href: "#", openInNewTab: false }, context), null);
 });
 
-test("links to stories that are not documents yet are site paths", () => {
-  const site = createSite(stories);
-  const product = stories.find((story) => story.content.component === "menu-item-page");
+test("links to stories that are not documents are site paths", () => {
+  const redirected = { name: "Privacy Policy", uuid: "privacy-fixture", full_slug: "privacy-policy", slug: "privacy-policy", content: { component: "page", _uid: "privacy", body: [] } };
+  const site = createSite([...stories, redirected]);
   const target = stories.find((story) => story.full_slug === "products/");
-  assert.deepEqual(site.byUuid(product.uuid), { path: `/${product.full_slug}` });
-  const link = { linktype: "story", uuid: product.uuid, href: product.full_slug, anchor: null, openInNewTab: false };
-  assert.equal(customUrlFor(link, { story: "x", site, fileRef, overrides: [], note: () => {} }).external, `/${product.full_slug}`);
+  assert.deepEqual(site.byUuid(redirected.uuid), { path: "/privacy-policy" });
+  const link = { linktype: "story", uuid: redirected.uuid, href: redirected.full_slug, anchor: null, openInNewTab: false };
+  assert.equal(customUrlFor(link, { story: "x", site, fileRef, overrides: [], note: () => {} }).external, "/privacy-policy");
   assert.deepEqual(site.byUuid(target.uuid).ref, { _type: "reference", _ref: `page-${target.uuid}` });
   assert.equal(site.byPath("/products").path, "/products");
 });
