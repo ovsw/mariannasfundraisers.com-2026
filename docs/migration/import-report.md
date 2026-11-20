@@ -20,6 +20,8 @@ What the importer (`pnpm storyblok:import`, ticket #13) found in the Storyblok e
 | homePage | 1 |
 | navigation | 1 |
 | page | 31 |
+| product | 16 |
+| productPageSettings | 1 |
 | settings | 1 |
 
 Imported as published although unpublished in Storyblok (spec decision 4): /flavored-salsas/menu, /special-fundraising-events.
@@ -31,13 +33,16 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | badgeAndText | 2 |
 | cutoutLeftAndText | 19 |
 | cutoutRightAndText | 12 |
+| hoagieMenu | 1 |
 | imageAndIconList | 6 |
 | pageBanner | 27 |
 | pageHeading | 21 |
 | photoLeftAndText | 11 |
 | photoRightAndText | 8 |
+| pizzaMenu | 1 |
 | richTextBlock | 19 |
-| scaffold | 19 |
+| salsaMenu | 2 |
+| scaffold | 15 |
 | videoLeftAndText | 3 |
 | videoRightAndText | 3 |
 
@@ -48,12 +53,9 @@ Scaffolds by the section that will replace them:
 | Call to action with image | 2 |
 | Cognito form | 4 |
 | FAQ list | 2 |
-| Hoagie menu | 1 |
 | Home hero | 1 |
 | Latest news | 1 |
 | Menu teaser | 1 |
-| Pizza menu | 1 |
-| Salsa menu | 2 |
 | Steps | 1 |
 | Testimonials | 1 |
 | Two text columns | 2 |
@@ -62,9 +64,6 @@ Scaffolds by the section that will replace them:
 
 | Story | Why |
 | --- | --- |
-| /flavored-salsas/cowboy-salsa | product page: imported by ticket #16 |
-| /flavored-salsas/mph-salsa | product page: imported by ticket #16 |
-| /flavored-salsas/sunset-salsa | product page: imported by ticket #16 |
 | /news/a-new-hoagie-is-joining-the-marianna-s-lineup | news post: imported by ticket #17 |
 | /news/a-positive-partnership | news post: imported by ticket #17 |
 | /news/a-scary-successful-sampling | news post: imported by ticket #17 |
@@ -84,19 +83,6 @@ Scaffolds by the section that will replace them:
 | /news/winner-2025-hometown-favorite-sandwich | news post: imported by ticket #17 |
 | /news/winner:-2024-hometown-favorite-sandwich | news post: imported by ticket #17 |
 | /privacy-policy | the old site redirects this URL to iubenda; it becomes a redirect (ticket #20) |
-| /products/all-american-hoagie | product page: imported by ticket #16 |
-| /products/cheese-hoagie | product page: imported by ticket #16 |
-| /products/cheese-pizza | product page: imported by ticket #16 |
-| /products/ham-and-swiss-hoagie | product page: imported by ticket #16 |
-| /products/ham-club-hoagie | product page: imported by ticket #16 |
-| /products/italian-hoagie | product page: imported by ticket #16 |
-| /products/pepperoni-pizza | product page: imported by ticket #16 |
-| /products/roast-beef-cheese-hoagie | product page: imported by ticket #16 |
-| /products/roast-turkey-with-cheese-hoagie | product page: imported by ticket #16 |
-| /products/smoked-ham-cheddar-hoagie | product page: imported by ticket #16 |
-| /products/sweet-lebanon-bologna-hoagie | product page: imported by ticket #16 |
-| /products/traditional-hoagie | product page: imported by ticket #16 |
-| /products/white-pizza | product page: imported by ticket #16 |
 | /terms-and-conditions | the old site redirects this URL to iubenda; it becomes a redirect (ticket #20) |
 
 ## Needs a hand
@@ -105,6 +91,7 @@ Scaffolds by the section that will replace them:
 | --- | --- | --- |
 | /our-leadership | body[7] section > content[0] row-big-image | button "Our Team" has no destination; it is not imported |
 | /schedule-a-free-tasting | body[1] section > content[1] row-two-columns | the text column beside the Cognito form has no field in the Cognito form section |
+| products | pizza hero buttons | the pizza pages do not all have the same hero buttons; the most common (more selections, Pricing Info) are written into productPageSettings |
 
 ## Overrides
 
@@ -119,31 +106,37 @@ Not applied in this run:
 | Story | From | Why |
 | --- | --- | --- |
 | news/national-pizza-day-february-9th-2022 | /menu/ | news post: imported by ticket #17 |
-| products/smoked-ham-cheddar-hoagie | menu/ | product page: imported by ticket #16 |
 
 ## Story links stored under an old address
 
 Imported by story UUID, so they point at the story's current page.
 
-None.
+| Story | Where | Stored address | Now |
+| --- | --- | --- | --- |
+| /flavored-salsas/cowboy-salsa | product hero | /flavored-salsas | /flavored-salsas/menu |
+| /flavored-salsas/mph-salsa | product hero | /flavored-salsas | /flavored-salsas/menu |
+| /flavored-salsas/sunset-salsa | product hero | /flavored-salsas | /flavored-salsas/menu |
 
 ## Dropped, by kind
 
 | What | Count |
 | --- | --- |
 | hero text | 3 |
+| hidden blocks | 1 |
 | links that go nowhere | 1 |
-| option: button.icon_position | 41 |
+| option: button.icon_position | 86 |
 | option: feature-group.heading_level | 18 |
 | option: form_cognito.embed_code | 1 |
-| option: heading-group.heading_level | 27 |
+| option: heading-group.heading_level | 40 |
 | option: heading.style | 17 |
 | option: hero.background_color | 28 |
 | option: hero.content | 8 |
 | option: hero.height | 28 |
 | option: hero.is_tall | 4 |
 | option: hero.type | 3 |
-| option: row-big-image.extra_padding | 36 |
+| option: row-big-image.badge_image | 5 |
+| option: row-big-image.contain_image | 16 |
+| option: row-big-image.extra_padding | 52 |
 | option: row-big-image.name | 14 |
 | option: row-menu-listing.menu_items | 1 |
 | option: row-menu-listing.menu_listing | 1 |
@@ -160,10 +153,12 @@ None.
 | option: section.padding_top | 78 |
 | option: section.width | 87 |
 | option: table.remove_margins | 2 |
-| rich text: pasted class | 13 |
-| rich text: pasted text colour | 32 |
+| product item_type (wrong on the old site) | 5 |
+| product nt_* fields (unused on the old site) | 64 |
+| rich text: pasted class | 24 |
+| rich text: pasted text colour | 50 |
 
-## Images without alt text (95)
+## Images without alt text (144)
 
 Writing these is a follow-up with the Starter's image-description flow (spec, out of scope).
 
@@ -193,13 +188,7 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /find-a-sale | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/632x632/0714d60d8a/diane-on-the-phone.png |
 | /flavored-salsas | body[0] hero | https://a.storyblok.com/f/133593/3300x2550/ef12cf3b02/mfs-salsa-presentation-slide-2.jpg |
 | /flavored-salsas | body[2] section > content[0] row-big-image | https://a.storyblok.com/f/133593/3300x2550/ef12cf3b02/mfs-salsa-presentation-slide-2.jpg |
-| /flavored-salsas | body[2] section > content[1] row-menu-listing | https://a.storyblok.com/f/133593/591x718/439d8061df/2025-mfs-cowboy-salsa.png |
-| /flavored-salsas | body[2] section > content[1] row-menu-listing | https://a.storyblok.com/f/133593/591x718/2dfb8391f2/2025-mfs-mph-salsa.png |
-| /flavored-salsas | body[2] section > content[1] row-menu-listing | https://a.storyblok.com/f/133593/591x718/ae0d071575/2025-mfs-sunset-salsa.png |
 | /flavored-salsas/menu | body[0] section > content[0] row-big-image | https://a.storyblok.com/f/133593/3300x2550/ef12cf3b02/mfs-salsa-presentation-slide-2.jpg |
-| /flavored-salsas/menu | body[0] section > content[1] row-menu-listing | https://a.storyblok.com/f/133593/591x718/439d8061df/2025-mfs-cowboy-salsa.png |
-| /flavored-salsas/menu | body[0] section > content[1] row-menu-listing | https://a.storyblok.com/f/133593/591x718/2dfb8391f2/2025-mfs-mph-salsa.png |
-| /flavored-salsas/menu | body[0] section > content[1] row-menu-listing | https://a.storyblok.com/f/133593/591x718/ae0d071575/2025-mfs-sunset-salsa.png |
 | /flavored-salsas/salsa-pricing-info | body[0] hero | https://a.storyblok.com/f/133593/3300x2550/ef12cf3b02/mfs-salsa-presentation-slide-2.jpg |
 | /flavored-salsas/salsa-pricing-info | body[2] section > content[0] row-big-image | https://a.storyblok.com/f/133593/1466x1304/46b25bb078/mfs_value.png |
 | /fresh-and-clean-obsessed | body[0] hero | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
@@ -240,18 +229,6 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /our-story-and-promise | body[6] section > content[0] row-big-image | https://a.storyblok.com/f/133593/2400x3597/e245d7c864/hoagie-hero-kid-pizza-box-2.jpg |
 | /pricing-info | body[2] section > content[0] row-big-image | https://a.storyblok.com/f/133593/1466x1304/46b25bb078/mfs_value.png |
 | /pricing-info | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/562x511/e76e4f06fd/mariannas-how-it-works-call-us.png |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/eefd5a43c7/italian-hoagie.jpg |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/9dfac8c1cb/ham-club-hoagie.jpg |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/6be94de5ff/ham-and-swiss-hoagie.jpg |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/c890246c8e/roast-beef-hoagie.jpg |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/27b762a603/all-american-hoagie.jpg |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/7f64f14461/turkey-hoagie.jpg |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/eb8f1bb947/traditional-hoagie.jpg |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/6032d89de2/three-cheese-hoagie.jpg |
-| /products | body[0] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/1717x784/3639a14baf/ham-and-cheddar-hoagie.jpg |
-| /products | body[1] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/948x800/a0ef615e91/mariannas-fundraisers-pepperoni-pizza.jpg |
-| /products | body[1] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/948x800/1d119081f4/mariannas-fundraisers-cheese-pizza.jpg |
-| /products | body[1] section > content[2] row-menu-listing | https://a.storyblok.com/f/133593/948x800/22ad63b56d/mariannas-fundraisers-white-pizza.jpg |
 | /schedule-a-free-tasting | body[0] hero | https://a.storyblok.com/f/133593/2500x1669/bb928c70f4/wresler-hoagie-focus.jpg |
 | /special-fundraising-events | body[0] hero | https://a.storyblok.com/f/133593/7360x4912/e802abafe8/girls-with-pizza-and-hoagies.jpg |
 | /special-fundraising-events | body[2] section > content[0] row-big-image | https://a.storyblok.com/f/133593/1471x1071/e88ef4802d/mfs_products_iso.png |
@@ -264,8 +241,75 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /video-guides | body[2] section > content[0] row-big-image | https://a.storyblok.com/f/133593/676x399/18a60ebf73/renee-in-front-of-truck.png |
 | /video-guides | body[2] section > content[1] row-big-image | https://a.storyblok.com/f/133593/3024x4032/c5205c3c67/mfs-delivery-day.jpeg |
 | /video-guides | body[2] section > content[2] row-big-image | https://a.storyblok.com/f/133593/562x511/e76e4f06fd/mariannas-how-it-works-call-us.png |
+| /flavored-salsas/cowboy-salsa | menu card on /flavored-salsas | https://a.storyblok.com/f/133593/591x718/439d8061df/2025-mfs-cowboy-salsa.png |
+| /flavored-salsas/cowboy-salsa | product hero | https://a.storyblok.com/f/133593/2407x1080/4be7863e99/mfr-cowboy-salsa-product-hero.jpg |
+| /flavored-salsas/cowboy-salsa | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/591x718/439d8061df/2025-mfs-cowboy-salsa.png |
+| /flavored-salsas/cowboy-salsa | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /flavored-salsas/cowboy-salsa | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /flavored-salsas/mph-salsa | menu card on /flavored-salsas | https://a.storyblok.com/f/133593/591x718/2dfb8391f2/2025-mfs-mph-salsa.png |
+| /flavored-salsas/mph-salsa | product hero | https://a.storyblok.com/f/133593/2407x1080/04afb74d78/mfr-mph-salsa-product-hero.jpg |
+| /flavored-salsas/mph-salsa | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/591x718/2dfb8391f2/2025-mfs-mph-salsa.png |
+| /flavored-salsas/mph-salsa | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /flavored-salsas/mph-salsa | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /flavored-salsas/sunset-salsa | menu card on /flavored-salsas | https://a.storyblok.com/f/133593/591x718/ae0d071575/2025-mfs-sunset-salsa.png |
+| /flavored-salsas/sunset-salsa | product hero | https://a.storyblok.com/f/133593/2407x1080/3d26f67133/mfr-sunset-salsa-product-hero.jpg |
+| /flavored-salsas/sunset-salsa | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/591x718/ae0d071575/2025-mfs-sunset-salsa.png |
+| /flavored-salsas/sunset-salsa | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /flavored-salsas/sunset-salsa | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/all-american-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/27b762a603/all-american-hoagie.jpg |
+| /products/all-american-hoagie | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/901x900/88106092f3/2022-mfs-sticker_all_american_.png |
+| /products/all-american-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/all-american-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/cheese-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/6032d89de2/three-cheese-hoagie.jpg |
+| /products/cheese-hoagie | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/901x900/35ae6ab125/2022-mfs-sticker_cheese_.png |
+| /products/cheese-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/cheese-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/cheese-pizza | menu card on /products | https://a.storyblok.com/f/133593/948x800/1d119081f4/mariannas-fundraisers-cheese-pizza.jpg |
+| /products/cheese-pizza | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/901x900/cb447e2edf/2022-mfs-sticker_cheese_pizza_.png |
+| /products/cheese-pizza | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/cheese-pizza | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/ham-and-swiss-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/6be94de5ff/ham-and-swiss-hoagie.jpg |
+| /products/ham-and-swiss-hoagie | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/900x900/f2aca493e6/2022-mfs-sticker_ham_swiss_.png |
+| /products/ham-and-swiss-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/ham-and-swiss-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/ham-club-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/9dfac8c1cb/ham-club-hoagie.jpg |
+| /products/ham-club-hoagie | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/900x900/73ce4b1006/2022-mfs-sticker_ham_club_.png |
+| /products/ham-club-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/ham-club-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/italian-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/eefd5a43c7/italian-hoagie.jpg |
+| /products/italian-hoagie | product hero | https://a.storyblok.com/f/133593/2407x1080/bc13216698/italian-hoagie-on-table.jpg |
+| /products/italian-hoagie | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/901x900/6d6097e363/2022-mfs-sticker_italian_.png |
+| /products/italian-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/italian-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/pepperoni-pizza | menu card on /products | https://a.storyblok.com/f/133593/948x800/a0ef615e91/mariannas-fundraisers-pepperoni-pizza.jpg |
+| /products/pepperoni-pizza | product hero | https://a.storyblok.com/f/133593/2407x1080/e1ea813992/pepperoni-pizza-on-table.jpg |
+| /products/pepperoni-pizza | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/900x900/2fb8486e9a/2022-mfs-sticker_pepperoni_pizza_.png |
+| /products/pepperoni-pizza | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/pepperoni-pizza | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/roast-beef-cheese-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/c890246c8e/roast-beef-hoagie.jpg |
+| /products/roast-beef-cheese-hoagie | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/901x900/5e5321f8f6/2022-mfs-sticker_roast_beef_.png |
+| /products/roast-beef-cheese-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/roast-beef-cheese-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/roast-turkey-with-cheese-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/7f64f14461/turkey-hoagie.jpg |
+| /products/roast-turkey-with-cheese-hoagie | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/900x900/5e4aa73b76/2022-mfs-sticker_turkey_.png |
+| /products/roast-turkey-with-cheese-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/roast-turkey-with-cheese-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/smoked-ham-cheddar-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/3639a14baf/ham-and-cheddar-hoagie.jpg |
+| /products/smoked-ham-cheddar-hoagie | body[2] section > content[0] row-big-image | https://a.storyblok.com/f/133593/901x900/5f2091bb5a/2022-mfs-sticker_cheddar_.png |
+| /products/smoked-ham-cheddar-hoagie | body[4] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/smoked-ham-cheddar-hoagie | body[5] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/sweet-lebanon-bologna-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/sweet-lebanon-bologna-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/traditional-hoagie | menu card on /products | https://a.storyblok.com/f/133593/1717x784/eb8f1bb947/traditional-hoagie.jpg |
+| /products/traditional-hoagie | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/901x900/308229a82d/2022-mfs-sticker_traditional_.png |
+| /products/traditional-hoagie | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/traditional-hoagie | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
+| /products/white-pizza | menu card on /products | https://a.storyblok.com/f/133593/948x800/22ad63b56d/mariannas-fundraisers-white-pizza.jpg |
+| /products/white-pizza | body[1] section > content[0] row-big-image | https://a.storyblok.com/f/133593/901x900/9bbd643dfe/2022-mfs-sticker_white_piozza_.png |
+| /products/white-pizza | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
+| /products/white-pizza | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
 
-## Every dropped item (948)
+## Every dropped item (1142)
 
 | Story | Where | Item |
 | --- | --- | --- |
@@ -1217,3 +1261,197 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /video-guides | body[2] section > content[1] row-big-image row-big-image | row-big-image.extra_padding = true |
 | /video-guides | body[2] section > content[2] row-big-image row-big-image | row-big-image.extra_padding = true |
 | /video-guides | body[2] section > content[2] row-big-image row-big-image.content[0] heading-group | heading-group.heading_level = "h2" |
+| /flavored-salsas/cowboy-salsa | story | item_type = "hoagie" (the menu card says salsa) |
+| /flavored-salsas/cowboy-salsa | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /flavored-salsas/cowboy-salsa | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /flavored-salsas/cowboy-salsa | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /flavored-salsas/cowboy-salsa | body[1] section > content[0] row-big-image | row-big-image.badge_image = true (the product template draws the ingredients image) |
+| /flavored-salsas/cowboy-salsa | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /flavored-salsas/cowboy-salsa | body[1] section > content[0] row-big-image | rich text mark: pasted text colour |
+| /flavored-salsas/cowboy-salsa | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /flavored-salsas/cowboy-salsa | story | nt_total_fat = "15g" |
+| /flavored-salsas/cowboy-salsa | story | nt_total_fat_p = "19%" |
+| /flavored-salsas/cowboy-salsa | story | nt_saturated_fat = "6g" |
+| /flavored-salsas/cowboy-salsa | story | nt_saturated_fat_p = "30%" |
+| /flavored-salsas/cowboy-salsa | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /flavored-salsas/mph-salsa | story | item_type = "hoagie" (the menu card says salsa) |
+| /flavored-salsas/mph-salsa | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /flavored-salsas/mph-salsa | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /flavored-salsas/mph-salsa | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /flavored-salsas/mph-salsa | body[1] section > content[0] row-big-image | row-big-image.badge_image = true (the product template draws the ingredients image) |
+| /flavored-salsas/mph-salsa | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /flavored-salsas/mph-salsa | body[1] section > content[0] row-big-image | rich text mark: pasted text colour |
+| /flavored-salsas/mph-salsa | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /flavored-salsas/mph-salsa | story | nt_total_fat = "15g" |
+| /flavored-salsas/mph-salsa | story | nt_total_fat_p = "19%" |
+| /flavored-salsas/mph-salsa | story | nt_saturated_fat = "6g" |
+| /flavored-salsas/mph-salsa | story | nt_saturated_fat_p = "30%" |
+| /flavored-salsas/mph-salsa | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /flavored-salsas/sunset-salsa | story | item_type = "hoagie" (the menu card says salsa) |
+| /flavored-salsas/sunset-salsa | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /flavored-salsas/sunset-salsa | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /flavored-salsas/sunset-salsa | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /flavored-salsas/sunset-salsa | body[1] section > content[0] row-big-image | row-big-image.badge_image = true (the product template draws the ingredients image) |
+| /flavored-salsas/sunset-salsa | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /flavored-salsas/sunset-salsa | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /flavored-salsas/sunset-salsa | story | nt_total_fat = "15g" |
+| /flavored-salsas/sunset-salsa | story | nt_total_fat_p = "19%" |
+| /flavored-salsas/sunset-salsa | story | nt_saturated_fat = "6g" |
+| /flavored-salsas/sunset-salsa | story | nt_saturated_fat_p = "30%" |
+| /flavored-salsas/sunset-salsa | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/all-american-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/all-american-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/all-american-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/all-american-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/all-american-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/all-american-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/all-american-hoagie | story | nt_total_fat = "15g" |
+| /products/all-american-hoagie | story | nt_total_fat_p = "19%" |
+| /products/all-american-hoagie | story | nt_saturated_fat = "6g" |
+| /products/all-american-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/all-american-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/cheese-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/cheese-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/cheese-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/cheese-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/cheese-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/cheese-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/cheese-hoagie | story | nt_total_fat = "15g" |
+| /products/cheese-hoagie | story | nt_total_fat_p = "19%" |
+| /products/cheese-hoagie | story | nt_saturated_fat = "6g" |
+| /products/cheese-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/cheese-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/cheese-pizza | story | item_type = "hoagie" (the menu card says pizza) |
+| /products/cheese-pizza | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/cheese-pizza | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/cheese-pizza | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/cheese-pizza | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/cheese-pizza | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/cheese-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/cheese-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/cheese-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/cheese-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/cheese-pizza | story | nt_total_fat = "15g" |
+| /products/cheese-pizza | story | nt_total_fat_p = "19%" |
+| /products/cheese-pizza | story | nt_saturated_fat = "6g" |
+| /products/cheese-pizza | story | nt_saturated_fat_p = "30%" |
+| /products/cheese-pizza | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/ham-and-swiss-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/ham-and-swiss-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/ham-and-swiss-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/ham-and-swiss-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/ham-and-swiss-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/ham-and-swiss-hoagie | body[1] section > content[0] row-big-image | rich text mark: pasted class |
+| /products/ham-and-swiss-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/ham-and-swiss-hoagie | story | nt_total_fat = "15g" |
+| /products/ham-and-swiss-hoagie | story | nt_total_fat_p = "19%" |
+| /products/ham-and-swiss-hoagie | story | nt_saturated_fat = "6g" |
+| /products/ham-and-swiss-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/ham-and-swiss-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/ham-club-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/ham-club-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/ham-club-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/ham-club-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/ham-club-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/ham-club-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/ham-club-hoagie | story | nt_total_fat = "15g" |
+| /products/ham-club-hoagie | story | nt_total_fat_p = "19%" |
+| /products/ham-club-hoagie | story | nt_saturated_fat = "6g" |
+| /products/ham-club-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/ham-club-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/italian-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/italian-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/italian-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/italian-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/italian-hoagie | body[1] section > content[0] row-big-image | row-big-image.badge_image = true (the product template draws the ingredients image) |
+| /products/italian-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/italian-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/italian-hoagie | story | nt_total_fat = "15g" |
+| /products/italian-hoagie | story | nt_total_fat_p = "19%" |
+| /products/italian-hoagie | story | nt_saturated_fat = "6g" |
+| /products/italian-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/italian-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/pepperoni-pizza | story | item_type = "hoagie" (the menu card says pizza) |
+| /products/pepperoni-pizza | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/pepperoni-pizza | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/pepperoni-pizza | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/pepperoni-pizza | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/pepperoni-pizza | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/pepperoni-pizza | story | nt_total_fat = "15g" |
+| /products/pepperoni-pizza | story | nt_total_fat_p = "19%" |
+| /products/pepperoni-pizza | story | nt_saturated_fat = "6g" |
+| /products/pepperoni-pizza | story | nt_saturated_fat_p = "30%" |
+| /products/pepperoni-pizza | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/roast-beef-cheese-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/roast-beef-cheese-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/roast-beef-cheese-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/roast-beef-cheese-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/roast-beef-cheese-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/roast-beef-cheese-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/roast-beef-cheese-hoagie | story | nt_total_fat = "15g" |
+| /products/roast-beef-cheese-hoagie | story | nt_total_fat_p = "19%" |
+| /products/roast-beef-cheese-hoagie | story | nt_saturated_fat = "6g" |
+| /products/roast-beef-cheese-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/roast-beef-cheese-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/roast-turkey-with-cheese-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/roast-turkey-with-cheese-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/roast-turkey-with-cheese-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/roast-turkey-with-cheese-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/roast-turkey-with-cheese-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/roast-turkey-with-cheese-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/roast-turkey-with-cheese-hoagie | story | nt_total_fat = "15g" |
+| /products/roast-turkey-with-cheese-hoagie | story | nt_total_fat_p = "19%" |
+| /products/roast-turkey-with-cheese-hoagie | story | nt_saturated_fat = "6g" |
+| /products/roast-turkey-with-cheese-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/roast-turkey-with-cheese-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/smoked-ham-cheddar-hoagie | body[1] hero | hidden hero "14" Smoked Ham & Cheddar Hoagie" |
+| /products/smoked-ham-cheddar-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/smoked-ham-cheddar-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/smoked-ham-cheddar-hoagie | body[2] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/smoked-ham-cheddar-hoagie | body[2] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/smoked-ham-cheddar-hoagie | body[2] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/smoked-ham-cheddar-hoagie | body[3] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/smoked-ham-cheddar-hoagie | story | nt_total_fat = "15g" |
+| /products/smoked-ham-cheddar-hoagie | story | nt_total_fat_p = "19%" |
+| /products/smoked-ham-cheddar-hoagie | story | nt_saturated_fat = "6g" |
+| /products/smoked-ham-cheddar-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/smoked-ham-cheddar-hoagie | body[5] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/sweet-lebanon-bologna-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/sweet-lebanon-bologna-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/sweet-lebanon-bologna-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/sweet-lebanon-bologna-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/sweet-lebanon-bologna-hoagie | body[1] section > content[0] row-big-image | row-big-image.badge_image = true (the product template draws the ingredients image) |
+| /products/sweet-lebanon-bologna-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/sweet-lebanon-bologna-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/sweet-lebanon-bologna-hoagie | story | nt_total_fat = "15g" |
+| /products/sweet-lebanon-bologna-hoagie | story | nt_total_fat_p = "19%" |
+| /products/sweet-lebanon-bologna-hoagie | story | nt_saturated_fat = "6g" |
+| /products/sweet-lebanon-bologna-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/sweet-lebanon-bologna-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/traditional-hoagie | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/traditional-hoagie | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/traditional-hoagie | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/traditional-hoagie | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/traditional-hoagie | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/traditional-hoagie | body[2] section > content[0] row-two-columns row-two-columns.column_1[0] heading-group | heading-group.heading_level = "h2" |
+| /products/traditional-hoagie | story | nt_total_fat = "15g" |
+| /products/traditional-hoagie | story | nt_total_fat_p = "19%" |
+| /products/traditional-hoagie | story | nt_saturated_fat = "6g" |
+| /products/traditional-hoagie | story | nt_saturated_fat_p = "30%" |
+| /products/traditional-hoagie | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |
+| /products/white-pizza | product hero hero-product.buttons[0] button | button.icon_position = "left" |
+| /products/white-pizza | product hero hero-product.buttons[1] button | button.icon_position = "left" |
+| /products/white-pizza | body[1] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
+| /products/white-pizza | body[1] section > content[0] row-big-image row-big-image.content[2] button-group.content[0] button | button.icon_position = "left" |
+| /products/white-pizza | body[1] section > content[0] row-big-image | row-big-image.contain_image = true (the product template draws the ingredients image) |
+| /products/white-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/white-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/white-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/white-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/white-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/white-pizza | body[1] section > content[1] row-single-column | rich text mark: pasted class |
+| /products/white-pizza | story | nt_total_fat = "15g" |
+| /products/white-pizza | story | nt_total_fat_p = "19%" |
+| /products/white-pizza | story | nt_saturated_fat = "6g" |
+| /products/white-pizza | story | nt_saturated_fat_p = "30%" |
+| /products/white-pizza | body[4] section > content[0] row-two-columns-cta | rich text mark: pasted text colour |

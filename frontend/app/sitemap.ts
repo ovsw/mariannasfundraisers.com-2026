@@ -1,14 +1,16 @@
 import { MetadataRoute } from "next";
 import { groq } from "next-sanity";
 import { getDynamicFetchOptions, sanityFetchMetadata } from "@/sanity/lib/live";
+import { PRODUCT_PATH_GROQ } from "../../shared/content-routes";
 
-const VIEWABLE_TYPES = ["homePage", "page", "post", "blogIndex"] as const;
+const VIEWABLE_TYPES = ["homePage", "page", "post", "product", "blogIndex"] as const;
 
 const urlQuery = `
   'url': select(
     _id == "homePage" && _type == "homePage" => $baseUrl + "/",
     _id == "blogIndex" => $baseUrl + "/news",
     _type == "post" => $baseUrl + "/news/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
+    _type == "product" => $baseUrl + ${PRODUCT_PATH_GROQ},
     $baseUrl + "/" + array::join(string::split(slug.current, "/")[@ != ""], "/")
   )
 `;
@@ -19,6 +21,7 @@ const SITEMAP_QUERY = groq`
     _type in $viewableTypes
     && meta.noindex != true
     && (defined(slug.current) || _id in ["homePage", "blogIndex"])
+    && (_type != "product" || kind in ["hoagie", "pizza", "salsa"])
   ] {
     ${urlQuery},
     "lastModified": _updatedAt,
@@ -26,7 +29,7 @@ const SITEMAP_QUERY = groq`
     "priority": select(
       _id == "homePage" && _type == "homePage" => 1,
       _id == "blogIndex" => 0.7,
-      _type == "page" => 0.5,
+      _type in ["page", "product"] => 0.5,
       0.7
     )
   } | order(priority desc, url asc)

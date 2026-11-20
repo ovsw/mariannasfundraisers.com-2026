@@ -12,6 +12,8 @@ import {
   House,
   TrendingUpDown,
   PanelRight,
+  Sandwich,
+  Store,
 } from "lucide-react";
 import type { StructureResolver } from "sanity/structure";
 
@@ -37,6 +39,37 @@ export const structure: StructureResolver = (S) =>
           S.documentTypeList("page")
             .title("Pages")
             .defaultOrdering([{ field: "title", direction: "asc" }])
+        ),
+      S.listItem()
+        .title("Products")
+        .icon(Sandwich)
+        .child(
+          S.list()
+            .title("Products")
+            .items([
+              S.listItem()
+                .title("Product Page Settings")
+                .icon(Store)
+                .child(
+                  S.editor()
+                    .id("productPageSettings")
+                    .schemaType("productPageSettings")
+                    .documentId("productPageSettings")
+                ),
+              S.divider(),
+              S.listItem()
+                .title("All Products")
+                .icon(Sandwich)
+                .schemaType("product")
+                .child(
+                  S.documentTypeList("product")
+                    .title("Products")
+                    .defaultOrdering([
+                      { field: "kind", direction: "asc" },
+                      { field: "name", direction: "asc" },
+                    ])
+                ),
+            ])
         ),
       S.listItem()
         .title("News")

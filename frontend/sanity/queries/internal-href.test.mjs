@@ -22,3 +22,13 @@ test("internal href resolvers use the news post namespace and no category routes
   assert.match(footerSource, /string::split\(internal->slug\.current, "\/"\)/);
   assert.doesNotMatch(footerSource, /slug\.current \+ "\/"/);
 });
+
+test("every internal href resolver gives a product the address its kind sets", async () => {
+  const { productPathGroq } = await import("../../../shared/content-routes.ts");
+  for (const prefix of ["customLink.internal", "url.internal", "internal", "link.internal", "@.internalLink"]) {
+    assert.ok(
+      source.includes(`${prefix}->_type == "product" && defined(${prefix}->slug.current) => ${productPathGroq(`${prefix}->`)}`),
+      prefix,
+    );
+  }
+});

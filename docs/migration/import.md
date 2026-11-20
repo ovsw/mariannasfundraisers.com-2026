@@ -39,9 +39,9 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
 
 ## What it does
 
-- **IDs.** A document's ID comes from its story UUID: `page-<uuid>`
-  (`product-<uuid>` and `post-<uuid>` for the later tickets); the home story
-  is the `homePage` singleton. A section's `_key` is its row's `_uid`.
+- **IDs.** A document's ID comes from its story UUID: `page-<uuid>`,
+  `product-<uuid>` (and `post-<uuid>` for ticket #17); the home story is the
+  `homePage` singleton. A section's `_key` is its row's `_uid`.
 - **Files.** Every Storyblok file the stories use (158) is downloaded once and
   uploaded with `source.url` set to its Storyblok URL; later runs match it by
   that URL. An image field keeps its alt text and focal point (as the
@@ -75,8 +75,30 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   table and the button rows go into the section's rich text and buttons; each
   feature group becomes an item of icon, heading and simple text. A row with
   no image, no text, or a video link that is not a YouTube link stays a
-  Scaffold and is listed under "needs a hand". Rows inside product pages and
-  news posts are left to tickets #16 and #17.
+  Scaffold and is listed under "needs a hand". Rows inside news posts are left
+  to ticket #17; product pages are below.
+- **Products** (spec decisions 8 and 20, ticket #16, `storyblok/products.mjs`).
+  Each of the 16 product pages becomes one `product` (`product-<uuid>`), from
+  fixed places in its body: the product hero (hero title, text and photo), the
+  first "big image" row (its eyebrow as the ingredients label, its text, its
+  image), a single-column row in the same wrapper (the pizzas' note), and the
+  two-column row with the nutrition table (the serving text, and the 26 values
+  as numbers). The kind and the menu card (short name, description, card photo,
+  dressing) come from the old menu card that links to the product, because the
+  old `item_type` is wrong on the salsas and on two pizzas; `item_type` and the
+  `nt_*` fields are dropped and counted. A product page no card links to, or
+  cards of two kinds, stop the import. The hero buttons and the "full
+  ingredients list" button go once per kind into `productPageSettings`, the
+  ingredients button without a product's anchor (the Website adds the anchor of
+  the product's name); where the pages of one kind disagree, the most common
+  buttons are written and the report says so. The Handmade food row and the
+  call-to-action row are written once into `productPageSettings`; the importer
+  compares them as it imports them (so a pasted colour or a trailing line break
+  makes no difference) and stops with an error if they differ between
+  products.
+- **Menus.** Each old menu row becomes the Hoagie, Pizza or Salsa menu section
+  with references to the products its cards link to, in the old order. An old
+  card's alt text "null" is no alt text (spec decision 21).
 - **Rich text** (spec decision 14): paragraphs, headings (an old level n is
   h(n+1), then raised where a Rich Text section's headings would skip a
   level, so the page outline never jumps), lists, bold, italic, underline, line breaks and links. Pasted colour
@@ -84,8 +106,8 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   is its text in hyphenated words (`shared/heading-anchor.ts`), which matches
   every anchor the old headings carried.
 - **Links.** A story link points at the document from that story, with its
-  anchor; a link to a story that is not a document yet (a product page or news
-  post until its ticket imports it) is its path. Email, phone and external
+  anchor; a link to a story that is not a document yet (a news post until its
+  ticket imports it) is its path. Email, phone and external
   links keep their kind; links to the old site's own address become site
   links; links to Storyblok files point at the uploaded file.
 - **Site shell** (spec decisions 16 and 17, ticket #14). The `settings`,
@@ -105,8 +127,8 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   `MFR_GA_MEASUREMENT_ID`, from the shell, `studio/.env.local` or the shared
   secrets file; without it the report says so, and `--apply` keeps the ID the
   dataset already holds.
-- **Not imported here:** product pages (ticket #16) and news posts (ticket
-  #17). They are counted and listed in the report.
+- **Not imported here:** news posts (ticket #17). They are counted and listed
+  in the report.
 
 ## Overrides
 
@@ -124,5 +146,6 @@ matched nothing in this run (for example in a news post, before its ticket).
 | `studio/scripts/storyblok/transform.mjs` | The pure mapping from stories to documents |
 | `studio/scripts/storyblok/rich-text.mjs`, `links.mjs`, `files.mjs`, `scaffold-text.mjs` | Rich text, links, files and Scaffold text |
 | `studio/scripts/storyblok/site-shell.mjs` | Settings, navigation and footer from the seed file |
+| `studio/scripts/storyblok/products.mjs` | Products, Product Page Settings and the menu sections |
 | `studio/scripts/storyblok/write.mjs`, `safety.mjs` | Uploads, idempotent writes, the target check and the backup |
 | `studio/scripts/storyblok/fixtures/` | Stories and rich text cut from the real export, for the tests |

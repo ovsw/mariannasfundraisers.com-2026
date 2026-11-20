@@ -4,19 +4,18 @@
     {
       "story": "how-it-is-made",
       "from": "/menu/",
-      "to": { "story": "products/", "anchor": "hoagies" },
+      "to": {
+        "story": "products/",
+        "anchor": "hoagies"
+      },
       "reason": "Spec decision 21: the old site linked to /menu/, which no longer exists; the menu is /products."
     },
     {
       "story": "news/national-pizza-day-february-9th-2022",
       "from": "/menu/",
-      "to": { "story": "products/" },
-      "reason": "Spec decision 21: the old site linked to /menu/, which no longer exists; the menu is /products."
-    },
-    {
-      "story": "products/smoked-ham-cheddar-hoagie",
-      "from": "menu/",
-      "to": { "story": "products/" },
+      "to": {
+        "story": "products/"
+      },
       "reason": "Spec decision 21: the old site linked to /menu/, which no longer exists; the menu is /products."
     }
   ]

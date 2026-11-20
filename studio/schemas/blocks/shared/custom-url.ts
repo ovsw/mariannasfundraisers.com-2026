@@ -60,6 +60,7 @@ export default defineType({
         { type: "homePage" },
         { type: "page" },
         { type: "post" },
+        { type: "product" },
         { type: "blogIndex" },
       ],
       hidden: ({ parent }) => parent?.type !== "internal",
