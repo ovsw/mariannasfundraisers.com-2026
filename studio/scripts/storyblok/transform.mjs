@@ -112,6 +112,7 @@ function storyContext(story, shared) {
   const where = storyPath(story);
   const context = {
     story: story.full_slug,
+    storyUuid: story.uuid,
     site: shared.site,
     fileRef: shared.fileRef,
     overrides: shared.overrides.links,
@@ -409,9 +410,7 @@ export const COGNITO_FORM_TITLES = {
  * the introduction. Null when the form has no valid ID: it stays a Scaffold.
  */
 function cognitoFormSection(row, theme, context) {
-  const blocks = row.component === "row-two-columns"
-    ? [...visibleChildren(row.column_1, context), ...visibleChildren(row.column_2, context)]
-    : row.content;
+  const blocks = row.component === "row-two-columns" ? [...row.column_1, ...row.column_2] : row.content;
   const forms = blocks.filter((block) => block.component === "form_cognito");
   if (forms.length > 1) context.note("needs a hand", `the row holds ${forms.length} Cognito forms; only the first is imported`);
   const formId = cognitoFormId(forms[0]?.cognito_form_id);
@@ -434,8 +433,8 @@ function cognitoFormSection(row, theme, context) {
 
 /** An old row of two text columns as the Two text columns section, or null when a column is empty. */
 function twoTextColumnsSection(row, theme, context) {
-  const leftText = columnRichText(visibleChildren(row.column_1, context), context, "twoTextColumns");
-  const rightText = columnRichText(visibleChildren(row.column_2, context), context, "twoTextColumns");
+  const leftText = columnRichText(row.column_1 ?? [], context, "twoTextColumns");
+  const rightText = columnRichText(row.column_2 ?? [], context, "twoTextColumns");
   if (!leftText.length || !rightText.length) {
     context.note("needs a hand", `the two-column row has an empty ${leftText.length ? "right" : "left"} column; it stays a Scaffold`);
     return null;
@@ -443,9 +442,12 @@ function twoTextColumnsSection(row, theme, context) {
   return { _key: row._uid, _type: "twoTextColumns", theme, leftText, rightText };
 }
 
-/** The document ID of an old FAQ item: FAQ items live in one story, so their `_uid` is unique. */
-export function faqDocumentId(item) {
-  return `faq-${item._uid}`;
+/**
+ * The document ID of an old FAQ item. A `_uid` is unique only inside one
+ * story (copied stories keep theirs), so the ID starts with the story UUID.
+ */
+export function faqDocumentId(storyUuid, item) {
+  return `faq-${storyUuid}-${item._uid}`;
 }
 
 /**
@@ -478,7 +480,7 @@ function faqListSection(list, key, theme, context) {
       context.note("needs a hand", `the FAQ "${question ?? ""}" has no ${question ? "answer" : "question"}; it is not imported`);
       return;
     }
-    const document = { _id: faqDocumentId(item), _type: "faq", title: question, body: withKeys(body, "b") };
+    const document = { _id: faqDocumentId(context.storyUuid, item), _type: "faq", title: question, body: withKeys(body, "b") };
     context.shared.faqs.push(document);
     faqs.push({ _key: item._uid, _type: "reference", _ref: document._id });
   });
@@ -560,9 +562,9 @@ function pageSections(story, context) {
         return;
       }
       // Hidden children neither shape the row nor reach the page.
-      const row = Array.isArray(sourceRow.content) ? { ...sourceRow, content: sourceRow.content.filter((child) => !child.hidden) } : sourceRow;
-      for (const child of sourceRow.content ?? []) {
-        if (child.hidden) context.drop(context.at, `hidden ${child.component}`, "hidden blocks");
+      const row = { ...sourceRow };
+      for (const field of ["content", "column_1", "column_2"]) {
+        if (Array.isArray(sourceRow[field])) row[field] = visibleChildren(sourceRow[field], context);
       }
       const names = pageRowSections(row);
       const faqLists = row.content?.filter((b) => b.component === "faq-list") ?? [];

@@ -396,14 +396,14 @@ test("the 14 old FAQ items become faq records, listed in the old order under the
   const items = lists.flatMap((list) => list.items);
   assert.equal(faqs.length, 14);
   assert.equal(report.documents.faq, 14);
-  assert.deepEqual(faqs.map((faq) => faq._id), items.map((item) => `faq-${item._uid}`));
+  assert.deepEqual(faqs.map((faq) => faq._id), items.map((item) => `faq-${formStories[0].uuid}-${item._uid}`));
   assert.deepEqual(faqs.map((faq) => faq.title), items.map((item) => item.question.trim()));
   const sections = documents.find((document) => document._type === "page").blocks.filter((block) => block._type === "faqList");
   assert.deepEqual(sections.map((section) => section.title), ["Selling", "Product Info"]);
   sections.forEach((section, index) => {
     assert.deepEqual(
       section.faqs.map((ref) => [ref._type, ref._ref, ref._key]),
-      lists[index].items.map((item) => ["reference", `faq-${item._uid}`, item._uid]),
+      lists[index].items.map((item) => ["reference", `faq-${formStories[0].uuid}-${item._uid}`, item._uid]),
     );
   });
   // The answer is the rich text the old site shows (`answer_single`), lists
@@ -433,4 +433,14 @@ test("a two-column text row keeps each column's text in its own field", () => {
   assert.equal(textOf(section.rightText), textOf(richTextToBlocks(row.column_2[0].text, context)));
   assert.match(textOf(section.leftText), /^Our hoagies are made on freshly baked Italian rolls/);
   assert.match(textOf(section.rightText), /^Plus, our hoagies come with either/);
+});
+
+test("a hidden Cognito form beside a text column leaves the row Two text columns", () => {
+  const story = structuredClone(formStories[0]);
+  const row = story.content.body[1].content[0];
+  row.column_2 = [{ ...row.column_2.find((block) => block.component === "form_cognito"), hidden: true }, { ...row.column_1[0], _uid: "visible-right-text" }];
+  const { documents, report } = formPlan([story]);
+  const section = documents.find((document) => document._type === "page").blocks[1];
+  assert.equal(section._type, "twoTextColumns");
+  assert.ok(report.droppedItems.some(({ item }) => item === "hidden form_cognito"));
 });
