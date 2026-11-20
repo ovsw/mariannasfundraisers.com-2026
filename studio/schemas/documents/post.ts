@@ -103,14 +103,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: "category",
-      title: "Category",
-      type: "reference",
-      to: [{ type: "category" }],
-      group: "settings",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "body",
       title: "Body",
       type: "richTextContent",

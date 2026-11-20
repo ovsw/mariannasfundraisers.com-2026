@@ -10,7 +10,7 @@ import meta from "../blocks/shared/meta";
 
 export default defineType({
   name: "blogIndex",
-  title: "Blog Index",
+  title: "News Index",
   type: "document",
   icon: Newspaper,
   fieldsets: [blocksArchiveFieldset],
@@ -33,7 +33,7 @@ export default defineType({
       validation: (rule) =>
         rule
           .custom((value) =>
-            value?.trim() ? true : "Add a description for the Blog Index header",
+            value?.trim() ? true : "Add a description for the News Index header",
           )
           .warning(),
     }),
@@ -44,8 +44,8 @@ export default defineType({
   preview: {
     select: { title: "title", subtitle: "description" },
     prepare: ({ subtitle, title }) => ({
-      title: title || "Untitled Blog Index",
-      subtitle: subtitle || "/blog",
+      title: title || "Untitled News Index",
+      subtitle: subtitle || "/news",
     }),
   },
 });

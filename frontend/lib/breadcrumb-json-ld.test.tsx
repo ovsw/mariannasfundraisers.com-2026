@@ -12,8 +12,8 @@ describe("BreadcrumbJsonLd", () => {
       createBreadcrumbJsonLd(
         [
           { name: " Home ", path: "/" },
-          { name: " Blog ", path: "/blog/" },
-          { name: " Article ", path: "blog/article/" },
+          { name: " News ", path: "/news/" },
+          { name: " Article ", path: "news/article/" },
         ],
         "https://example.com/",
       ),
@@ -30,14 +30,14 @@ describe("BreadcrumbJsonLd", () => {
         {
           "@type": "ListItem",
           position: 2,
-          name: "Blog",
-          item: "https://example.com/blog",
+          name: "News",
+          item: "https://example.com/news",
         },
         {
           "@type": "ListItem",
           position: 3,
           name: "Article",
-          item: "https://example.com/blog/article",
+          item: "https://example.com/news/article",
         },
       ],
     });

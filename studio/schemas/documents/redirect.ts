@@ -49,7 +49,6 @@ export default defineType({
         { type: "homePage" },
         { type: "page" },
         { type: "post" },
-        { type: "category" },
         { type: "blogIndex" },
       ],
       validation: (Rule) =>

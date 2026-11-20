@@ -10,32 +10,21 @@ import { siteName } from "./site-name";
 
 export type PageOgImageTarget =
   | { kind: "home" }
-  | { kind: "blog"; page?: number }
-  | { kind: "page"; slug: string }
-  | { kind: "category"; page?: number; slug: string };
+  | { kind: "news"; page?: number }
+  | { kind: "page"; slug: string };
 
 export function getPageOgImageKey(target: PageOgImageTarget) {
   if (target.kind === "home") return "home";
-  if (target.kind === "blog") return `blog:${target.page || 1}`;
-  if (target.kind === "category") {
-    return `category:${target.slug}:${target.page || 1}`;
-  }
+  if (target.kind === "news") return `news:${target.page || 1}`;
   return `page:${target.slug}`;
 }
 
 export function getPageOgImagePath(target: PageOgImageTarget) {
   if (target.kind === "home") return "home";
-  if (target.kind === "blog") {
-    return target.page && target.page > 1 ? `blog/${target.page}` : "blog";
+  if (target.kind === "news") {
+    return target.page && target.page > 1 ? `news/${target.page}` : "news";
   }
-  const parts = [
-    target.kind,
-    ...target.slug.split("/").map(encodeURIComponent),
-  ];
-  if (target.kind === "category" && target.page && target.page > 1) {
-    parts.push(String(target.page));
-  }
-  return parts.join("/");
+  return ["page", ...target.slug.split("/").map(encodeURIComponent)].join("/");
 }
 
 // Only the canonical decimal form is accepted ("2", never "02" or "2.0"), so every
@@ -53,26 +42,15 @@ export function parsePageOgImageTarget(
   segments: string[],
 ): PageOgImageTarget | null {
   if (segments.length === 1 && segments[0] === "home") return { kind: "home" };
-  if (segments[0] === "blog" && segments.length <= 2) {
+  if (segments[0] === "news" && segments.length <= 2) {
     const page = parseCanonicalPageNumber(segments[1]);
-    return page === null ? null : { kind: "blog", page };
+    return page === null ? null : { kind: "news", page };
   }
 
   const [kind, ...slugSegments] = segments;
-  const page =
-    kind === "category" && slugSegments.length === 2
-      ? parseCanonicalPageNumber(slugSegments.pop())
-      : 1;
   const slug = slugSegments.join("/");
-  if (
-    (kind !== "page" && kind !== "category") ||
-    !isValidOgSlug(slug) ||
-    (kind === "category" && (slugSegments.length !== 1 || page === null))
-  ) {
-    return null;
-  }
-
-  return kind === "category" ? { kind, page: page ?? 1, slug } : { kind, slug };
+  if (kind !== "page" || !isValidOgSlug(slug)) return null;
+  return { kind, slug };
 }
 
 // The photo URL carries the asset, crop and hotspot, so changing any of them
@@ -102,11 +80,8 @@ export function buildPageOgImageUrl({
   secret?: string;
 }) {
   if (
-    ((target.kind === "page" || target.kind === "category") &&
-      !isValidOgSlug(target.slug)) ||
-    // Nested category slugs would produce URLs the route parser rejects as 404s.
-    (target.kind === "category" && target.slug.includes("/")) ||
-    ((target.kind === "blog" || target.kind === "category") &&
+    (target.kind === "page" && !isValidOgSlug(target.slug)) ||
+    (target.kind === "news" &&
       target.page !== undefined &&
       (!Number.isSafeInteger(target.page) || target.page < 1))
   ) {

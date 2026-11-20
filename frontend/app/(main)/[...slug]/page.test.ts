@@ -50,7 +50,7 @@ describe("root content metadata", () => {
     }));
   });
 
-  it.each([["blog", "post"], ["api", "test"], ["about", "Bad"], ["about", ""]])(
+  it.each([["news", "post"], ["api", "test"], ["about", "Bad"], ["about", ""]])(
     "rejects reserved or malformed page segments %s/%s",
     async (...slug) => {
       await expect(generateMetadata({ params: Promise.resolve({ slug }) })).resolves.toEqual({});
@@ -61,7 +61,7 @@ describe("root content metadata", () => {
   it("splits nested static params and excludes reserved routes", async () => {
     vi.mocked(sanityFetchStaticParams).mockResolvedValue({ data: [
       { slug: { current: "/about/team/" } },
-      { slug: { current: "blog/post" } },
+      { slug: { current: "news/post" } },
       { slug: { current: "bad//slug" } },
       { slug: { current: "contact" } },
     ] });

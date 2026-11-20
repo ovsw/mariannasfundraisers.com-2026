@@ -2,12 +2,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  categoryPath,
   isApplicationPath,
   isReservedPagePath,
   normalizePublicPath,
   pagePath,
   postPath,
+  routedDocumentPath,
 } from "./content-routes.ts";
 
 test("resolves every routed document type without an ending slash", () => {
@@ -16,8 +16,9 @@ test("resolves every routed document type without an ending slash", () => {
     pagePath("/staff/available-positions/"),
     "/staff/available-positions",
   );
-  assert.equal(postPath("/first-post/"), "/blog/first-post");
-  assert.equal(categoryPath("/news/"), "/blog/category/news");
+  assert.equal(postPath("/first-post/"), "/news/first-post");
+  assert.equal(routedDocumentPath("post", "first-post"), "/news/first-post");
+  assert.equal(routedDocumentPath("page", "about"), "/about");
 });
 
 test("rejects missing and malformed routed slugs", () => {
@@ -26,7 +27,6 @@ test("rejects missing and malformed routed slugs", () => {
   }
   for (const slug of [undefined, "", "/", "two/segments", "Uppercase", "under_score"]) {
     assert.equal(postPath(slug), null, String(slug));
-    assert.equal(categoryPath(slug), null, String(slug));
   }
 });
 
@@ -41,10 +41,8 @@ test("normalizes safe internal paths and rejects unsafe values", () => {
 test("recognizes application-owned routes", () => {
   for (const path of [
     "/",
-    "/blog",
-    "/blog/2",
-    "/blog/category",
-    "/blog/category/news/2",
+    "/news",
+    "/news/2",
     "/contact/thanks",
     "/api/draft-mode/enable",
     "/_next/static/file.js",
@@ -54,11 +52,13 @@ test("recognizes application-owned routes", () => {
     assert.equal(isApplicationPath(path), true, path);
   }
   assert.equal(isApplicationPath("/about"), false);
-  assert.equal(isApplicationPath("/blog/first-post"), false);
-  assert.equal(isApplicationPath("/blog/category/news"), false);
+  assert.equal(isApplicationPath("/news/first-post"), false);
+  assert.equal(isApplicationPath("/blog"), false);
 });
 
-test("reserves the blog namespace from editor-created pages", () => {
-  assert.equal(isReservedPagePath("/blog/first-post"), true);
+test("reserves the news namespace from editor-created pages", () => {
+  assert.equal(isReservedPagePath("/news"), true);
+  assert.equal(isReservedPagePath("/news/first-post"), true);
+  assert.equal(isReservedPagePath("/blog/first-post"), false);
   assert.equal(isReservedPagePath("/staff/available-positions"), false);
 });

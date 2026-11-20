@@ -1,14 +1,12 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 
-// Shadcnblocks blog1. Separate links keep category navigation accessible.
+// Shadcnblocks blog1.
 export function PostCard({
   title,
   href,
   description,
   image,
-  category,
   date,
   titleAttribute,
   descriptionAttribute,
@@ -17,7 +15,6 @@ export function PostCard({
   href: string;
   description?: ReactNode;
   image?: ReactNode;
-  category?: ReactNode;
   date?: ReactNode;
   titleAttribute?: string;
   descriptionAttribute?: string;
@@ -50,7 +47,6 @@ export function PostCard({
         )}
       </div>
       <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-        {category && <Badge variant="outline">{category}</Badge>}
         {date}
       </div>
     </article>

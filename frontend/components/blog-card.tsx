@@ -1,11 +1,10 @@
 import { PostCard } from "@/components/shadcnblocks/post-card";
-import { categoryPath, postPath } from "@/lib/routes";
+import { postPath } from "@/lib/routes";
 import { dataset, projectId } from "@/sanity/lib/env";
 import { urlFor } from "@/sanity/lib/image";
 import type { BlogPost } from "@/sanity/queries/blog-index";
 import { createDataAttribute, stegaClean } from "next-sanity";
 import Image from "next/image";
-import Link from "next/link";
 
 type DataAttribute = (path: string) => string | undefined;
 
@@ -65,7 +64,7 @@ export function documentDataAttribute({
 }: {
   id: string;
   stega: boolean;
-  type: "author" | "blogPostSettings" | "category" | "post" | "settings";
+  type: "author" | "blogPostSettings" | "post" | "settings";
 }): DataAttribute | undefined {
   if (!stega) return undefined;
 
@@ -91,18 +90,11 @@ export function LatestPostCard({
   if (!slug) return null;
   const postHref = postPath(slug);
   if (!postHref) return null;
-  const category = post.category;
-  const categoryLabel = stegaClean(category?.title);
-  const categorySlug = stegaClean(category?.slug?.current);
-  const categoryHref = categoryPath(categorySlug);
   const dataAttribute = documentDataAttribute({
     id: post._id,
     stega,
     type: "post",
   });
-  const categoryDataAttribute = category
-    ? documentDataAttribute({ id: category._id, stega, type: "category" })
-    : undefined;
   return (
     <PostCard
       href={postHref}
@@ -120,16 +112,6 @@ export function LatestPostCard({
           dataAttribute={dataAttribute}
           value={post.publishedAt}
         />
-      }
-      category={
-        categoryLabel && categoryHref ? (
-          <Link
-            data-sanity={categoryDataAttribute?.("title")}
-            href={categoryHref}
-          >
-            {categoryLabel}
-          </Link>
-        ) : null
       }
     />
   );

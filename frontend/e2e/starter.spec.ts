@@ -74,9 +74,9 @@ function runningAnimations(page: Page) {
   });
 }
 
-/** The first sitemap route that is not the home page or part of the blog. */
+/** The first sitemap route that is not the home page or part of the news. */
 function firstPageRoute(routes: string[]) {
-  return routes.find((route) => route !== "/" && !/^\/blog(\/|$)/.test(route));
+  return routes.find((route) => route !== "/" && !/^\/news(\/|$)/.test(route));
 }
 
 test.describe("every sitemap route", () => {
@@ -131,13 +131,12 @@ test.describe("every sitemap route", () => {
     const templates = [
       "/",
       firstPageRoute(routes),
-      "/blog",
-      routes.find((route) => /^\/blog\/(?!category\/)[^/]+$/.test(route)),
-      routes.find((route) => /^\/blog\/category\/[^/]+$/.test(route)),
+      "/news",
+      routes.find((route) => /^\/news\/[^/]+$/.test(route)),
     ];
     expect(
       templates,
-      "the sitemap should list a page, a blog post, and a blog category",
+      "the sitemap should list a page and a news post",
     ).not.toContain(undefined);
     const violations: string[] = [];
 

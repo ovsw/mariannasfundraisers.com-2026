@@ -26,10 +26,3 @@ export const BLOG_INDEX_OG_IMAGE_QUERY = defineQuery(`
     ${archiveSharingPhotoQuery}
   }
 `);
-
-export const CATEGORY_OG_IMAGE_QUERY = defineQuery(`
-  *[_type == "category" && slug.current == $slug][0]{
-    "title": coalesce(title, meta.title),
-    ${archiveSharingPhotoQuery}
-  }
-`);
