@@ -38,7 +38,7 @@ const buttonVariants = cva(
         icon: "h-9 w-9",
         compact: "h-8 rounded-md px-3 text-xs",
         hero: "h-10 rounded-md px-8",
-        cta: "h-auto gap-3 rounded-[var(--radius-button)] px-4 pt-4 pb-3 text-lg leading-tight font-bold shadow-lg sm:px-6 sm:pt-5 sm:pb-[1.0625rem] md:rounded-[var(--radius-button-md)] [&_svg]:size-auto [&_svg]:text-[1.5em]",
+        cta: "h-auto gap-3 rounded-[var(--radius-button)] px-4 pt-4 pb-3 text-lg leading-tight font-bold shadow-lg sm:px-6 sm:pt-5 sm:pb-[1.0625rem] md:rounded-[var(--radius-button-md)] [&_svg]:h-[1em] [&_svg]:w-auto [&_svg]:text-[1.5em]",
       },
       onDark: { true: "", false: "" },
       emphasis: { true: "", false: "" },
