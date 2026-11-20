@@ -13,6 +13,9 @@ import { imageAndIconListQuery } from "./image-and-icon-list";
 import { cognitoFormQuery } from "./cognito-form";
 import { faqListQuery } from "./faq-list";
 import { twoTextColumnsQuery } from "./two-text-columns";
+import { hoagieMenuQuery } from "./hoagie-menu";
+import { pizzaMenuQuery } from "./pizza-menu";
+import { salsaMenuQuery } from "./salsa-menu";
 // page-builder-generator:query-imports
 
 export const pageBuilderQuery = `
@@ -34,6 +37,9 @@ export const pageBuilderQuery = `
     ${cognitoFormQuery},
     ${faqListQuery},
     ${twoTextColumnsQuery},
+    ${hoagieMenuQuery},
+    ${pizzaMenuQuery},
+    ${salsaMenuQuery},
     ${"" /* page-builder-generator:query-spreads */}
   }
 `;

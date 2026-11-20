@@ -7,9 +7,11 @@
 // Rich Text (with its button row), the eight image-and-text sections of the
 // old "big image" row (issue #15), and Cognito form, FAQ list (with its `faq`
 // records) and Two text columns (issue #19). Every other row becomes a
-// Scaffold that holds the row's text and names its intended section. Product pages and news
-// posts are counted and left to their own tickets. The site shell (settings,
-// navigation, footer) comes from the seed file, through site-shell.mjs.
+// Scaffold that holds the row's text and names its intended section. Product
+// pages become products and the old menu rows the menu sections (issue #16,
+// products.mjs). News posts are counted and left to their own ticket. The
+// site shell (settings, navigation, footer) comes from the seed file, through
+// site-shell.mjs.
 
 import {
   droppedOptions,
@@ -23,6 +25,7 @@ import { customUrlFor, normalizeMultilink, normalizeSitePath } from "./links.mjs
 import { outlineHeadings, paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
 import { blockToPortableText } from "./scaffold-text.mjs";
 import { siteShellDocuments, siteShellFiles } from "./site-shell.mjs";
+import { planProducts, PRODUCT_MENU_TYPES, productMenuSection } from "./products.mjs";
 import { youTubeVideoId } from "../../../shared/youtube.ts";
 
 /** Story components and the document type each becomes. */
@@ -33,7 +36,6 @@ const KIND = { page: "page", "menu-item-page": "product", "blog-post": "news" };
 
 /** Story kinds imported by later tickets: links to them are site paths until then. */
 const IMPORTED_LATER = {
-  "menu-item-page": "product page: imported by ticket #16",
   "blog-post": "news post: imported by ticket #17",
 };
 
@@ -64,6 +66,7 @@ export function storyDocumentId(story) {
 }
 
 function isImportedPage(story) {
+  if (story.content.component === "menu-item-page") return true;
   return story.content.component === "page" && !REDIRECTED_PAGES[storyPath(story)];
 }
 
@@ -576,6 +579,7 @@ function pageSections(story, context) {
         const key = index === 0 ? row._uid : `${row._uid}-${index + 1}`;
         let built = null;
         if (IMAGE_AND_TEXT_TYPES[name]) built = imageAndTextSection(row, name, theme, context);
+        else if (PRODUCT_MENU_TYPES[name]) built = productMenuSection(row, name, theme, context);
         else if (name === "Cognito form") built = cognitoFormSection(row, theme, context);
         else if (name === "FAQ list") built = faqListSection(faqLists[index], key, theme, context);
         else if (name === "Two text columns") built = twoTextColumnsSection(row, theme, context);
@@ -665,6 +669,10 @@ export function planImport(source, options = {}) {
   const published = source.published ? new Set(source.published) : null;
   for (const story of stories) {
     const path = storyPath(story);
+    if (story.content.component === "menu-item-page") {
+      if (published && !published.has(story.uuid)) report.publishedFromDraft.push(path);
+      continue;
+    }
     if (story.content.component !== "page") {
       report.skipped.push({ story: path, reason: IMPORTED_LATER[story.content.component] });
       continue;
@@ -682,6 +690,13 @@ export function planImport(source, options = {}) {
   for (const faq of shared.faqs) {
     count(report.documents, faq._type);
     documents.push(faq);
+  }
+
+  // Products and Product Page Settings (issue #16).
+  const products = planProducts(stories, shared, { button, meta, storyContext, recordDroppedOptions, droppedOptions });
+  for (const document of products.documents) {
+    count(report.documents, document._type);
+    documents.push(document);
   }
 
   if (options.seed) {

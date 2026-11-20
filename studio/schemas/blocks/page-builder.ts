@@ -20,6 +20,9 @@ const generalOnlyPageBuilderBlockTypes = [
   "cognitoForm",
   "faqList",
   "twoTextColumns",
+  "hoagieMenu",
+  "pizzaMenu",
+  "salsaMenu",
   // page-builder-generator:general-types
 ] as const;
 
@@ -56,6 +59,9 @@ const previewBlockTypes = new Set<string>([
   "cognitoForm",
   "faqList",
   "twoTextColumns",
+  "hoagieMenu",
+  "pizzaMenu",
+  "salsaMenu",
   // page-builder-generator:preview-types
 ]);
 

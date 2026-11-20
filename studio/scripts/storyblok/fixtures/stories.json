@@ -1406,22 +1406,6 @@
   }
  },
  {
-  "name": "Italian Hoagie",
-  "uuid": "c9a9553e-a716-45ef-8218-a4cfa6a2432b",
-  "full_slug": "products/italian-hoagie",
-  "slug": "italian-hoagie",
-  "is_startpage": false,
-  "content": {
-   "_uid": "295849ea-39ba-4269-a690-5c872d295982",
-   "body": [],
-   "name": "Italian Hoagie",
-   "component": "menu-item-page",
-   "item_type": "hoagie",
-   "seo_title": "14'' Italian Hoagie",
-   "seo_description": "A crowd favorite! Peppered and Capicola Ham along with Genoa Salami and Pepperoni, topped off with fresh Provolone Cheese and crunchy mild pepper rings."
-  }
- },
- {
   "name": "Winner: 2024 Hometown Favorite Sandwich",
   "uuid": "a8712100-6134-40d1-b240-958164b82131",
   "full_slug": "news/winner:-2024-hometown-favorite-sandwich",

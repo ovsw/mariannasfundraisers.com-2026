@@ -100,6 +100,8 @@
   --space-header-gap: 3rem;
   /* The Muslin theme's ground: the old site's dark muslin photo. */
   --muslin-image: url("/images/muslin.webp");
+  /* The product page hero's ground: the old site's dark table photo. */
+  --product-hero-image: url("/images/product-hero-table.webp");
 }
 @layer base {
   * {
@@ -344,6 +346,14 @@
 .section-scene.section-scene-muslin {
   background-image: var(--muslin-image);
   background-position: center;
+  background-size: cover;
+}
+/* The product page hero (components/product/product-hero.tsx): the dark
+   table photo over black. Its text takes the Muslin theme's tokens. */
+.product-hero {
+  background-color: var(--brand-black);
+  background-image: var(--product-hero-image);
+  background-position: bottom right;
   background-size: cover;
 }
 

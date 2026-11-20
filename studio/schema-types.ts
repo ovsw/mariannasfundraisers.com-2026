@@ -14,6 +14,15 @@ import blogPostSettings from "./schemas/documents/blog-post-settings";
 import homePage from "./schemas/documents/home-page";
 import footer, { footerSchemaTypes } from "./schemas/documents/footer";
 import redirect from "./schemas/documents/redirect";
+import product, {
+  nutritionFacts,
+  productMenuCard,
+} from "./schemas/documents/product";
+import productPageSettings, {
+  productCallToAction,
+  productHandmadeBlock,
+  productKindLinks,
+} from "./schemas/documents/product-page-settings";
 
 // Schema UI shared objects
 import blockContent from "./schemas/blocks/shared/block-content";
@@ -47,6 +56,9 @@ import imageAndIconList from "./schemas/blocks/image-and-icon-list";
 import cognitoForm from "./schemas/blocks/cognito-form";
 import faqList from "./schemas/blocks/faq-list";
 import twoTextColumns from "./schemas/blocks/two-text-columns";
+import hoagieMenu from "./schemas/blocks/hoagie-menu";
+import pizzaMenu from "./schemas/blocks/pizza-menu";
+import salsaMenu from "./schemas/blocks/salsa-menu";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -67,6 +79,13 @@ export const schemaTypes = [
   footer,
   redirect,
   ...footerSchemaTypes,
+  product,
+  nutritionFacts,
+  productMenuCard,
+  productPageSettings,
+  productHandmadeBlock,
+  productCallToAction,
+  productKindLinks,
   // shared objects
   blockContent,
   link,
@@ -97,5 +116,8 @@ export const schemaTypes = [
   cognitoForm,
   faqList,
   twoTextColumns,
+  hoagieMenu,
+  pizzaMenu,
+  salsaMenu,
   // page-builder-generator:block-types
 ];
