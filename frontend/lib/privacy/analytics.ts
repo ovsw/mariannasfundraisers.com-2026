@@ -6,6 +6,8 @@ import { analyticsAllowed, readConsentState } from "./consent";
 
 const MEASUREMENT_ID = /^G-[A-Z0-9]{4,}$/;
 const SCRIPT_ID = "marianna-ga";
+/** Set once the gtag queue holds its start commands, so a retry adds none. */
+const INITIALIZED = "__mariannaGaInitialized";
 
 /** The measurement ID when it has the shape of one, otherwise null. */
 export function cleanMeasurementId(value: string | null | undefined): string | null {
@@ -50,21 +52,26 @@ export function syncAnalytics(
     return;
   }
   if (win.document.getElementById(SCRIPT_ID)) return;
-  page.dataLayer = page.dataLayer || [];
-  page.gtag =
-    page.gtag ||
-    function gtag() {
-      // gtag.js reads the arguments object itself.
-      // eslint-disable-next-line prefer-rest-params
-      page.dataLayer!.push(arguments);
-    };
-  page.gtag("js", new Date());
-  page.gtag("config", measurementId, {
-    page_path: win.location.pathname + win.location.search,
-  });
+  if (!page[INITIALIZED]) {
+    page.dataLayer = page.dataLayer || [];
+    page.gtag =
+      page.gtag ||
+      function gtag() {
+        // gtag.js reads the arguments object itself.
+        // eslint-disable-next-line prefer-rest-params
+        page.dataLayer!.push(arguments);
+      };
+    page.gtag("js", new Date());
+    page.gtag("config", measurementId, {
+      page_path: win.location.pathname + win.location.search,
+    });
+    page[INITIALIZED] = true;
+  }
   const script = win.document.createElement("script");
   script.id = SCRIPT_ID;
   script.async = true;
+  // A failed request leaves no element behind, so a later call can retry.
+  script.addEventListener("error", () => script.remove());
   // Gated here, including withdrawal, instead of by iubenda's autoblocking.
   script.setAttribute("data-cmp-ab", "1");
   script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;

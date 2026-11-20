@@ -17,10 +17,12 @@ export const SECRET_FILES = [
  * print the value.
  */
 export function readSecret(name, env = process.env, files = SECRET_FILES) {
-  if (env[name]) return env[name];
+  // Values are trimmed; a blank value counts as unset.
+  const fromShell = env[name]?.trim();
+  if (fromShell) return fromShell;
   for (const file of files) {
     if (!existsSync(file)) continue;
-    const value = parseEnv(readFileSync(file, "utf8"))[name];
+    const value = parseEnv(readFileSync(file, "utf8"))[name]?.trim();
     if (value) return value;
   }
   return null;

@@ -85,7 +85,9 @@ const footer = defineType({
             rule.custom((value, context) => {
               const label = (value as { label?: string } | undefined)?.label?.trim();
               const text = (context.parent as { text?: string } | undefined)?.text;
-              if (!label) return true;
+              // The footer shows the sentence only with its link.
+              if (!text?.trim()) return true;
+              if (!label) return "Add a link whose label appears in the sentence";
               return text?.includes(label)
                 ? true
                 : "Use a label that appears in the sentence";

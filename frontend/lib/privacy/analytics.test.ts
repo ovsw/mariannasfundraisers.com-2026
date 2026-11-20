@@ -15,6 +15,7 @@ afterEach(() => {
   document.getElementById("marianna-ga")?.remove();
   delete page.gtag;
   delete page.dataLayer;
+  delete page.__mariannaGaInitialized;
   delete page[`ga-disable-${ID}`];
   document.cookie = "_ga=; Max-Age=0; path=/";
 });
@@ -38,6 +39,15 @@ describe("syncAnalytics", () => {
     syncAnalytics(ID, true);
     expect(gaScripts()).toHaveLength(1);
     expect(page[`ga-disable-${ID}`]).toBe(false);
+    expect(page.dataLayer?.length).toBe(2);
+  });
+
+  it("retries the library after a failed request without repeating its start commands", () => {
+    syncAnalytics(ID, true);
+    gaScripts()[0].dispatchEvent(new Event("error"));
+    expect(gaScripts()).toHaveLength(0);
+    syncAnalytics(ID, true);
+    expect(gaScripts()).toHaveLength(1);
     expect(page.dataLayer?.length).toBe(2);
   });
 

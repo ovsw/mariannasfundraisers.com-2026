@@ -442,10 +442,6 @@ export function planImport(source, options = {}) {
     if (!kind) throw new Error(`Unknown story component ${story.content.component} (${story.full_slug})`);
     report.found[kind]++;
   }
-  report.found.files = files.size;
-  report.found.images = [...files.values()].filter((file) => file.asImage).length;
-  report.found.documentFiles = files.size - report.found.images;
-
   const documents = [];
   const published = source.published ? new Set(source.published) : null;
   for (const story of stories) {
@@ -483,6 +479,10 @@ export function planImport(source, options = {}) {
       documents.push(document);
     }
   }
+  // Counted after the shell logos join the story files.
+  report.found.files = files.size;
+  report.found.images = [...files.values()].filter((file) => file.asImage).length;
+  report.found.documentFiles = files.size - report.found.images;
 
   for (const override of overrides.links) {
     if (!shared.usedOverrides.has(JSON.stringify([override.story, override.from]))) {

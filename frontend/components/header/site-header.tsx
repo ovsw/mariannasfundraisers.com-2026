@@ -67,7 +67,7 @@ export function HeaderNavigation({
                     {item.label}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="p-0">
-                    <div className="flex w-[min(56rem,calc(100vw-4rem))] overflow-hidden rounded-lg">
+                    <div className="flex w-[min(56rem,calc(100vw-16rem))] overflow-hidden rounded-lg">
                       {item.description ? (
                         <div className="section-scene-primary hidden w-60 shrink-0 bg-background px-6 py-14 xl:block">
                           <p className="text-3xl font-bold text-foreground">
