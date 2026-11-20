@@ -58,6 +58,10 @@ export async function generateStaticParams() {
     if (slug && readPostSlug(slug)) params.push({ page: slug });
   }
 
+  // Cache Components needs at least one param. With no posts yet (before the
+  // news import), page 2 stands in: it is out of range and renders the 404.
+  if (!params.length) params.push({ page: "2" });
+
   return params;
 }
 
