@@ -116,6 +116,10 @@ export const STARTER_DOCUMENT_TYPES = new Map([
   ["starter-faq-getting-started", "faq"],
   ["starter-team-member-editor", "teamMember"],
   ["starter-testimonial-reader", "testimonial"],
+  ["productPageSettings", "productPageSettings"],
+  ["starter-product-hoagie", "product"],
+  ["starter-product-pizza", "product"],
+  ["starter-product-salsa", "product"],
 ]);
 
 // Seed documents of types this site no longer has. Older seeds created them,
@@ -127,6 +131,61 @@ export const LEGACY_STARTER_DOCUMENT_TYPES = new Map([
 const marker = {
   _starterSeed: STARTER_SEED,
 };
+
+/** A product of each kind (spec decision 8), every field filled. */
+const nutritionValues = Object.fromEntries(
+  [
+    "calories", "totalFat", "totalFatDailyValue", "saturatedFat", "saturatedFatDailyValue",
+    "transFat", "cholesterol", "cholesterolDailyValue", "sodium", "sodiumDailyValue",
+    "totalCarbohydrates", "totalCarbohydratesDailyValue", "dietaryFiber", "dietaryFiberDailyValue",
+    "totalSugars", "addedSugars", "addedSugarsDailyValue", "protein", "vitaminD",
+    "vitaminDDailyValue", "calcium", "calciumDailyValue", "iron", "ironDailyValue",
+    "potassium", "potassiumDailyValue",
+  ].map((field, index) => [field, index]),
+);
+const starterProduct = (kind, name) => ({
+  _id: `starter-product-${kind}`,
+  _type: "product",
+  ...marker,
+  name: `Example ${name}`,
+  kind,
+  slug: slug(`example-${kind}`),
+  heroTitle: `Example ${name}`,
+  heroText: simpleText(`starter-product-${kind}-hero`, `A neutral ${kind} used to test the product page.`),
+  heroImage: { ...placeholder("landscape"), alt: `An example ${kind}.` },
+  ingredientsLabel: "Always Fresh",
+  ingredientsText: simpleText(`starter-product-${kind}-ingredients`, "Example ingredient, another ingredient."),
+  ingredientsImage: { ...placeholder("square"), alt: `The example ${kind} badge.` },
+  ...(kind === "pizza"
+    ? { note: simpleText("starter-product-pizza-note", "Please note: keep refrigerated.") }
+    : {}),
+  nutritionFacts: {
+    _type: "nutritionFacts",
+    servingText: simpleText(`starter-product-${kind}-serving`, "Servings per container: 4"),
+    ...nutritionValues,
+  },
+  menuCard: {
+    _type: "productMenuCard",
+    shortName: "Example",
+    shortDescription: `A short description of the example ${kind}.`,
+    image: { ...placeholder("landscape"), alt: `The example ${kind} on its menu card.` },
+    ...(kind === "hoagie" ? { dressing: "italian" } : {}),
+  },
+  meta: meta(`Example ${name}`, `Example metadata for a seeded ${kind}.`),
+});
+
+// A button stored on its own, not in an array, has no _key.
+const withoutKey = ({ _key, ...value }) => value;
+const kindLinks = (kind, menuRef) => ({
+  _type: "productKindLinks",
+  heroButtons: [
+    button(`starter-${kind}-more`, "more selections", menuRef),
+    button(`starter-${kind}-pricing`, "Pricing Info", menuRef),
+  ],
+  ...(kind === "salsa"
+    ? {}
+    : { ingredientsListButton: withoutKey(button(`starter-${kind}-ingredients`, "full ingredients list", menuRef)) }),
+});
 
 export const starterDocuments = [
   {
@@ -194,6 +253,32 @@ export const starterDocuments = [
       "The sample content made every editing surface easy to find.",
     ),
     rating: 5,
+  },
+  starterProduct("hoagie", "Hoagie"),
+  starterProduct("pizza", "Pizza"),
+  starterProduct("salsa", "Salsa"),
+  {
+    _id: "productPageSettings",
+    _type: "productPageSettings",
+    ...marker,
+    handmade: {
+      _type: "productHandmadeBlock",
+      eyebrow: "Handmade Food That",
+      title: "We'd Love to Eat",
+      richText: simpleText("starter-handmade-copy", "This tests the shared Handmade food block."),
+      buttons: [button("starter-handmade-button", "Our Kitchens", "starter-page-about")],
+      image: { ...placeholder("landscape"), alt: "Two kitchen staff in front of a truck." },
+    },
+    callToAction: {
+      _type: "productCallToAction",
+      title: "Preparing a Fundraiser?",
+      richText: simpleText("starter-cta-copy", "This tests the shared call to action."),
+      buttons: [button("starter-cta-button", "Helpful Video Guides", "starter-page-about")],
+      image: { ...placeholder("square"), alt: "" },
+    },
+    hoagie: kindLinks("hoagie", "starter-page-about"),
+    pizza: kindLinks("pizza", "starter-page-about"),
+    salsa: kindLinks("salsa", "starter-page-about"),
   },
   {
     _id: "starter-page-about",
@@ -281,6 +366,17 @@ export const starterDocuments = [
           button(`starter-page-${type}-button`, "Read more", "starter-page-about"),
         ],
         image: placeholder(image),
+      })),
+      // The three menus, each listing the seeded product of its kind.
+      ...[
+        ["hoagieMenu", "hoagie", "shaded"],
+        ["pizzaMenu", "pizza", "light"],
+        ["salsaMenu", "salsa", "shaded"],
+      ].map(([type, kind, theme]) => ({
+        _key: `starter-page-${type}`,
+        _type: type,
+        theme,
+        products: [{ _key: `starter-${kind}`, ...ref(`starter-product-${kind}`) }],
       })),
       {
         _key: "starter-page-imageAndIconList",

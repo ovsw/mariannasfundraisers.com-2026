@@ -6,9 +6,11 @@
 // Built here: the home page and every page, with Page banner, Page heading,
 // Rich Text (with its button row) and the eight image-and-text sections of
 // the old "big image" row (issue #15). Every other row becomes a Scaffold that
-// holds the row's text and names its intended section. Product pages and news
-// posts are counted and left to their own tickets. The site shell (settings,
-// navigation, footer) comes from the seed file, through site-shell.mjs.
+// holds the row's text and names its intended section. Product pages become
+// products and the old menu rows the menu sections (issue #16,
+// products.mjs). News posts are counted and left to their own ticket. The
+// site shell (settings, navigation, footer) comes from the seed file, through
+// site-shell.mjs.
 
 import {
   droppedOptions,
@@ -21,6 +23,7 @@ import { customUrlFor, normalizeMultilink, normalizeSitePath } from "./links.mjs
 import { outlineHeadings, paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
 import { blockToPortableText } from "./scaffold-text.mjs";
 import { siteShellDocuments, siteShellFiles } from "./site-shell.mjs";
+import { planProducts, PRODUCT_MENU_TYPES, productMenuSection } from "./products.mjs";
 import { youTubeVideoId } from "../../../shared/youtube.ts";
 
 /** Story components and the document type each becomes. */
@@ -31,7 +34,6 @@ const KIND = { page: "page", "menu-item-page": "product", "blog-post": "news" };
 
 /** Story kinds imported by later tickets: links to them are site paths until then. */
 const IMPORTED_LATER = {
-  "menu-item-page": "product page: imported by ticket #16",
   "blog-post": "news post: imported by ticket #17",
 };
 
@@ -62,6 +64,7 @@ export function storyDocumentId(story) {
 }
 
 function isImportedPage(story) {
+  if (story.content.component === "menu-item-page") return true;
   return story.content.component === "page" && !REDIRECTED_PAGES[storyPath(story)];
 }
 
@@ -441,9 +444,11 @@ function pageSections(story, context) {
       names.forEach((name, index) => {
         const key = index === 0 ? row._uid : `${row._uid}-${index + 1}`;
         const imageAndText = IMAGE_AND_TEXT_TYPES[name] ? imageAndTextSection(row, name, theme, context) : null;
+        const menu = PRODUCT_MENU_TYPES[name] ? productMenuSection(row, name, theme, context) : null;
         if (name === "Page heading") push(pageHeading(row, theme, context));
         else if (name === "Rich Text") push(richTextSection(row, theme, context));
         else if (imageAndText) push(imageAndText);
+        else if (menu) push(menu);
         else {
           // A row with several FAQ lists: one Scaffold per list; the row's
           // other content goes once, into the first.
@@ -529,6 +534,10 @@ export function planImport(source, options = {}) {
   const published = source.published ? new Set(source.published) : null;
   for (const story of stories) {
     const path = storyPath(story);
+    if (story.content.component === "menu-item-page") {
+      if (published && !published.has(story.uuid)) report.publishedFromDraft.push(path);
+      continue;
+    }
     if (story.content.component !== "page") {
       report.skipped.push({ story: path, reason: IMPORTED_LATER[story.content.component] });
       continue;
@@ -539,6 +548,13 @@ export function planImport(source, options = {}) {
     }
     if (published && !published.has(story.uuid)) report.publishedFromDraft.push(path);
     const document = pageDocument(story, shared);
+    count(report.documents, document._type);
+    documents.push(document);
+  }
+
+  // Products and Product Page Settings (issue #16).
+  const products = planProducts(stories, shared, { button, meta, storyContext, recordDroppedOptions, droppedOptions });
+  for (const document of products.documents) {
     count(report.documents, document._type);
     documents.push(document);
   }

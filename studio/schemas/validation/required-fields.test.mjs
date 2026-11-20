@@ -77,6 +77,7 @@ const schema = createSchema({
         { name: "photoLeftAndText", type: "photoLeftAndText" },
         { name: "videoRightAndText", type: "videoRightAndText" },
         { name: "imageAndIconList", type: "imageAndIconList" },
+        { name: "hoagieMenu", type: "hoagieMenu" },
         { name: "richText", type: "richTextContent" },
       ],
     },
@@ -343,5 +344,73 @@ test("an Image and icon list needs items, each with an icon and a heading, but n
       },
     }),
     {},
+  );
+});
+
+// Products (issue #16): the product template draws every product from these
+// fields, so a product cannot publish without them.
+const { starterDocuments } = await import("../../scripts/seed.mjs");
+const seeded = (id) => starterDocuments.find((document) => document._id === id);
+
+test("a complete product and the Product Page Settings validate", async () => {
+  for (const id of ["starter-product-hoagie", "starter-product-pizza", "starter-product-salsa", "productPageSettings"]) {
+    assert.deepEqual(await errorPaths(seeded(id)), [], id);
+  }
+});
+
+test("a product needs what its page and its menu card draw", async () => {
+  const empty = await errorPaths({ _type: "product" });
+  for (const path of [
+    "heroImage",
+    "heroTitle",
+    "ingredientsImage",
+    "ingredientsText",
+    "kind",
+    "menuCard",
+    "name",
+    "nutritionFacts",
+    "slug",
+  ]) {
+    assert.ok(empty.includes(path), path);
+  }
+  const hoagie = seeded("starter-product-hoagie");
+  const { calories, ...withoutCalories } = hoagie.nutritionFacts;
+  assert.equal(typeof calories, "number");
+  assert.deepEqual(
+    await errorPaths({
+      ...hoagie,
+      nutritionFacts: withoutCalories,
+      menuCard: { _type: "productMenuCard", shortName: " " },
+    }),
+    [
+      "menuCard.dressing",
+      "menuCard.image",
+      "menuCard.shortDescription",
+      "menuCard.shortName",
+      "nutritionFacts.calories",
+    ],
+  );
+  // Only a hoagie's card names a dressing.
+  const salsa = seeded("starter-product-salsa");
+  assert.deepEqual(await errorPaths(salsa), []);
+});
+
+test("a menu section needs at least one product", async () => {
+  assert.deepEqual(
+    await errorPaths({ _type: "testHost", hoagieMenu: { _type: "hoagieMenu", theme: "light", products: [] } }),
+    ["hoagieMenu.products"],
+  );
+});
+
+test("Product Page Settings need both shared blocks and two hero buttons per kind", async () => {
+  const settings = seeded("productPageSettings");
+  const { handmade, ...withoutHandmade } = settings;
+  assert.ok(handmade);
+  assert.deepEqual(
+    await errorPaths({
+      ...withoutHandmade,
+      pizza: { ...settings.pizza, heroButtons: settings.pizza.heroButtons.slice(0, 1) },
+    }),
+    ["handmade", "handmade.image", "handmade.title", "pizza.heroButtons"],
   );
 });

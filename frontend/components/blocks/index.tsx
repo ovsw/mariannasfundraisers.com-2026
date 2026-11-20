@@ -23,6 +23,9 @@ import BadgeAndText, { hasBadgeAndTextContent } from "@/components/blocks/badge-
 import VideoLeftAndText, { hasVideoLeftAndTextContent } from "@/components/blocks/video-left-and-text";
 import VideoRightAndText, { hasVideoRightAndTextContent } from "@/components/blocks/video-right-and-text";
 import ImageAndIconList, { hasImageAndIconListContent } from "@/components/blocks/image-and-icon-list";
+import HoagieMenu, { hasHoagieMenuContent } from "@/components/blocks/hoagie-menu";
+import PizzaMenu, { hasPizzaMenuContent } from "@/components/blocks/pizza-menu";
+import SalsaMenu, { hasSalsaMenuContent } from "@/components/blocks/salsa-menu";
 // page-builder-generator:component-imports
 import { dataset, projectId } from "@/sanity/lib/env";
 
@@ -47,6 +50,9 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "videoLeftAndText",
   "videoRightAndText",
   "imageAndIconList",
+  "hoagieMenu",
+  "pizzaMenu",
+  "salsaMenu",
   // page-builder-generator:editing-types
 ]);
 
@@ -67,6 +73,9 @@ const componentMap: Partial<{
   videoLeftAndText: VideoLeftAndText,
   videoRightAndText: VideoRightAndText,
   imageAndIconList: ImageAndIconList,
+  hoagieMenu: HoagieMenu,
+  pizzaMenu: PizzaMenu,
+  salsaMenu: SalsaMenu,
   // page-builder-generator:component-map
 };
 
@@ -75,7 +84,11 @@ const componentMap: Partial<{
 // part of its design. A section listed here paints the "menu" stroke of the
 // old menu sections; every other section paints the default "brush" stroke.
 const sectionBrushShapes: Partial<Record<Block["_type"], SectionBrushShape>> =
-  {};
+  {
+    hoagieMenu: "menu",
+    pizzaMenu: "menu",
+    salsaMenu: "menu",
+  };
 
 // Heroes draw their own edge. Their theme picks that edge's colour, not a
 // background, so the Page Builder treats them as themeless: they never share
@@ -230,6 +243,9 @@ function isRenderableBlock(block: Block) {
   if (block._type === "videoLeftAndText") return hasVideoLeftAndTextContent(block);
   if (block._type === "videoRightAndText") return hasVideoRightAndTextContent(block);
   if (block._type === "imageAndIconList") return hasImageAndIconListContent(block);
+  if (block._type === "hoagieMenu") return hasHoagieMenuContent(block);
+  if (block._type === "pizzaMenu") return hasPizzaMenuContent(block);
+  if (block._type === "salsaMenu") return hasSalsaMenuContent(block);
   // page-builder-generator:visible-blocks
   return true;
 }

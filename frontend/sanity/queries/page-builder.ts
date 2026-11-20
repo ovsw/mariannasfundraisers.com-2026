@@ -10,6 +10,9 @@ import { badgeAndTextQuery } from "./badge-and-text";
 import { videoLeftAndTextQuery } from "./video-left-and-text";
 import { videoRightAndTextQuery } from "./video-right-and-text";
 import { imageAndIconListQuery } from "./image-and-icon-list";
+import { hoagieMenuQuery } from "./hoagie-menu";
+import { pizzaMenuQuery } from "./pizza-menu";
+import { salsaMenuQuery } from "./salsa-menu";
 // page-builder-generator:query-imports
 
 export const pageBuilderQuery = `
@@ -28,6 +31,9 @@ export const pageBuilderQuery = `
     ${videoLeftAndTextQuery},
     ${videoRightAndTextQuery},
     ${imageAndIconListQuery},
+    ${hoagieMenuQuery},
+    ${pizzaMenuQuery},
+    ${salsaMenuQuery},
     ${"" /* page-builder-generator:query-spreads */}
   }
 `;

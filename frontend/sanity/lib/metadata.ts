@@ -3,6 +3,7 @@ import {
   HOME_PAGE_QUERY_RESULT,
   PAGE_QUERY_RESULT,
   POST_QUERY_RESULT,
+  PRODUCT_QUERY_RESULT,
 } from "@/sanity.types";
 import {
   getBlogCanonicalPath,
@@ -76,13 +77,21 @@ export function generatePageMetadata({
   page,
   path,
 }: {
-  page: HOME_PAGE_QUERY_RESULT | PAGE_QUERY_RESULT | POST_QUERY_RESULT;
+  page:
+    | HOME_PAGE_QUERY_RESULT
+    | PAGE_QUERY_RESULT
+    | POST_QUERY_RESULT
+    | PRODUCT_QUERY_RESULT;
   path: string;
 }) {
   const isPost = page?._type === "post";
   const isHomepage = page?._type === "homePage";
+  // A product page (spec decision 8) is titled by the product's name and
+  // gets the generated page card, like a page.
+  const isProduct = page?._type === "product";
+  const contentTitle = isProduct ? page.name : page?.title;
   const seoTitle = resolveSeoTitle({
-    fallbackTitle: page?.title,
+    fallbackTitle: contentTitle,
     isHomepage,
     overrideTitle: page?.meta?.title,
     siteName,
@@ -105,8 +114,8 @@ export function generatePageMetadata({
       : null;
   const rawPageTitle = isHomepage
     ? page.title || seoTitle.pageTitle
-    : page?._type === "page"
-      ? page.title || page.meta?.title
+    : page?._type === "page" || isProduct
+      ? contentTitle || page.meta?.title
       : undefined;
   const pageTitle = rawPageTitle
     ? getPageOgImageTitle(rawPageTitle)
@@ -115,7 +124,7 @@ export function generatePageMetadata({
   const pageTarget: PageOgImageTarget | null =
     page?._type === "homePage"
       ? { kind: "home" }
-      : page?._type === "page" && path !== "/" && isValidOgSlug(pageSlug)
+      : (page?._type === "page" || isProduct) && path !== "/" && isValidOgSlug(pageSlug)
         ? { kind: "page", slug: pageSlug }
         : null;
   const pageImage =

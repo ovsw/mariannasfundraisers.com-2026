@@ -4,6 +4,7 @@ import {
 } from "sanity/presentation";
 import type { PresentationPluginOptions } from "sanity/presentation";
 import { ROOT_SLUG_FILTER } from "../../shared/root-slug-filter.ts";
+import { productPath } from "../../shared/content-routes.ts";
 import {
   getPresentationPath,
   resolveContentPath,
@@ -42,6 +43,21 @@ export const resolve: PresentationPluginOptions["resolve"] = {
         ],
       }),
     }),
+    product: defineLocations({
+      select: {
+        title: "name",
+        slug: "slug.current",
+        kind: "kind",
+      },
+      resolve: (doc) => {
+        const href = productPath(doc?.kind, doc?.slug);
+        return {
+          locations: href
+            ? [{ title: doc?.title || "Untitled", href }]
+            : [],
+        };
+      },
+    }),
     blogIndex: defineLocations({
       select: { title: "title" },
       resolve: (doc) => ({
@@ -67,6 +83,17 @@ export const resolve: PresentationPluginOptions["resolve"] = {
     {
       route: "/news/:slug",
       filter: `_type == 'post' && ${ROOT_SLUG_FILTER}`,
+    },
+    // A product address can also be a page (flavored-salsas/menu is one);
+    // the slug rule keeps the two from sharing an address, so whichever
+    // exists is the main document.
+    {
+      route: "/products/:slug",
+      filter: `(_type == "product" && kind in ["hoagie", "pizza"] && slug.current == $slug) || (_type == "page" && slug.current in ["products/" + $slug, "/products/" + $slug, "products/" + $slug + "/", "/products/" + $slug + "/"])`,
+    },
+    {
+      route: "/flavored-salsas/:slug",
+      filter: `(_type == "product" && kind == "salsa" && slug.current == $slug) || (_type == "page" && slug.current in ["flavored-salsas/" + $slug, "/flavored-salsas/" + $slug, "flavored-salsas/" + $slug + "/", "/flavored-salsas/" + $slug + "/"])`,
     },
     {
       route: "/:slug(.+)",

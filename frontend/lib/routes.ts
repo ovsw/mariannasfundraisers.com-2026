@@ -5,4 +5,6 @@ export {
   normalizePublicPath,
   pagePath,
   postPath,
+  productPath,
+  productRoute,
 } from "../../shared/content-routes";
