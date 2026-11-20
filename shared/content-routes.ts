@@ -1,4 +1,4 @@
-export type RoutedDocumentType = "category" | "page" | "post";
+export type RoutedDocumentType = "page" | "post";
 
 const ROUTE_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -22,12 +22,7 @@ export function pagePath(value?: string | null) {
 
 export function postPath(value?: string | null) {
   const slug = cleanSlug(value);
-  return isRouteSlug(slug) ? `/blog/${slug}` : null;
-}
-
-export function categoryPath(value?: string | null) {
-  const slug = cleanSlug(value);
-  return isRouteSlug(slug) ? `/blog/category/${slug}` : null;
+  return isRouteSlug(slug) ? `/news/${slug}` : null;
 }
 
 export function routedDocumentPath(
@@ -35,7 +30,6 @@ export function routedDocumentPath(
   value?: string | null,
 ) {
   if (documentType === "post") return postPath(value);
-  if (documentType === "category") return categoryPath(value);
   return pagePath(value);
 }
 
@@ -62,8 +56,7 @@ export function isApplicationPath(value?: string | null) {
 
   if (
     path === "/" ||
-    path === "/blog" ||
-    path === "/blog/category" ||
+    path === "/news" ||
     path === "/contact/thanks" ||
     path === "/favicon.ico" ||
     path === "/robots.txt" ||
@@ -74,8 +67,7 @@ export function isApplicationPath(value?: string | null) {
 
   if (path === "/api" || path.startsWith("/api/")) return true;
   if (path === "/_next" || path.startsWith("/_next/")) return true;
-  if (/^\/blog\/\d+$/.test(path)) return true;
-  return /^\/blog\/category\/[^/]+\/\d+$/.test(path);
+  return /^\/news\/\d+$/.test(path);
 }
 
 /** Paths that an editor-created page cannot own. */
@@ -83,6 +75,6 @@ export function isReservedPagePath(value?: string | null) {
   const path = normalizePublicPath(value);
   return Boolean(
     path &&
-    (isApplicationPath(path) || path === "/blog" || path.startsWith("/blog/")),
+    (isApplicationPath(path) || path === "/news" || path.startsWith("/news/")),
   );
 }

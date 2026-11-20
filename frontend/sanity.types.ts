@@ -183,13 +183,6 @@ export type PostReference = {
   [internalGroqTypeReferenceTo]?: "post";
 };
 
-export type CategoryReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "category";
-};
-
 export type BlogIndexReference = {
   _ref: string;
   _type: "reference";
@@ -201,11 +194,7 @@ export type CustomUrl = {
   _type: "customUrl";
   external?: string;
   internal?:
-    | HomePageReference
-    | PageReference
-    | PostReference
-    | CategoryReference
-    | BlogIndexReference;
+    HomePageReference | PageReference | PostReference | BlogIndexReference;
   type?: "internal" | "external";
   openInNewTab?: boolean;
   href?: string;
@@ -230,11 +219,7 @@ export type Link = {
   _type: "link";
   isExternal?: boolean;
   internalLink?:
-    | HomePageReference
-    | PageReference
-    | PostReference
-    | CategoryReference
-    | BlogIndexReference;
+    HomePageReference | PageReference | PostReference | BlogIndexReference;
   title?: string;
   href?: string;
   target?: boolean;
@@ -306,11 +291,7 @@ export type FooterDestination = {
   _type: "footerDestination";
   kind?: "internal" | "external";
   internal?:
-    | HomePageReference
-    | PageReference
-    | PostReference
-    | CategoryReference
-    | BlogIndexReference;
+    HomePageReference | PageReference | PostReference | BlogIndexReference;
   external?: string;
   openInNewTab?: boolean;
 };
@@ -324,11 +305,7 @@ export type Redirect = {
   status?: "active" | "inactive";
   source?: Slug;
   destinationReference?:
-    | HomePageReference
-    | PageReference
-    | PostReference
-    | CategoryReference
-    | BlogIndexReference;
+    HomePageReference | PageReference | PostReference | BlogIndexReference;
   destination?: Slug;
   permanent?: "true" | "false";
 };
@@ -492,11 +469,7 @@ export type NavigationDestination = {
   _type: "navigationDestination";
   kind?: "internal" | "external";
   internal?:
-    | HomePageReference
-    | PageReference
-    | PostReference
-    | CategoryReference
-    | BlogIndexReference;
+    HomePageReference | PageReference | PostReference | BlogIndexReference;
   external?: string;
   openInNewTab?: boolean;
 };
@@ -646,20 +619,7 @@ export type Post = {
     caption?: string;
     _type: "image";
   };
-  category?: CategoryReference;
   body?: RichTextContent;
-  meta?: Meta;
-};
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  description?: string;
   meta?: Meta;
 };
 
@@ -849,7 +809,6 @@ export type AllSanitySchemaTypes =
   | HomePageReference
   | PageReference
   | PostReference
-  | CategoryReference
   | BlogIndexReference
   | CustomUrl
   | SectionPadding
@@ -881,7 +840,6 @@ export type AllSanitySchemaTypes =
   | Faq
   | AuthorReference
   | Post
-  | Category
   | Author
   | Page
   | MediaFolderReference
@@ -898,7 +856,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../frontend/sanity/queries/blog-index.ts
 // Variable: BLOG_INDEX_QUERY
-// Query: *[_id == "blogIndex"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  }  }
+// Query: *[_id == "blogIndex"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  }  }
 export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
@@ -944,7 +902,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "buttonLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -956,7 +914,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "customLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1037,7 +995,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "buttonLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1049,7 +1007,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "customLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1143,41 +1101,6 @@ export type BLOG_INDEX_QUERY_RESULT =
     }
   | {
       _id: "blogIndex";
-      _type: "category";
-      title: string | null;
-      description: string | null;
-      blocks: null;
-      sharingPhoto: {
-        asset: SanityImageAssetReference | null;
-        crop: SanityImageCrop | null;
-        hotspot: SanityImageHotspot | null;
-      } | null;
-      meta: {
-        title: string | null;
-        description: string | null;
-        noindex: boolean | null;
-        image: {
-          asset: {
-            _id: string;
-            url: string | null;
-            mimeType: string | null;
-            metadata: {
-              lqip: string | null;
-              dimensions: {
-                width: number | null;
-                height: number | null;
-              } | null;
-            } | null;
-          } | null;
-          media?: unknown; // Unable to locate the referenced type "image.media" in schema
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          _type: "image";
-        } | null;
-      } | null;
-    }
-  | {
-      _id: "blogIndex";
       _type: "faq";
       title: string | null;
       description: null;
@@ -1229,7 +1152,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "buttonLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1241,7 +1164,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "customLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1322,7 +1245,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "buttonLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1334,7 +1257,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "customLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1479,7 +1402,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "buttonLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1491,7 +1414,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "customLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1572,7 +1495,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "buttonLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1584,7 +1507,7 @@ export type BLOG_INDEX_QUERY_RESULT =
                         _key: string;
                         _type: "customLink";
                         customLink?: CustomUrl;
-                        href: string | null | "/" | "/blog";
+                        href: string | null | "/" | "/news";
                         openInNewTab: boolean | null;
                       }
                     | {
@@ -1760,7 +1683,7 @@ export type BLOG_INDEX_QUERY_RESULT =
 
 // Source: ../frontend/sanity/queries/blog-index.ts
 // Variable: LATEST_POST_QUERY
-// Query: *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0]{      _id,  title,  slug,  publishedAt,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  category->{_id, title, slug}  }
+// Query: *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0]{      _id,  title,  slug,  publishedAt,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}  }
 export type LATEST_POST_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -1787,16 +1710,11 @@ export type LATEST_POST_QUERY_RESULT = {
     caption?: string;
     _type: "image";
   } | null;
-  category: {
-    _id: string;
-    title: string | null;
-    slug: Slug | null;
-  } | null;
 } | null;
 
 // Source: ../frontend/sanity/queries/blog-index.ts
 // Variable: REGULAR_POSTS_QUERY
-// Query: *[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId]    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{        _id,  title,  slug,  publishedAt,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  category->{_id, title, slug}    }
+// Query: *[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId]    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{        _id,  title,  slug,  publishedAt,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }}    }
 export type REGULAR_POSTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
@@ -1823,11 +1741,6 @@ export type REGULAR_POSTS_QUERY_RESULT = Array<{
     caption?: string;
     _type: "image";
   } | null;
-  category: {
-    _id: string;
-    title: string | null;
-    slug: Slug | null;
-  } | null;
 }>;
 
 // Source: ../frontend/sanity/queries/blog-index.ts
@@ -1840,17 +1753,9 @@ export type REGULAR_POSTS_COUNT_QUERY_RESULT = number;
 // Query: count(*[_type == "post" && defined(slug.current) && defined(publishedAt)])
 export type ELIGIBLE_BLOG_POSTS_COUNT_QUERY_RESULT = number;
 
-// Source: ../frontend/sanity/queries/blog-index.ts
-// Variable: BLOG_CATEGORY_POST_COUNTS_QUERY
-// Query: *[_type == "category" && defined(slug.current)]{    "slug": slug.current,    "postCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])  }
-export type BLOG_CATEGORY_POST_COUNTS_QUERY_RESULT = Array<{
-  slug: string | null;
-  postCount: number;
-}>;
-
 // Source: ../frontend/sanity/queries/blog-post-settings.ts
 // Variable: BLOG_POST_SETTINGS_QUERY
-// Query: *[  _type == "blogPostSettings" &&  _id == "blogPostSettings" &&  defined(actions)][0]{  _id,  _type,  title,  description,  "actions": array::compact(actions[]{  _key,  title,  description,  ...button{    "text": text,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),      url.type == "external" => url.external,      url.href    )  }})}
+// Query: *[  _type == "blogPostSettings" &&  _id == "blogPostSettings" &&  defined(actions)][0]{  _id,  _type,  title,  description,  "actions": array::compact(actions[]{  _key,  title,  description,  ...button{    "text": text,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),      url.type == "external" => url.external,      url.href    )  }})}
 export type BLOG_POST_SETTINGS_QUERY_RESULT = {
   _id: "blogPostSettings";
   _type: "blogPostSettings";
@@ -1863,7 +1768,7 @@ export type BLOG_POST_SETTINGS_QUERY_RESULT = {
         description: string | null;
         text: string | null;
         openInNewTab: boolean | null;
-        href: string | null | "/" | "/blog";
+        href: string | null | "/" | "/news";
       }
     | {
         _key: string;
@@ -1873,98 +1778,9 @@ export type BLOG_POST_SETTINGS_QUERY_RESULT = {
   >;
 } | null;
 
-// Source: ../frontend/sanity/queries/category.ts
-// Variable: CATEGORY_QUERY
-// Query: *[_type == "category" && slug.current == $slug][0]{    _id,    _type,    title,    slug,    description,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },    "publishedPostCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])  }
-export type CATEGORY_QUERY_RESULT = {
-  _id: string;
-  _type: "category";
-  title: string | null;
-  slug: Slug | null;
-  description: string | null;
-  sharingPhoto: {
-    asset: SanityImageAssetReference | null;
-    crop: SanityImageCrop | null;
-    hotspot: SanityImageHotspot | null;
-  } | null;
-  meta: {
-    title: string | null;
-    description: string | null;
-    noindex: boolean | null;
-    image: {
-      asset: {
-        _id: string;
-        url: string | null;
-        mimeType: string | null;
-        metadata: {
-          lqip: string | null;
-          dimensions: {
-            width: number | null;
-            height: number | null;
-          } | null;
-        } | null;
-      } | null;
-      media?: unknown; // Unable to locate the referenced type "image.media" in schema
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    } | null;
-  } | null;
-  publishedPostCount: number;
-} | null;
-
-// Source: ../frontend/sanity/queries/category.ts
-// Variable: CATEGORY_POSTS_QUERY
-// Query: *[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == $categoryId]    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{        _id,  title,  slug,  publishedAt,  "excerpt": pt::text(excerpt),  image {  ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }},  category->{_id, title, slug}    }
-export type CATEGORY_POSTS_QUERY_RESULT = Array<{
-  _id: string;
-  title: string | null;
-  slug: Slug | null;
-  publishedAt: string | null;
-  excerpt: string;
-  image: {
-    asset: {
-      _id: string;
-      url: string | null;
-      mimeType: string | null;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number | null;
-          height: number | null;
-        } | null;
-      } | null;
-    } | null;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    caption?: string;
-    _type: "image";
-  } | null;
-  category: {
-    _id: string;
-    title: string | null;
-    slug: Slug | null;
-  } | null;
-}>;
-
-// Source: ../frontend/sanity/queries/category.ts
-// Variable: CATEGORY_POSTS_COUNT_QUERY
-// Query: count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == $categoryId])
-export type CATEGORY_POSTS_COUNT_QUERY_RESULT = number;
-
-// Source: ../frontend/sanity/queries/category.ts
-// Variable: CATEGORY_STATIC_PARAMS_QUERY
-// Query: *[    _type == "category"    && defined(slug.current)  ]{    "slug": slug.current,    "publishedPostCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])  }
-export type CATEGORY_STATIC_PARAMS_QUERY_RESULT = Array<{
-  slug: string | null;
-  publishedPostCount: number;
-}>;
-
 // Source: ../frontend/sanity/queries/footer.ts
 // Variable: FOOTER_QUERY
-// Query: *[_type == "footer" && _id == "footer"][0]{    _id,    intro,    columns[]{      _key,      heading,      links[]{  _key,  label,  destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "homePage" || internal->_type == "homePage" => "/",      internal->_id == "blogIndex" => "/blog",      internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),      internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")    ),    kind == "external" => external  )}}    },    "legalLinks": coalesce(legalLinks, compliance.legalLinks)[]{  _key,  label,  destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "homePage" || internal->_type == "homePage" => "/",      internal->_id == "blogIndex" => "/blog",      internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),      internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")    ),    kind == "external" => external  )}},    "copyrightStartYear": coalesce(copyrightStartYear, compliance.copyrightStartYear),    "copyrightOwner": coalesce(copyrightOwner, compliance.copyrightOwner)  }
+// Query: *[_type == "footer" && _id == "footer"][0]{    _id,    intro,    columns[]{      _key,      heading,      links[]{  _key,  label,  destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "homePage" || internal->_type == "homePage" => "/",      internal->_id == "blogIndex" => "/news",      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")    ),    kind == "external" => external  )}}    },    "legalLinks": coalesce(legalLinks, compliance.legalLinks)[]{  _key,  label,  destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "homePage" || internal->_type == "homePage" => "/",      internal->_id == "blogIndex" => "/news",      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")    ),    kind == "external" => external  )}},    "copyrightStartYear": coalesce(copyrightStartYear, compliance.copyrightStartYear),    "copyrightOwner": coalesce(copyrightOwner, compliance.copyrightOwner)  }
 export type FOOTER_QUERY_RESULT = {
   _id: "footer";
   intro: string | null;
@@ -1976,7 +1792,7 @@ export type FOOTER_QUERY_RESULT = {
       label: string | null;
       destination: {
         openInNewTab: boolean | null;
-        href: string | null | "/" | "/blog";
+        href: string | null | "/" | "/news";
       } | null;
     }> | null;
   }> | null;
@@ -1985,7 +1801,7 @@ export type FOOTER_QUERY_RESULT = {
     label: string | null;
     destination: {
       openInNewTab: boolean | null;
-      href: string | null | "/" | "/blog";
+      href: string | null | "/" | "/news";
     } | null;
   }> | null;
   copyrightStartYear: number | null;
@@ -1994,7 +1810,7 @@ export type FOOTER_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/home-page.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "homePage" && _type == "homePage"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
+// Query: *[_id == "homePage" && _type == "homePage"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
 export type HOME_PAGE_QUERY_RESULT = {
   _id: "homePage";
   _type: "homePage";
@@ -2030,7 +1846,7 @@ export type HOME_PAGE_QUERY_RESULT = {
                     _key: string;
                     _type: "buttonLink";
                     customLink?: CustomUrl;
-                    href: string | null | "/" | "/blog";
+                    href: string | null | "/" | "/news";
                     openInNewTab: boolean | null;
                   }
                 | {
@@ -2042,7 +1858,7 @@ export type HOME_PAGE_QUERY_RESULT = {
                     _key: string;
                     _type: "customLink";
                     customLink?: CustomUrl;
-                    href: string | null | "/" | "/blog";
+                    href: string | null | "/" | "/news";
                     openInNewTab: boolean | null;
                   }
                 | {
@@ -2123,7 +1939,7 @@ export type HOME_PAGE_QUERY_RESULT = {
                     _key: string;
                     _type: "buttonLink";
                     customLink?: CustomUrl;
-                    href: string | null | "/" | "/blog";
+                    href: string | null | "/" | "/news";
                     openInNewTab: boolean | null;
                   }
                 | {
@@ -2135,7 +1951,7 @@ export type HOME_PAGE_QUERY_RESULT = {
                     _key: string;
                     _type: "customLink";
                     customLink?: CustomUrl;
-                    href: string | null | "/" | "/blog";
+                    href: string | null | "/" | "/news";
                     openInNewTab: boolean | null;
                   }
                 | {
@@ -2221,7 +2037,7 @@ export type HOME_PAGE_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/navigation.ts
 // Variable: NAVIGATION_QUERY
-// Query: *[_type == "navigation" && _id == "navigation"][0]{    _id,    items[]{      _key,      _type == "navigationLink" => {        "kind": "link",        label,        destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "blogIndex" => "/blog",      select(  internal->_id == "homePage" || internal->_type == "homePage" => "/",  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"))    ),    kind == "external" => external  )}      },      _type == "navigationGroup" => {        "kind": "group",        label,        links[]{          _key,          label,          description,          // Legacy documents store the icon as a bare string name; surface it          // as {name, svg: null} so the link survives until the doc is re-saved.          "icon": select(            defined(icon.name) => icon{ name, svg },            defined(icon) => { "name": icon, "svg": null }          ),          destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "blogIndex" => "/blog",      select(  internal->_id == "homePage" || internal->_type == "homePage" => "/",  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"))    ),    kind == "external" => external  )}        }      }    },    actions[]{      _key,      label,      destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "blogIndex" => "/blog",      select(  internal->_id == "homePage" || internal->_type == "homePage" => "/",  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"))    ),    kind == "external" => external  )}    }  }
+// Query: *[_type == "navigation" && _id == "navigation"][0]{    _id,    items[]{      _key,      _type == "navigationLink" => {        "kind": "link",        label,        destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "blogIndex" => "/news",      select(  internal->_id == "homePage" || internal->_type == "homePage" => "/",  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"))    ),    kind == "external" => external  )}      },      _type == "navigationGroup" => {        "kind": "group",        label,        links[]{          _key,          label,          description,          // Legacy documents store the icon as a bare string name; surface it          // as {name, svg: null} so the link survives until the doc is re-saved.          "icon": select(            defined(icon.name) => icon{ name, svg },            defined(icon) => { "name": icon, "svg": null }          ),          destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "blogIndex" => "/news",      select(  internal->_id == "homePage" || internal->_type == "homePage" => "/",  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"))    ),    kind == "external" => external  )}        }      }    },    actions[]{      _key,      label,      destination{  openInNewTab,  "href": select(    kind == "internal" => select(      internal->_id == "blogIndex" => "/news",      select(  internal->_id == "homePage" || internal->_type == "homePage" => "/",  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"))    ),    kind == "external" => external  )}    }  }
 export type NAVIGATION_QUERY_RESULT = {
   _id: "navigation";
   items: Array<
@@ -2231,7 +2047,7 @@ export type NAVIGATION_QUERY_RESULT = {
         label: string | null;
         destination: {
           openInNewTab: boolean | null;
-          href: string | null | "/" | "/blog";
+          href: string | null | "/" | "/news";
         } | null;
       }
     | {
@@ -2254,7 +2070,7 @@ export type NAVIGATION_QUERY_RESULT = {
             | null;
           destination: {
             openInNewTab: boolean | null;
-            href: string | null | "/" | "/blog";
+            href: string | null | "/" | "/news";
           } | null;
         }> | null;
       }
@@ -2264,7 +2080,7 @@ export type NAVIGATION_QUERY_RESULT = {
     label: string | null;
     destination: {
       openInNewTab: boolean | null;
-      href: string | null | "/" | "/blog";
+      href: string | null | "/" | "/news";
     } | null;
   }> | null;
 } | null;
@@ -2306,21 +2122,9 @@ export type BLOG_INDEX_OG_IMAGE_QUERY_RESULT = {
   } | null;
 } | null;
 
-// Source: ../frontend/sanity/queries/og-image.ts
-// Variable: CATEGORY_OG_IMAGE_QUERY
-// Query: *[_type == "category" && slug.current == $slug][0]{    "title": coalesce(title, meta.title),    "sharingPhoto": select(  defined(meta.image.asset) => meta.image){ asset, crop, hotspot }  }
-export type CATEGORY_OG_IMAGE_QUERY_RESULT = {
-  title: string | null;
-  sharingPhoto: {
-    asset: SanityImageAssetReference | null;
-    crop: SanityImageCrop | null;
-    hotspot: SanityImageHotspot | null;
-  } | null;
-} | null;
-
 // Source: ../frontend/sanity/queries/page.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    _id,    _type,    title,    description,    "slug": slug.current,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
+// Query: *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    _id,    _type,    title,    description,    "slug": slug.current,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
 export type PAGE_QUERY_RESULT = {
   _id: string;
   _type: "page";
@@ -2357,7 +2161,7 @@ export type PAGE_QUERY_RESULT = {
                     _key: string;
                     _type: "buttonLink";
                     customLink?: CustomUrl;
-                    href: string | null | "/" | "/blog";
+                    href: string | null | "/" | "/news";
                     openInNewTab: boolean | null;
                   }
                 | {
@@ -2369,7 +2173,7 @@ export type PAGE_QUERY_RESULT = {
                     _key: string;
                     _type: "customLink";
                     customLink?: CustomUrl;
-                    href: string | null | "/" | "/blog";
+                    href: string | null | "/" | "/news";
                     openInNewTab: boolean | null;
                   }
                 | {
@@ -2450,7 +2254,7 @@ export type PAGE_QUERY_RESULT = {
                     _key: string;
                     _type: "buttonLink";
                     customLink?: CustomUrl;
-                    href: string | null | "/" | "/blog";
+                    href: string | null | "/" | "/news";
                     openInNewTab: boolean | null;
                   }
                 | {
@@ -2462,7 +2266,7 @@ export type PAGE_QUERY_RESULT = {
                     _key: string;
                     _type: "customLink";
                     customLink?: CustomUrl;
-                    href: string | null | "/" | "/blog";
+                    href: string | null | "/" | "/news";
                     openInNewTab: boolean | null;
                   }
                 | {
@@ -2555,7 +2359,7 @@ export type PAGES_SLUGS_QUERY_RESULT = Array<{
 
 // Source: ../frontend/sanity/queries/post.ts
 // Variable: POST_PROJECTION
-// Query: {    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    category->{      _id,      _type,      title,      slug    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
+// Query: {    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
 export type POST_PROJECTION_RESULT = {
   _id: never;
   _type: never;
@@ -2566,7 +2370,6 @@ export type POST_PROJECTION_RESULT = {
   image: never;
   body: never;
   author: never;
-  category: never;
   _createdAt: never;
   _updatedAt: never;
   sharingPhoto: null;
@@ -2575,7 +2378,7 @@ export type POST_PROJECTION_RESULT = {
 
 // Source: ../frontend/sanity/queries/post.ts
 // Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    category->{      _id,      _type,      title,      slug    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
+// Query: *[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
 export type POST_QUERY_RESULT = {
   _id: string;
   _type: "post";
@@ -2619,7 +2422,7 @@ export type POST_QUERY_RESULT = {
               _key: string;
               _type: "buttonLink";
               customLink?: CustomUrl;
-              href: string | null | "/" | "/blog";
+              href: string | null | "/" | "/news";
               openInNewTab: boolean | null;
             }
           | {
@@ -2631,7 +2434,7 @@ export type POST_QUERY_RESULT = {
               _key: string;
               _type: "customLink";
               customLink?: CustomUrl;
-              href: string | null | "/" | "/blog";
+              href: string | null | "/" | "/news";
               openInNewTab: boolean | null;
             }
           | {
@@ -2707,12 +2510,6 @@ export type POST_QUERY_RESULT = {
       _type: "image";
     } | null;
   } | null;
-  category: {
-    _id: string;
-    _type: "category";
-    title: string | null;
-    slug: Slug | null;
-  } | null;
   _createdAt: string;
   _updatedAt: string;
   sharingPhoto:
@@ -2754,7 +2551,7 @@ export type POST_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/post.ts
 // Variable: PUBLISHED_POST_QUERY
-// Query: *[  _type == "post" && defined(slug.current) && defined(publishedAt) && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    category->{      _id,      _type,      title,      slug    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
+// Query: *[  _type == "post" && defined(slug.current) && defined(publishedAt) && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    // richTextContent V2    _id,    _type,    title,    slug,    publishedAt,    "excerpt": pt::text(excerpt),    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    body[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    },    author->{      _id,      _type,      name,      image {        ...,        asset->{          _id,          url,          mimeType,          metadata {            lqip,            dimensions {              width,              height            }          }        },        alt      }    },    _createdAt,    _updatedAt,    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  defined(image.asset) => image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },}
 export type PUBLISHED_POST_QUERY_RESULT = {
   _id: string;
   _type: "post";
@@ -2798,7 +2595,7 @@ export type PUBLISHED_POST_QUERY_RESULT = {
               _key: string;
               _type: "buttonLink";
               customLink?: CustomUrl;
-              href: string | null | "/" | "/blog";
+              href: string | null | "/" | "/news";
               openInNewTab: boolean | null;
             }
           | {
@@ -2810,7 +2607,7 @@ export type PUBLISHED_POST_QUERY_RESULT = {
               _key: string;
               _type: "customLink";
               customLink?: CustomUrl;
-              href: string | null | "/" | "/blog";
+              href: string | null | "/" | "/news";
               openInNewTab: boolean | null;
             }
           | {
@@ -2885,12 +2682,6 @@ export type PUBLISHED_POST_QUERY_RESULT = {
       alt: string | null;
       _type: "image";
     } | null;
-  } | null;
-  category: {
-    _id: string;
-    _type: "category";
-    title: string | null;
-    slug: Slug | null;
   } | null;
   _createdAt: string;
   _updatedAt: string;
@@ -2990,12 +2781,12 @@ export type POSTS_SLUGS_QUERY_RESULT = Array<{
 
 // Source: ../frontend/sanity/queries/redirects.ts
 // Variable: REDIRECTS_QUERY
-// Query: *[    _type == "redirect" &&    !(_id in path("drafts.**")) &&    status == "active" &&    defined(source.current) &&    (defined(destinationReference._ref) || defined(destination.current))  ] | order(source.current asc) {    _id,    status,    source,    "destination": select(      defined(destinationReference._ref) => select(  destinationReference->_id == "homePage" || destinationReference->_type == "homePage" => "/",  destinationReference->_id == "blogIndex" || destinationReference->_type == "blogIndex" => "/blog",  destinationReference->_type == "post" && defined(destinationReference->slug.current) => "/blog/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),  destinationReference->_type == "category" && defined(destinationReference->slug.current) => "/blog/category/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),  destinationReference->_type == "page" && defined(destinationReference->slug.current) => "/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/")),      destination.current    ),    permanent  }
+// Query: *[    _type == "redirect" &&    !(_id in path("drafts.**")) &&    status == "active" &&    defined(source.current) &&    (defined(destinationReference._ref) || defined(destination.current))  ] | order(source.current asc) {    _id,    status,    source,    "destination": select(      defined(destinationReference._ref) => select(  destinationReference->_id == "homePage" || destinationReference->_type == "homePage" => "/",  destinationReference->_id == "blogIndex" || destinationReference->_type == "blogIndex" => "/news",  destinationReference->_type == "post" && defined(destinationReference->slug.current) => "/news/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),  destinationReference->_type == "page" && defined(destinationReference->slug.current) => "/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/")),      destination.current    ),    permanent  }
 export type REDIRECTS_QUERY_RESULT = Array<{
   _id: string;
   status: "active" | "inactive" | null;
   source: Slug | null;
-  destination: string | null | "/" | "/blog";
+  destination: string | null | "/" | "/news";
   permanent: "false" | "true" | null;
 }>;
 
@@ -3059,33 +2850,27 @@ export type SETTINGS_QUERY_RESULT = {
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_id == "blogIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n\n  }\n': BLOG_INDEX_QUERY_RESULT;
-    '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0]{\n    \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  category->{_id, title, slug}\n\n  }\n': LATEST_POST_QUERY_RESULT;
-    '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId]\n    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{\n      \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  category->{_id, title, slug}\n\n    }\n': REGULAR_POSTS_QUERY_RESULT;
+    '\n  *[_id == "blogIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n\n  }\n': BLOG_INDEX_QUERY_RESULT;
+    '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0]{\n    \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n\n  }\n': LATEST_POST_QUERY_RESULT;
+    '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId]\n    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{\n      \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n}\n\n    }\n': REGULAR_POSTS_QUERY_RESULT;
     '\n  count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId])\n': REGULAR_POSTS_COUNT_QUERY_RESULT;
     '\n  count(*[_type == "post" && defined(slug.current) && defined(publishedAt)])\n': ELIGIBLE_BLOG_POSTS_COUNT_QUERY_RESULT;
-    '\n  *[_type == "category" && defined(slug.current)]{\n    "slug": slug.current,\n    "postCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])\n  }\n': BLOG_CATEGORY_POST_COUNTS_QUERY_RESULT;
-    '*[\n  _type == "blogPostSettings" &&\n  _id == "blogPostSettings" &&\n  defined(actions)\n][0]{\n  _id,\n  _type,\n  title,\n  description,\n  "actions": array::compact(actions[]{\n  _key,\n  title,\n  description,\n  ...button{\n    "text": text,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n      url.type == "external" => url.external,\n      url.href\n    )\n  }\n})\n}': BLOG_POST_SETTINGS_QUERY_RESULT;
-    '\n  *[_type == "category" && slug.current == $slug][0]{\n    _id,\n    _type,\n    title,\n    slug,\n    description,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    "publishedPostCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])\n  }\n': CATEGORY_QUERY_RESULT;
-    '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == $categoryId]\n    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{\n      \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  category->{_id, title, slug}\n\n    }\n': CATEGORY_POSTS_QUERY_RESULT;
-    '\n  count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == $categoryId])\n': CATEGORY_POSTS_COUNT_QUERY_RESULT;
-    '\n  *[\n    _type == "category"\n    && defined(slug.current)\n  ]{\n    "slug": slug.current,\n    "publishedPostCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])\n  }\n': CATEGORY_STATIC_PARAMS_QUERY_RESULT;
-    '\n  *[_type == "footer" && _id == "footer"][0]{\n    _id,\n    intro,\n    columns[]{\n      _key,\n      heading,\n      links[]{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/blog",\n      internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n}\n    },\n    "legalLinks": coalesce(legalLinks, compliance.legalLinks)[]{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/blog",\n      internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n},\n    "copyrightStartYear": coalesce(copyrightStartYear, compliance.copyrightStartYear),\n    "copyrightOwner": coalesce(copyrightOwner, compliance.copyrightOwner)\n  }\n': FOOTER_QUERY_RESULT;
-    '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': HOME_PAGE_QUERY_RESULT;
-    '\n  *[_type == "navigation" && _id == "navigation"][0]{\n    _id,\n    items[]{\n      _key,\n      _type == "navigationLink" => {\n        "kind": "link",\n        label,\n        destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/blog",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",\n  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n      },\n      _type == "navigationGroup" => {\n        "kind": "group",\n        label,\n        links[]{\n          _key,\n          label,\n          description,\n          // Legacy documents store the icon as a bare string name; surface it\n          // as {name, svg: null} so the link survives until the doc is re-saved.\n          "icon": select(\n            defined(icon.name) => icon{ name, svg },\n            defined(icon) => { "name": icon, "svg": null }\n          ),\n          destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/blog",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",\n  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n        }\n      }\n    },\n    actions[]{\n      _key,\n      label,\n      destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/blog",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",\n  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n    }\n  }\n': NAVIGATION_QUERY_RESULT;
+    '*[\n  _type == "blogPostSettings" &&\n  _id == "blogPostSettings" &&\n  defined(actions)\n][0]{\n  _id,\n  _type,\n  title,\n  description,\n  "actions": array::compact(actions[]{\n  _key,\n  title,\n  description,\n  ...button{\n    "text": text,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/news/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n      url.type == "external" => url.external,\n      url.href\n    )\n  }\n})\n}': BLOG_POST_SETTINGS_QUERY_RESULT;
+    '\n  *[_type == "footer" && _id == "footer"][0]{\n    _id,\n    intro,\n    columns[]{\n      _key,\n      heading,\n      links[]{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/news",\n      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n}\n    },\n    "legalLinks": coalesce(legalLinks, compliance.legalLinks)[]{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/news",\n      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n},\n    "copyrightStartYear": coalesce(copyrightStartYear, compliance.copyrightStartYear),\n    "copyrightOwner": coalesce(copyrightOwner, compliance.copyrightOwner)\n  }\n': FOOTER_QUERY_RESULT;
+    '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': HOME_PAGE_QUERY_RESULT;
+    '\n  *[_type == "navigation" && _id == "navigation"][0]{\n    _id,\n    items[]{\n      _key,\n      _type == "navigationLink" => {\n        "kind": "link",\n        label,\n        destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/news",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",\n  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n      },\n      _type == "navigationGroup" => {\n        "kind": "group",\n        label,\n        links[]{\n          _key,\n          label,\n          description,\n          // Legacy documents store the icon as a bare string name; surface it\n          // as {name, svg: null} so the link survives until the doc is re-saved.\n          "icon": select(\n            defined(icon.name) => icon{ name, svg },\n            defined(icon) => { "name": icon, "svg": null }\n          ),\n          destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/news",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",\n  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n        }\n      }\n    },\n    actions[]{\n      _key,\n      label,\n      destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/news",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",\n  internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n    }\n  }\n': NAVIGATION_QUERY_RESULT;
     '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    "overrideTitle": meta.title,\n    title,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot }\n  }\n': HOME_PAGE_OG_IMAGE_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    "title": coalesce(title, meta.title),\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot }\n  }\n': PAGE_OG_IMAGE_QUERY_RESULT;
     '\n  *[_id == "blogIndex" && _type == "blogIndex"][0]{\n    "title": coalesce(title, meta.title),\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot }\n  }\n': BLOG_INDEX_OG_IMAGE_QUERY_RESULT;
-    '\n  *[_type == "category" && slug.current == $slug][0]{\n    "title": coalesce(title, meta.title),\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot }\n  }\n': CATEGORY_OG_IMAGE_QUERY_RESULT;
-    '\n  *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
+    '\n  *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
     '*[_type == "page" && defined(slug)]{slug}': PAGES_SLUGS_QUERY_RESULT;
-    '{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    category->{\n      _id,\n      _type,\n      title,\n      slug\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_PROJECTION_RESULT;
-    '*[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    category->{\n      _id,\n      _type,\n      title,\n      slug\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_QUERY_RESULT;
-    '*[\n  _type == "post" && defined(slug.current) && defined(publishedAt) && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]\n][0]{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    category->{\n      _id,\n      _type,\n      title,\n      slug\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': PUBLISHED_POST_QUERY_RESULT;
+    '{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_PROJECTION_RESULT;
+    '*[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_QUERY_RESULT;
+    '*[\n  _type == "post" && defined(slug.current) && defined(publishedAt) && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]\n][0]{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/news",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/news/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    author->{\n      _id,\n      _type,\n      name,\n      image {\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata {\n            lqip,\n            dimensions {\n              width,\n              height\n            }\n          }\n        },\n        alt\n      }\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': PUBLISHED_POST_QUERY_RESULT;
     '*[\n  _type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]\n][0]{\n  title,\n  publishedAt,\n  "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot }\n}': POST_OG_IMAGE_QUERY_RESULT;
     '*[_type == "post" && defined(slug)] | order(_createdAt desc){\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n}': POSTS_QUERY_RESULT;
     '*[_type == "post" && defined(slug)]{slug}': POSTS_SLUGS_QUERY_RESULT;
-    '\n  *[\n    _type == "redirect" &&\n    !(_id in path("drafts.**")) &&\n    status == "active" &&\n    defined(source.current) &&\n    (defined(destinationReference._ref) || defined(destination.current))\n  ] | order(source.current asc) {\n    _id,\n    status,\n    source,\n    "destination": select(\n      defined(destinationReference._ref) => select(\n  destinationReference->_id == "homePage" || destinationReference->_type == "homePage" => "/",\n  destinationReference->_id == "blogIndex" || destinationReference->_type == "blogIndex" => "/blog",\n  destinationReference->_type == "post" && defined(destinationReference->slug.current) => "/blog/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),\n  destinationReference->_type == "category" && defined(destinationReference->slug.current) => "/blog/category/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),\n  destinationReference->_type == "page" && defined(destinationReference->slug.current) => "/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/")\n),\n      destination.current\n    ),\n    permanent\n  }\n': REDIRECTS_QUERY_RESULT;
+    '\n  *[\n    _type == "redirect" &&\n    !(_id in path("drafts.**")) &&\n    status == "active" &&\n    defined(source.current) &&\n    (defined(destinationReference._ref) || defined(destination.current))\n  ] | order(source.current asc) {\n    _id,\n    status,\n    source,\n    "destination": select(\n      defined(destinationReference._ref) => select(\n  destinationReference->_id == "homePage" || destinationReference->_type == "homePage" => "/",\n  destinationReference->_id == "blogIndex" || destinationReference->_type == "blogIndex" => "/news",\n  destinationReference->_type == "post" && defined(destinationReference->slug.current) => "/news/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),\n  destinationReference->_type == "page" && defined(destinationReference->slug.current) => "/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/")\n),\n      destination.current\n    ),\n    permanent\n  }\n': REDIRECTS_QUERY_RESULT;
     '\n  *[_type == "settings" && _id == "settings"][0]{\n    _id,\n    _type,\n    siteName,\n    logo{\n      light{\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata { lqip, dimensions { width, height } }\n        }\n      },\n      dark{\n        ...,\n        asset->{\n          _id,\n          url,\n          mimeType,\n          metadata { lqip, dimensions { width, height } }\n        }\n      }\n    },\n    contact{\n      email,\n      phone,\n      addressLines\n    },\n    socialLinks[]{\n      _key,\n      label,\n      url\n    }\n  }\n': SETTINGS_QUERY_RESULT;
   }
 }

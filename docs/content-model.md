@@ -6,9 +6,11 @@ The Website reads structured content from one Sanity project and dataset.
 
 - `homePage` owns `/`.
 - `page` owns normal page slugs such as `/about/`.
-- `blogIndex` owns `/blog/`.
-- `post` owns `/blog/<slug>/`.
-- `category` owns `/blog/category/<slug>/`.
+- `blogIndex` is the news index and owns `/news` (20 posts per page, then
+  `/news/2` and onward).
+- `post` is a news post and owns `/news/<slug>`.
+- There are no categories: the site has no `category` type and no category
+  routes.
 - `redirect` maps an old path to routed content or an external URL.
 
 ## Shared content

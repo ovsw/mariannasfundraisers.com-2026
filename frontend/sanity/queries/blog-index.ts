@@ -6,18 +6,7 @@ import { metaQuery } from "./shared/meta";
 import type { LATEST_POST_QUERY_RESULT } from "@/sanity.types";
 import { blogPostOrder, publishedPostFilter } from "./blog-post-listing";
 
-export type CategoryReference = {
-  _id: string;
-  title?: string | null;
-  slug?: { current?: string | null } | null;
-};
-
-export type BlogPost = Omit<
-  NonNullable<LATEST_POST_QUERY_RESULT>,
-  "category"
-> & {
-  category?: CategoryReference | null;
-};
+export type BlogPost = NonNullable<LATEST_POST_QUERY_RESULT>;
 
 const blogPostProjection = `
   _id,
@@ -25,8 +14,7 @@ const blogPostProjection = `
   slug,
   publishedAt,
   "excerpt": pt::text(excerpt),
-  image {${imageQuery}},
-  category->{_id, title, slug}
+  image {${imageQuery}}
 `;
 
 export const BLOG_INDEX_QUERY = groq`
@@ -60,11 +48,4 @@ export const REGULAR_POSTS_COUNT_QUERY = groq`
 
 export const ELIGIBLE_BLOG_POSTS_COUNT_QUERY = groq`
   count(*[${publishedPostFilter}])
-`;
-
-export const BLOG_CATEGORY_POST_COUNTS_QUERY = groq`
-  *[_type == "category" && defined(slug.current)]{
-    "slug": slug.current,
-    "postCount": count(*[${publishedPostFilter} && category._ref == ^._id])
-  }
 `;

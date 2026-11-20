@@ -64,13 +64,11 @@ test("rejects self redirects and sources that shadow published routes", () => {
   );
 });
 
-test("reserves application routes but allows old post and category paths", () => {
+test("reserves application routes but allows old post paths", () => {
   for (const source of [
     "/",
-    "/blog",
-    "/blog/2",
-    "/blog/category",
-    "/blog/category/news/2",
+    "/news",
+    "/news/2",
     "/api/draft-mode/enable",
     "/contact/thanks",
   ]) {
@@ -83,7 +81,7 @@ test("reserves application routes but allows old post and category paths", () =>
 
   assert.equal(
     issues(
-      { source: "/blog/old-post", destination: "/target" },
+      { source: "/news/old-post", destination: "/target" },
       [],
       [{ path: "/target", type: "page" }],
     ).errors.source,
@@ -91,16 +89,16 @@ test("reserves application routes but allows old post and category paths", () =>
   );
 });
 
-test("recognizes category routes as valid destinations", () => {
+test("recognizes news post routes as valid destinations", () => {
   assert.deepEqual(
     issues(
       {
-        source: "/legacy-category",
-        destination: "/blog/category/news",
+        source: "/legacy-post",
+        destination: "/news/first-post",
         status: "active",
       },
       [],
-      [{ path: "/blog/category/news", type: "category" }],
+      [{ path: "/news/first-post", type: "post" }],
     ),
     { errors: {} },
   );

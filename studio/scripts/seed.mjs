@@ -110,11 +110,16 @@ export const STARTER_DOCUMENT_TYPES = new Map([
   ["blogPostSettings", "blogPostSettings"],
   ["starter-page-about", "page"],
   ["starter-author-editor", "author"],
-  ["starter-category-notes", "category"],
   ["starter-post-field-guide", "post"],
   ["starter-faq-getting-started", "faq"],
   ["starter-team-member-editor", "teamMember"],
   ["starter-testimonial-reader", "testimonial"],
+]);
+
+// Seed documents of types this site no longer has. Older seeds created them,
+// so unseed still removes them when they carry the seed marker.
+export const LEGACY_STARTER_DOCUMENT_TYPES = new Map([
+  ["starter-category-notes", "category"],
 ]);
 
 const marker = {
@@ -149,19 +154,6 @@ export const starterDocuments = [
     name: "Example Editor",
     slug: slug("example-editor"),
     image: placeholder("avatar"),
-  },
-  {
-    _id: "starter-category-notes",
-    _type: "category",
-    ...marker,
-    title: "Field Notes",
-    slug: slug("field-notes"),
-    description:
-      "Short articles that test category archives and article metadata.",
-    meta: meta(
-      "Field Notes | Starter Example",
-      "Example category metadata for the Starter seed.",
-    ),
   },
   {
     _id: "starter-faq-getting-started",
@@ -277,11 +269,10 @@ export const starterDocuments = [
     author: ref("starter-author-editor"),
     publishedAt: "2026-01-15T12:00:00.000Z",
     image: { ...imageRef, caption: "Neutral placeholder image." },
-    category: ref("starter-category-notes"),
     body: [
       block(
         "starter-post-intro",
-        "This article proves blog post rendering, author metadata, category links, and the sidebar.",
+        "This article proves news post rendering, author metadata, and the sidebar.",
       ),
       block("starter-post-heading", "What it covers", "h2"),
       block(
@@ -319,12 +310,12 @@ export const starterDocuments = [
     _id: "blogIndex",
     _type: "blogIndex",
     ...marker,
-    title: "Blog",
-    description: "Example articles for testing the Starter blog.",
+    title: "News",
+    description: "Example articles for testing the news list.",
     blocks: [],
     meta: meta(
-      "Blog | Starter Example",
-      "Example metadata for the seeded Blog index.",
+      "News | Starter Example",
+      "Example metadata for the seeded News index.",
     ),
   },
   {
@@ -417,24 +408,12 @@ export const starterDocuments = [
           {
             _key: "starter-nav-blog",
             _type: "navigationChildLink",
-            label: "Blog",
+            label: "News",
             description: "Article index",
             destination: {
               _type: "navigationDestination",
               kind: "internal",
               internal: ref("blogIndex"),
-              openInNewTab: false,
-            },
-          },
-          {
-            _key: "starter-nav-category",
-            _type: "navigationChildLink",
-            label: "Field Notes",
-            description: "Category archive",
-            destination: {
-              _type: "navigationDestination",
-              kind: "internal",
-              internal: ref("starter-category-notes"),
               openInNewTab: false,
             },
           },
@@ -480,7 +459,7 @@ export const starterDocuments = [
           {
             _key: "starter-footer-blog",
             _type: "footerLink",
-            label: "Blog",
+            label: "News",
             destination: {
               _type: "footerDestination",
               kind: "internal",
@@ -522,7 +501,9 @@ async function assertDatasetIsEmpty(client) {
 }
 
 function assertOwnedDocument(document) {
-  const expectedType = STARTER_DOCUMENT_TYPES.get(document?._id);
+  const expectedType =
+    STARTER_DOCUMENT_TYPES.get(document?._id) ??
+    LEGACY_STARTER_DOCUMENT_TYPES.get(document?._id);
   if (!expectedType || document._type !== expectedType) return false;
   return (
     document._starterSeed?.name === STARTER_SEED.name &&
@@ -532,7 +513,10 @@ function assertOwnedDocument(document) {
 
 async function getStarterDocuments(client) {
   return client.fetch("*[_id in $ids]{_id,_type,_starterSeed}", {
-    ids: [...STARTER_DOCUMENT_TYPES.keys()],
+    ids: [
+      ...STARTER_DOCUMENT_TYPES.keys(),
+      ...LEGACY_STARTER_DOCUMENT_TYPES.keys(),
+    ],
   });
 }
 
@@ -553,6 +537,7 @@ async function assertOwnedSeedSet(client) {
       `Unseed refused: these IDs are not marked as Starter seed content: ${unsafe.map((document) => document._id).join(", ")}.`,
     );
   }
+  return documents;
 }
 
 export async function seed(client) {
@@ -577,15 +562,19 @@ export async function seed(client) {
 }
 
 export async function unseed(client) {
-  await assertOwnedSeedSet(client);
+  const documents = await assertOwnedSeedSet(client);
+  const legacyIds = documents
+    .map((document) => document._id)
+    .filter((id) => LEGACY_STARTER_DOCUMENT_TYPES.has(id));
   // Never delete replacement images uploaded by an editor.
   const assetIds = STARTER_ASSETS.map((asset) => asset.id);
+  const documentIds = [...STARTER_DOCUMENT_TYPES.keys(), ...legacyIds];
   let transaction = client.transaction();
-  for (const id of [...STARTER_DOCUMENT_TYPES.keys(), ...assetIds]) {
+  for (const id of [...documentIds, ...assetIds]) {
     transaction = transaction.delete(id);
   }
   await transaction.commit();
-  return { documents: STARTER_DOCUMENT_TYPES.size, assets: assetIds.length };
+  return { documents: documentIds.length, assets: assetIds.length };
 }
 
 async function main() {

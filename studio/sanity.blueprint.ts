@@ -26,7 +26,7 @@ export default defineBlueprint({
         includeDrafts: false,
         includeAllVersions: false,
         filter:
-          '_type in ["page", "post", "category"] && delta::changedAny(slug.current)',
+          '_type in ["page", "post"] && delta::changedAny(slug.current)',
         projection: `{
           "documentId": after()._id,
           "documentType": after()._type,
