@@ -4,10 +4,11 @@
 // matched or uploaded asset).
 //
 // Built here: the home page and every page, with Page banner, Page heading,
-// Rich Text (with its button row) and the eight image-and-text sections of
-// the old "big image" row (issue #15). Every other row becomes a Scaffold that
-// holds the row's text and names its intended section. Product pages become
-// products and the old menu rows the menu sections (issue #16,
+// Rich Text (with its button row), the eight image-and-text sections of the
+// old "big image" row (issue #15), and Cognito form, FAQ list (with its `faq`
+// records) and Two text columns (issue #19). Every other row becomes a
+// Scaffold that holds the row's text and names its intended section. Product
+// pages become products and the old menu rows the menu sections (issue #16,
 // products.mjs). News posts, their authors, the news list and the Latest
 // news section (issue #17) are built here too, with news.mjs. The site
 // shell (settings, navigation, footer) comes from the seed file, through
@@ -19,6 +20,7 @@ import {
 } from "../../../scripts/migration/block-inventory.mjs";
 import { headingAnchorId } from "../../../shared/heading-anchor.ts";
 import { buttonColours, defaultButtonColour, isSiteIconName } from "../../../shared/site-design.ts";
+import { cognitoFormId } from "../../../shared/cognito.ts";
 import { collectFiles, imageFromAsset } from "./files.mjs";
 import { customUrlFor, normalizeMultilink, normalizeSitePath } from "./links.mjs";
 import { outlineHeadings, paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
@@ -131,6 +133,7 @@ function storyContext(story, shared) {
   const where = storyPath(story);
   const context = {
     story: story.full_slug,
+    storyUuid: story.uuid,
     site: shared.site,
     fileRef: shared.fileRef,
     overrides: shared.overrides.links,
@@ -383,6 +386,133 @@ function imageAndTextSection(row, name, theme, context) {
   return section;
 }
 
+/**
+ * Blocks of one text column as rich text: a leading heading group's eyebrow
+ * and title become a paragraph and a heading, so no text is lost in a section
+ * that has no such fields. Buttons and an anchor ID have no field there.
+ */
+function columnRichText(blocks, context, sectionType) {
+  const holder = { _type: sectionType };
+  rowContent({ content: blocks }, context, { section: holder });
+  const body = [];
+  if (holder.eyebrow) body.push(paragraph(holder.eyebrow));
+  if (holder.title) body.push(paragraph(holder.title, { style: "h2" }));
+  body.push(...(holder.richText ?? []).map(({ _key, ...block }) => block));
+  if (holder.anchorId) context.note("needs a hand", `anchor ID "${holder.anchorId}" has no field in a ${sectionType} section`);
+  if (holder.buttons?.length) {
+    context.note("needs a hand", `buttons ${holder.buttons.map((b) => `"${b.text}"`).join(", ")} have no field in a ${sectionType} section; they are not imported`);
+  }
+  return withKeys(outlineHeadings(body.filter(Boolean), 1), "b");
+}
+
+/** Children of an old column that reach the page; hidden ones are dropped and counted. */
+function visibleChildren(blocks, context) {
+  return (blocks ?? []).filter((child) => {
+    if (!child.hidden) return true;
+    context.drop(context.at, `hidden ${child.component}`, "hidden blocks");
+    return false;
+  });
+}
+
+/**
+ * The accessible title of each form the old site uses, from its name in
+ * Cognito. A form not listed here takes the title of the heading above it.
+ */
+export const COGNITO_FORM_TITLES = {
+  114: "Contact form",
+  168: "Schedule a free tasting form",
+  173: "Find a sale form",
+};
+
+/**
+ * A row that holds a Cognito form as the Cognito form section (spec decision
+ * 15, issue #19): the form by its ID, never its pasted embed code, and the
+ * row's text (the heading group above it, or the text column beside it) as
+ * the introduction. Null when the form has no valid ID: it stays a Scaffold.
+ */
+function cognitoFormSection(row, theme, context) {
+  const blocks = row.component === "row-two-columns" ? [...row.column_1, ...row.column_2] : row.content;
+  const forms = blocks.filter((block) => block.component === "form_cognito");
+  if (forms.length > 1) context.note("needs a hand", `the row holds ${forms.length} Cognito forms; only the first is imported`);
+  const formId = cognitoFormId(forms[0]?.cognito_form_id);
+  if (!formId) {
+    context.note("needs a hand", `the Cognito form has no form ID ("${forms[0]?.cognito_form_id ?? ""}"); it stays a Scaffold`);
+    return null;
+  }
+  const textBlocks = blocks.filter((block) => block.component !== "form_cognito");
+  const heading = textBlocks[0]?.component === "heading-group" ? textBlocks[0].title?.trim() : "";
+  const title = COGNITO_FORM_TITLES[formId] ?? heading;
+  if (!title) {
+    context.note("needs a hand", `the Cognito form ${formId} has no accessible title; it stays a Scaffold`);
+    return null;
+  }
+  const section = { _key: row._uid, _type: "cognitoForm", theme, formId, title };
+  const intro = columnRichText(textBlocks, context, "cognitoForm");
+  if (intro.length) section.intro = intro;
+  return section;
+}
+
+/** An old row of two text columns as the Two text columns section, or null when a column is empty. */
+function twoTextColumnsSection(row, theme, context) {
+  const leftText = columnRichText(row.column_1 ?? [], context, "twoTextColumns");
+  const rightText = columnRichText(row.column_2 ?? [], context, "twoTextColumns");
+  if (!leftText.length || !rightText.length) {
+    context.note("needs a hand", `the two-column row has an empty ${leftText.length ? "right" : "left"} column; it stays a Scaffold`);
+    return null;
+  }
+  return { _key: row._uid, _type: "twoTextColumns", theme, leftText, rightText };
+}
+
+/**
+ * The document ID of an old FAQ item. A `_uid` is unique only inside one
+ * story (copied stories keep theirs), so the ID starts with the story UUID.
+ */
+export function faqDocumentId(storyUuid, item) {
+  return `faq-${storyUuid}-${item._uid}`;
+}
+
+/**
+ * An old FAQ list as the FAQ list section; each of its items becomes a `faq`
+ * record (question, and the `answer_single` rich text the old site shows,
+ * lists and all). The old `answer` blocks are not shown by the old site and
+ * are dropped.
+ */
+function faqListSection(list, key, theme, context) {
+  const title = list.title?.trim();
+  if (!title) {
+    context.note("needs a hand", "the FAQ list has no title; it stays a Scaffold");
+    return null;
+  }
+  const at = context.at;
+  const faqs = [];
+  (list.items ?? []).forEach((item, index) => {
+    context.at = `${at} > faq-list.items[${index}]`;
+    if (item.hidden) {
+      context.drop(context.at, `hidden FAQ "${item.question ?? ""}"`, "hidden blocks");
+      return;
+    }
+    if (item.answer?.length) {
+      context.drop(context.at, `faq-item.answer (the old site shows answer_single): ${item.answer.length} block(s)`, "unused field: faq-item.answer");
+    }
+    const question = item.question?.trim();
+    // Under the list's title (an h2), so a heading in an answer starts at h3.
+    const body = outlineHeadings(richTextToBlocks(item.answer_single, context), 2);
+    if (!question || !body.length) {
+      context.note("needs a hand", `the FAQ "${question ?? ""}" has no ${question ? "answer" : "question"}; it is not imported`);
+      return;
+    }
+    const document = { _id: faqDocumentId(context.storyUuid, item), _type: "faq", title: question, body: withKeys(body, "b") };
+    context.shared.faqs.push(document);
+    faqs.push({ _key: item._uid, _type: "reference", _ref: document._id });
+  });
+  context.at = at;
+  if (!faqs.length) {
+    context.note("needs a hand", `the FAQ list "${title}" has no FAQ with a question and an answer; it stays a Scaffold`);
+    return null;
+  }
+  return { _key: key, _type: "faqList", theme, title, faqs };
+}
+
 function scaffold(key, name, theme, source, content, context) {
   const richText = withKeys(content.filter(Boolean), "b");
   const section = {
@@ -465,28 +595,35 @@ function pageSections(story, context, { post = false } = {}) {
         return;
       }
       // Hidden children neither shape the row nor reach the page.
-      const row = Array.isArray(sourceRow.content) ? { ...sourceRow, content: sourceRow.content.filter((child) => !child.hidden) } : sourceRow;
-      for (const child of sourceRow.content ?? []) {
-        if (child.hidden) context.drop(context.at, `hidden ${child.component}`, "hidden blocks");
+      const row = { ...sourceRow };
+      for (const field of ["content", "column_1", "column_2"]) {
+        if (Array.isArray(sourceRow[field])) row[field] = visibleChildren(sourceRow[field], context);
       }
       const names = pageRowSections(row);
       const faqLists = row.content?.filter((b) => b.component === "faq-list") ?? [];
+      if (names.includes("FAQ list")) {
+        const others = row.content.filter((b) => b.component !== "faq-list");
+        if (others.length) context.note("needs a hand", `the FAQ row also holds ${others.map((b) => b.component).join(", ")}, which has no field in the FAQ list section`);
+      }
       names.forEach((name, index) => {
         const key = index === 0 ? row._uid : `${row._uid}-${index + 1}`;
         if (post && !POST_SECTIONS.has(name)) {
           context.note("needs a hand", `the ${row.component} row would be a ${name} section, which a news post cannot hold; it is not imported`);
           return;
         }
-        const imageAndText = IMAGE_AND_TEXT_TYPES[name] ? imageAndTextSection(row, name, theme, context) : null;
-        if (post && IMAGE_AND_TEXT_TYPES[name] && !imageAndText) {
+        let built = null;
+        if (IMAGE_AND_TEXT_TYPES[name]) built = imageAndTextSection(row, name, theme, context);
+        else if (PRODUCT_MENU_TYPES[name]) built = productMenuSection(row, name, theme, context);
+        else if (name === "Cognito form") built = cognitoFormSection(row, theme, context);
+        else if (name === "FAQ list") built = faqListSection(faqLists[index], key, theme, context);
+        else if (name === "Two text columns") built = twoTextColumnsSection(row, theme, context);
+        if (post && IMAGE_AND_TEXT_TYPES[name] && !built) {
           context.note("needs a hand", `the ${name} row cannot be its section in a news post; it is not imported`);
           return;
         }
-        const menu = PRODUCT_MENU_TYPES[name] ? productMenuSection(row, name, theme, context) : null;
         if (name === "Page heading") push(pageHeading(row, theme, context));
         else if (name === "Rich Text") push(richTextSection(row, theme, context));
-        else if (imageAndText) push(imageAndText);
-        else if (menu) push(menu);
+        else if (built) push(built);
         else {
           // A row with several FAQ lists: one Scaffold per list; the row's
           // other content goes once, into the first.
@@ -496,9 +633,6 @@ function pageSections(story, context, { post = false } = {}) {
           push(scaffold(key, name, theme, `${row.component} row`, blockToPortableText(source, context), context));
         }
       });
-      if (row.component === "row-two-columns" && row.column_2?.some((b) => b.component === "form_cognito")) {
-        context.note("needs a hand", "the text column beside the Cognito form has no field in the Cognito form section");
-      }
     });
   });
 
@@ -614,6 +748,7 @@ export function planImport(source, options = {}) {
     overrides,
     usedOverrides: new Set(),
     seed: options.seed ?? null,
+    faqs: [],
   };
 
   const files = collectFiles(stories);
@@ -653,6 +788,11 @@ export function planImport(source, options = {}) {
     const document = pageDocument(story, shared);
     count(report.documents, document._type);
     documents.push(document);
+  }
+  // The FAQ records the FAQ lists point at.
+  for (const faq of shared.faqs) {
+    count(report.documents, faq._type);
+    documents.push(faq);
   }
 
   // Products and Product Page Settings (issue #16).
@@ -697,6 +837,11 @@ export function planImport(source, options = {}) {
         reason: "no link matches",
       });
     }
+  }
+  const ids = new Set();
+  for (const document of documents) {
+    if (ids.has(document._id)) throw new Error(`Two documents would share the ID ${document._id}`);
+    ids.add(document._id);
   }
   return { documents, files, report };
 }

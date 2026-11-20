@@ -56,7 +56,8 @@ one (from some regions it shows none). Add `--only <path>` to capture one page.
 - The stories `privacy-policy` and `terms-and-conditions` exist in Storyblok,
   but their URLs redirect to iubenda.
 - `schedule-a-free-tasting` has a text column beside its Cognito form. The
-  Cognito form section has no text field, so that text needs a hand.
+  block inventory notes it as needing a hand; ticket #19 gave the Cognito form
+  section an optional introduction, and the importer puts that text there.
 - Three page banners carry text (`schedule-a-free-tasting`,
   `advertising-templates`, `ingredients-list`). The Page banner section has no
   text field, so the block inventory lists the text as dropped.

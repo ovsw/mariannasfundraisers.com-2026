@@ -28,6 +28,9 @@ import VideoLeftAndText, { hasVideoLeftAndTextContent } from "@/components/block
 import VideoRightAndText, { hasVideoRightAndTextContent } from "@/components/blocks/video-right-and-text";
 import ImageAndIconList, { hasImageAndIconListContent } from "@/components/blocks/image-and-icon-list";
 import LatestNews, { hasLatestNewsContent } from "@/components/blocks/latest-news";
+import CognitoForm, { hasCognitoFormContent } from "@/components/blocks/cognito-form";
+import FaqList, { hasFaqListContent } from "@/components/blocks/faq-list";
+import TwoTextColumns, { hasTwoTextColumnsContent } from "@/components/blocks/two-text-columns";
 import HoagieMenu, { hasHoagieMenuContent } from "@/components/blocks/hoagie-menu";
 import PizzaMenu, { hasPizzaMenuContent } from "@/components/blocks/pizza-menu";
 import SalsaMenu, { hasSalsaMenuContent } from "@/components/blocks/salsa-menu";
@@ -57,6 +60,9 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "videoRightAndText",
   "imageAndIconList",
   "latestNews",
+  "cognitoForm",
+  "faqList",
+  "twoTextColumns",
   "hoagieMenu",
   "pizzaMenu",
   "salsaMenu",
@@ -81,6 +87,9 @@ const componentMap: Partial<{
   videoRightAndText: VideoRightAndText,
   imageAndIconList: ImageAndIconList,
   latestNews: LatestNews,
+  cognitoForm: CognitoForm,
+  faqList: FaqList,
+  twoTextColumns: TwoTextColumns,
   hoagieMenu: HoagieMenu,
   pizzaMenu: PizzaMenu,
   salsaMenu: SalsaMenu,
@@ -252,6 +261,9 @@ function isRenderableBlock(block: Block) {
   if (block._type === "videoRightAndText") return hasVideoRightAndTextContent(block);
   if (block._type === "imageAndIconList") return hasImageAndIconListContent(block);
   if (block._type === "latestNews") return hasLatestNewsContent(block);
+  if (block._type === "cognitoForm") return hasCognitoFormContent(block);
+  if (block._type === "faqList") return hasFaqListContent(block);
+  if (block._type === "twoTextColumns") return hasTwoTextColumnsContent(block);
   if (block._type === "hoagieMenu") return hasHoagieMenuContent(block);
   if (block._type === "pizzaMenu") return hasPizzaMenuContent(block);
   if (block._type === "salsaMenu") return hasSalsaMenuContent(block);

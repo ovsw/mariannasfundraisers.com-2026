@@ -54,6 +54,9 @@ import videoLeftAndText from "./schemas/blocks/video-left-and-text";
 import videoRightAndText from "./schemas/blocks/video-right-and-text";
 import imageAndIconList from "./schemas/blocks/image-and-icon-list";
 import latestNews from "./schemas/blocks/latest-news";
+import cognitoForm from "./schemas/blocks/cognito-form";
+import faqList from "./schemas/blocks/faq-list";
+import twoTextColumns from "./schemas/blocks/two-text-columns";
 import hoagieMenu from "./schemas/blocks/hoagie-menu";
 import pizzaMenu from "./schemas/blocks/pizza-menu";
 import salsaMenu from "./schemas/blocks/salsa-menu";
@@ -112,6 +115,9 @@ export const schemaTypes = [
   videoRightAndText,
   imageAndIconList,
   latestNews,
+  cognitoForm,
+  faqList,
+  twoTextColumns,
   hoagieMenu,
   pizzaMenu,
   salsaMenu,

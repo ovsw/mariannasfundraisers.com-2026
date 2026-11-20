@@ -1,0 +1,1598 @@
+[
+  {
+    "name": "Forms, FAQs and two text columns",
+    "slug": "forms-faq-columns",
+    "full_slug": "forms-faq-columns",
+    "uuid": "0b6a3c51-19f0-4c5e-9d1e-3f7c2a6e1919",
+    "content": {
+      "component": "page",
+      "_uid": "6f1d0b8e-1919-4e4b-8c2a-5b9e7d3f0c19",
+      "body": [
+        {
+          "_uid": "9cdeb111-1ffc-4d50-9458-cc445608a799",
+          "name": "Support Form",
+          "width": "narrow",
+          "content": [
+            {
+              "_uid": "b62ef6d3-22e8-4ceb-b432-573f9f4b1038",
+              "name": "",
+              "content": [
+                {
+                  "_uid": "73bcb6e5-a346-459d-998c-9aa2731bf385",
+                  "title": "Contact Form",
+                  "eyebrow": "Marianna's Fundraisers",
+                  "anchor_id": "",
+                  "component": "heading-group"
+                },
+                {
+                  "_uid": "01fc0467-045e-413b-882d-42ca090c594b",
+                  "component": "form_cognito",
+                  "embed_code": "<script src=\"https://www.cognitoforms.com/f/seamless.js\" data-key=\"Zdvt7O5bZES9Ba4YCz_gcw\" data-form=\"1\"></script>",
+                  "cognito_form_id": "114"
+                }
+              ],
+              "component": "row-single-column"
+            }
+          ],
+          "component": "section",
+          "background": "shaded",
+          "margin_top": "none",
+          "is_reversed": false,
+          "padding_top": "default",
+          "margin_bottom": "none",
+          "decoration_top": "brushed1",
+          "padding_bottom": "default",
+          "overflow_hidden": false,
+          "decoration_bottom": "none"
+        },
+        {
+          "_uid": "41fbeee0-6677-4a1f-800b-622c4a285319",
+          "name": "Hoagie Heroes",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "0b00509c-6acc-47db-ad7c-68ce14e4cf8d",
+              "name": "",
+              "column_1": [
+                {
+                  "_uid": "4adcb704-1166-4ecd-8aa5-94b3846a0a56",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": null
+                        },
+                        "content": [
+                          {
+                            "text": "Marianna’s takes pride in providing an excellent, high-quality product for non-profit and community groups to sell as a fundraiser.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": null
+                        },
+                        "content": [
+                          {
+                            "text": "We welcome the opportunity to bring samples and present our program in person. During this FREE Product Presentation, your fundraising committee will have the chance to taste our products and learn how our program works, along with the benefits we offer to help maximize your success.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": null
+                        },
+                        "content": [
+                          {
+                            "text": "If you are interested in scheduling a FREE Product Sampling, please complete the form on this page.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": null
+                        },
+                        "content": [
+                          {
+                            "text": "Please Note:",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " Product presentations are limited to one per organization. Once a group has held a fundraiser with Marianna’s, additional product presentations are not available. To make the most of your presentation, we encourage inviting anyone within your organization who will be involved in planning or decision-making, so everyone has the opportunity to learn and ask questions together.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": null
+                        },
+                        "content": [
+                          {
+                            "text": "Presentations must be scheduled in a public meeting space such as a meeting hall, school, church, fire hall, or similar setting with adequate seating and table space for attendees. While we are flexible on the venue, it must be a publicly accessible location—presentations are not conducted in private homes.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": null
+                        },
+                        "content": [
+                          {
+                            "text": " ",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "textStyle",
+                                "attrs": {
+                                  "color": ""
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "column_2": [
+                {
+                  "_uid": "af4be6f0-9245-44c9-912a-f012dafc8e23",
+                  "component": "form_cognito",
+                  "cognito_form_id": "168"
+                }
+              ],
+              "component": "row-two-columns",
+              "is_flexible": false
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "none",
+          "is_reversed": false,
+          "padding_top": "default",
+          "margin_bottom": "large",
+          "decoration_top": "default",
+          "padding_bottom": "none",
+          "overflow_hidden": false,
+          "decoration_bottom": "none"
+        },
+        {
+          "_uid": "41fbeee0-6677-4a1f-800b-622c4a285319",
+          "name": "Hoagie Heroes",
+          "width": "narrow",
+          "content": [
+            {
+              "_uid": "d933c8c4-a054-4515-9454-95e88ed6e5b3",
+              "name": "FAQs",
+              "content": [
+                {
+                  "_uid": "e844ba71-1d98-449a-b9ed-9d9687d9c58f",
+                  "items": [
+                    {
+                      "_uid": "38b6e602-3de3-4c7d-a11b-d7cd44a48663",
+                      "question": "Do you have a minimum order?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "Yes, we do have a minimum requirement of at least 100 items.",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "If your first order with us falls below 100 items, we may ask you to meet our delivery truck at the nearest point along the delivery route. Please be aware that future orders will require a minimum of 100 items for delivery. Any future orders that fall below 100 items, you will be required to pick up the order at our facility in Tipton, PA (excluding Saturdays), or the order may be subject to cancellation.",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "8b5d75f7-bbf6-4eae-9bf7-8e76389136ab",
+                      "question": "Are your hoagies, pizzas, or dressings available at a retail location?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "Our 14” hoagies and 12” pizzas are only available through fundraising events. Our specialty Italian Dressing and Sweet & Sassy Mayo are also exclusive to our fundraisers and cannot be purchased separately. If you are looking for a sale in your area, please complete the ",
+                                "type": "text"
+                              },
+                              {
+                                "text": "Find a Sale",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "link",
+                                    "attrs": {
+                                      "href": "/find-a-sale",
+                                      "uuid": "26511b04-e959-4018-badd-beb8148f5b53",
+                                      "anchor": null,
+                                      "target": "_self",
+                                      "linktype": "story"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "text": " form and our Sales Team can help connect you with a local fundraiser.",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "1fa1cf08-64ef-49da-a60f-c65c3aeceb33",
+                      "answer": [
+                        {
+                          "_uid": "1b481496-18f3-4dee-a2f4-2d43fdaf5ebf",
+                          "text": {
+                            "type": "doc",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean augue augue, accumsan ut condimentum vitae, vestibulum nec tortor. Aenean tristique nisi augue.",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Phasellus rutrum placerat ex",
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "bold"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "text": ", in consectetur erat bibendum quis. Nullam vel dolor est. ",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Maecenas quam nisl, mattis ut massa non, tristique lobortis metus.",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "component": "rich-text-basic"
+                        }
+                      ],
+                      "question": "What is your delivery radius?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "attrs": {
+                              "textAlign": null
+                            },
+                            "content": [
+                              {
+                                "text": "Our facility is located in Tipton, PA. We deliver within a 2.5-hour radius of our facility in PA, MD, and WV. A Delivery Fee may apply.",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "bbe90822-6276-4f6d-aad7-0284415ef792",
+                      "answer": [
+                        {
+                          "_uid": "e1739e16-7e00-4f1a-9059-76509bc609d9",
+                          "text": {
+                            "type": "doc",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Order Forms and Sale Confirmation will be mailed out to you via USPS 3-Day Priority.",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "component": "rich-text-basic"
+                        }
+                      ],
+                      "question": "How do we get Order Forms and confirmation?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "Your Order Forms and confirmation are mailed to the group leader via Priority Mail (at no charge).",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "80e5461c-5b25-429c-824e-527b7ca9d197",
+                      "answer": [
+                        {
+                          "_uid": "a4ad0742-1314-486f-a4dc-71edf4ec5e04",
+                          "text": {
+                            "type": "doc",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean augue augue, accumsan ut condimentum vitae, vestibulum nec tortor. Aenean tristique nisi augue.",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Phasellus rutrum placerat ex",
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "bold"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "text": ", in consectetur erat bibendum quis. Nullam vel dolor est. ",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Maecenas quam nisl, mattis ut massa non, tristique lobortis metus.",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "component": "rich-text-basic"
+                        }
+                      ],
+                      "question": "When is the suggested selling time frame?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "We suggest you sell for 2-3 weeks ",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": "and collect the Order Forms from your sellers at least 10 days prior to your scheduled delivery date. ",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "This will allow you to calculate your totals and get them to us by the required 8 business days before your scheduled delivery date.",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "0cf5f61c-5b3e-459b-b62a-5d64a92cee74",
+                      "answer": [
+                        {
+                          "_uid": "eb5ee946-c549-4350-8898-6714363fe00e",
+                          "text": {
+                            "type": "doc",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Eight business days before your delivery date, ",
+                                    "type": "text"
+                                  },
+                                  {
+                                    "text": "submit your order online here",
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "link",
+                                        "attrs": {
+                                          "href": "/submit-your-order",
+                                          "uuid": "10047fdc-54b0-414a-9a26-b25566ee2b5a",
+                                          "anchor": null,
+                                          "target": null,
+                                          "linktype": "story"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "text": " or via email at ",
+                                    "type": "text"
+                                  },
+                                  {
+                                    "text": "mariannas@delgrossos.com",
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "link",
+                                        "attrs": {
+                                          "href": "mariannas@delgrossos.com",
+                                          "uuid": null,
+                                          "anchor": null,
+                                          "target": null,
+                                          "linktype": "email"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "text": ". ",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "component": "rich-text-basic"
+                        }
+                      ],
+                      "question": "How do I submit my order?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "attrs": {
+                              "textAlign": null
+                            },
+                            "content": [
+                              {
+                                "text": "Eight business days before your delivery date, you will need to submit your order.",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "attrs": {
+                              "textAlign": null
+                            },
+                            "content": [
+                              {
+                                "text": "The order can be submitted by the group leader any of the following ways:",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "bullet_list",
+                            "content": [
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    },
+                                    "content": [
+                                      {
+                                        "text": "Online Ordering System",
+                                        "type": "text",
+                                        "marks": [
+                                          {
+                                            "type": "link",
+                                            "attrs": {
+                                              "href": "/submit-your-order",
+                                              "uuid": "10047fdc-54b0-414a-9a26-b25566ee2b5a",
+                                              "anchor": null,
+                                              "target": "_self",
+                                              "linktype": "story"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    },
+                                    "content": [
+                                      {
+                                        "text": "Order Tally Spreadsheet",
+                                        "type": "text",
+                                        "marks": [
+                                          {
+                                            "type": "link",
+                                            "attrs": {
+                                              "href": "/documents-and-forms",
+                                              "uuid": "f23baae3-6d33-48a5-b582-b75402ab2d3c",
+                                              "anchor": null,
+                                              "target": "_self",
+                                              "linktype": "story"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    },
+                                    "content": [
+                                      {
+                                        "text": "Email: ",
+                                        "type": "text"
+                                      },
+                                      {
+                                        "text": "mariannas@delgrossos.com",
+                                        "type": "text",
+                                        "marks": [
+                                          {
+                                            "type": "link",
+                                            "attrs": {
+                                              "href": "mariannas@delgrossos.com",
+                                              "uuid": null,
+                                              "anchor": null,
+                                              "target": "_self",
+                                              "linktype": "email"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    },
+                                    "content": [
+                                      {
+                                        "text": "Call: (",
+                                        "type": "text"
+                                      },
+                                      {
+                                        "text": "814) 684-2666",
+                                        "type": "text",
+                                        "marks": [
+                                          {
+                                            "type": "link",
+                                            "attrs": {
+                                              "href": "tel:8146842666",
+                                              "uuid": null,
+                                              "anchor": null,
+                                              "target": null,
+                                              "linktype": "url"
+                                            }
+                                          },
+                                          {
+                                            "type": "bold"
+                                          },
+                                          {
+                                            "type": "underline"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "text": " ext. 206",
+                                        "type": "text"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "57fe1a0b-489d-4f79-bc69-ff9dbb9c65a6",
+                      "answer": [
+                        {
+                          "_uid": "846ab9e0-324d-4cf4-ad2f-3e1e6d48ac4a",
+                          "text": {
+                            "type": "doc",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Order Forms and Sale Confirmation will be mailed out to you via USPS 3-Day Priority.",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "component": "rich-text-basic"
+                        }
+                      ],
+                      "question": "Am I charged tax for my items?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "attrs": {
+                          "backgroundColor": null
+                        },
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "attrs": {
+                              "textAlign": null
+                            },
+                            "content": [
+                              {
+                                "text": "Since hoagies are a prepared food and ready-to-eat, they are considered a taxable item. Pizzas need baked at home before consuming, so they are not considered taxable.",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "attrs": {
+                              "textAlign": null
+                            },
+                            "content": [
+                              {
+                                "text": "Allegheny County deliveries are subject to an additional 1% sales tax.",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "attrs": {
+                              "textAlign": null
+                            },
+                            "content": [
+                              {
+                                "text": "If applicable, a Sales Tax Exempt Form can be emailed to Customer Service at ",
+                                "type": "text"
+                              },
+                              {
+                                "text": "mariannas@delgrossos.com",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "link",
+                                    "attrs": {
+                                      "href": "mariannas@delgrossos.com",
+                                      "uuid": null,
+                                      "anchor": null,
+                                      "target": "_self",
+                                      "linktype": "email"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "text": " to be placed on file. ",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "attrs": {
+                              "textAlign": null
+                            },
+                            "content": [
+                              {
+                                "text": "Please Note:",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": " ",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "bullet_list",
+                            "content": [
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    },
+                                    "content": [
+                                      {
+                                        "text": "In PA, receiving an Employer Identification Number (EIN) does not imply State Sales Tax Exempt status. The EIN is simply a group's equivalent of a \"Social Security Number.\" Similarly, a 501(c)(3) designation is a federal status, not a state one.",
+                                        "type": "text"
+                                      },
+                                      {
+                                        "type": "hard_break"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    },
+                                    "content": [
+                                      {
+                                        "text": "To qualify for sales tax exemption, we require a copy of your State Tax Exemption Certificate or a completed, signed, and dated PA REV-1220 form, which must include your State Tax ID.",
+                                        "type": "text"
+                                      },
+                                      {
+                                        "type": "hard_break"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    },
+                                    "content": [
+                                      {
+                                        "text": "Organizations must register with the Pennsylvania Department of Revenue to be recognized as tax-exempt. Exempt organizations are assigned exemption numbers beginning with \"75,\" while schools are assigned numbers starting with \"76.\" For further clarification, please consult the Pennsylvania Department of Revenue.",
+                                        "type": "text"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "attrs": {
+                                      "textAlign": null
+                                    },
+                                    "content": [
+                                      {
+                                        "text": "WV and MD have different forms that can be used for State Sales Tax Exemption.",
+                                        "type": "text"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "f21a0b90-f545-4bb9-9cd1-5292b5bda7be",
+                      "question": "What type of payments are accepted? ",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "Your ",
+                                "type": "text"
+                              },
+                              {
+                                "text": "order is payable to the driver at your delivery. ",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "textStyle",
+                                    "attrs": {
+                                      "color": ""
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "text": "If you want to pay with a credit card, you MUST pay ",
+                                "type": "text"
+                              },
+                              {
+                                "text": "prior ",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": "to your delivery date",
+                                "type": "text"
+                              },
+                              {
+                                "text": " - please call ",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "textStyle",
+                                    "attrs": {
+                                      "color": ""
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "text": "(",
+                                "type": "text"
+                              },
+                              {
+                                "text": "814) 684-2666",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "link",
+                                    "attrs": {
+                                      "href": "tel:8146842666",
+                                      "uuid": null,
+                                      "anchor": null,
+                                      "target": null,
+                                      "linktype": "url"
+                                    }
+                                  },
+                                  {
+                                    "type": "bold"
+                                  },
+                                  {
+                                    "type": "underline"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": " ext. 508.",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "textStyle",
+                                    "attrs": {
+                                      "color": ""
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "Otherwise, an organizational check, money order, cashier’s check, or cash* is accepted by the driver. ",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "textStyle",
+                                    "attrs": {
+                                      "color": ""
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "Check or money order must be made payable to: MARIANNA FOODS, INC.",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "textStyle",
+                                    "attrs": {
+                                      "color": ""
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "*",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "textStyle",
+                                    "attrs": {
+                                      "color": ""
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "text": "Cash payments must be the exact amount, as the drivers do not carry change. ",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "NOTE: For orders over $1,000 - please do not pay with cash. ",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "789a9607-0e11-49b9-a0cb-32d0b7fb4d52",
+                      "question": "Can I cancel my order, if needed?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "Yes, but a notice is required ",
+                                "type": "text"
+                              },
+                              {
+                                "text": "48 business hours",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": " before your ",
+                                "type": "text"
+                              },
+                              {
+                                "text": "scheduled delivery",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": ".",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Selling",
+                  "content": [],
+                  "component": "faq-list"
+                },
+                {
+                  "_uid": "409f5977-11f9-425b-877c-0a938e499aeb",
+                  "items": [
+                    {
+                      "_uid": "b1abc833-6fe5-43f1-9fa9-e96d1f8b0f93",
+                      "answer": [
+                        {
+                          "_uid": "782595be-c756-414b-9bfd-50fc09f814c6",
+                          "text": {
+                            "type": "doc",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean augue augue, accumsan ut condimentum vitae, vestibulum nec tortor. Aenean tristique nisi augue.",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Phasellus rutrum placerat ex",
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "bold"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "text": ", in consectetur erat bibendum quis. Nullam vel dolor est. ",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Maecenas quam nisl, mattis ut massa non, tristique lobortis metus.",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "component": "rich-text-basic"
+                        }
+                      ],
+                      "question": "Are Marianna’s products made days in advance like other fundraisers?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "No, your items are produced fresh within 24 hours and delivered in a refrigerated truck.",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "731aa8ac-1341-4abd-9e41-6592e7f9d691",
+                      "answer": [
+                        {
+                          "_uid": "0294dc62-f85d-46b3-93bb-b4be1bdf28fc",
+                          "text": {
+                            "type": "doc",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean augue augue, accumsan ut condimentum vitae, vestibulum nec tortor. Aenean tristique nisi augue.",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Phasellus rutrum placerat ex",
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "bold"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "text": ", in consectetur erat bibendum quis. Nullam vel dolor est. ",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Maecenas quam nisl, mattis ut massa non, tristique lobortis metus.",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "component": "rich-text-basic"
+                        }
+                      ],
+                      "question": "How long is the product good for?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": " All items are are stamped with the date they are made and guaranteed fresh when delivered. ",
+                                "type": "text"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "bullet_list",
+                            "content": [
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "content": [
+                                      {
+                                        "text": "Hoagies:",
+                                        "type": "text",
+                                        "marks": [
+                                          {
+                                            "type": "bold"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "text": " Enjoy within 3 days of the date on the wrapper. ",
+                                        "type": "text"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "content": [
+                                      {
+                                        "text": "Pizzas:",
+                                        "type": "text",
+                                        "marks": [
+                                          {
+                                            "type": "bold"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "text": " Enjoy or Freeze within 1-3 days of the date on the box. ",
+                                        "type": "text"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "list_item",
+                                "content": [
+                                  {
+                                    "type": "paragraph",
+                                    "content": [
+                                      {
+                                        "text": "Our Pizzas can be frozen for up to 3 months",
+                                        "type": "text",
+                                        "marks": [
+                                          {
+                                            "type": "bold"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "text": ". Frozen Pizza should then be thawed in refrigerator before baking.",
+                                        "type": "text"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "2cdbf1d0-904d-486f-9f89-47eb7a0399a5",
+                      "answer": [
+                        {
+                          "_uid": "e71ce859-8de3-4673-938c-391725376581",
+                          "text": {
+                            "type": "doc",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean augue augue, accumsan ut condimentum vitae, vestibulum nec tortor. Aenean tristique nisi augue.",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Phasellus rutrum placerat ex",
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "bold"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "text": ", in consectetur erat bibendum quis. Nullam vel dolor est. ",
+                                    "type": "text"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "paragraph",
+                                "content": [
+                                  {
+                                    "text": "Maecenas quam nisl, mattis ut massa non, tristique lobortis metus.",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "component": "rich-text-basic"
+                        }
+                      ],
+                      "question": "Are the products frozen?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "No, all products are ",
+                                "type": "text"
+                              },
+                              {
+                                "text": "FRESHLY MADE",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": " and never frozen. We slice our meats and cheeses in-house. We also slice and prepare our vegetable toppings in-house.",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "d9b6596e-3173-410a-b238-a9f66eebeb25",
+                      "question": "Can your products be frozen?",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "Hoagies can’t be frozen",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": ". Our ",
+                                "type": "text"
+                              },
+                              {
+                                "text": "Pizzas can be frozen",
+                                "type": "text",
+                                "marks": [
+                                  {
+                                    "type": "bold"
+                                  }
+                                ]
+                              },
+                              {
+                                "text": " for up to 3 months. Frozen Pizzas should then be thawed in refrigerator before baking.",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_uid": "94f59744-6dde-4f54-93a7-2a19a0af85ef",
+                      "question": "Are the toppings directly on the hoagie? ",
+                      "component": "faq-item",
+                      "answer_single": {
+                        "type": "doc",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "content": [
+                              {
+                                "text": "No, our veggies are prepared FRESH and placed in individually vacuum sealed packages. Dressings/condiments are also individually packaged. You choose what toppings you want to add!",
+                                "type": "text"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "title": "Product Info",
+                  "content": [],
+                  "component": "faq-list"
+                }
+              ],
+              "component": "row-single-column"
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "none",
+          "is_reversed": false,
+          "padding_top": "small",
+          "margin_bottom": "default",
+          "decoration_top": "default",
+          "padding_bottom": "default",
+          "overflow_hidden": false,
+          "decoration_bottom": "none"
+        },
+        {
+          "_uid": "c916dd5a-9b66-48a1-a487-504647e04a50",
+          "name": "Hoagies",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "e34dfd59-205a-475c-9947-8b28abdee9ba",
+              "name": "Hoagies text",
+              "column_1": [
+                {
+                  "_uid": "93193402-baab-4056-8f33-1afbf086571c",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Our hoagies",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " are made on",
+                            "type": "text"
+                          },
+                          {
+                            "text": " freshly baked Italian rolls",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " and include ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "individually packaged",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " freshly sliced",
+                            "type": "text"
+                          },
+                          {
+                            "text": " ",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": "tomatoes, onions, and crispy lettuce ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "(except Ham Club - no onions).",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "italic"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "column_2": [
+                {
+                  "_uid": "5f2e8991-ad3e-4622-985a-121573c4a2d8",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Plus, our hoagies come with either ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "Marianna's own Italian dressing",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " or ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "Marianna's Sweet & Sassy Mayo",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": ".",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "component": "row-two-columns",
+              "is_flexible": false
+            }
+          ],
+          "component": "section",
+          "background": "shaded",
+          "margin_top": "none",
+          "padding_top": "large",
+          "margin_bottom": "default",
+          "decoration_top": "",
+          "padding_bottom": "large",
+          "overflow_hidden": true,
+          "decoration_bottom": "brushed2"
+        }
+      ],
+      "seo_title": "",
+      "seo_description": "",
+      "seo_noindex": false
+    }
+  }
+]

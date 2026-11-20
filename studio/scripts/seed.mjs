@@ -398,6 +398,43 @@ export const starterDocuments = [
           ),
         })),
       },
+      {
+        _key: "starter-page-twoTextColumns",
+        _type: "twoTextColumns",
+        theme: "shaded",
+        leftText: simpleText(
+          "starter-page-two-text-columns-left",
+          "This tests the left text of two text columns.",
+        ),
+        rightText: simpleText(
+          "starter-page-two-text-columns-right",
+          "This tests the right text of two text columns.",
+        ),
+      },
+      {
+        _key: "starter-page-faqList",
+        _type: "faqList",
+        theme: "light",
+        title: "Questions",
+        faqs: [
+          {
+            _key: "starter-page-faq-getting-started",
+            _type: "reference",
+            _ref: "starter-faq-getting-started",
+          },
+        ],
+      },
+      {
+        _key: "starter-page-cognitoForm",
+        _type: "cognitoForm",
+        theme: "shaded",
+        formId: "114",
+        title: "Contact form",
+        intro: simpleText(
+          "starter-page-cognito-form-intro",
+          "This tests the introduction above a Cognito form.",
+        ),
+      },
     ],
     // A replaced Scaffold lives here. The Website never renders this array.
     blocksArchive: [
