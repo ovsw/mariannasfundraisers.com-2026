@@ -1,0 +1,46 @@
+import { defineField, defineType } from "sanity";
+import { requiredText } from "../validation/required-text";
+
+export default defineType({
+  name: "author",
+  title: "Author",
+  type: "document",
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string",
+      validation: (rule) => requiredText(rule),
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "name",
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "image",
+      title: "Image",
+      type: "image",
+      fields: [
+        {
+          name: "alt",
+          type: "string",
+          title: "Alternative Text",
+          description:
+            "Describe the image for screen readers. Leave empty if the image is decorative or repeats nearby text.",
+        },
+      ],
+    }),
+  ],
+  preview: {
+    select: {
+      title: "name",
+      media: "image",
+    },
+  },
+});

@@ -1,0 +1,312 @@
+import { createHash } from "node:crypto";
+
+import { isApplicationPath, isReservedPagePath } from "../../../shared/content-routes.ts";
+import { getPresentationPath } from "../../presentation/routes.ts";
+import {
+  normalizeRedirectPath,
+  readRedirectPath,
+  toStoredRedirectPath,
+  topologyError,
+  type RedirectRecord,
+} from "../../schemas/validation/redirect-rules.ts";
+
+/**
+ * Derive a stable document id from the redirect source. Function events are
+ * delivered at least once, so a redelivered publish must land on the same id
+ * instead of creating a second redirect that collides in the topology rules.
+ */
+export function autoRedirectId(source: string) {
+  const digest = createHash("sha256").update(source).digest("hex");
+  return `redirect-${digest.slice(0, 24)}`;
+}
+
+export type AutoRedirectEventData = {
+  beforeSlug?: string;
+  documentId?: string;
+  documentType?: string;
+  slug?: string;
+};
+
+type LiveRoute = {
+  _id?: string;
+  path?: string;
+};
+
+export type FetchedRedirect = RedirectRecord & {
+  destinationDocument?: {
+    _id: string;
+    _type: string;
+    slug?: string;
+  };
+  /** An editor has an unpublished draft or release version of this redirect. */
+  hasPendingEdits?: boolean;
+  utmSource?: string;
+  utmCampaign?: string;
+};
+
+type AutoRedirectPlan =
+  | { action: "skip"; reason: string }
+  | {
+      action: "apply";
+      create: boolean;
+      destination: string;
+      destinationDocumentId: string;
+      /** Switched-off redirects at the source, switched on again toward the document. */
+      reactivate: { _id: string; _rev?: string }[];
+      remove: { _id: string; _rev?: string }[];
+      retire: { _id: string; _rev?: string }[];
+      retarget: { _id: string; _rev?: string }[];
+      source: string;
+    };
+
+const ROUTED_DOCUMENT_TYPES = new Set(["page", "post", "category"]);
+export function shouldWriteAutoRedirect(local?: boolean) {
+  return local !== true;
+}
+
+export function resolveFetchedRedirectDestination(redirect: FetchedRedirect) {
+  if (redirect.destinationReference?._ref) {
+    if (!redirect.destinationDocument) return undefined;
+
+    return (
+      getPresentationPath(
+        redirect.destinationDocument._type,
+        redirect.destinationDocument.slug,
+      ) ?? undefined
+    );
+  }
+
+  return readRedirectPath(redirect.destination);
+}
+
+function isActive(record: RedirectRecord) {
+  return !record.status || record.status === "active";
+}
+
+/**
+ * A redirect this function created that still holds only what the function
+ * writes: its id matches its source, it is active and permanent, it has no
+ * UTM tags, and no draft or release version is waiting. A published editor
+ * change to any of these keeps the redirect. (The destination reference is
+ * checked by the caller.) Deleting a record that matches loses nothing an
+ * editor chose.
+ */
+function isOwnRedirect(record: FetchedRedirect) {
+  const source = normalizeRedirectPath(readRedirectPath(record.source));
+  return (
+    !!source &&
+    !record.hasPendingEdits &&
+    record._id === autoRedirectId(toStoredRedirectPath(source)) &&
+    record.status === "active" &&
+    (record.permanent === "true" || record.permanent === true) &&
+    !record.utmSource &&
+    !record.utmCampaign
+  );
+}
+
+function targetsDocument(record: RedirectRecord, documentId: string) {
+  return (
+    record.destinationReference?._ref?.replace(/^drafts\./, "") === documentId
+  );
+}
+
+export function planAutoRedirect({
+  event,
+  liveRoutes,
+  redirects,
+}: {
+  event: AutoRedirectEventData;
+  liveRoutes: LiveRoute[];
+  redirects: FetchedRedirect[];
+}): AutoRedirectPlan {
+  if (!event.documentType || !ROUTED_DOCUMENT_TYPES.has(event.documentType)) {
+    return { action: "skip", reason: "Document type is not routed by a slug" };
+  }
+
+  if (/^(drafts|versions)\./.test(event.documentId ?? "")) {
+    return { action: "skip", reason: "The document is not live" };
+  }
+
+  const destinationDocumentId = event.documentId;
+  if (!destinationDocumentId) {
+    return { action: "skip", reason: "The publish event has no document id" };
+  }
+
+  const source = normalizeRedirectPath(
+    getPresentationPath(event.documentType, event.beforeSlug),
+  );
+  let destination = normalizeRedirectPath(
+    getPresentationPath(event.documentType, event.slug),
+  );
+  if (!source || !destination) {
+    return { action: "skip", reason: "The publish event has no previous slug" };
+  }
+  if (source === destination) {
+    return { action: "skip", reason: "The normalized route did not change" };
+  }
+  const isReservedRoute = event.documentType === "page"
+    ? isReservedPagePath
+    : isApplicationPath;
+  if (isReservedRoute(source)) {
+    return { action: "skip", reason: "The previous route is reserved" };
+  }
+  if (isReservedRoute(destination)) {
+    return { action: "skip", reason: "The new route is reserved" };
+  }
+
+  const activeRedirects = redirects.filter(isActive);
+  // When a document takes back an old slug, the redirect at that slug goes.
+  // Redirects this function made are deleted; editors' redirects are only
+  // switched off, so their work is kept.
+  const remove: FetchedRedirect[] = [];
+  const retire: FetchedRedirect[] = [];
+  const destinationRedirect = activeRedirects.find(
+    (redirect) =>
+      normalizeRedirectPath(readRedirectPath(redirect.source)) === destination,
+  );
+  if (destinationRedirect && !destinationRedirect.destinationReference?._ref) {
+    // A URL redirect is editor-owned. The live page now owns this address.
+    retire.push(destinationRedirect);
+  } else if (
+    destinationRedirect &&
+    !targetsDocument(destinationRedirect, destinationDocumentId)
+  ) {
+    // A redirect to another document no longer owns this address either.
+    (isOwnRedirect(destinationRedirect) ? remove : retire).push(
+      destinationRedirect,
+    );
+  } else if (destinationRedirect) {
+    const flattenedDestination = normalizeRedirectPath(
+      readRedirectPath(destinationRedirect.destination),
+    );
+    if (flattenedDestination === destination) {
+      (isOwnRedirect(destinationRedirect) ? remove : retire).push(
+        destinationRedirect,
+      );
+    } else if (!flattenedDestination || flattenedDestination === source) {
+      return {
+        action: "skip",
+        reason: "The rename would create a redirect cycle",
+      };
+    } else {
+      destination = flattenedDestination;
+    }
+  }
+
+  const liveCollision = liveRoutes.find((route) => {
+    if (
+      route._id &&
+      event.documentId &&
+      route._id.replace(/^drafts\./, "") ===
+        event.documentId.replace(/^drafts\./, "")
+    ) {
+      return false;
+    }
+    const path = normalizeRedirectPath(route.path);
+    return path === source || path === destination;
+  });
+  if (liveCollision) {
+    return {
+      action: "skip",
+      reason: `Route collision with ${liveCollision._id ?? liveCollision.path}`,
+    };
+  }
+
+  const usesSource = (redirect: FetchedRedirect) =>
+    normalizeRedirectPath(readRedirectPath(redirect.source)) === source;
+  const sourceRedirect =
+    activeRedirects.find(usesSource) ?? redirects.find(usesSource);
+  // A switched-off redirect at the previous route is one this function retired
+  // when the document took that address, or one an editor switched off. It
+  // could not serve while the document lived there, and a second redirect
+  // with the same source would break the Studio's one-source rule. So it is
+  // switched on again, pointing at the document, and keeps its other fields.
+  const reactivate: FetchedRedirect[] = [];
+  if (sourceRedirect && !isActive(sourceRedirect)) {
+    if (!sourceRedirect._id || sourceRedirect.hasPendingEdits) {
+      return {
+        action: "skip",
+        reason: "An inactive redirect with unpublished edits already uses the previous route",
+      };
+    }
+    reactivate.push(sourceRedirect);
+  }
+
+  const directRedirect = reactivate.length ? undefined : sourceRedirect;
+  if (
+    directRedirect &&
+    normalizeRedirectPath(readRedirectPath(directRedirect.destination)) !==
+      destination
+  ) {
+    return {
+      action: "skip",
+      reason: "The previous route already redirects elsewhere",
+    };
+  }
+
+  const incomingAtSource = activeRedirects.filter(
+    (redirect) =>
+      !retire.includes(redirect) &&
+      !remove.includes(redirect) &&
+      redirect._id &&
+      normalizeRedirectPath(readRedirectPath(redirect.destination)) ===
+        source &&
+      normalizeRedirectPath(readRedirectPath(redirect.source)) !== source,
+  );
+  if (
+    incomingAtSource.some(
+      (redirect) => !targetsDocument(redirect, destinationDocumentId),
+    )
+  ) {
+    return {
+      action: "skip",
+      reason: "An incoming redirect cannot be verified for this document",
+    };
+  }
+  const incoming = incomingAtSource;
+
+  const simulated = activeRedirects
+    .filter(
+      (redirect) => !retire.includes(redirect) && !remove.includes(redirect),
+    )
+    .map((redirect) =>
+      incoming.includes(redirect)
+        ? { ...redirect, destination: toStoredRedirectPath(destination) }
+        : redirect,
+    );
+  if (!directRedirect) {
+    simulated.push({
+      source: toStoredRedirectPath(source),
+      destination: toStoredRedirectPath(destination),
+      permanent: "true",
+      status: "active",
+    });
+  }
+
+  const error = topologyError(simulated);
+  if (error) return { action: "skip", reason: error };
+
+  return {
+    action: "apply",
+    create: !directRedirect && reactivate.length === 0,
+    destination: toStoredRedirectPath(destination),
+    destinationDocumentId,
+    reactivate: reactivate.map((redirect) => ({
+      _id: redirect._id as string,
+      _rev: redirect._rev,
+    })),
+    remove: remove.map((redirect) => ({
+      _id: redirect._id as string,
+      _rev: redirect._rev,
+    })),
+    retire: retire.map((redirect) => ({
+      _id: redirect._id as string,
+      _rev: redirect._rev,
+    })),
+    retarget: incoming.map((redirect) => ({
+      _id: redirect._id as string,
+      _rev: redirect._rev,
+    })),
+    source: toStoredRedirectPath(source),
+  };
+}

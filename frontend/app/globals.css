@@ -1,0 +1,364 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
+
+/*
+ * Colour has two layers:
+ *   1. Brand colours (--brand-*) in :root. They are the Website's palette.
+ *      They sit outside @theme, so Tailwind makes no classes for them:
+ *      component code cannot use them. A new Website replaces these values.
+ *   2. Job tokens (--color-*) in @theme. Each names what a colour is for
+ *      (background, foreground, link, primary...) and points at a brand
+ *      colour. Component code uses only these. The section themes
+ *      (.section-scene-light, .section-scene-dark) re-point job tokens,
+ *      never brand colours, so one piece of markup is right on any theme.
+ * See "Colour" in docs/agents/page-builder.md.
+ */
+
+/* Brand colours (layer 1: the palette, never used in components). The
+   Starter ships a neutral palette; replace it with the Website's own. */
+:root {
+  --brand-white: #ffffff;
+  --brand-black: #000000;
+  --brand-neutral-50: #fafafa;
+  --brand-neutral-100: #f4f4f5;
+  --brand-neutral-200: #e4e4e7;
+  --brand-neutral-300: #d4d4d8;
+  --brand-neutral-500: #71717a;
+  --brand-neutral-600: #52525b;
+  --brand-neutral-700: #3f3f46;
+  --brand-neutral-800: #27272a;
+  --brand-neutral-900: #18181b;
+  --brand-red: #b91c1c;
+}
+
+/* Job tokens (layer 2). The defaults are the Light section theme. */
+@theme {
+  /* ---- Ground tokens: .section-scene-dark re-points these ---- */
+  --color-background: var(--brand-white); /* the section's ground */
+  --color-foreground: var(--brand-neutral-900); /* headings and primary text */
+  --color-soft-foreground: var(--brand-neutral-700); /* near-primary supporting text: prices, dates, labels */
+  /* neutral-600, not neutral-500: neutral-500 misses 4.5:1 contrast on the
+     muted and accent backgrounds. */
+  --color-muted-foreground: var(--brand-neutral-600); /* descriptions, captions, sub-lines */
+  --color-muted: var(--brand-neutral-100); /* quiet fill: placeholders, table stripes */
+  --color-card: var(--brand-white);
+  --color-card-foreground: var(--brand-neutral-900);
+  --color-popover: var(--brand-white); /* menus and popovers */
+  --color-popover-foreground: var(--brand-neutral-900);
+  --color-border: var(--brand-neutral-200); /* hairlines, dividers, card edges */
+  --color-border-strong: var(--brand-neutral-300);
+  --color-input: var(--brand-neutral-300); /* form field borders */
+  --color-ring: var(--brand-neutral-500); /* focus rings */
+  --color-link: var(--brand-neutral-900); /* links, eyebrows, small accent text */
+  --color-link-hover: var(--brand-neutral-700);
+  --color-link-foreground: var(--brand-white); /* text on a link-coloured fill: selected tabs and chips */
+  --color-prose-link: var(--brand-neutral-900); /* links inside running text */
+  --color-prose-link-hover: var(--brand-neutral-700);
+  --color-emphasis: var(--brand-neutral-900); /* the emphasised phrase in a headline */
+  --color-accent: var(--brand-neutral-100); /* shadcn: quiet hover and selected background */
+  --color-accent-foreground: var(--brand-neutral-900);
+  --color-accent-hover: var(--brand-neutral-700);
+  --color-primary: var(--brand-neutral-900); /* the main action */
+  --color-primary-foreground: var(--brand-white);
+  --color-primary-hover: var(--brand-neutral-700);
+  --color-secondary: var(--brand-neutral-100);
+  --color-secondary-foreground: var(--brand-neutral-800);
+  --color-mark: var(--brand-neutral-900); /* brand marks: dots, bars, rules, bullets */
+
+  /* ---- Tokens that stay the same on every theme ---- */
+  --color-destructive: var(--brand-red); /* errors */
+  --color-destructive-foreground: var(--brand-white);
+  --color-scrim: var(--brand-black); /* overlays behind dialogs and sheets, scrims over photos */
+
+  --radius-control: 0.5rem;
+  --radius-card: 0.75rem;
+}
+:root {
+  --control-height: 2.75rem;
+  --control-inline: 1.25rem;
+  --control-height-compact: 2.25rem;
+  --control-inline-compact: 0.875rem;
+  --control-height-hero: 3rem;
+  --control-inline-hero: 1.5rem;
+  --space-card: 1.5rem;
+  --space-stack: 1.5rem;
+  --space-header-gap: 3rem;
+  /* A tucked section overlaps the section above by this depth. The wave
+     crest rises this height above the section box and meets the box top
+     at both edges, so the silhouette is one rounded shape. */
+  --section-tuck-depth: 2rem;
+  --section-wave-height: 1.5rem;
+  /* Dark band surface: two soft glows, a shadow between them, and a grain
+     over everything. Tune here. */
+  --band-glow: color-mix(in oklch, var(--brand-neutral-50) 12%, transparent);
+  --band-shade: color-mix(in oklch, var(--brand-black) 45%, transparent);
+  --grain-size: 180px;
+  --grain-opacity: 0.45;
+  --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  button,
+  summary {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 3px;
+  }
+}
+@utility section-pad {
+  padding-block: clamp(3rem, 7vw, 6rem);
+}
+@utility section-pad-lg {
+  padding-block: clamp(4rem, 9vw, 8rem);
+}
+@utility section-header-gap {
+  margin-bottom: 2.5rem;
+}
+@utility gap-split {
+  gap: clamp(2rem, 5vw, 5rem);
+}
+@utility typo-body {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+@utility typo-body-editorial {
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+@utility typo-body-sm {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+@utility typo-button {
+  font-size: 0.875rem;
+}
+@utility typo-button-lg {
+  font-size: 1rem;
+}
+@utility typo-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+@utility typo-feature-heading {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+@utility typo-section-heading {
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility typo-subsection-heading {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+@utility typo-title-minor {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+@utility typo-lead {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--color-muted-foreground);
+}
+@utility typo-fine-print {
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+@utility typo-meta-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* All CMS sections share the same width as the header and hero. */
+@utility container {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.section-scene {
+  position: relative;
+  color: var(--color-foreground);
+  background: var(--color-background);
+  padding-block: clamp(4rem, 9vw, 8rem);
+  transition: background-color 160ms ease, color 160ms ease;
+}
+/* Section themes re-point job tokens to brand colours. They never define a
+   brand colour, and component code never names one. */
+.section-scene-light {
+  --color-background: var(--brand-white);
+  --color-foreground: var(--brand-neutral-900);
+  --color-soft-foreground: var(--brand-neutral-700);
+  --color-card: var(--brand-white);
+  --color-card-foreground: var(--brand-neutral-900);
+  --color-popover: var(--brand-white);
+  --color-popover-foreground: var(--brand-neutral-900);
+  --color-muted: var(--brand-neutral-100);
+  --color-muted-foreground: var(--brand-neutral-600);
+  --color-border: var(--brand-neutral-200);
+  --color-border-strong: var(--brand-neutral-300);
+  --color-input: var(--brand-neutral-300);
+  --color-ring: var(--brand-neutral-500);
+  --color-link: var(--brand-neutral-900);
+  --color-link-hover: var(--brand-neutral-700);
+  --color-link-foreground: var(--brand-white);
+  --color-prose-link: var(--brand-neutral-900);
+  --color-prose-link-hover: var(--brand-neutral-700);
+  --color-emphasis: var(--brand-neutral-900);
+  --color-primary: var(--brand-neutral-900);
+  --color-primary-foreground: var(--brand-white);
+  --color-primary-hover: var(--brand-neutral-700);
+  --color-secondary: var(--brand-neutral-100);
+  --color-secondary-foreground: var(--brand-neutral-800);
+  --color-accent: var(--brand-neutral-100);
+  --color-accent-foreground: var(--brand-neutral-900);
+  --color-accent-hover: var(--brand-neutral-700);
+  --color-mark: var(--brand-neutral-900);
+}
+.section-scene-dark {
+  --color-background: var(--brand-neutral-900);
+  --color-foreground: var(--brand-neutral-50);
+  --color-soft-foreground: var(--brand-neutral-200);
+  --color-card: var(--brand-neutral-800);
+  --color-card-foreground: var(--brand-neutral-50);
+  --color-popover: var(--brand-neutral-800);
+  --color-popover-foreground: var(--brand-neutral-50);
+  --color-muted: var(--brand-neutral-800);
+  --color-muted-foreground: var(--brand-neutral-300);
+  --color-border: var(--brand-neutral-700);
+  --color-border-strong: var(--brand-neutral-600);
+  --color-input: var(--brand-neutral-600);
+  --color-ring: var(--brand-neutral-300);
+  --color-link: var(--brand-neutral-50);
+  --color-link-hover: var(--brand-neutral-300);
+  --color-link-foreground: var(--brand-neutral-900);
+  --color-prose-link: var(--brand-neutral-50);
+  --color-prose-link-hover: var(--brand-neutral-300);
+  --color-emphasis: var(--brand-neutral-50);
+  --color-primary: var(--brand-neutral-50);
+  --color-primary-foreground: var(--brand-neutral-900);
+  --color-primary-hover: var(--brand-neutral-200);
+  --color-secondary: var(--brand-neutral-800);
+  --color-secondary-foreground: var(--brand-neutral-50);
+  --color-accent: var(--brand-neutral-700);
+  --color-accent-foreground: var(--brand-neutral-50);
+  --color-accent-hover: var(--brand-neutral-300);
+  --color-mark: var(--brand-neutral-50);
+}
+
+/* Typography plugin colours follow the job tokens, so prose inside a Dark
+   section stays readable. */
+.prose {
+  --tw-prose-body: var(--color-foreground);
+  --tw-prose-headings: var(--color-foreground);
+  --tw-prose-lead: var(--color-muted-foreground);
+  --tw-prose-links: var(--color-prose-link);
+  --tw-prose-bold: var(--color-foreground);
+  --tw-prose-counters: var(--color-muted-foreground);
+  --tw-prose-bullets: var(--color-border-strong);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-quotes: var(--color-foreground);
+  --tw-prose-quote-borders: var(--color-border);
+  --tw-prose-captions: var(--color-muted-foreground);
+  --tw-prose-kbd: var(--color-foreground);
+  --tw-prose-code: var(--color-foreground);
+  --tw-prose-th-borders: var(--color-border-strong);
+  --tw-prose-td-borders: var(--color-border);
+}
+.section-scene-seam-top { padding-top: clamp(2rem, 4.5vw, 4rem); }
+.section-scene-seam-bottom { padding-bottom: clamp(2rem, 4.5vw, 4rem); }
+.section-scene-wave-top {
+  z-index: 1;
+  margin-top: calc(-1 * var(--section-tuck-depth));
+}
+/* The section above a tucked section loses the tuck depth and the wave crest
+   to the overlap. It pads its bottom by that much, so its content sits as far
+   from the crest as the tucked section's content sits from the wave's foot. */
+[data-band]:has(+ [data-band-tuck]) > :last-child > .section-scene {
+  padding-bottom: calc(
+    clamp(4rem, 9vw, 8rem) + var(--section-tuck-depth) + var(--section-wave-height)
+  );
+}
+.section-scene-wave-top::before {
+  position: absolute;
+  z-index: -1;
+  top: calc(-1 * var(--section-wave-height));
+  right: 0;
+  left: 0;
+  height: var(--section-wave-height);
+  content: "";
+  background: inherit;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+/* Band surface. The Page Builder wraps each run of seam-joined sections in a
+   band (see resolveSectionBands). A dark band carries one tonal sweep and one
+   grain overlay sized to the whole run, so the texture never restarts at a
+   seam. The band paints no background: sections keep their own colour and
+   the overlays blend above them. flow-root keeps a leading wave section's
+   negative margin from collapsing through the band, so the band box starts
+   at the join and the wave overflows above it; the overlays reach up to the
+   wave crest and curve with it. z-index 1 matches the wave section, so DOM
+   order still decides which neighbour paints on top. */
+[data-band="dark"] {
+  display: flow-root;
+  position: relative;
+  z-index: 1;
+}
+[data-band="dark"]::before,
+[data-band="dark"]::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+/* Tonal sweep: two large glows, top-left and bottom-right, with a shadow in
+   the top-right corner between them. Sized to the band, so a long run gets
+   one slow sweep rather than a glow per section. */
+[data-band="dark"]::before {
+  background-image:
+    radial-gradient(170% 95% at 8% 0%, var(--band-glow), transparent 70%),
+    radial-gradient(170% 95% at 96% 100%, var(--band-glow), transparent 70%),
+    radial-gradient(120% 60% at 100% 0%, var(--band-shade), transparent 70%);
+}
+[data-band="dark"]::after {
+  background-image: var(--grain-image);
+  background-size: var(--grain-size);
+  mix-blend-mode: soft-light;
+  opacity: var(--grain-opacity);
+}
+[data-band="dark"][data-band-tuck]::before,
+[data-band="dark"][data-band-tuck]::after {
+  top: calc(-1 * (var(--section-tuck-depth) + var(--section-wave-height)));
+  border-top-left-radius: 50% var(--section-wave-height);
+  border-top-right-radius: 50% var(--section-wave-height);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,350 @@
+# Next.js + Sanity Starter
+
+A reusable marketing website with a Next.js frontend and a separate Sanity Studio.
+
+## Own your copy
+
+Create a repository from this template, then change its code for the project you are building. Your copy has no runtime dependency on this Starter and receives no automatic Starter updates.
+
+Each copy must use its own Sanity project, dataset, credentials, and hosting accounts. This repository contains no shared project ID, token, or hosted resource.
+
+## Local setup
+
+Requirements:
+
+- Node.js 24.19.0
+- pnpm 11.10.0
+- An existing Sanity project ID
+- A Sanity API read token
+- A Sanity auth token
+- An available Studio hostname
+
+Install dependencies and run the guided setup:
+
+```bash
+pnpm install
+pnpm run setup
+```
+
+Setup asks for the site name, public URL, Sanity project ID, dataset, Sanity API read token, Sanity auth token, and Studio hostname. It writes ignored `frontend/.env.local` and `studio/.env.local` files and a commit-ready `studio/.env.production` file. It does not create or change Sanity projects, datasets, CORS origins, tokens, Vercel projects, GitHub repositories, or other hosted resources.
+
+If a local environment file already exists, setup stops instead of replacing it. Use `pnpm run setup --force` only when you intend to replace both local files. An existing `studio/.env.production` never stops setup and is never replaced, so a fresh checkout of a site that committed it keeps its saved `SANITY_STUDIO_APP_ID`; edit that file by hand.
+
+The read token powers Sanity Presentation draft previews. The auth token powers Studio-side CLI jobs and repository-scoped Sanity MCP access in Codex. Add optional integration credentials to the local env files only when the matching feature needs them. The committed environment example files list the supported names. For the Raster image description sync, set `RASTER_LIBRARY_ID` in `studio/.env.local` to this Website's own Raster library, next to `RASTER_API_KEY` and `RASTER_ORG_ID`; see [Raster image descriptions](docs/agents/raster-descriptions.md).
+
+The Studio uses `studio/.env.local` to preview the local Website. A production
+Studio build uses the deployed Website URL in `studio/.env.production`. Before
+deploying again, add SANITY_STUDIO_APP_ID to that production file and commit
+it so every checkout updates the same hosted Studio. The first deployment of a
+new project creates the ID: run `pnpm deploy:studio --first` once. It
+deploys to the Studio hostname setup saved as `SANITY_STUDIO_HOSTNAME` in
+`studio/.env.local`.
+
+Start both apps:
+
+```bash
+pnpm dev
+```
+
+- Website: `http://localhost:3000`
+- Studio: `http://localhost:3333`
+
+Before using Presentation, run `pnpm setup:sanity-cors` to add the Website and Studio origins to your Sanity project's CORS settings.
+
+### Parallel worktrees
+
+In a new Git worktree, copy configuration from an explicitly selected worktree
+of this same repository, then start an isolated server pair:
+
+```bash
+pnpm setup:worktree --source /absolute/path/to/configured-checkout
+pnpm dev:worktree
+```
+
+Setup keeps existing environment files. It copies only the Website and Studio
+`.env.local` files and installs locked dependencies. If no worktree has those
+files, run `pnpm setup` first.
+
+In T3, enable the repository's **Setup Worktree** action for worktree creation.
+If T3 asks you to import repository actions, import them first. The saved
+command uses Git's common directory to select the primary checkout and passes
+it as the explicit `--source`.
+Run `pnpm setup` in the primary checkout first if its environment files are missing.
+
+The launcher reserves paired ports in `3000–3009` and `3333–3342`, prints both
+URLs, and sets matching Website and Presentation origins. A saved assignment
+is reused; a busy saved port stops the launch. To select a pair explicitly:
+
+```bash
+pnpm dev:worktree --frontend-port 3001 --studio-port 3334
+```
+
+`pnpm dev:worktree` copies a missing Website or Studio `.env.local` from the
+primary checkout first. It never overwrites an existing file.
+
+Add `--detach` to keep the servers running after the shell or agent that
+started them ends, for example to keep a review link alive. The command
+returns once it prints both URLs. Output goes to `.worktree-dev.log`; stop the
+servers with `pnpm dev:stop --here`.
+
+```bash
+pnpm dev:worktree --detach
+```
+
+Run `pnpm setup:sanity-cors` to add the local origins and the production
+Website origin to your Sanity project's CORS settings, with credentials
+enabled. It uses `SANITY_AUTH_TOKEN` from `studio/.env.local`, adds only the
+missing origins, and leaves existing ones unchanged.
+
+On Linux, `pnpm dev:stop` lists this repository's development servers. Use
+`pnpm dev:stop --here` to stop the current worktree's servers, `--port 3001`
+to select a server, or `--all` to stop servers across this repository's
+registered worktrees. The shutdown tool requires Linux `/proc`.
+
+## Optional sample content
+
+After setup, you can seed a new empty dataset with neutral example content:
+
+```bash
+pnpm seed
+```
+
+The seed is manual. It never runs during install, setup, development, build, or deploy. It refuses to write unless the target dataset is empty.
+
+Seeding needs a Sanity write token in `SANITY_AUTH_TOKEN`, either in the shell or in `studio/.env.local`.
+
+The sample content creates global settings, navigation, footer, the homepage, a normal `/about/` page, Blog settings, authors, categories, a Blog Post, FAQ, Team Member, Testimonial, relevant SEO values, and every retained Page Builder section. The homepage shows one live Scaffold and the About page archives one, so a seeded dataset fails the launch check on purpose. Use it to confirm Website rendering and Studio editing, then remove it before adding real project content:
+
+```bash
+pnpm unseed
+```
+
+Unseed removes only marked Starter sample documents and the bundled Starter sample assets. Replacement images uploaded by editors are preserved. It refuses partial or unmarked targets instead of emptying a dataset generally.
+
+The section library is minimal on purpose: a Rich Text section and a Scaffold
+placeholder. Each project copy adds its own sections with
+`pnpm page-builder:new <name>`; see `docs/agents/page-builder.md` for
+generation, previews, registration, and the Scaffold workflow. The current
+list of sections, with what each one is for, is in `docs/content-model.md`
+under "Section library".
+
+Pages accept nested slugs such as `about/our-team`. Blog routes stay reserved.
+SEO sharing always uses a generated branded card. The selected sharing photo
+appears inside the card. Posts fall back to their main image. Pages use a hero
+photo when a site adds `homeHero` or `innerHero` sections; this Starter has no
+hero sections. Without a photo, the card uses the logo and brand colour.
+
+## Workspace commands
+
+```bash
+pnpm dev
+pnpm dev:frontend
+pnpm dev:studio
+pnpm deploy:studio
+pnpm seed
+pnpm unseed
+pnpm verify
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm typegen
+```
+
+`pnpm verify` checks generated Sanity types, TypeScript, lint, focused tests,
+both production builds, and the Playwright acceptance journey. Playwright uses
+real Google Chrome in headless mode. It does not record screenshots, video, or
+traces. If Chrome is missing, install it with
+`pnpm --dir frontend exec playwright install chrome`.
+
+Playwright serves the Website on this worktree's own port, the same one
+`pnpm dev:worktree` uses (saved in `.worktree-ports.json`). When another
+worktree or program holds that port, the worktree gets a new free slot. Stop
+this worktree's own dev server (`pnpm dev:stop`) before `pnpm verify`, which
+needs a fresh production server. CI uses port 3000; `PLAYWRIGHT_PORT=<n>`
+overrides the port.
+
+To save time, `pnpm verify` runs the type checks, lint and tests at the same
+time, and the two builds at the same time. `pnpm typegen` skips the slow schema
+extract when no Studio, `shared/` or lockfile input changed since the last
+extract in this checkout. Run `SCHEMA_EXTRACT_FORCE=1 pnpm typegen` to extract
+anyway.
+
+Use plain pnpm commands from the repository root. Add workspace dependencies with `pnpm --dir frontend add <package>` or `pnpm --dir studio add <package>`.
+
+The Studio uses `sanity-plugin-media@6.3.0` from npm. It includes
+drag-to-folder moves and Ctrl/Cmd-click asset picking from
+`sanity-io/plugins#2014`.
+
+The workspace patches this version to restore its tag icon, so the version is
+pinned. When upgrading the plugin, check that fix before removing or replacing
+the patch.
+
+## Deploy your copy
+
+The Website and Studio deploy separately.
+
+For Vercel, import your repository and set the root directory to `frontend`. Copy the Website environment values into that project's settings.
+
+Deploy the Studio manually after confirming that `SANITY_STUDIO_PREVIEW_URL`
+in `studio/.env.production` contains the deployed Website origin. Set
+`SANITY_STUDIO_APP_ID` in the same file and `SANITY_AUTH_TOKEN` in
+`studio/.env.local`. For the first deployment of a new project, run
+`pnpm deploy:studio --first` and save the app ID it prints. Deployment rejects
+missing values, local addresses, IP addresses, and other arguments. The preview URL must be a public HTTPS origin:
+
+```bash
+pnpm setup:sanity-cors
+pnpm deploy:studio
+```
+
+These commands target the accounts you configure. The Starter does not provision hosting or credentials.
+
+See `docs/deployment.md` for the production gate and complete deployment checklist.
+
+## Repository layout
+
+- `frontend/`: Next.js Website
+- `studio/`: Sanity Studio, schemas, and functions
+- `shared/`: code shared by both workspaces
+- `docs/agents/`: repository workflow guidance
+
+Read `docs/content-model.md` for the model map and `docs/agents/page-builder.md` before changing Page Builder sections.
+
+Before publishing a Starter revision, complete `docs/fresh-clone-proof.md` against a disposable Sanity dataset.
+
+## License
+
+The repository is available under the MIT License. Keep the copyright and permission notice in `LICENSE` when copying substantial portions of the software.
+
+## Button styles
+
+Code sets button styles. Button, Button Link, and Link have no style control
+in Studio. Rich Text button links use the primary style. The Starter has no
+Page Builder sections with fixed button links or button lists. When adding a
+section with multiple buttons, use a bounded button list and set each style
+by its position in the renderer.
+
+To remove old stored styles, first follow the backup procedure in
+`docs/agents/sanity-cli.md`. Then run from the Studio workspace:
+
+```bash
+cd studio
+node --env-file=.env.local scripts/migrate-button-lists.mjs
+node --env-file=.env.local scripts/migrate-button-lists.mjs --apply
+```
+
+The first command only reports the target, document IDs, and fields to remove.
+The second command removes those fields. It includes archived sections and
+rich text marks in all content documents. Each document keeps its exact ID,
+so drafts, published documents, and release versions stay separate. Revision
+checks stop the transaction if an editor changes a document after it is read.
+Running the migration again makes no changes. No dataset migration runs during
+setup, build, or deployment.
+
+To test the migration with real seed content, create an empty disposable dataset
+named `issue-63-smoke` or `issue-63-smoke-<suffix>`. Export and verify its backup
+as described above before writing. From Studio, load `.env.local` and override
+only the dataset:
+
+```bash
+SANITY_STUDIO_DATASET=issue-63-smoke node --env-file=.env.local scripts/prepare-button-smoke.mjs
+```
+
+The fixture script refuses other dataset names and non-empty datasets. It seeds
+sample content, adds a legacy Button Link to a published page and its draft,
+and checks the migration dry run, preserved IDs and destinations, and repeat
+run. From the repository root, run:
+
+```bash
+SANITY_STUDIO_DATASET=issue-63-smoke NEXT_PUBLIC_SANITY_DATASET=issue-63-smoke PLAYWRIGHT_REQUIRE_SEED=1 pnpm verify
+```
+
+This mode fails if seed content is absent, runs both seed-dependent smoke tests,
+and checks the migrated link destination in Chrome. Leave port 3000 free for
+the test server. No screenshots, traces, or videos are recorded.
+
+## Sharing-card brand
+
+Replace the files in `frontend/public/brand/` to set the sharing-card brand:
+
+- `mark.svg`: the site mark, also used as the browser favicon.
+- `wordmark.svg`: a light logo for dark backgrounds. Use SVG paths, not text.
+- `font.woff`: the card font, served as weight 600. Include its licence.
+- `brand.json`: the background `color` and a `version` string.
+
+Increase `version` whenever a logo or font changes. This gives shared cards new
+URLs instead of reusing immutable cached cards. Deploy after changing these
+files. The build includes this folder in every sharing-card route.
+
+Set `OG_IMAGE_SECRET` on each deployment. Generated card URLs are signed.
+The Social sharing photo now supplies the photo inside the card, rather than
+replacing the entire card. Existing images need no stored-data migration, but
+check their crop when using this Starter update in an existing site.
+
+### Page query, copy, and draft tools
+
+Run these from the repository root. They load the project, dataset, and
+`SANITY_AUTH_TOKEN` from `studio/.env.local`, with shell values taking precedence.
+
+```bash
+pnpm sanity:query '*[_type == "page"]{_id,title}'
+pnpm page:text getting-started
+pnpm page:text getting-started --published
+pnpm page:check starter-page
+pnpm page:seed ./example-seed.mjs
+pnpm page:seed ./example-seed.mjs --apply
+```
+
+The query includes drafts and published documents. The text command prefers
+the draft unless `--published` is given. The check command runs Studio's
+validation rules on one document by id, prints each problem with its path, and
+exits 1 on any error or warning; run it before handing over a document written
+through Sanity MCP or a script. The seed command prints a plan by
+default; `--apply` writes page and supporting drafts without publishing.
+See [the Sanity CLI guide](docs/agents/sanity-cli.md#page-tools) for seed format,
+credentials, replacement rules, and the required backup before a write.
+
+### Page section screenshots
+
+Start the worktree servers with `pnpm dev:worktree`, then run:
+
+```bash
+pnpm page:shots getting-started
+pnpm page:shots getting-started --out /tmp/page-review --only phone
+```
+
+The command requires a saved page draft with Page Builder sections. It reads
+`.worktree-ports.json`, or uses ports 3000 and 3333 when that file is absent.
+It loads Studio credentials from `studio/.env.local`. The token must read drafts
+and create a temporary Sanity preview secret. Follow the backup rules in the
+Sanity CLI guide before the first dataset write. The Website also needs its
+preview read token. Install Chrome with
+`pnpm --dir frontend exec playwright install chrome` if needed.
+
+Images go to the system temporary folder under
+`page-shots/<slug>/<viewport>/<nn>-<sectionKey>.png` by default. `--out` changes
+the output folder. Earlier section images (`<nn>-<sectionKey>.png`) are
+removed; other files are kept.
+Desktop is 1440 × 1000; phone is 390 × 844. `--only` selects one viewport.
+Each viewport prints a JSON line with the output folder, page height, and
+section keys and heights. The command stops before writing that viewport's
+images if draft mode is off or the rendered section keys differ from the draft
+in number or order. It hides the header and editing controls for the images.
+Section keys do not prove that every text field or referenced document is
+current. Inspect known draft-only content when you review the images.
+
+### Merge parallel Page Builder work
+
+Commit local changes first, then run `pnpm sync:main` to fetch and merge
+`origin/main` into the current branch. Use `pnpm merge:refs <ref> [<ref>...]`
+to merge other branches in order. Refs under `origin/` trigger a fetch.
+
+The tool keeps both branches' additions immediately before Page Builder
+registration markers. It regenerates the schema extract and Sanity types
+when schema or query inputs change. It commits completed merges and any
+regenerated files. Inspect the merged registrations and run `pnpm typecheck`.
+
+Other conflicts stop the command and leave the merge in progress. The error
+names the files. Resolve them, run `pnpm typegen` and `pnpm typecheck`, then
+stage and commit the result. Run the command again for any remaining refs.

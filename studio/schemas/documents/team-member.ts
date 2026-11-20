@@ -1,0 +1,101 @@
+import { UserRound } from "lucide-react";
+import { defineArrayMember, defineField, defineType } from "sanity";
+import { requiredText } from "../validation/required-text";
+
+export default defineType({
+  name: "teamMember",
+  title: "Team Member",
+  type: "document",
+  icon: UserRound,
+  description:
+    "A reusable person profile that can be selected in team sections.",
+  initialValue: {
+    role: "Team Role",
+  },
+  fields: [
+    defineField({
+      name: "name",
+      type: "string",
+      title: "Name",
+      description: "The full name shown on this team member profile.",
+      validation: (rule) =>
+        requiredText(rule, "Add the name. A profile without it is not shown."),
+    }),
+    defineField({
+      name: "role",
+      type: "string",
+      title: "Role",
+      description:
+        "The team member's job title or public-facing responsibility.",
+    }),
+    defineField({
+      name: "email",
+      type: "string",
+      title: "Email",
+      description: "The public email address used by the profile's email link.",
+      validation: (rule) => rule.email(),
+    }),
+    defineField({
+      name: "phone",
+      type: "string",
+      title: "Phone",
+      description:
+        "The public phone number shown on the profile and used by its call link.",
+    }),
+    defineField({
+      name: "image",
+      type: "image",
+      title: "Photo",
+      description:
+        "A profile photo for this team member.",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alt Text",
+          description:
+            "Describe the image for screen readers. Leave empty if the image is decorative or repeats nearby text.",
+        }),
+      ],
+    }),
+    defineField({
+      name: "bio",
+      type: "array",
+      title: "Bio",
+      description:
+        "A short biography describing this team member's responsibilities and expertise.",
+      of: [
+        defineArrayMember({
+          type: "block",
+          marks: {
+            decorators: [
+              { title: "Strong", value: "strong" },
+              { title: "Emphasis", value: "em" },
+            ],
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: "sortOrder",
+      type: "number",
+      title: "Display Order",
+      description:
+        "The order used when this team member is placed automatically in team lists.",
+      validation: (rule) => rule.integer().positive(),
+    }),
+  ],
+  preview: {
+    select: {
+      title: "name",
+      role: "role",
+      media: "image",
+    },
+    prepare: ({ media, role, title }) => ({
+      title: title || "Unnamed Team Member",
+      subtitle: role || "Reusable profile",
+      media,
+    }),
+  },
+});
