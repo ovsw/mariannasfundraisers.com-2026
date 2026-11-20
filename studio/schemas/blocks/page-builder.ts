@@ -3,10 +3,12 @@ import { defineField } from "sanity";
 export const contentPageBuilderBlockTypes = [
   "richTextBlock",
   "scaffold",
+  "pageHeading",
   // page-builder-generator:content-types
 ] as const;
 
 const generalOnlyPageBuilderBlockTypes = [
+  "pageBanner",
   // page-builder-generator:general-types
 ] as const;
 
@@ -30,6 +32,8 @@ type PageBuilderBlockType =
   | (typeof homePagePageBuilderBlockTypes)[number];
 
 const previewBlockTypes = new Set<string>([
+  "pageBanner",
+  "pageHeading",
   // page-builder-generator:preview-types
 ]);
 
@@ -46,6 +50,22 @@ function createBlocksField(blockTypes: readonly PageBuilderBlockType[]) {
     type: "array",
     group: "content",
     of: blockTypes.map((type) => ({ type })),
+    // A Page heading or Page banner with a title draws the page's h1; a page
+    // has one.
+    validation: (rule) =>
+      rule.custom((blocks) => {
+        const titled = (blocks ?? []).filter((block) => {
+          const { _type, title } = block as { _type?: string; title?: unknown };
+          return (
+            (_type === "pageHeading" || _type === "pageBanner") &&
+            typeof title === "string" &&
+            title.trim() !== ""
+          );
+        });
+        return titled.length > 1
+          ? "Only one Page heading or Page banner can have a title: it is the page's main heading"
+          : true;
+      }),
     options: {
       insertMenu: {
         views: [

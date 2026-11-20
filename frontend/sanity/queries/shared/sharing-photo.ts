@@ -5,10 +5,10 @@ import { groq } from "next-sanity";
 // so an emptied field falls through instead of blocking the next source.
 const photoProjection = groq`{ asset, crop, hotspot }`;
 
-/** Sites can add homeHero or innerHero blocks; the Starter has neither. */
+/** A page without a Social sharing photo uses the photo of its Page banner. */
 export const pageSharingPhotoQuery = groq`"sharingPhoto": select(
   defined(meta.image.asset) => meta.image,
-  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image
+  blocks[_type in ["homeHero", "pageBanner"] && defined(image.asset)][0].image
 )${photoProjection}`;
 
 /** Posts lead with their main image. */

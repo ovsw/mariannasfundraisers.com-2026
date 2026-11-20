@@ -204,6 +204,22 @@ export const starterDocuments = [
     slug: slug("about"),
     blocks: [
       {
+        _key: "starter-page-banner",
+        _type: "pageBanner",
+        theme: "shaded",
+        image: { ...imageRef, alt: "Neutral placeholder image." },
+      },
+      {
+        _key: "starter-page-heading",
+        _type: "pageHeading",
+        theme: "shaded",
+        title: "About",
+        intro: simpleText(
+          "starter-page-heading-intro",
+          "A neutral page used to test routed page rendering.",
+        ),
+      },
+      {
         _key: "starter-page-rich-text",
         _type: "richTextBlock",
         theme: "light",

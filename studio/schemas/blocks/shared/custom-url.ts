@@ -42,6 +42,7 @@ export default defineType({
       name: "external",
       title: "External URL",
       type: "string",
+      description: "A web address, mailto: for email, tel: for a phone number, or a path on this site.",
       hidden: ({ parent }) => parent?.type !== "external",
       validation: (rule) =>
         rule.custom((value, context) => {
@@ -71,6 +72,36 @@ export default defineType({
         }),
     }),
     defineField({
+      name: "anchor",
+      title: "Anchor",
+      type: "string",
+      description:
+        "Optional. Jumps to a part of the page: the Anchor ID of a section there, or a heading's text in lowercase words with hyphens.",
+      hidden: ({ parent }) => parent?.type !== "internal",
+      validation: (rule) =>
+        rule.custom((value) =>
+          value === undefined || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value as string)
+            ? true
+            : "Use lowercase letters, numbers and single hyphens, without #",
+        ),
+    }),
+    defineField({
+      name: "file",
+      title: "File",
+      type: "file",
+      description: "A document to download, such as a PDF.",
+      hidden: ({ parent }) => parent?.type !== "file",
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const parent = context.parent as { type?: string } | undefined;
+          const asset = (value as { asset?: { _ref?: string } } | undefined)
+            ?.asset;
+          return parent?.type === "file" && !asset?._ref
+            ? "Choose the file"
+            : true;
+        }),
+    }),
+    defineField({
       name: "type",
       type: "string",
       initialValue: "internal",
@@ -80,6 +111,7 @@ export default defineType({
         list: [
           { title: "Internal", value: "internal" },
           { title: "External", value: "external" },
+          { title: "File", value: "file" },
         ],
       },
       validation: (rule) => rule.required(),

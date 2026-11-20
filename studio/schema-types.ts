@@ -33,6 +33,8 @@ import {
 // Schema UI objects
 import richTextBlock from "./schemas/blocks/rich-text-block";
 import scaffold from "./schemas/blocks/scaffold";
+import pageBanner from "./schemas/blocks/page-banner";
+import pageHeading from "./schemas/blocks/page-heading";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -69,5 +71,7 @@ export const schemaTypes = [
   // blocks
   richTextBlock,
   scaffold,
+  pageBanner,
+  pageHeading,
   // page-builder-generator:block-types
 ];

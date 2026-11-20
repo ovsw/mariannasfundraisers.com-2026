@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { urlInternalHref } from "./internal-href";
+import { urlHref } from "./custom-url-href";
 
 // The fields of a `button` that components/site-button.tsx draws. Use it as
 // the projection of a button or of each item of a `buttons` array:
@@ -11,9 +11,5 @@ export const buttonProjection = groq`
   colour,
   icon,
   "openInNewTab": url.openInNewTab,
-  "href": select(
-    url.type == "internal" => ${urlInternalHref},
-    url.type == "external" => url.external,
-    url.href
-  )
+  "href": ${urlHref}
 `;

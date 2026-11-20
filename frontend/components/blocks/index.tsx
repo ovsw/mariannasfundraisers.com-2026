@@ -13,6 +13,8 @@ import {
   type SectionBrushShape,
 } from "@/components/blocks/section-brush";
 import Scaffold, { hasScaffoldContent } from "@/components/blocks/scaffold";
+import PageBanner, { hasPageBannerContent } from "@/components/blocks/page-banner";
+import PageHeading, { hasPageHeadingContent } from "@/components/blocks/page-heading";
 // page-builder-generator:component-imports
 import { dataset, projectId } from "@/sanity/lib/env";
 
@@ -27,6 +29,8 @@ type BlockEditingProps = {
 const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "richTextBlock",
   "scaffold",
+  "pageBanner",
+  "pageHeading",
   // page-builder-generator:editing-types
 ]);
 
@@ -37,6 +41,8 @@ const componentMap: Partial<{
 }> = {
   richTextBlock: RichTextBlock,
   scaffold: Scaffold,
+  pageBanner: PageBanner,
+  pageHeading: PageHeading,
   // page-builder-generator:component-map
 };
 
@@ -46,6 +52,11 @@ const componentMap: Partial<{
 // old menu sections; every other section paints the default "brush" stroke.
 const sectionBrushShapes: Partial<Record<Block["_type"], SectionBrushShape>> =
   {};
+
+// Heroes draw their own edge. Their theme picks that edge's colour, not a
+// background, so the Page Builder treats them as themeless: they never share
+// a band and nothing is drawn next to them.
+const selfEdgedBlockTypes = new Set<Block["_type"]>(["pageBanner"]);
 
 export default function Blocks({
   blocks,
@@ -64,7 +75,10 @@ export default function Blocks({
     return [
       {
         key: block._key,
-        theme: "theme" in block ? (block.theme as string | null) : null,
+        theme:
+          "theme" in block && !selfEdgedBlockTypes.has(block._type)
+            ? (block.theme as string | null)
+            : null,
       },
     ];
   });
@@ -137,7 +151,16 @@ export default function Blocks({
         data-section-key={block._key}
         key={block._key}
       >
-        <Component {...block} {...editingProps} {...boundary} />
+        <Component
+          {...block}
+          {...editingProps}
+          {...boundary}
+          // A self-edged section is themeless for its neighbours, but its own
+          // edge still takes the theme it was given.
+          {...(selfEdgedBlockTypes.has(block._type) && "theme" in block
+            ? { theme: block.theme }
+            : {})}
+        />
         {brushTheme && brush?.top ? (
           <SectionBrush edge="top" shape={brushShape} theme={brushTheme} />
         ) : null}
@@ -173,6 +196,8 @@ function isRenderableBlock(block: Block) {
     );
   }
   if (block._type === "scaffold") return hasScaffoldContent(block);
+  if (block._type === "pageBanner") return hasPageBannerContent(block);
+  if (block._type === "pageHeading") return hasPageHeadingContent(block);
   // page-builder-generator:visible-blocks
   return true;
 }

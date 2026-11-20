@@ -1,8 +1,10 @@
 // Shadcnblocks blogpost1: centered prose body.
 import RichTextContent from "@/components/rich-text-content";
+import { SiteButton, hasSiteButtonContent } from "@/components/site-button";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import type { PortableTextProps } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
+import { cn } from "@/lib/utils";
 import {
   resolveSectionTheme,
   sectionSceneClassName,
@@ -22,6 +24,8 @@ type RichTextBlockProps = RichTextBlockData & {
 
 export default function RichTextBlock({
   _key,
+  anchorId,
+  buttons,
   dataAttribute,
   eyebrow,
   richText,
@@ -38,11 +42,18 @@ export default function RichTextBlock({
 
   if (!(displayEyebrow || displayTitle || richText?.length)) return null;
 
+  const visibleButtons = (buttons ?? []).filter(hasSiteButtonContent);
+  const anchor = stegaClean(anchorId)?.trim();
+
   return (
     <section
-      className={sectionSceneClassName(resolveSectionTheme(theme), top, bottom)}
       data-sanity={dataAttribute?.("theme")}
       aria-labelledby={headingId}
+      className={cn(
+        sectionSceneClassName(resolveSectionTheme(theme), top, bottom),
+        anchor && "scroll-mt-28",
+      )}
+      id={anchor || undefined}
     >
       <div className="container">
         <div className="mx-auto max-w-3xl">
@@ -72,6 +83,16 @@ export default function RichTextBlock({
             dataSanity={dataAttribute?.("richText")}
             value={richText as PortableTextProps["value"]}
           />
+        ) : null}
+        {visibleButtons.length ? (
+          <div
+            className="mt-8 flex flex-wrap gap-4"
+            data-sanity={dataAttribute?.("buttons")}
+          >
+            {visibleButtons.map((button) => (
+              <SiteButton button={button} key={button._key} />
+            ))}
+          </div>
         ) : null}
         </div>
       </div>

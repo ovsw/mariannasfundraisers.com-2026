@@ -72,6 +72,8 @@ const schema = createSchema({
         { name: "button", type: "button" },
         { name: "richTextBlock", type: "richTextBlock" },
         { name: "scaffold", type: "scaffold" },
+        { name: "pageHeading", type: "pageHeading" },
+        { name: "pageBanner", type: "pageBanner" },
         { name: "richText", type: "richTextContent" },
       ],
     },
@@ -170,6 +172,25 @@ test("a rich text Section needs content", async () => {
       },
     }),
     {},
+  );
+  // The renderer draws a heading on its own, so a heading is enough.
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      richTextBlock: { _type: "richTextBlock", title: "Our hoagies", theme: "light" },
+    }),
+    {},
+  );
+});
+
+test("a Page heading needs its title and a Page banner its photo", async () => {
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      pageHeading: { _type: "pageHeading", title: "  ", theme: "light" },
+      pageBanner: { _type: "pageBanner", title: "Contact Us", theme: "light" },
+    }),
+    ["pageBanner.image", "pageHeading.title"],
   );
 });
 
