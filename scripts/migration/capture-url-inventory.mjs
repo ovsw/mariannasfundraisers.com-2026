@@ -92,8 +92,12 @@ async function fetchManual(url) {
   return { status: response.status, location: response.headers.get("location"), body };
 }
 
-const sitemapXml = await (await fetch(SITEMAP_URL)).text();
-const inSitemap = sitemapPaths(sitemapXml);
+// fetch() does not throw on an HTTP error, so stop before an error page or an
+// empty sitemap can replace the inventory with a short URL list.
+const sitemapResponse = await fetch(SITEMAP_URL);
+if (!sitemapResponse.ok) throw new Error(`${SITEMAP_URL} answered ${sitemapResponse.status}; the inventory was left as it was.`);
+const inSitemap = sitemapPaths(await sitemapResponse.text());
+if (!inSitemap.length) throw new Error(`${SITEMAP_URL} lists no URLs; the inventory was left as it was.`);
 const allPaths = [...inSitemap, ...EXTRA_PATHS.filter((p) => !inSitemap.includes(p))];
 
 const urls = [];

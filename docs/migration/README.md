@@ -36,13 +36,13 @@ one (from some regions it shows none). Add `--only <path>` to capture one page.
 
 ## Findings for later tickets
 
-- The 18 news posts have no title or description in the old HTML: the title is
-  `NOTITLE Marianna's Fundraisers`. The parity script must expect a real title
-  on the new site.
+- 13 of the 18 news posts have no title or description in the old HTML: the
+  title is `NOTITLE Marianna's Fundraisers`. The other five have a real title
+  and description. The parity script must expect a real title on the new site.
 - Five URLs are noindex: `/flavored-salsas`, `/flavored-salsas/menu`,
   `/ingredients-list`, `/accessibility-statement`, `/accessibility-policy`.
-- The canonical of `/flavored-salsas` ends in a slash; every other canonical
-  is the path without one.
+- The canonicals of `/flavored-salsas` and `/products` end in a slash; every
+  other canonical is the path without one.
 - The call-to-action row shared by the product pages is not the same on all 16:
   `products/pepperoni-pizza` has no line break where the other 15 have one.
   The importer stops on a difference (spec decision 20), so ticket #16 needs an

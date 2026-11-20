@@ -10,6 +10,8 @@ const readJson = (file) => JSON.parse(readFileSync(path.join(migrationDir, file)
 test("a news slug is malformed when it ends in a hyphen or holds a colon", () => {
   assert.equal(malformedSlugReason("/news/fund-fiesta-is-here-"), "ends in a hyphen");
   assert.equal(malformedSlugReason("/news/winner:-2024-hometown-favorite-sandwich"), "contains a colon");
+  assert.equal(malformedSlugReason("/news/Spring-sale"), "is not lowercase letters and digits with single hyphens");
+  assert.equal(malformedSlugReason("/news/spring--sale"), "is not lowercase letters and digits with single hyphens");
   assert.equal(malformedSlugReason("/news/a-positive-partnership"), null);
   assert.equal(malformedSlugReason("/products/italian-hoagie"), null);
 });

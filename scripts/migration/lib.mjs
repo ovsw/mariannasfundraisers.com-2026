@@ -45,6 +45,7 @@ export function malformedSlugReason(pathname) {
   const slug = pathname.slice("/news/".length);
   if (slug.includes(":")) return "contains a colon";
   if (slug.endsWith("-")) return "ends in a hyphen";
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return "is not lowercase letters and digits with single hyphens";
   return null;
 }
 

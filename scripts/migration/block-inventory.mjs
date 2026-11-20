@@ -295,11 +295,18 @@ function flatten(value, prefix = "", out = {}) {
   return out;
 }
 
+/** Object keys in sorted order at every level, array order kept, so equal rows give equal JSON. */
+function sortKeys(value) {
+  if (Array.isArray(value)) return value.map(sortKeys);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortKeys(value[key])]));
+}
+
 /** Groups products by the imported shape of one shared row, with the paths that differ from the largest group. */
 export function compareSharedRow(products) {
   const groups = new Map();
   for (const { slug, row } of products) {
-    const key = JSON.stringify(importedShape(row));
+    const key = JSON.stringify(sortKeys(importedShape(row)));
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(slug);
   }
@@ -332,7 +339,7 @@ export function buildInventory(stories) {
     callToAction: compareSharedRow(productRows.map(({ slug, rows }) => ({ slug, row: rows.find((r) => r.component === "row-two-columns-cta") }))),
   };
 
-  const allRows = storyEntries.flatMap((s) => s.rows.map((r) => ({ ...r, kind: s.kind })));
+  const allRows = storyEntries.flatMap((s) => s.rows.map((r) => ({ ...r, kind: s.kind, story: s.path })));
   const tally = (rows) => {
     const counts = {};
     for (const row of rows) {
@@ -365,8 +372,12 @@ export function buildInventory(stories) {
     return total;
   };
 
-  // One entry per row: a row that became two sections (an FAQ row) is counted once.
-  const rowEntries = allRows.filter((r, i) => r.wrapperUid && !(i > 0 && allRows[i - 1].source === r.source && allRows[i - 1].uid === r.uid));
+  // One entry per row: a row that became two sections (an FAQ row) is counted
+  // once. Copied stories share `_uid`s, so the story is part of a row's identity.
+  const rowEntries = allRows.filter((r, i) => {
+    const previous = allRows[i - 1];
+    return r.wrapperUid && !(previous && previous.story === r.story && previous.source === r.source && previous.uid === r.uid);
+  });
   const bigImageRows = rowEntries.filter((r) => r.source.endsWith("row-big-image"));
   const bigByKind = (kind) => bigImageRows.filter((r) => r.kind === kind).length;
   const counts = {

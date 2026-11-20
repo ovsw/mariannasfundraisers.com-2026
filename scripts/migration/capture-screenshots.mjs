@@ -78,7 +78,12 @@ try {
     let bannerSeen = false;
     for (const pathname of paths) {
       const page = await context.newPage();
-      await page.goto(`${OLD_ORIGIN}${pathname}`, { waitUntil: "load", timeout: 60000 });
+      // goto() does not throw on an HTTP error, so check the status before an
+      // error page can replace the reference screenshot.
+      const response = await page.goto(`${OLD_ORIGIN}${pathname}`, { waitUntil: "load", timeout: 60000 });
+      if (!response || response.status() >= 400) {
+        throw new Error(`${pathname} answered ${response ? response.status() : "nothing"}; its screenshot was left as it was.`);
+      }
       // iubenda remembers the closed banner in this context, so it shows once.
       if (!bannerSeen) bannerSeen = await closeConsentBanner(page);
       await scrollThrough(page);
