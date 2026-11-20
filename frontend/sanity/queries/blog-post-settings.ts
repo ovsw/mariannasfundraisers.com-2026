@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { urlInternalHref } from "./shared/internal-href";
+import { urlHref } from "./shared/custom-url-href";
 
 const actionProjection = `{
   _key,
@@ -8,11 +8,7 @@ const actionProjection = `{
   ...button{
     "text": text,
     "openInNewTab": url.openInNewTab,
-    "href": select(
-      url.type == "internal" => ${urlInternalHref},
-      url.type == "external" => url.external,
-      url.href
-    )
+    "href": ${urlHref}
   }
 }`;
 

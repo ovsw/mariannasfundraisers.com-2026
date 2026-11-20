@@ -1,0 +1,23 @@
+{
+  "$comment": "Fixes to imported content that must survive a second run of the importer (spec decision 20). Never fix imported content in the dataset by hand. links: a link in story `story` (Storyblok full slug) whose stored address is `from` goes to `to` instead: `{ story, anchor? }` for a story's page, or `{ url }`.",
+  "links": [
+    {
+      "story": "how-it-is-made",
+      "from": "/menu/",
+      "to": { "story": "products/", "anchor": "hoagies" },
+      "reason": "Spec decision 21: the old site linked to /menu/, which no longer exists; the menu is /products."
+    },
+    {
+      "story": "news/national-pizza-day-february-9th-2022",
+      "from": "/menu/",
+      "to": { "story": "products/" },
+      "reason": "Spec decision 21: the old site linked to /menu/, which no longer exists; the menu is /products."
+    },
+    {
+      "story": "products/smoked-ham-cheddar-hoagie",
+      "from": "menu/",
+      "to": { "story": "products/" },
+      "reason": "Spec decision 21: the old site linked to /menu/, which no longer exists; the menu is /products."
+    }
+  ]
+}

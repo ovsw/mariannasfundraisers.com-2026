@@ -3,10 +3,12 @@ import { defineField } from "sanity";
 export const contentPageBuilderBlockTypes = [
   "richTextBlock",
   "scaffold",
+  "pageHeading",
   // page-builder-generator:content-types
 ] as const;
 
 const generalOnlyPageBuilderBlockTypes = [
+  "pageBanner",
   // page-builder-generator:general-types
 ] as const;
 
@@ -30,6 +32,8 @@ type PageBuilderBlockType =
   | (typeof homePagePageBuilderBlockTypes)[number];
 
 const previewBlockTypes = new Set<string>([
+  "pageBanner",
+  "pageHeading",
   // page-builder-generator:preview-types
 ]);
 

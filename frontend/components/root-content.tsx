@@ -1,6 +1,6 @@
-import { PageHeading } from "@/components/shadcnblocks/page-heading";
 import { createDataAttribute, stegaClean } from "next-sanity";
 import Blocks from "@/components/blocks";
+import { blocksDrawPageTitle } from "@/components/blocks/page-title";
 import BlogPostingJsonLd from "@/components/blog-posting-json-ld";
 import BreadcrumbJsonLd from "@/components/breadcrumb-json-ld";
 import { siteUrl } from "@/lib/site-url";
@@ -32,9 +32,13 @@ function PageContent({
   stega: boolean;
 }) {
   const blocks = page.blocks ?? [];
-  const needsTitleHeader = stegaClean(page.title)?.trim();
+  // A Page heading or a titled Page banner draws the page's h1 (as on the old
+  // site). Otherwise the title is the h1, visible to screen readers only, so
+  // the page keeps one main heading without a design the old site never had.
+  const needsTitleHeader =
+    stegaClean(page.title)?.trim() && !blocksDrawPageTitle(blocks);
   const rootDataAttribute = stega
-    ? (path: "description" | "title") =>
+    ? (path: "title") =>
         createDataAttribute({
           baseUrl:
             process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3333",
@@ -57,14 +61,9 @@ function PageContent({
       />
       <VideoJsonLd content={blocks} />
       {needsTitleHeader ? (
-        <PageHeading
-          title={page.title}
-          description={
-            stegaClean(page.description)?.trim() ? page.description : undefined
-          }
-          titleAttribute={rootDataAttribute?.("title")}
-          descriptionAttribute={rootDataAttribute?.("description")}
-        />
+        <h1 className="sr-only" data-sanity={rootDataAttribute?.("title")}>
+          {page.title}
+        </h1>
       ) : null}
       <Blocks
         blocks={blocks}

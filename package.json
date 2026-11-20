@@ -35,6 +35,8 @@
     "page:check": "pnpm --dir studio page:check",
     "page:seed": "pnpm --dir studio page:seed",
     "raster:sync": "pnpm --dir studio raster:sync",
+    "storyblok:export": "pnpm --dir studio storyblok:export",
+    "storyblok:import": "pnpm --dir studio storyblok:import",
     "sync:main": "node scripts/merge-refs.mjs origin/main",
     "merge:refs": "node scripts/merge-refs.mjs"
   },

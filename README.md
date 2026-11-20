@@ -130,9 +130,9 @@ under "Section library".
 
 Pages accept nested slugs such as `about/our-team`. News routes (`/news` and everything below it) stay reserved.
 SEO sharing always uses a generated branded card. The selected sharing photo
-appears inside the card. Posts fall back to their main image. Pages use a hero
-photo when a site adds `homeHero` or `innerHero` sections; this Starter has no
-hero sections. Without a photo, the card uses the logo and brand colour.
+appears inside the card. Posts fall back to their main image. Pages fall back
+to the photo of their Page banner. Without a photo, the card uses the logo and
+brand colour.
 
 ## Workspace commands
 
@@ -149,7 +149,12 @@ pnpm typecheck
 pnpm test
 pnpm build
 pnpm typegen
+pnpm storyblok:export
+pnpm storyblok:import
 ```
+
+`pnpm storyblok:export` and `pnpm storyblok:import` move the old site's
+Storyblok content into the dataset; see `docs/migration/import.md`.
 
 `pnpm verify` checks generated Sanity types, TypeScript, lint, focused tests,
 both production builds, and the Playwright acceptance journey. Playwright uses

@@ -13,6 +13,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { stegaClean } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
+import { headingAnchorId } from "../../shared/heading-anchor";
 
 type GetHeadingId = (block: { _key?: string }) => string | undefined;
 type RichTextBlockComponents = Extract<
@@ -53,9 +54,17 @@ function createRichTextHeadingComponents(getHeadingId?: GetHeadingId) {
   };
 }
 
+// A heading's id is its text as an anchor, so a link to #<anchor> lands on it.
+const headingTextId: GetHeadingId = (block) => {
+  const text = (block as { children?: Array<{ text?: unknown }> }).children
+    ?.map((child) => (typeof child.text === "string" ? stegaClean(child.text) : ""))
+    .join("");
+  return text ? headingAnchorId(text) || undefined : undefined;
+};
+
 const richTextBlockComponents = {
   normal: ({ children }) => <p className="mb-4">{children}</p>,
-  ...createRichTextHeadingComponents(),
+  ...createRichTextHeadingComponents(headingTextId),
   blockquote: ({ children }) => (
     <blockquote className="my-6 border-l-2 border-border pl-4 italic">
       {children}

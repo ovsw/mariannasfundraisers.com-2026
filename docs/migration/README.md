@@ -14,6 +14,8 @@ screenshots: Ovi gives the visual verdict.
 | `block-inventory.md` | The same inventory as tables. | People |
 | `seed/hard-coded-content.json` | What the old code hard-codes: navigation groups, action buttons, phone menu, footer columns, legal links, privacy controls, social links, phone, email, address, copyright owner, the four authors, the news headings and the 11 redirects. Dropped links carry `dropped: true` and a reason. | The importer (tickets #13, #14, #17, #20) |
 | `seed/authors/` | The four author photos from the old code. | The importer (ticket #17) |
+| `import.md` | How to run the Storyblok importer and what it does. | People and the importer tickets |
+| `import-report.md`, `import-report.json` | The importer's report: what it found, built, dropped and left for a hand, and every image without alt text. Rewritten by every run of `pnpm storyblok:import`. | Ovi, and the tickets that replace Scaffolds |
 
 ## Refresh
 

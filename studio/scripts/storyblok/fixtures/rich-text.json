@@ -1,0 +1,530 @@
+{
+ "cutFrom": [
+  "order-received",
+  "news/winner-2025-hometown-favorite-sandwich",
+  "contact-us",
+  "home",
+  "news/salsa-sales-supporting-waly-warmth-",
+  "how-it-is-made",
+  "products/pepperoni-pizza"
+ ],
+ "doc": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "text": "Please Note",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "attrs": {
+     "textAlign": null
+    },
+    "content": [
+     {
+      "text": "We'd also like to extend our gratitude to The Altoona Mirror for hosting such a wonderful celebration to honor all the winners of the ",
+      "type": "text"
+     },
+     {
+      "text": "Hometown Favorite Awards",
+      "type": "text",
+      "marks": [
+       {
+        "type": "bold"
+       },
+       {
+        "type": "italic"
+       }
+      ]
+     },
+     {
+      "text": "!",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "attrs": {
+     "textAlign": null
+    },
+    "content": [
+     {
+      "text": "email:",
+      "type": "text"
+     },
+     {
+      "text": " ",
+      "type": "text",
+      "marks": [
+       {
+        "type": "styled",
+        "attrs": {
+         "class": ""
+        }
+       }
+      ]
+     },
+     {
+      "text": "mariannas@delgrossos.com",
+      "type": "text",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "mailto:mariannas@delgrossos.com",
+         "uuid": null,
+         "anchor": null,
+         "target": null,
+         "linktype": null
+        }
+       },
+       {
+        "type": "bold"
+       },
+       {
+        "type": "underline"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "text": "The largest, freshest, and best-tasting hoagies available in fundraising!",
+      "type": "text",
+      "marks": [
+       {
+        "type": "styled",
+        "attrs": {
+         "class": ""
+        }
+       }
+      ]
+     },
+     {
+      "type": "hard_break",
+      "marks": [
+       {
+        "type": "styled",
+        "attrs": {
+         "class": ""
+        }
+       }
+      ]
+     },
+     {
+      "type": "hard_break",
+      "marks": [
+       {
+        "type": "styled",
+        "attrs": {
+         "class": ""
+        }
+       }
+      ]
+     },
+     {
+      "text": "All our hoagies are made with the freshest ingredients and come with either Marianna’s own Italian Dressing or Sweet & Sassy Mayo!",
+      "type": "text",
+      "marks": [
+       {
+        "type": "styled",
+        "attrs": {
+         "class": ""
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "attrs": {
+     "textAlign": null
+    },
+    "content": [
+     {
+      "text": "Marianna’s District Sales Manager Diane Harris and Marketing Director Amy Mearkle took part in the 7 Mountains Media Safe and Healthy Kids Fair at the Railroaders Memorial Museum on Saturday, September 20, 2025.",
+      "type": "text",
+      "marks": [
+       {
+        "type": "textStyle",
+        "attrs": {
+         "color": "rgba(0,0,0,var(--O42jJQ,1))"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "text": "All that’s left is to receive your freshly prepared order, on the set date, at the location you specified.",
+      "type": "text",
+      "marks": [
+       {
+        "type": "styled",
+        "attrs": {
+         "class": ""
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "text": "Each ",
+      "type": "text"
+     },
+     {
+      "text": "hoagie",
+      "type": "text",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/menu/",
+         "uuid": "fa6265db-3dfc-41bd-bdda-910c42723ef6",
+         "anchor": "hoagies",
+         "target": null,
+         "linktype": "story"
+        }
+       }
+      ]
+     },
+     {
+      "text": " comes with shredded Lettuce, sliced Tomatoes, and diced Onions (except Ham Club - no onions). ",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "text": "If you ",
+      "type": "text"
+     },
+     {
+      "text": "do not",
+      "type": "text",
+      "marks": [
+       {
+        "type": "bold"
+       }
+      ]
+     },
+     {
+      "text": " receive an email confirmation ",
+      "type": "text"
+     },
+     {
+      "text": "within 24 hours",
+      "type": "text",
+      "marks": [
+       {
+        "type": "bold"
+       }
+      ]
+     },
+     {
+      "text": ", please contact Customer Service at ",
+      "type": "text"
+     },
+     {
+      "text": "(814) 684-2666",
+      "type": "text",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "tel:8146842666",
+         "uuid": null,
+         "anchor": null,
+         "target": null,
+         "linktype": "url"
+        }
+       }
+      ]
+     },
+     {
+      "text": " ext. 206 or ",
+      "type": "text"
+     },
+     {
+      "text": "mariannas@delgrossos.com",
+      "type": "text",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "mariannas@delgrossos.com",
+         "uuid": null,
+         "anchor": null,
+         "target": null,
+         "linktype": "email"
+        }
+       }
+      ]
+     },
+     {
+      "text": ".",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "text": "If you ",
+      "type": "text"
+     },
+     {
+      "text": "do not",
+      "type": "text",
+      "marks": [
+       {
+        "type": "bold"
+       }
+      ]
+     },
+     {
+      "text": " receive an email confirmation ",
+      "type": "text"
+     },
+     {
+      "text": "within 24 hours",
+      "type": "text",
+      "marks": [
+       {
+        "type": "bold"
+       }
+      ]
+     },
+     {
+      "text": ", please contact Customer Service at ",
+      "type": "text"
+     },
+     {
+      "text": "(814) 684-2666",
+      "type": "text",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "tel:8146842666",
+         "uuid": null,
+         "anchor": null,
+         "target": null,
+         "linktype": "url"
+        }
+       }
+      ]
+     },
+     {
+      "text": " ext. 206 or ",
+      "type": "text"
+     },
+     {
+      "text": "mariannas@delgrossos.com",
+      "type": "text",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "mariannas@delgrossos.com",
+         "uuid": null,
+         "anchor": null,
+         "target": null,
+         "linktype": "email"
+        }
+       }
+      ]
+     },
+     {
+      "text": ".",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "type": "bullet_list",
+    "content": [
+     {
+      "type": "list_item",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "set up ",
+          "type": "text"
+         },
+         {
+          "text": "delivery date",
+          "type": "text",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "list_item",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "send ",
+          "type": "text"
+         },
+         {
+          "text": "documentation",
+          "type": "text",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "list_item",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "receive sale ",
+          "type": "text"
+         },
+         {
+          "text": "confirmation",
+          "type": "text",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "ordered_list",
+    "attrs": {
+     "order": 1
+    },
+    "content": [
+     {
+      "type": "list_item",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "Preheat oven to 375°.",
+          "type": "text"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "list_item",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "Remove pizza from box and plastic wrap.",
+          "type": "text"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "list_item",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "Place pizza on baking sheet (for crispier crust bake directly on rack).",
+          "type": "text"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "list_item",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "Remove pepperoni from package and place on top of pizza.",
+          "type": "text"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "list_item",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "Place pizza in center of oven and bake approximately 15-20 minutes.",
+          "type": "text"
+         }
+        ]
+       },
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "*Ovens may vary. Adjust baking time and temperature as needed.",
+          "type": "text"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}
