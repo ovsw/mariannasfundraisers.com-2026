@@ -4,16 +4,15 @@ import test from "node:test";
 
 const source = readFileSync(new URL("./sitemap.ts", import.meta.url), "utf8");
 
-test("sitemap emits canonical posts and eligible category archives", () => {
+test("sitemap emits canonical news posts and the news index", () => {
   assert.match(source, /_type == "post"/);
-  assert.match(source, /"\/blog\/" \+ array::join/);
-  assert.match(source, /"category"/);
-  assert.match(source, /"\/blog\/category\/" \+ array::join/);
+  assert.match(source, /"\/news\/" \+ array::join/);
+  assert.match(source, /_id == "blogIndex" => \$baseUrl \+ "\/news"/);
   assert.match(source, /string::split\(slug\.current, "\/"\)/);
   assert.doesNotMatch(source, /slug\.current \+ "\/"/);
-  assert.match(source, /isIndexableCategory\(/);
-  assert.match(source, /publishedPostFilter/);
-  assert.match(source, /_type == "category" => 0\.6/);
-  assert.match(source, /_type == "category" => null/);
-  assert.match(source, /delete sitemapEntry\.lastModified/);
+});
+
+test("sitemap leaves out noindex documents and has no category archives", () => {
+  assert.match(source, /meta\.noindex != true/);
+  assert.doesNotMatch(source, /category|\/blog/);
 });

@@ -41,12 +41,6 @@ const POST_PROJECTION = groq`{
         alt
       }
     },
-    category->{
-      _id,
-      _type,
-      title,
-      slug
-    },
     _createdAt,
     _updatedAt,
     ${postSharingPhotoQuery},

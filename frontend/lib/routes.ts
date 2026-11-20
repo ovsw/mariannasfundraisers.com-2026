@@ -1,5 +1,4 @@
 export {
-  categoryPath,
   isApplicationPath,
   isReservedPagePath,
   isRouteSlug,

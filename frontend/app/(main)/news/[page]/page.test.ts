@@ -31,7 +31,7 @@ vi.mock("next/navigation", () => ({ notFound }));
 
 import { generateMetadata } from "./page";
 
-describe("blog segment metadata", () => {
+describe("news segment metadata", () => {
   beforeEach(() => {
     sanityFetchMetadata.mockReset();
     generateBlogIndexMetadata.mockReset();
@@ -54,7 +54,7 @@ describe("blog segment metadata", () => {
     });
     expect(generatePageMetadata).toHaveBeenCalledWith({
       page: post,
-      path: "/blog/first-post",
+      path: "/news/first-post",
     });
   });
 

@@ -59,7 +59,7 @@ type AutoRedirectPlan =
       source: string;
     };
 
-const ROUTED_DOCUMENT_TYPES = new Set(["page", "post", "category"]);
+const ROUTED_DOCUMENT_TYPES = new Set(["page", "post"]);
 export function shouldWriteAutoRedirect(local?: boolean) {
   return local !== true;
 }

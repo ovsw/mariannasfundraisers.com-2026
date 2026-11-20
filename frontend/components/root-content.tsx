@@ -90,7 +90,7 @@ function PostContent({
   const layoutName = "single-column";
   const readTime = getPostReadTime(body);
   const postSlug = post.slug?.current?.replace(/^\/+|\/+$/g, "") || "";
-  const postCanonicalPath = postPath(postSlug) || "/blog";
+  const postCanonicalPath = postPath(postSlug) || "/news";
   const blogPostSettingsDataAttribute = blogPostSidebar
     ? documentDataAttribute({
         id: blogPostSidebar._id,
@@ -114,7 +114,7 @@ function PostContent({
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
-          { name: "Blog", path: "/blog" },
+          { name: "News", path: "/news" },
           { name: post.title || "Post", path: postCanonicalPath },
         ]}
         siteUrl={siteUrl}

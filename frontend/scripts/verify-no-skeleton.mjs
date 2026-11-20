@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 
 import { findUnrenderedSections } from "./unrendered-sections.mjs";
 
-const POSTS_PER_PAGE = 12;
+const POSTS_PER_PAGE = 20;
 
 // process.loadEnvFile requires Node 20.12+ / 21.7+; fail with a clear message
 // instead of a TypeError on older runtimes.
@@ -52,15 +52,6 @@ const POSTS_SLUGS_QUERY = `*[_type == "post" && defined(slug)]{slug}`;
 const PUBLISHED_POST_FILTER =
   `_type == "post" && defined(slug.current) && defined(publishedAt)`;
 const ELIGIBLE_BLOG_POSTS_COUNT_QUERY = `count(*[${PUBLISHED_POST_FILTER}])`;
-const CATEGORY_STATIC_PARAMS_QUERY = `
-  *[
-    _type == "category"
-    && defined(slug.current)
-  ]{
-    "slug": slug.current,
-    "publishedPostCount": count(*[${PUBLISHED_POST_FILTER} && category._ref == ^._id])
-  }
-`;
 
 const forbiddenMarkers = [
   // A Scaffold is a Building-phase placeholder; see components/blocks/scaffold.tsx.
@@ -68,11 +59,9 @@ const forbiddenMarkers = [
   ["aria-busy loader", /\saria-busy(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?(?:\s|>)/i],
   ["page loader label", /Page content loading/i],
   ["blog loader label", /Blog content loading/i],
-  ["category loader label", /Category content loading/i],
   ["footer loader label", /Site footer loading/i],
   ["page eyebrow skeleton", /h-4 w-28 animate-pulse/],
   ["blog eyebrow skeleton", /h-4 w-24 animate-pulse/],
-  ["category eyebrow skeleton", /h-4 w-36 animate-pulse/],
   ["page card skeleton", /h-36 animate-pulse/],
   ["blog card skeleton", /h-64 animate-pulse/],
   ["footer column skeleton", /h-40 animate-pulse/],
@@ -88,13 +77,6 @@ function routeFromSlug(slug) {
   return `/${slug.split("/").map(encodeURIComponent).join("/")}`;
 }
 
-function categoryHasValidSlug(category) {
-  return (
-    /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(category.slug) &&
-    !/^\d+$/.test(category.slug)
-  );
-}
-
 function totalPages(itemCount) {
   return Math.ceil(itemCount / POSTS_PER_PAGE);
 }
@@ -105,13 +87,12 @@ function findForbiddenMarkers(body) {
     .map(([label]) => label);
 }
 
-const [pages, home, blogIndex, posts, eligiblePostCount, rawCategories] = await Promise.all([
+const [pages, home, blogIndex, posts, eligiblePostCount] = await Promise.all([
   client.fetch(PAGES_SLUGS_QUERY),
   client.fetch(HOME_SECTIONS_QUERY),
   client.fetch(BLOG_SECTIONS_QUERY),
   client.fetch(POSTS_SLUGS_QUERY),
   client.fetch(ELIGIBLE_BLOG_POSTS_COUNT_QUERY),
-  client.fetch(CATEGORY_STATIC_PARAMS_QUERY),
 ]);
 
 const pageSlugs = new Set(
@@ -126,71 +107,47 @@ const postSlugs = new Set(
     return normalized ? [normalized] : [];
   }),
 );
-const categories = rawCategories.filter(categoryHasValidSlug);
 const knownRoutes = new Map([["/", "home"]]);
 
 // The Page Builder sections each route must draw, by route.
 const routeSections = new Map([
   ["/", home?.sections ?? []],
-  ["/blog", blogIndex?.sections ?? []],
+  ["/news", blogIndex?.sections ?? []],
 ]);
 for (const { slug, sections } of pages) {
   const normalized = normalizeSlug(slug?.current);
   if (!normalized) continue;
-  // The home and blog routes keep their own sections even if a page was
+  // The home and news routes keep their own sections even if a page was
   // given a slug that collides with them.
   const route = routeFromSlug(normalized);
   if (!routeSections.has(route)) routeSections.set(route, sections);
 }
 
 for (const slug of pageSlugs) knownRoutes.set(routeFromSlug(slug), "page");
-for (const slug of postSlugs) knownRoutes.set(`/blog${routeFromSlug(slug)}`, "post");
-knownRoutes.set("/blog", "blog");
+for (const slug of postSlugs) knownRoutes.set(`/news${routeFromSlug(slug)}`, "post");
+knownRoutes.set("/news", "blog");
 
 const regularPostCount = Math.max(Number(eligiblePostCount) - 1, 0);
 const blogTotalPages = totalPages(regularPostCount);
 for (let page = 2; page <= blogTotalPages; page += 1) {
-  knownRoutes.set(`/blog/${page}`, "blog pagination");
-}
-
-for (const category of categories) {
-  const categoryPath = `/blog/category/${encodeURIComponent(category.slug)}`;
-  knownRoutes.set(categoryPath, "category");
-  const categoryTotalPages = totalPages(category.publishedPostCount);
-  for (let page = 2; page <= categoryTotalPages; page += 1) {
-    knownRoutes.set(`${categoryPath}/${page}`, "category pagination");
-  }
+  knownRoutes.set(`/news/${page}`, "blog pagination");
 }
 
 const unique = crypto.randomUUID();
 let unknownSlug = `verify-no-skeleton-${unique}`;
 while (
   pageSlugs.has(unknownSlug) ||
-  postSlugs.has(unknownSlug) ||
-  categories.some(({ slug }) => slug === unknownSlug)
+  postSlugs.has(unknownSlug)
 ) {
   unknownSlug = `verify-no-skeleton-${crypto.randomUUID()}`;
 }
 
 const unknownRoutes = new Map([
   [`/${unknownSlug}`, "unknown content"],
-  [`/blog/${Math.max(blogTotalPages + 1, 2)}`, "unknown blog pagination"],
-  [`/blog/category/${unknownSlug}`, "unknown category"],
+  [`/news/${Math.max(blogTotalPages + 1, 2)}`, "unknown blog pagination"],
+  [`/news/${unknownSlug}`, "unknown post"],
+  ["/news/category/old-category", "removed category route"],
 ]);
-
-const largestCategory = categories.reduce(
-  (largest, category) =>
-    category.publishedPostCount > (largest?.publishedPostCount ?? -1) ? category : largest,
-  undefined,
-);
-if (largestCategory) {
-  unknownRoutes.set(
-    `/blog/category/${encodeURIComponent(largestCategory.slug)}/${Math.max(totalPages(largestCategory.publishedPostCount) + 1, 2)}`,
-    "unknown category pagination",
-  );
-} else {
-  unknownRoutes.set(`/blog/category/${unknownSlug}/2`, "unknown category pagination");
-}
 
 const failures = [];
 const familyCounts = new Map();
@@ -231,7 +188,7 @@ async function verifyRoute(path, family, expectedStatus) {
   if (expectedStatus === 200) {
     // A redirected route shows another page, with that page's sections.
     // Only the home, blog and page handlers draw Page Builder sections. A
-    // page whose slug collides with a post or category route is not served
+    // page whose slug collides with a post route is not served
     // there, so its sections are not expected.
     const drawsSections = ["home", "blog", "page"].includes(family);
     const unrendered =

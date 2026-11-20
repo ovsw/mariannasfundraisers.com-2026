@@ -5,7 +5,7 @@ const destinationProjection = `{
   openInNewTab,
   "href": select(
     kind == "internal" => select(
-      internal->_id == "blogIndex" => "/blog",
+      internal->_id == "blogIndex" => "/news",
       ${internalReferenceHref}
     ),
     kind == "external" => external

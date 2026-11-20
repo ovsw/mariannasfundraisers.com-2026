@@ -5,13 +5,10 @@ import {
   POST_QUERY_RESULT,
 } from "@/sanity.types";
 import {
-  getCategoryArchivePath,
   getBlogCanonicalPath,
   getBlogPageDescription,
   getBlogPageTitle,
-  isIndexableCategory,
 } from "@/lib/blog-index";
-import type { CategoryArchive } from "@/sanity/queries/category";
 import { buildPostOgImageUrl, isValidOgSlug } from "@/lib/post-og-image";
 import { siteName } from "@/lib/site-name";
 import {
@@ -39,10 +36,7 @@ function sharingImage(
 }
 
 function fallbackSharingImage() {
-  return sharingImage(
-    `${siteOrigin}/api/og/default`,
-    "Helpful website content",
-  );
+  return sharingImage(`${siteOrigin}/api/og/default`, siteName, siteName);
 }
 
 function resolveArchiveTitles({
@@ -179,7 +173,7 @@ export function generateBlogIndexMetadata({
 }) {
   const { cardTitle, pageTitleResolution } = resolveArchiveTitles({
     contentTitle: blogIndex?.title,
-    fallbackTitle: "Blog",
+    fallbackTitle: "News",
     overrideTitle: blogIndex?.meta?.title,
     page,
   });
@@ -188,7 +182,7 @@ export function generateBlogIndexMetadata({
   const image = sharingImage(
     buildPageOgImageUrl({
       origin: siteOrigin,
-      target: { kind: "blog", page },
+      target: { kind: "news", page },
       photoUrl: sharingCardPhotoUrl(blogIndex?.sharingPhoto),
       title: cardTitle,
     }),
@@ -217,68 +211,6 @@ export function generateBlogIndexMetadata({
         : "index, follow",
     alternates: {
       canonical: process.env.NEXT_PUBLIC_SITE_URL + getBlogCanonicalPath(page),
-    },
-  };
-}
-
-export function generateCategoryMetadata({
-  category,
-  page,
-}: {
-  category: CategoryArchive;
-  page: number;
-}) {
-  const { cardTitle, pageTitleResolution } = resolveArchiveTitles({
-    contentTitle: category.title,
-    fallbackTitle: "Blog category",
-    overrideTitle: category.meta?.title,
-    page,
-  });
-  const description =
-    category.meta?.description || category.description || undefined;
-  const slug = category.slug?.current || "";
-  const image =
-    isValidOgSlug(slug) && !slug.includes("/")
-      ? sharingImage(
-          buildPageOgImageUrl({
-            origin: siteOrigin,
-            target: { kind: "category", page, slug },
-            photoUrl: sharingCardPhotoUrl(category.sharingPhoto),
-            title: cardTitle,
-          }),
-          cardTitle,
-          pageTitleResolution.finalTitle,
-        )
-      : fallbackSharingImage();
-  const isIndexable = isIndexableCategory({
-    description: category.description,
-    metaNoindex: category.meta?.noindex,
-    publishedPostCount: category.publishedPostCount,
-  });
-
-  return {
-    title: pageTitleResolution.metadataTitle,
-    description: getBlogPageDescription(description, page),
-    openGraph: {
-      title: pageTitleResolution.openGraphTitle,
-      images: [image],
-      locale: "en_US",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: pageTitleResolution.twitterTitle,
-      images: [image],
-    },
-    robots: !isProduction
-      ? "noindex, nofollow"
-      : isIndexable
-        ? "index, follow"
-        : "noindex, follow",
-    alternates: {
-      canonical:
-        process.env.NEXT_PUBLIC_SITE_URL +
-        getBlogCanonicalPath(page, getCategoryArchivePath(slug)),
     },
   };
 }

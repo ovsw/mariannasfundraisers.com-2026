@@ -20,7 +20,6 @@ import {
 import { sanityFetchMetadata } from "@/sanity/lib/live";
 import {
   BLOG_INDEX_OG_IMAGE_QUERY,
-  CATEGORY_OG_IMAGE_QUERY,
   HOME_PAGE_OG_IMAGE_QUERY,
   PAGE_OG_IMAGE_QUERY,
 } from "@/sanity/queries/og-image";
@@ -78,11 +77,7 @@ async function fetchTitle(
   }
 
   const query =
-    target.kind === "blog"
-      ? BLOG_INDEX_OG_IMAGE_QUERY
-      : target.kind === "category"
-        ? CATEGORY_OG_IMAGE_QUERY
-        : PAGE_OG_IMAGE_QUERY;
+    target.kind === "news" ? BLOG_INDEX_OG_IMAGE_QUERY : PAGE_OG_IMAGE_QUERY;
   const params = "slug" in target ? { slug: target.slug } : undefined;
   const { data } = (await sanityFetchMetadata({
     query,
@@ -100,7 +95,7 @@ async function fetchTitle(
   return {
     photoUrl: sharingCardPhotoUrl(data?.sharingPhoto),
     title:
-      target.kind === "blog" || target.kind === "category"
+      target.kind === "news"
         ? getBlogPageTitle(title, target.page || 1)
         : title,
   };
