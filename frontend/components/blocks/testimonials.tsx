@@ -77,7 +77,7 @@ export default function Testimonials({
     <h2 className="text-foreground" id={headingId}>
       {displayEyebrow ? (
         <span
-          className="block font-condensed text-[2.25rem] leading-none font-bold italic md:text-[2.625rem]"
+          className="block font-condensed text-[2.25rem] leading-none font-bold text-soft-foreground italic md:text-[2.625rem]"
           data-sanity={dataAttribute?.("eyebrow")}
         >
           {eyebrow}
@@ -95,8 +95,8 @@ export default function Testimonials({
   const slides = shown.map((testimonial) => ({
     key: testimonial._id,
     content: (
-      <figure className="max-w-xl space-y-6">
-        <blockquote className="space-y-4 text-xl text-foreground italic">
+      <figure className="space-y-8 px-6 pt-6 pb-10">
+        <blockquote className="max-w-xl space-y-4 text-xl text-foreground italic">
           <QuoteMark />
           <PortableText
             components={simpleRichTextComponents}
@@ -104,7 +104,7 @@ export default function Testimonials({
           />
         </blockquote>
         <figcaption className="tracking-wider">
-          <span className="block font-semibold text-soft-foreground">{testimonial.name}</span>
+          <span className="block font-semibold text-mark">{testimonial.name}</span>
           {stegaClean(testimonial.title)?.trim() ? (
             <span className="block text-muted-foreground">{testimonial.title}</span>
           ) : null}
@@ -116,20 +116,23 @@ export default function Testimonials({
   return (
     <section
       aria-labelledby={headingId}
-      className={cn(sectionSceneClassName(resolveSectionTheme(theme), top, bottom), "overflow-hidden")}
+      className={cn(sectionSceneClassName(resolveSectionTheme(theme), top, bottom), "py-10! sm:py-20!")}
       data-sanity={dataAttribute?.("theme")}
     >
-      <div className="container grid items-center gap-10 xl:grid-cols-2">
-        <div data-sanity={dataAttribute?.("testimonials")}>
+      {/* The old site's design: from the xl breakpoint the photo stands on the
+          section's bottom edge and rises a little above its top one, over the
+          brush stroke there. Below xl it is left out, as it was there. */}
+      <div className="relative container">
+        <div className="pt-10 sm:pt-20 xl:w-1/2 min-[1344px]:-ml-6" data-sanity={dataAttribute?.("testimonials")}>
           <TestimonialCarousel heading={heading} slides={slides} />
         </div>
-        <div className="relative mx-auto hidden aspect-[668/872] w-full max-w-md xl:mr-0 xl:block">
+        <div className="absolute -top-24 right-6 -bottom-10 z-10 hidden aspect-[668/872] sm:-bottom-20 xl:block min-[1344px]:right-0">
           <Image
             alt={stegaClean(image?.alt)?.trim() || ""}
             className="object-contain object-bottom"
             data-sanity={dataAttribute?.("image")}
             fill
-            sizes="28rem"
+            sizes="(min-width: 1280px) 36rem, 100vw"
             src={urlFor({ asset }).width(900).fit("max").url()}
           />
         </div>

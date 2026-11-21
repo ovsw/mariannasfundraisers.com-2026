@@ -97,6 +97,10 @@ brush stroke. Here code draws it; no field stores an edge.
   paints into it.
 - Nothing is drawn above the first section, below the last, or next to a
   section without a theme (a hero, a Scaffold), which draw their own edges.
+- An edge a section keeps straight takes no stroke, from the section or from
+  its neighbour. The call to action with image keeps both edges straight and
+  Testimonials its bottom one: their photos stand on the bottom edge and rise
+  above the top one, as on the old site.
 
 The order follows how the old pages used their strokes: a Shaded or Primary
 section painted into the Light sections around it, and Light sections painted

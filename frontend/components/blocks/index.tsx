@@ -127,6 +127,12 @@ const sectionBrushShapes: Partial<Record<Block["_type"], SectionBrushShape>> =
 // a band and nothing is drawn next to them.
 const selfEdgedBlockTypes = new Set<Block["_type"]>(["pageBanner", "homeHero"]);
 
+// Edges that stay straight: no brush stroke is painted across them. Both
+// sections' photos stand on the bottom edge; the call to action's top edge
+// was straight on the old site too.
+const straightTopBlockTypes = new Set<Block["_type"]>(["callToActionWithImage"]);
+const straightBottomBlockTypes = new Set<Block["_type"]>(["callToActionWithImage", "testimonials"]);
+
 export default function Blocks({
   blocks,
   documentId,
@@ -148,6 +154,8 @@ export default function Blocks({
           "theme" in block && !selfEdgedBlockTypes.has(block._type)
             ? (block.theme as string | null)
             : null,
+        straightTop: straightTopBlockTypes.has(block._type),
+        straightBottom: straightBottomBlockTypes.has(block._type),
       },
     ];
   });
@@ -205,6 +213,11 @@ export default function Blocks({
       ? { dataAttribute }
       : {};
     const boundary = resolvedBoundaries.find(({ key }) => key === block._key);
+    // The boundary's own `key` names the section; React takes a key only when
+    // it is written on the element, never from spread props.
+    const boundaryProps = boundary
+      ? { theme: boundary.theme, top: boundary.top, bottom: boundary.bottom }
+      : {};
     const brush = brushes.get(block._key);
     const brushTheme = boundary?.theme;
     const brushShape = sectionBrushShapes[block._type];
@@ -223,7 +236,7 @@ export default function Blocks({
         <Component
           {...block}
           {...editingProps}
-          {...boundary}
+          {...boundaryProps}
           // A self-edged section is themeless for its neighbours, but its own
           // edge still takes the theme it was given.
           {...(selfEdgedBlockTypes.has(block._type) && "theme" in block

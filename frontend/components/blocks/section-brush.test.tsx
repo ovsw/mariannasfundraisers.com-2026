@@ -14,6 +14,23 @@ describe("brushed edge rule", () => {
     expect(edges(["primary", "primary"])).toEqual(["--", "--"]);
   });
 
+  it("draws nothing across an edge a section keeps straight", () => {
+    const brushes = resolveSectionBrushes([
+      { key: "a", theme: "shaded" },
+      { key: "cta", theme: "muslin", straightTop: true, straightBottom: true },
+      { key: "b", theme: "light" },
+      { key: "quotes", theme: "muslin", straightBottom: true },
+      { key: "c", theme: "shaded" },
+    ]);
+    expect(brushes.map(({ top, bottom }) => `${top ? "T" : "-"}${bottom ? "B" : "-"}`)).toEqual([
+      "--",
+      "--",
+      "-B",
+      "--",
+      "--",
+    ]);
+  });
+
   it("lets the higher-ranked theme paint a join between different themes", () => {
     // Shaded outranks Light: it paints into the Light sections on both sides.
     expect(edges(["light", "shaded", "light"])).toEqual(["--", "TB", "--"]);

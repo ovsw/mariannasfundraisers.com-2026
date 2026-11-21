@@ -5,6 +5,7 @@ import { siteName } from "@/lib/site-name";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import { IUBENDA_WIDGET_SRC } from "@/lib/privacy/iubenda";
+import { DevConsentWidget } from "@/components/privacy/dev-consent-widget";
 
 const isProduction = process.env.NEXT_PUBLIC_SITE_ENV === "production";
 
@@ -55,9 +56,15 @@ export default function RootLayout({
       </head>
       <body>
         {/* The consent widget (spec decision 17). The bootstrap hooks the
-            widget's callbacks, so it runs first; analytics waits for both. */}
+            widget's callbacks, so it runs first; analytics waits for both.
+            In development the widget loads late, so its marks on the page are
+            not reported as hydration mismatches (see DevConsentWidget). */}
         <Script src="/privacy-controls.js" strategy="beforeInteractive" />
-        <Script src={IUBENDA_WIDGET_SRC} strategy="beforeInteractive" />
+        {process.env.NODE_ENV === "development" ? (
+          <DevConsentWidget />
+        ) : (
+          <Script src={IUBENDA_WIDGET_SRC} strategy="beforeInteractive" />
+        )}
         {children}
         <Toaster position="top-center" richColors />
       </body>

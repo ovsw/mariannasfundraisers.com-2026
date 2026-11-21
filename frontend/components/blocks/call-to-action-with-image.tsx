@@ -53,43 +53,55 @@ export default function CallToActionWithImage({
   const headingId = `call-to-action-${stegaClean(_key)}-title`;
 
   return (
+    // The old site's design: 5rem above and below the text, straight edges,
+    // and from the lg breakpoint a square photo that stands on the section's
+    // bottom edge and rises 6rem above its top one. Below lg the photo is
+    // left out, as it was there.
     <section
       aria-labelledby={headingId}
-      className={cn(sectionSceneClassName(resolveSectionTheme(theme), top, bottom), "overflow-hidden")}
+      className={cn(
+        sectionSceneClassName(resolveSectionTheme(theme), top, bottom),
+        "z-10 py-10! sm:py-20!",
+      )}
       data-sanity={dataAttribute?.("theme")}
     >
-      <div className="container grid items-center gap-10 lg:grid-cols-2">
-        <div className="max-w-xl space-y-6">
-          <h2
-            className="text-4xl leading-tight font-bold text-emphasis md:text-5xl"
-            data-sanity={dataAttribute?.("title")}
-            id={headingId}
-          >
-            {title}
-          </h2>
-          {richText?.length ? (
-            <RichTextContent
-              className="prose-lg"
-              dataSanity={dataAttribute?.("richText")}
-              value={richText as PortableTextProps["value"]}
-            />
-          ) : null}
+      <div className="relative container flex min-h-[290px] items-center justify-center lg:justify-start">
+        <div className="space-y-8 px-[4%] lg:max-w-[33rem] lg:px-1 xl:max-w-[39rem]">
+          <div className="space-y-4 text-center lg:text-left">
+            <h2
+              className="text-4xl leading-none font-bold text-emphasis md:text-5xl"
+              data-sanity={dataAttribute?.("title")}
+              id={headingId}
+            >
+              {title}
+            </h2>
+            {richText?.length ? (
+              <RichTextContent
+                className="prose-base xl:prose-xl"
+                dataSanity={dataAttribute?.("richText")}
+                value={richText as PortableTextProps["value"]}
+              />
+            ) : null}
+          </div>
           {visibleButtons.length ? (
-            <div className="flex flex-wrap gap-4 pt-2" data-sanity={dataAttribute?.("buttons")}>
+            <div
+              className="flex flex-wrap justify-center gap-4 lg:justify-start"
+              data-sanity={dataAttribute?.("buttons")}
+            >
               {visibleButtons.map((button) => (
                 <SiteButton button={button} className="max-w-full text-center whitespace-normal" key={button._key} />
               ))}
             </div>
           ) : null}
         </div>
-        <div className="relative mx-auto aspect-square w-full max-w-md lg:mr-0">
+        <div className="absolute -top-44 right-6 -bottom-10 hidden aspect-square sm:-bottom-20 lg:block min-[1344px]:right-0">
           <Image
             alt={stegaClean(image?.alt)?.trim() || ""}
             className="object-contain object-bottom"
             data-sanity={dataAttribute?.("image")}
             fill
-            sizes="(min-width: 1024px) 28rem, 100vw"
-            src={urlFor({ asset, crop: savedCrop(image?.crop) }).width(900).fit("max").url()}
+            sizes="(min-width: 1024px) 36rem, 100vw"
+            src={urlFor({ asset, crop: savedCrop(image?.crop) }).width(1200).fit("max").url()}
           />
         </div>
       </div>

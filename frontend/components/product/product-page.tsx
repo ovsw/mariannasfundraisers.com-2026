@@ -44,11 +44,17 @@ function dataAttributeFor(stega: boolean, id: string | undefined, type: string):
       : undefined;
 }
 
+// A section's resolved edges without its `key`: renderers spread this into
+// their props, and React takes a key only when it is written on the element.
+type SceneBoundary = Omit<ResolvedSectionBoundary, "key">;
+
 type Section = {
   key: string;
   /** Null for the hero, which joins every neighbour at an edge. */
   theme: SectionTheme | null;
-  render: (boundary: ResolvedSectionBoundary) => ReactNode;
+  straightTop?: boolean;
+  straightBottom?: boolean;
+  render: (boundary: SceneBoundary) => ReactNode;
 };
 
 const richText = (value: unknown) => value as PortableTextProps["value"];
@@ -107,7 +113,7 @@ function NoteSection({
   product,
   edit,
 }: {
-  boundary: ResolvedSectionBoundary;
+  boundary: SceneBoundary;
   product: Product;
   edit: DataAttribute;
 }) {
@@ -129,7 +135,7 @@ function NutritionSection({
   product,
   edit,
 }: {
-  boundary: ResolvedSectionBoundary;
+  boundary: SceneBoundary;
   product: Product;
   edit: DataAttribute;
 }) {
@@ -173,7 +179,7 @@ function NutritionSection({
 /** The image-and-text renderer, fed by product fields under the names it reads. */
 function imageAndTextBlock(
   block: Record<string, unknown>,
-  boundary: ResolvedSectionBoundary,
+  boundary: SceneBoundary,
   dataAttribute: DataAttribute,
 ) {
   return { ...block, ...boundary, dataAttribute } as unknown as ImageAndTextProps<
@@ -258,6 +264,8 @@ export function ProductPage({ product, stega }: { product: Product; stega: boole
     sections.push({
       key: "callToAction",
       theme: "muslin",
+      straightTop: true,
+      straightBottom: true,
       render: (boundary) => (
         <CallToActionWithImage
           {...({
@@ -287,7 +295,8 @@ export function ProductPage({ product, stega }: { product: Product; stega: boole
         siteUrl={siteUrl}
       />
       {sections.map((section, index) => {
-        const boundary = boundaries[index];
+        const { theme, top, bottom } = boundaries[index];
+        const boundary: SceneBoundary = { theme, top, bottom };
         const brush = brushes[index];
         const brushTheme = boundary.theme;
         return (

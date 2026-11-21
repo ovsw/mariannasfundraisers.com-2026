@@ -12,6 +12,13 @@ export type BrushSection = {
   key: string;
   /** The section's theme, or null for a section without one (a hero, a Scaffold). */
   theme?: string | null;
+  /**
+   * The section keeps this edge straight: no stroke is painted across that
+   * join, by it or by its neighbour. A section whose photo stands on its
+   * bottom edge keeps that edge straight, as on the old site.
+   */
+  straightTop?: boolean;
+  straightBottom?: boolean;
 };
 
 export type ResolvedSectionBrush = {
@@ -49,7 +56,8 @@ function paintsJoin(painter: BrushTheme | null, other: BrushTheme | null) {
  * section whose theme ranks higher (Primary, Shaded, Light, Muslin) paints a
  * brush stroke in its own colour across the join, into its neighbour. Sections
  * with the same theme meet at a plain seam. Nothing is drawn above the first
- * section, below the last, or next to a section without a theme.
+ * section, below the last, next to a section without a theme, or across an
+ * edge a section keeps straight.
  */
 export function resolveSectionBrushes(
   sections: BrushSection[],
@@ -59,10 +67,12 @@ export function resolveSectionBrushes(
     const theme = themes[index];
     const above = index > 0 ? themes[index - 1] : null;
     const below = index < sections.length - 1 ? themes[index + 1] : null;
+    const straightAbove = section.straightTop || sections[index - 1]?.straightBottom;
+    const straightBelow = section.straightBottom || sections[index + 1]?.straightTop;
     return {
       key: section.key,
-      top: paintsJoin(theme, above),
-      bottom: paintsJoin(theme, below),
+      top: !straightAbove && paintsJoin(theme, above),
+      bottom: !straightBelow && paintsJoin(theme, below),
     };
   });
 }

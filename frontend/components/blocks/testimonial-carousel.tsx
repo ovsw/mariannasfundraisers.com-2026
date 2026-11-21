@@ -18,37 +18,38 @@ export default function TestimonialCarousel({
   // The slides can change under a kept selection (a live preview edit); keep
   // the shown quote in range.
   const index = Math.min(selected, last);
+  // The old site's buttons: a grey one back, a cream one forward.
   const buttonClass =
-    "flex size-9 items-center justify-center rounded-full bg-card text-card-foreground shadow-sm transition-opacity disabled:opacity-40";
+    "flex size-11 items-center justify-center rounded-full text-card-foreground transition-opacity disabled:opacity-60";
 
   return (
-    <div className="space-y-8">
+    <div>
       <div className="flex flex-wrap items-end gap-x-10 gap-y-4">
         {heading}
         {slides.length > 1 ? (
-          <div className="flex items-center gap-4 pb-1">
+          <div className="flex items-center gap-4 pb-3">
             <button
-              className={buttonClass}
+              className={`${buttonClass} bg-muted-foreground/50`}
               disabled={index === 0}
               onClick={() => setIndex(Math.max(0, index - 1))}
               type="button"
             >
-              <ChevronLeftIcon aria-hidden="true" className="size-6" />
+              <ChevronLeftIcon aria-hidden="true" className="size-7" strokeWidth={3} />
               <span className="sr-only">Previous testimonial</span>
             </button>
             <button
-              className={buttonClass}
+              className={`${buttonClass} bg-mark`}
               disabled={index === last}
               onClick={() => setIndex(Math.min(last, index + 1))}
               type="button"
             >
-              <ChevronRightIcon aria-hidden="true" className="size-6" />
+              <ChevronRightIcon aria-hidden="true" className="size-7" strokeWidth={3} />
               <span className="sr-only">Next testimonial</span>
             </button>
           </div>
         ) : null}
       </div>
-      <div aria-live="polite">
+      <div aria-live="polite" className="mt-10">
         {slides.map((slide, slideIndex) => (
           <div hidden={slideIndex !== index} key={slide.key}>
             {slide.content}
