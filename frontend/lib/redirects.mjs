@@ -1,7 +1,10 @@
 import {
+  EXTERNAL_REDIRECTS,
   isApplicationPath,
   normalizePublicPath,
 } from "../../shared/content-routes.ts";
+
+export { EXTERNAL_REDIRECTS };
 
 function normalizePath(value) {
   return typeof value === "string" ? normalizePublicPath(value) : "";
@@ -73,4 +76,13 @@ export function compileNextRedirects(records) {
     destination: redirect.destination,
     statusCode: redirect.statusCode,
   }));
+}
+
+/**
+ * Every redirect of the Website: the fixed redirects to another site (their
+ * sources are application paths, so no record can take them), then the
+ * compiled Sanity records.
+ */
+export function siteRedirects(records) {
+  return [...EXTERNAL_REDIRECTS, ...compileNextRedirects(records)];
 }

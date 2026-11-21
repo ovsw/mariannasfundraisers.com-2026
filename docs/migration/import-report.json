@@ -12,7 +12,7 @@
     "page": 31,
     "homePage": 1,
     "post": 18,
-    "redirect": 5,
+    "redirect": 13,
     "faq": 14,
     "testimonial": 3,
     "product": 16,
@@ -52,11 +52,11 @@
   "skipped": [
     {
       "story": "/privacy-policy",
-      "reason": "the old site redirects this URL to iubenda; it becomes a redirect (ticket #20)"
+      "reason": "the old site redirects this URL to iubenda; so does the Website's config (ticket #20)"
     },
     {
       "story": "/terms-and-conditions",
-      "reason": "the old site redirects this URL to iubenda; it becomes a redirect (ticket #20)"
+      "reason": "the old site redirects this URL to iubenda; so does the Website's config (ticket #20)"
     }
   ],
   "publishedFromDraft": [
@@ -7997,6 +7997,56 @@
       "to": "/news/winner-2024-hometown-favorite-sandwich"
     }
   ],
+  "seedRedirects": {
+    "documents": [
+      {
+        "source": "/about-us/our-history",
+        "destination": "/our-story-and-promise"
+      },
+      {
+        "source": "/about-us/our-promise",
+        "destination": "/our-story-and-promise"
+      },
+      {
+        "source": "/about-us/our-team",
+        "destination": "/hoagie-heroes"
+      },
+      {
+        "source": "/testimonials",
+        "destination": "/success-stories"
+      },
+      {
+        "source": "/about-us/join-our-team",
+        "destination": "/jobs"
+      },
+      {
+        "source": "/about-us/in-the-news",
+        "destination": "/news"
+      },
+      {
+        "source": "/about-us/contact-us",
+        "destination": "/contact-us"
+      },
+      {
+        "source": "/selling-tools",
+        "destination": "/fundraiser-resources"
+      }
+    ],
+    "external": [
+      {
+        "source": "/terms-and-conditions",
+        "destination": "https://www.iubenda.com/terms-and-conditions/52141374"
+      },
+      {
+        "source": "/cookie-policy",
+        "destination": "https://www.iubenda.com/privacy-policy/52141374/cookie-policy"
+      },
+      {
+        "source": "/privacy-policy",
+        "destination": "https://www.iubenda.com/privacy-policy/52141374"
+      }
+    ]
+  },
   "overrides": {
     "applied": [
       {

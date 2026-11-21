@@ -2,7 +2,13 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import test from "node:test";
 
-import { compileNextRedirects } from "./redirects.mjs";
+import { readFileSync } from "node:fs";
+
+import {
+  compileNextRedirects,
+  EXTERNAL_REDIRECTS,
+  siteRedirects,
+} from "./redirects.mjs";
 
 test("compiles permanent and temporary redirects without ending slashes", () => {
   assert.deepEqual(
@@ -138,4 +144,33 @@ test("a source that ends in a hyphen keeps its hyphen and matches only itself", 
   const pattern = pathToRegexp(rule.source);
   assert.ok(pattern.test("/news/fund-fiesta-is-here-"));
   assert.ok(!pattern.test("/news/fund-fiesta-is-here"));
+});
+
+test("the iubenda redirects come first, permanent, and match the old site's", () => {
+  const seed = JSON.parse(
+    readFileSync(
+      new URL("../../docs/migration/seed/hard-coded-content.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const old = seed.redirects.items
+    .filter((item) => item.external)
+    .map(({ source, destination, permanent }) => ({ source, destination, permanent }));
+  assert.deepEqual(EXTERNAL_REDIRECTS, old);
+
+  const rules = siteRedirects([
+    { source: { current: "/testimonials" }, destination: "/success-stories", permanent: "true", status: "active" },
+  ]);
+  assert.deepEqual(rules.slice(0, 3), EXTERNAL_REDIRECTS);
+  assert.deepEqual(rules[3], { source: "/testimonials", destination: "/success-stories", statusCode: 301 });
+});
+
+test("a redirect record cannot take an iubenda redirect's source", () => {
+  assert.throws(
+    () =>
+      siteRedirects([
+        { source: { current: "/privacy-policy" }, destination: "/contact-us", status: "active" },
+      ]),
+    /reserved by the application: \/privacy-policy/,
+  );
 });

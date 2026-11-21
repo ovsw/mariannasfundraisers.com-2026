@@ -54,7 +54,7 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   it differs), description, sharing photo and noindex go to `meta`. All are
   written published, including the two pages unpublished in Storyblok.
   `privacy-policy` and `terms-and-conditions` are skipped: the old site
-  redirects them to iubenda (ticket #20).
+  redirects them to iubenda, and so does the Website's config (below).
 - **Rows to sections** (spec decision 10). Each row becomes one section, in
   order, with its wrapper's background as theme; margins, paddings, widths and
   names are dropped and counted. The row-to-section rule is `pageRowSections`
@@ -182,6 +182,17 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   the seed's commit and the author's name as its alt text; and `blogIndex`
   with the list's eyebrow, title and SEO title and description.
 
+- **Old redirects** (spec decision 6, ticket #20; `redirects.mjs`) come from
+  the seed file. The eight internal ones become `redirect` documents,
+  `redirect-seed-<source>` (`redirect-seed-about-us-our-team`), active and
+  permanent, each with a reference to the page it leads to (`/news` is
+  `blogIndex`). A destination no imported page owns is left out and listed
+  under "needs a hand". The three to iubenda (terms, cookie policy, privacy
+  policy) are not documents: a `redirect` document points at a page, so the
+  Website's config answers them (`EXTERNAL_REDIRECTS` in
+  `shared/content-routes.ts`), and their sources are application paths that
+  no page or redirect can take. The report lists both.
+
 ## Overrides
 
 `studio/scripts/storyblok/overrides.json` holds fixes that must survive a
@@ -199,6 +210,7 @@ matched nothing in this run (for example in a news post, before its ticket).
 | `studio/scripts/storyblok/rich-text.mjs`, `links.mjs`, `files.mjs`, `scaffold-text.mjs` | Rich text, links, files and Scaffold text |
 | `studio/scripts/storyblok/site-shell.mjs` | Settings, navigation and footer from the seed file |
 | `studio/scripts/storyblok/news.mjs` | Clean news slugs and their redirects, authors, the news list and Latest news headings |
+| `studio/scripts/storyblok/redirects.mjs` | The old site's redirects from the seed file |
 | `studio/scripts/storyblok/products.mjs` | Products, Product Page Settings and the menu sections |
 | `studio/scripts/storyblok/write.mjs`, `safety.mjs` | Uploads, idempotent writes, the target check and the backup |
 | `studio/scripts/storyblok/fixtures/` | Stories and rich text cut from the real export, for the tests |

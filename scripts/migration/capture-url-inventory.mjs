@@ -16,28 +16,13 @@ import {
   normalizePath,
   OLD_ORIGIN,
   OLD_REDIRECTS,
+  parseHead,
+  SHARING_TAGS,
   SITEMAP_URL,
   sitemapPaths,
 } from "./lib.mjs";
 
 const KIND_BY_COMPONENT = { page: "page", "blog-post": "news post", "menu-item-page": "product" };
-const SHARING_TAGS = [
-  "og:title",
-  "og:description",
-  "og:url",
-  "og:type",
-  "og:site_name",
-  "og:locale",
-  "og:image",
-  "og:image:alt",
-  "og:image:width",
-  "og:image:height",
-  "twitter:card",
-  "twitter:title",
-  "twitter:description",
-  "twitter:image",
-];
-
 const args = process.argv.slice(2);
 const exportIndex = args.indexOf("--export");
 if (exportIndex === -1 || !args[exportIndex + 1]) {
@@ -50,41 +35,6 @@ const kindByPath = new Map([
   ["/news", "news list"],
   ...stories.map((story) => [story.full_slug === "home" ? "/" : normalizePath(`/${story.full_slug}`), KIND_BY_COMPONENT[story.content.component]]),
 ]);
-
-function decodeEntities(text) {
-  return text
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&");
-}
-
-function attributes(tag) {
-  const result = {};
-  for (const match of tag.matchAll(/([a-zA-Z:-]+)\s*=\s*"([^"]*)"/g)) result[match[1].toLowerCase()] = decodeEntities(match[2]);
-  return result;
-}
-
-export function parseHead(html) {
-  const head = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? "";
-  const metas = [...head.matchAll(/<meta\b[^>]*>/gi)].map((m) => attributes(m[0]));
-  const links = [...head.matchAll(/<link\b[^>]*>/gi)].map((m) => attributes(m[0]));
-  const meta = (key) => metas.find((m) => m.name === key || m.property === key)?.content ?? null;
-  const titleMatch = head.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  const robots = meta("robots");
-  return {
-    title: titleMatch ? decodeEntities(titleMatch[1]) : null,
-    description: meta("description"),
-    robots,
-    noindex: robots ? /\bnoindex\b/i.test(robots) : false,
-    canonical: links.find((l) => l.rel === "canonical")?.href ?? null,
-    sharing: Object.fromEntries(SHARING_TAGS.map((tag) => [tag, meta(tag) !== null])),
-  };
-}
 
 async function fetchManual(url) {
   const response = await fetch(url, { redirect: "manual", headers: { "user-agent": "Mozilla/5.0 (reference capture)" } });

@@ -26,7 +26,7 @@ What the importer (`pnpm storyblok:import`, ticket #13) found in the Storyblok e
 | post | 18 |
 | product | 16 |
 | productPageSettings | 1 |
-| redirect | 5 |
+| redirect | 13 |
 | settings | 1 |
 | testimonial | 3 |
 
@@ -76,12 +76,35 @@ Malformed old news slugs get a clean one and a permanent redirect from the old a
 | /news/salsa-sales-supporting-waly-warmth- | /news/salsa-sales-supporting-waly-warmth |
 | /news/winner:-2024-hometown-favorite-sandwich | /news/winner-2024-hometown-favorite-sandwich |
 
+## Old redirects
+
+The redirects of the old site (spec decision 6). The internal ones become `redirect` documents:
+
+| Source | Destination |
+| --- | --- |
+| /about-us/our-history | /our-story-and-promise |
+| /about-us/our-promise | /our-story-and-promise |
+| /about-us/our-team | /hoagie-heroes |
+| /testimonials | /success-stories |
+| /about-us/join-our-team | /jobs |
+| /about-us/in-the-news | /news |
+| /about-us/contact-us | /contact-us |
+| /selling-tools | /fundraiser-resources |
+
+The ones to another site stay in the Website's config (`EXTERNAL_REDIRECTS` in `shared/content-routes.ts`), since a `redirect` document points at a page:
+
+| Source | Destination |
+| --- | --- |
+| /terms-and-conditions | https://www.iubenda.com/terms-and-conditions/52141374 |
+| /cookie-policy | https://www.iubenda.com/privacy-policy/52141374/cookie-policy |
+| /privacy-policy | https://www.iubenda.com/privacy-policy/52141374 |
+
 ## Not imported here
 
 | Story | Why |
 | --- | --- |
-| /privacy-policy | the old site redirects this URL to iubenda; it becomes a redirect (ticket #20) |
-| /terms-and-conditions | the old site redirects this URL to iubenda; it becomes a redirect (ticket #20) |
+| /privacy-policy | the old site redirects this URL to iubenda; so does the Website's config (ticket #20) |
+| /terms-and-conditions | the old site redirects this URL to iubenda; so does the Website's config (ticket #20) |
 
 ## Needs a hand
 
