@@ -139,6 +139,7 @@ test("the arguments name the origin and, optionally, the report", () => {
   assert.deepEqual(parseArguments(["https://preview.vercel.app", "--report", "parity-report-vercel", "--preview"]), { origin: "https://preview.vercel.app", report: "parity-report-vercel", preview: true });
   assert.throws(() => parseArguments([]), /Usage/);
   assert.throws(() => parseArguments(["https://a.test", "--report"]), /--report needs a name/);
+  assert.throws(() => parseArguments(["https://a.test", "--report", "--preview"]), /--report needs a name/);
   assert.throws(() => parseArguments(["https://a.test", "--report", "../elsewhere"]), /--report needs a name/);
   assert.throws(() => parseArguments(["https://a.test", "https://b.test"]), /Unexpected argument/);
 });

@@ -36,7 +36,14 @@ https://mariannasfundraisers.sanity.studio/.
       `~/backups/mfr/sanity/` first.
 - [ ] Run `pnpm storyblok:import --apply` once more. It must print
       `"created": 0`, `"changed": 0` and an empty `draftsThatHideTheImport`.
-- [ ] Commit the refreshed import report.
+- [ ] While the old site is still live, refresh its URL inventory, so pages
+      published since the last capture are part of the parity check in step 6:
+
+      ```sh
+      node scripts/migration/capture-url-inventory.mjs --export ~/backups/mfr/storyblok-export
+      ```
+
+- [ ] Commit the refreshed import report and `docs/migration/url-inventory.*`.
 - [ ] From now on, content changes happen in Studio only.
 
 ## 3. Production settings on Vercel

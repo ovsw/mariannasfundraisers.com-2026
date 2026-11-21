@@ -158,7 +158,7 @@ export function parseArguments(args) {
     if (arg === "--preview") options.preview = true;
     else if (arg === "--report") {
       const value = args[++index];
-      if (!value || !/^[a-z0-9-]+$/.test(value)) throw new Error(`--report needs a name of lowercase letters, digits and hyphens. ${USAGE}`);
+      if (!value || value.startsWith("-") || !/^[a-z0-9-]+$/.test(value)) throw new Error(`--report needs a name of lowercase letters, digits and hyphens. ${USAGE}`);
       options.report = value;
     } else if (arg.startsWith("--") || options.origin) throw new Error(`Unexpected argument ${arg}. ${USAGE}`);
     else options.origin = arg.replace(/\/+$/, "");
