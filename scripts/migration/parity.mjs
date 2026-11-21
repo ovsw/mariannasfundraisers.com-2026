@@ -20,6 +20,7 @@ import { malformedSlugReason, migrationDir, normalizePath, parseHead, sitemapPat
 
 export const SITE_SUFFIX = " | Marianna's Fundraisers";
 const PERMANENT = [301, 308];
+const TEMPORARY = [302, 303, 307];
 
 /** Why a difference is on purpose. */
 export const ON_PURPOSE = {
@@ -38,6 +39,7 @@ export function newPath(oldPath) {
 
 const text = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const isPermanent = (status) => PERMANENT.includes(status);
+const isTemporary = (status) => TEMPORARY.includes(status);
 
 /**
  * Compares the old-site inventory with what the new site answered. `observed`:
@@ -114,7 +116,8 @@ export function compareInventory(inventory, observed) {
 
   for (const redirect of inventory.redirects) {
     const answer = observed.redirects[redirect.source];
-    const ok = answer && isPermanent(answer.status) === Boolean(redirect.permanent) && answer.location === redirect.destination;
+    const statusOk = answer && (redirect.permanent ? isPermanent(answer.status) : isTemporary(answer.status));
+    const ok = statusOk && answer.location === redirect.destination;
     if (!ok) {
       differ({
         path: redirect.source,

@@ -17,6 +17,7 @@ import {
   OLD_ORIGIN,
   OLD_REDIRECTS,
   parseHead,
+  SHARING_TAGS,
   SITEMAP_URL,
   sitemapPaths,
 } from "./lib.mjs";

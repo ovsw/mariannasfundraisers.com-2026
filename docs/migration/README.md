@@ -62,7 +62,11 @@ with the real site URL, then point the script at it:
 cd frontend
 NEXT_PUBLIC_SITE_ENV=production NEXT_PUBLIC_SITE_URL=https://www.mariannasfundraisers.com pnpm build
 NEXT_PUBLIC_SITE_ENV=production NEXT_PUBLIC_SITE_URL=https://www.mariannasfundraisers.com pnpm exec next start --port 3460
-cd ..
+```
+
+Keep that server running, and in a second terminal, from the repository root:
+
+```sh
 node scripts/migration/parity.mjs http://localhost:3460
 ```
 
