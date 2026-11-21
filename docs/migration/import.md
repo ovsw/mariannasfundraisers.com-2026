@@ -57,7 +57,9 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   redirects them to iubenda, and so does the Website's config (below).
 - **Rows to sections** (spec decision 10). Each row becomes one section, in
   order, with its wrapper's background as theme; margins, paddings, widths and
-  names are dropped and counted. The row-to-section rule is `pageRowSections`
+  names are dropped and counted. A Rich Text row of empty paragraphs only
+  (three news posts have one; the old site drew blank space) is dropped and
+  counted under "empty rows" (ticket #21). The row-to-section rule is `pageRowSections`
   in `scripts/migration/block-inventory.mjs`. Built: the hero as **Page
   banner** (its edge colour as theme), **Page heading**, **Rich Text**
   with its button row, and the old "big image" rows as their image-and-text

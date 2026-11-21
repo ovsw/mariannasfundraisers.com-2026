@@ -110,7 +110,7 @@ export function createSite(stories) {
 /** The report: counts, and every dropped item, image without alt text and item that needs a hand. */
 function createReport() {
   return {
-    found: { stories: 0, page: 0, product: 0, news: 0, files: 0, images: 0, documentFiles: 0 },
+    found: { stories: 0, page: 0, product: 0, news: 0, files: 0, images: 0, documentFiles: 0, storyblokFiles: 0 },
     documents: {},
     sections: {},
     scaffolds: {},
@@ -862,7 +862,13 @@ function pageSections(story, context, { post = false } = {}) {
           return;
         }
         if (name === "Page heading") push(pageHeading(row, theme, context));
-        else if (name === "Rich Text") push(richTextSection(row, theme, context));
+        else if (name === "Rich Text") {
+          // A row of empty paragraphs only drew blank space on the old site;
+          // as a section it would draw nothing and fail Studio's rules.
+          const section = richTextSection(row, theme, context);
+          if (section.richText || section.title || section.eyebrow || section.buttons) push(section);
+          else context.drop(context.at, `an empty ${row.component} row`, "empty rows");
+        }
         else if (built) push(built);
         else {
           // A row with several FAQ lists: one Scaffold per list; the row's
@@ -993,6 +999,8 @@ export function planImport(source, options = {}) {
   };
 
   const files = collectFiles(stories);
+  // The files the stories use, before the seed's logos and author photos join.
+  report.found.storyblokFiles = files.size;
   report.found.stories = stories.length;
   for (const story of stories) {
     const kind = KIND[story.content.component];

@@ -36,7 +36,7 @@ const page = (documents, slug) => documents.find((document) => document.slug?.cu
 
 test("a dry run counts the stories by kind and the files", () => {
   const { report, files } = plan();
-  assert.deepEqual(report.found, { stories: 5, page: 4, product: 0, news: 1, files: 10, images: 10, documentFiles: 0 });
+  assert.deepEqual(report.found, { stories: 5, page: 4, product: 0, news: 1, files: 10, images: 10, documentFiles: 0, storyblokFiles: 10 });
   assert.equal(files.size, 10);
   // The news story is a post; its malformed slug adds a redirect (issue #17).
   assert.deepEqual(report.documents, { page: 4, post: 1, redirect: 1 });

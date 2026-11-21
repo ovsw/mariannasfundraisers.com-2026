@@ -11,6 +11,8 @@ What the importer (`pnpm storyblok:import`, ticket #13) found in the Storyblok e
 | Product stories | 16 |
 | News stories | 18 |
 | Files | 164 (160 images, 4 documents) |
+| Files from Storyblok | 158 |
+| Files from the old code (logos, author photos) | 6 |
 
 ## Documents
 
@@ -52,7 +54,7 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | photoLeftAndText | 19 |
 | photoRightAndText | 14 |
 | pizzaMenu | 1 |
-| richTextBlock | 27 |
+| richTextBlock | 24 |
 | salsaMenu | 2 |
 | steps | 1 |
 | testimonials | 1 |
@@ -140,6 +142,7 @@ Imported by story UUID, so they point at the story's current page.
 
 | What | Count |
 | --- | --- |
+| empty rows | 3 |
 | hero text | 3 |
 | hidden blocks | 1 |
 | links that go nowhere | 1 |
@@ -360,7 +363,7 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /products/white-pizza | body[3] section > content[0] row-big-image | https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg |
 | /products/white-pizza | body[4] section > content[0] row-two-columns-cta | https://a.storyblok.com/f/133593/632x632/0f818d003a/final-use-renee-at-desk-pic-for-web-fixed.png |
 
-## Every dropped item (1394)
+## Every dropped item (1397)
 
 | Story | Where | Item |
 | --- | --- | --- |
@@ -1003,6 +1006,7 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /news/a-positive-partnership | body[0] section section | section.decoration_bottom = "brushed2" |
 | /news/a-positive-partnership | body[0] section > content[0] row-big-image row-big-image | row-big-image.extra_padding = true |
 | /news/a-positive-partnership | body[0] section > content[0] row-big-image row-big-image.content[0] heading-group | heading-group.heading_level = "h2" |
+| /news/a-positive-partnership | body[0] section > content[1] row-single-column | an empty row-single-column row |
 | /news/a-positive-partnership | body[0] section > content[2] row-big-image row-big-image | row-big-image.extra_padding = true |
 | /news/a-scary-successful-sampling | body[0] section section | section.name = "Hoagie Heroes" |
 | /news/a-scary-successful-sampling | body[0] section section | section.width = "full" |
@@ -1084,6 +1088,7 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /news/mariannas-hoagies-on-tv | body[0] section section | section.padding_bottom = "small" |
 | /news/mariannas-hoagies-on-tv | body[0] section section | section.decoration_top = "default" |
 | /news/mariannas-hoagies-on-tv | body[0] section section | section.decoration_bottom = "none" |
+| /news/mariannas-hoagies-on-tv | body[0] section > content[0] row-single-column | an empty row-single-column row |
 | /news/mariannas-hoagies-on-tv | body[1] section section | section.name = "Hoagie Heroes" |
 | /news/mariannas-hoagies-on-tv | body[1] section section | section.width = "narrow" |
 | /news/mariannas-hoagies-on-tv | body[1] section section | section.margin_top = "default" |
@@ -1187,6 +1192,7 @@ Writing these is a follow-up with the Starter's image-description flow (spec, ou
 | /news/we-re-hiring-february-2022 | body[0] section section | section.padding_bottom = "default" |
 | /news/we-re-hiring-february-2022 | body[0] section section | section.decoration_top = "default" |
 | /news/we-re-hiring-february-2022 | body[0] section section | section.decoration_bottom = "none" |
+| /news/we-re-hiring-february-2022 | body[0] section > content[0] row-single-column | an empty row-single-column row |
 | /news/we-re-hiring-february-2022 | body[0] section > content[1] row-big-image row-big-image | row-big-image.extra_padding = true |
 | /news/we-re-hiring-february-2022 | body[0] section > content[1] row-big-image row-big-image.content[1] button-group.content[0] button | button.icon_position = "right" |
 | /news/winner-2022-hometown-favorite-sandwich | body[0] section section | section.name = "Hoagie Heroes" |
