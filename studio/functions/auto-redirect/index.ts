@@ -46,7 +46,7 @@ export const handler = documentEventHandler<AutoRedirectEventData>(
       `),
       client.fetch<{ _id: string; _type: string; slug: string }[]>(
         `*[
-          _type in ["page", "post", "category"] &&
+          _type in ["page", "post"] &&
           !(_id in path("drafts.**")) &&
           _id != $documentId &&
           defined(slug.current)

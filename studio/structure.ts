@@ -9,10 +9,11 @@ import {
   Settings,
   Settings2,
   PanelBottom,
-  Tag,
   House,
   TrendingUpDown,
   PanelRight,
+  Sandwich,
+  Store,
 } from "lucide-react";
 import type { StructureResolver } from "sanity/structure";
 
@@ -40,14 +41,45 @@ export const structure: StructureResolver = (S) =>
             .defaultOrdering([{ field: "title", direction: "asc" }])
         ),
       S.listItem()
-        .title("Blog")
+        .title("Products")
+        .icon(Sandwich)
+        .child(
+          S.list()
+            .title("Products")
+            .items([
+              S.listItem()
+                .title("Product Page Settings")
+                .icon(Store)
+                .child(
+                  S.editor()
+                    .id("productPageSettings")
+                    .schemaType("productPageSettings")
+                    .documentId("productPageSettings")
+                ),
+              S.divider(),
+              S.listItem()
+                .title("All Products")
+                .icon(Sandwich)
+                .schemaType("product")
+                .child(
+                  S.documentTypeList("product")
+                    .title("Products")
+                    .defaultOrdering([
+                      { field: "kind", direction: "asc" },
+                      { field: "name", direction: "asc" },
+                    ])
+                ),
+            ])
+        ),
+      S.listItem()
+        .title("News")
         .icon(BookMarked)
         .child(
           S.list()
-            .title("Blog")
+            .title("News")
             .items([
               S.listItem()
-                .title("Blog Index")
+                .title("News Index")
                 .icon(BookMarked)
                 .child(
                   S.editor()
@@ -56,7 +88,7 @@ export const structure: StructureResolver = (S) =>
                     .documentId("blogIndex")
                 ),
               S.listItem()
-                .title("Blog Post Settings")
+                .title("News Post Settings")
                 .icon(PanelRight)
                 .child(
                   S.editor()
@@ -66,24 +98,15 @@ export const structure: StructureResolver = (S) =>
                 ),
               S.divider(),
               S.listItem()
-                .title("Blog Posts")
+                .title("News Posts")
                 .icon(FileText)
                 .schemaType("post")
                 .child(
                   S.documentTypeList("post")
-                    .title("Blog Posts")
+                    .title("News Posts")
                     .defaultOrdering([
                       { field: "_createdAt", direction: "desc" },
                     ])
-                ),
-              S.listItem()
-                .title("Categories")
-                .icon(Tag)
-                .schemaType("category")
-                .child(
-                  S.documentTypeList("category")
-                    .title("Categories")
-                    .defaultOrdering([{ field: "title", direction: "asc" }])
                 ),
               S.listItem()
                 .title("Authors")

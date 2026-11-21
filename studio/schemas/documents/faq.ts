@@ -41,8 +41,10 @@ export default defineType({
     defineField({
       name: "body",
       title: "Answer",
-      type: "simpleRichText",
-      description: "The reusable answer shown inside FAQ sections.",
+      // Full rich text: the old site's answers hold bullet lists, underline
+      // and links (spec decisions 3 and 14).
+      type: "richTextContent",
+      description: "The reusable answer shown inside FAQ sections: text, lists and links.",
       validation: (rule) =>
         requiredRichText(rule, "Add the answer. An FAQ without it is not shown."),
     }),

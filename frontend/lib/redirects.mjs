@@ -1,7 +1,10 @@
 import {
+  EXTERNAL_REDIRECTS,
   isApplicationPath,
   normalizePublicPath,
 } from "../../shared/content-routes.ts";
+
+export { EXTERNAL_REDIRECTS };
 
 function normalizePath(value) {
   return typeof value === "string" ? normalizePublicPath(value) : "";
@@ -9,6 +12,15 @@ function normalizePath(value) {
 
 function readSlug(value) {
   return typeof value === "string" ? value : value?.current;
+}
+
+/**
+ * Next.js reads a redirect source as a path pattern, where `(`, `)`, `{`, `}`,
+ * `:`, `*`, `+` and `?` have a meaning. A stored source is a literal path (an
+ * old news address holds a colon), so those characters are escaped.
+ */
+export function literalSourcePattern(path) {
+  return path.replace(/[(){}:*+?]/g, "\\$&");
 }
 
 function getStatusCode(permanent) {
@@ -60,8 +72,17 @@ export function compileNextRedirects(records) {
   }
 
   return [...redirectsBySource].map(([source, redirect]) => ({
-    source,
+    source: literalSourcePattern(source),
     destination: redirect.destination,
     statusCode: redirect.statusCode,
   }));
+}
+
+/**
+ * Every redirect of the Website: the fixed redirects to another site (their
+ * sources are application paths, so no record can take them), then the
+ * compiled Sanity records.
+ */
+export function siteRedirects(records) {
+  return [...EXTERNAL_REDIRECTS, ...compileNextRedirects(records)];
 }

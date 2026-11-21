@@ -7,7 +7,7 @@ import {
   useEditState,
 } from "sanity";
 import { useRouter } from "sanity/router";
-import { getDocumentSlug, getPresentationPath } from "./routes";
+import { getDocumentKind, getDocumentSlug, getPresentationPath } from "./routes";
 
 export const openInPresentationAction: DocumentFieldAction = {
   name: "open-in-presentation",
@@ -21,6 +21,7 @@ export const openInPresentationAction: DocumentFieldAction = {
     const previewPath = getPresentationPath(
       documentType,
       getDocumentSlug(document?.draft, document?.published),
+      getDocumentKind(document?.draft, document?.published),
     );
 
     const handleOpen = useCallback(() => {

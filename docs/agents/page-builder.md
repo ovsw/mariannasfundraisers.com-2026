@@ -183,11 +183,13 @@ Editors choose which content belongs together. Code owns the visual rules.
   first and last visible sections keep full outer spacing.
 - **Bands.** `resolveSectionBands` in `section-boundaries.ts` groups
   seam-joined sections into bands, and the Page Builder wraps each band in a
-  div with `data-band="<theme>"` and `data-band-tuck` when its first section
-  tucks. A Dark band carries one tonal sweep and one grain overlay that span
-  the whole run, so the texture does not restart at a seam. The band paints
-  no background; sections keep their own colour. The glow, shade, and grain
-  tokens live in `frontend/app/globals.css` next to the tuck depth token.
+  div with `data-band="<theme>"`. The band paints no background; sections
+  keep their own colour.
+- **Brushed edges.** Where two neighbouring sections have different themes,
+  one of them paints a brush stroke across the join. The rule and the shapes
+  live in `frontend/components/blocks/section-brush.tsx`, and the Page
+  Builder draws the stroke around the section, so a renderer does nothing for
+  it. No field stores an edge. See "Brushed edges" in `docs/design.md`.
 - **Visible adjacency.** Only sections that render content take part. Each
   section's empty-content rule lives in `isRenderableBlock`, next to the
   `page-builder-generator:visible-blocks` marker, and must match the renderer's
@@ -196,7 +198,8 @@ Editors choose which content belongs together. Code owns the visual rules.
   `data-sanity={dataAttribute?.("theme")}` so a click on empty space in Studio
   Presentation focuses the theme field. Content elements keep their own field
   targets.
-- **Theme tokens.** `.section-scene-light` and `.section-scene-dark` in
+- **Theme tokens.** `.section-scene-light`, `.section-scene-shaded`,
+  `.section-scene-muslin` and `.section-scene-primary` in
   `frontend/app/globals.css` re-point the job tokens (see [Colour](#colour)),
   so text, links, buttons, cards, icons, and focus states adapt without
   variant changes.
@@ -205,16 +208,17 @@ Editors choose which content belongs together. Code owns the visual rules.
 
 Colour has two layers in `frontend/app/globals.css`:
 
-1. **Brand colours** (`--brand-*` in `:root`): the Website's palette. They
-   sit outside `@theme`, so Tailwind makes no utility classes for them. A new
-   Website replaces their values; the Starter ships a neutral palette.
+1. **Brand colours** (`--brand-*` in `:root`): the Website's palette, here
+   the old site's (see `docs/design.md`). They sit outside `@theme`, so
+   Tailwind makes no utility classes for them.
 2. **Job tokens** (`--color-*` in `@theme`): each names what a colour does
    and points at a brand colour. There is the shadcn set (`background`,
    `foreground`, `card`, `popover`, `primary`, `secondary`, `muted`,
    `accent`, `destructive`, `border`, `input`, `ring`, each with its
    `-foreground` pair where shadcn has one) and these named jobs:
    `soft-foreground`, `link`, `link-hover`, `link-foreground`, `prose-link`,
-   `prose-link-hover`, `emphasis`, `primary-hover`, `mark`, and `scrim`. The
+   `prose-link-hover`, `emphasis`, `primary-hover`, `secondary-hover`,
+   `mark`, and `scrim`. The
    comment beside each token in `globals.css` says what it is for.
 
 The colour rule:
@@ -243,28 +247,17 @@ The colour rule:
   (text over images or gradients), so a passing scan does not replace
   checking each theme by eye.
 
-### Irregular edges and tucks
+### Brushed edges
 
-Code supplies an irregular top edge; there is no editor shape selector.
-
-1. Register the section type in `sectionEdgeTreatments` in
-   `frontend/components/blocks/index.tsx`, for example `callToAction: "wave"`.
-2. Have the renderer accept `topTreatment` and pass it as the fourth argument
-   of `sectionSceneClassName`.
-3. Give the treatment a class in `frontend/app/globals.css` that paints the
-   shape with `background: inherit` and pulls the section up by the tuck depth
-   with a negative top margin. Follow `.section-scene-wave-top`. The section
-   above pads its bottom by the tuck depth and the crest height (the
-   `[data-band]:has(+ [data-band-tuck])` rule), so content on both sides sits
-   the same distance from the shape.
-
-The resolver enables a treatment only at a different-background join. At a
-seam it suppresses the treatment so no gap or third color appears. A later
-section paints above the earlier one, so when both neighbors have treatments,
-the lower one wins. A wave after a hero tucks the hero underneath. The Starter
-ships one shallow wave shape and registers no section for it; add more shapes
-only when a project needs them. Footer tucks are not shipped, but a project
-copy may add one.
+Code supplies every edge shape; there is no editor shape selector. The rule
+in `frontend/components/blocks/section-brush.tsx` decides which section of a
+join paints a stroke, from the themes alone, and the Page Builder in
+`frontend/components/blocks/index.tsx` draws it. A section paints the default
+"brush" stroke; to give a section type the broad "menu" stroke of the old menu
+sections, register it in `sectionBrushShapes` in `index.tsx`. A template
+outside the Page Builder (the product page) calls `resolveSectionBrushes` and
+renders `SectionBrush` the same way. The rule, the shapes and their sizes are
+described in `docs/design.md`.
 
 ## Add a nested block
 
@@ -286,7 +279,7 @@ For visual changes, treat the existing design system as the default:
 - Reuse tokens from `frontend/app/globals.css`. Colour follows the rule in
   [Colour](#colour): job tokens only, never a brand colour.
 - Reuse `SectionContainer`, shared buttons, and nearby block patterns before adding a new primitive.
-- Give a section with buttons one `buttons` array with a `max` count. Editors never pick a button style: the renderer sets it by position (first is primary, second is secondary, and so on).
+- Give a section with buttons one `buttons` array of the shared `button` type with a `max` count, project each with `buttonProjection` (`frontend/sanity/queries/shared/button.ts`), and draw each with `SiteButton` (`frontend/components/site-button.tsx`). On this site the editor picks each button's colour and optional icon, as on the old site (spec decision 13); see "Buttons and icons" in `docs/design.md`.
 - Check the full page and mobile layout, not only the section in isolation.
 - Never add a layout, variant, or style field to change how a section looks. A new design is a new section (see "One section, one design" above).
 

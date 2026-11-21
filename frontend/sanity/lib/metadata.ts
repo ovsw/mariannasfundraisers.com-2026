@@ -3,15 +3,13 @@ import {
   HOME_PAGE_QUERY_RESULT,
   PAGE_QUERY_RESULT,
   POST_QUERY_RESULT,
+  PRODUCT_QUERY_RESULT,
 } from "@/sanity.types";
 import {
-  getCategoryArchivePath,
   getBlogCanonicalPath,
   getBlogPageDescription,
   getBlogPageTitle,
-  isIndexableCategory,
 } from "@/lib/blog-index";
-import type { CategoryArchive } from "@/sanity/queries/category";
 import { buildPostOgImageUrl, isValidOgSlug } from "@/lib/post-og-image";
 import { siteName } from "@/lib/site-name";
 import {
@@ -39,10 +37,7 @@ function sharingImage(
 }
 
 function fallbackSharingImage() {
-  return sharingImage(
-    `${siteOrigin}/api/og/default`,
-    "Helpful website content",
-  );
+  return sharingImage(`${siteOrigin}/api/og/default`, siteName, siteName);
 }
 
 function resolveArchiveTitles({
@@ -82,13 +77,21 @@ export function generatePageMetadata({
   page,
   path,
 }: {
-  page: HOME_PAGE_QUERY_RESULT | PAGE_QUERY_RESULT | POST_QUERY_RESULT;
+  page:
+    | HOME_PAGE_QUERY_RESULT
+    | PAGE_QUERY_RESULT
+    | POST_QUERY_RESULT
+    | PRODUCT_QUERY_RESULT;
   path: string;
 }) {
   const isPost = page?._type === "post";
   const isHomepage = page?._type === "homePage";
+  // A product page (spec decision 8) is titled by the product's name and
+  // gets the generated page card, like a page.
+  const isProduct = page?._type === "product";
+  const contentTitle = isProduct ? page.name : page?.title;
   const seoTitle = resolveSeoTitle({
-    fallbackTitle: page?.title,
+    fallbackTitle: contentTitle,
     isHomepage,
     overrideTitle: page?.meta?.title,
     siteName,
@@ -111,8 +114,8 @@ export function generatePageMetadata({
       : null;
   const rawPageTitle = isHomepage
     ? page.title || seoTitle.pageTitle
-    : page?._type === "page"
-      ? page.title || page.meta?.title
+    : page?._type === "page" || isProduct
+      ? contentTitle || page.meta?.title
       : undefined;
   const pageTitle = rawPageTitle
     ? getPageOgImageTitle(rawPageTitle)
@@ -121,7 +124,7 @@ export function generatePageMetadata({
   const pageTarget: PageOgImageTarget | null =
     page?._type === "homePage"
       ? { kind: "home" }
-      : page?._type === "page" && path !== "/" && isValidOgSlug(pageSlug)
+      : (page?._type === "page" || isProduct) && path !== "/" && isValidOgSlug(pageSlug)
         ? { kind: "page", slug: pageSlug }
         : null;
   const pageImage =
@@ -179,7 +182,7 @@ export function generateBlogIndexMetadata({
 }) {
   const { cardTitle, pageTitleResolution } = resolveArchiveTitles({
     contentTitle: blogIndex?.title,
-    fallbackTitle: "Blog",
+    fallbackTitle: "News",
     overrideTitle: blogIndex?.meta?.title,
     page,
   });
@@ -188,7 +191,7 @@ export function generateBlogIndexMetadata({
   const image = sharingImage(
     buildPageOgImageUrl({
       origin: siteOrigin,
-      target: { kind: "blog", page },
+      target: { kind: "news", page },
       photoUrl: sharingCardPhotoUrl(blogIndex?.sharingPhoto),
       title: cardTitle,
     }),
@@ -217,68 +220,6 @@ export function generateBlogIndexMetadata({
         : "index, follow",
     alternates: {
       canonical: process.env.NEXT_PUBLIC_SITE_URL + getBlogCanonicalPath(page),
-    },
-  };
-}
-
-export function generateCategoryMetadata({
-  category,
-  page,
-}: {
-  category: CategoryArchive;
-  page: number;
-}) {
-  const { cardTitle, pageTitleResolution } = resolveArchiveTitles({
-    contentTitle: category.title,
-    fallbackTitle: "Blog category",
-    overrideTitle: category.meta?.title,
-    page,
-  });
-  const description =
-    category.meta?.description || category.description || undefined;
-  const slug = category.slug?.current || "";
-  const image =
-    isValidOgSlug(slug) && !slug.includes("/")
-      ? sharingImage(
-          buildPageOgImageUrl({
-            origin: siteOrigin,
-            target: { kind: "category", page, slug },
-            photoUrl: sharingCardPhotoUrl(category.sharingPhoto),
-            title: cardTitle,
-          }),
-          cardTitle,
-          pageTitleResolution.finalTitle,
-        )
-      : fallbackSharingImage();
-  const isIndexable = isIndexableCategory({
-    description: category.description,
-    metaNoindex: category.meta?.noindex,
-    publishedPostCount: category.publishedPostCount,
-  });
-
-  return {
-    title: pageTitleResolution.metadataTitle,
-    description: getBlogPageDescription(description, page),
-    openGraph: {
-      title: pageTitleResolution.openGraphTitle,
-      images: [image],
-      locale: "en_US",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: pageTitleResolution.twitterTitle,
-      images: [image],
-    },
-    robots: !isProduction
-      ? "noindex, nofollow"
-      : isIndexable
-        ? "index, follow"
-        : "noindex, follow",
-    alternates: {
-      canonical:
-        process.env.NEXT_PUBLIC_SITE_URL +
-        getBlogCanonicalPath(page, getCategoryArchivePath(slug)),
     },
   };
 }

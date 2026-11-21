@@ -1,7 +1,7 @@
 import { createClient } from "@sanity/client";
 import { sanity } from "next-sanity/live/cache-life";
 
-import { compileNextRedirects } from "./lib/redirects.mjs";
+import { siteRedirects } from "./lib/redirects.mjs";
 import { REDIRECTS_QUERY } from "./sanity/queries/redirects.ts";
 
 function requiredEnvironmentValue(name) {
@@ -27,7 +27,7 @@ const nextConfig = {
       useCdn: false,
     });
     const redirects = await client.fetch(REDIRECTS_QUERY);
-    return compileNextRedirects(redirects);
+    return siteRedirects(redirects);
   },
   images: {
     qualities: [75, 100],

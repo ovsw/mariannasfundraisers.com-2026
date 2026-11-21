@@ -5,9 +5,8 @@ const destinationProjection = `{
   "href": select(
     kind == "internal" => select(
       internal->_id == "homePage" || internal->_type == "homePage" => "/",
-      internal->_id == "blogIndex" => "/blog",
-      internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
-      internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
+      internal->_id == "blogIndex" => "/news",
+      internal->_type == "post" && defined(internal->slug.current) => "/news/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
       defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")
     ),
     kind == "external" => external
@@ -24,6 +23,11 @@ export const FOOTER_QUERY = defineQuery(`
   *[_type == "footer" && _id == "footer"][0]{
     _id,
     intro,
+    affiliation{
+      text,
+      link${linkProjection}
+    },
+    action${linkProjection},
     columns[]{
       _key,
       heading,

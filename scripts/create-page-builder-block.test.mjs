@@ -203,14 +203,15 @@ for (const scope of ["content", "general", "home"])
     const themed = exports.default({
       _key: "test",
       title: "Hello",
-      theme: "dark",
+      theme: "muslin",
       top: "seam",
       bottom: "edge",
     });
     assert.equal(
       themed.props.className,
-      scene.sectionSceneClassName("dark", "seam", "edge"),
+      scene.sectionSceneClassName("muslin", "seam", "edge"),
     );
+    assert.match(themed.props.className, /section-scene-muslin/);
     const [heading, paragraph] =
       rendered.props.children.props.children.props.children;
     assert.equal(heading.props.children, "Hello");

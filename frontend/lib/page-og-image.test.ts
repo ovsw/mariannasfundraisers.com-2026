@@ -13,8 +13,8 @@ describe("page OG image URLs", () => {
   it.each<[PageOgImageTarget, string]>([
     [{ kind: "home" }, "/api/og/page/home"],
     [{ kind: "page", slug: "about/jordan" }, "/api/og/page/page/about/jordan"],
-    [{ kind: "blog", page: 2 }, "/api/og/page/blog/2"],
-    [{ kind: "category", slug: "market-trends", page: 3 }, "/api/og/page/category/market-trends/3"],
+    [{ kind: "news" }, "/api/og/page/news"],
+    [{ kind: "news", page: 2 }, "/api/og/page/news/2"],
   ])("builds a signed, finite URL for %j", (target, pathname) => {
     const title = "Useful guidance";
     const url = new URL(
@@ -42,12 +42,13 @@ describe("page OG image URLs", () => {
 
   it("rejects malformed or unbounded targets", () => {
     expect(parsePageOgImageTarget(["unknown", "thing"])).toBeNull();
-    expect(parsePageOgImageTarget(["category", "nested", "slug"])).toBeNull();
-    expect(parsePageOgImageTarget(["blog", "0"])).toBeNull();
-    expect(parsePageOgImageTarget(["blog", "01"])).toBeNull();
-    expect(parsePageOgImageTarget(["blog", "1.0"])).toBeNull();
-    expect(parsePageOgImageTarget(["blog", "1e0"])).toBeNull();
-    expect(parsePageOgImageTarget(["category", "rates", "02"])).toBeNull();
+    expect(parsePageOgImageTarget(["category", "news"])).toBeNull();
+    expect(parsePageOgImageTarget(["blog"])).toBeNull();
+    expect(parsePageOgImageTarget(["news", "0"])).toBeNull();
+    expect(parsePageOgImageTarget(["news", "01"])).toBeNull();
+    expect(parsePageOgImageTarget(["news", "1.0"])).toBeNull();
+    expect(parsePageOgImageTarget(["news", "1e0"])).toBeNull();
+    expect(parsePageOgImageTarget(["news", "2", "extra"])).toBeNull();
     expect(parsePageOgImageTarget(["page", "../private"])).toBeNull();
     expect(() =>
       buildPageOgImageUrl({
@@ -61,8 +62,8 @@ describe("page OG image URLs", () => {
       buildPageOgImageUrl({
         origin: "https://example.com",
         secret: "secret",
-        target: { kind: "category", slug: "nested/slug" },
-        title: "Nested",
+        target: { kind: "news", page: 0 },
+        title: "News",
       }),
     ).toThrow("invalid page target");
   });

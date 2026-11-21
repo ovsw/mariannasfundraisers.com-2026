@@ -27,7 +27,7 @@ type RedirectValidationData = {
   redirects: RedirectRecord[];
 };
 
-const LIVE_SYSTEM_PATHS = new Set(["/", "/blog"]);
+const LIVE_SYSTEM_PATHS = new Set(["/", "/news"]);
 const MISSING_DESTINATION_ERROR =
   "Can't redirect to a non-existent or non-published page. " +
   "No published page with this slug exists. Please create one.";
@@ -241,7 +241,7 @@ async function requestValidationData(context: ValidationContext) {
         permanent
       },
       "liveRoutes": *[
-        _type in ["page", "post", "category", "homePage", "blogIndex"] &&
+        _type in ["page", "post", "homePage", "blogIndex"] &&
         !(_id in path("drafts.**")) &&
         !(_id in path("versions.**")) &&
         (_type in ["homePage", "blogIndex"] || defined(slug.current))

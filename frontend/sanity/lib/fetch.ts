@@ -1,6 +1,7 @@
 import { type QueryParams } from "next-sanity";
 import { sanityFetch, type DynamicFetchOptions } from "@/sanity/lib/live";
 import { PAGE_QUERY, PAGES_SLUGS_QUERY } from "@/sanity/queries/page";
+import { PRODUCT_QUERY, PRODUCTS_SLUGS_QUERY } from "@/sanity/queries/product";
 import { NAVIGATION_QUERY } from "@/sanity/queries/navigation";
 import { SETTINGS_QUERY } from "@/sanity/queries/settings";
 import { BLOG_POST_SETTINGS_QUERY } from "@/sanity/queries/blog-post-settings";
@@ -21,21 +22,15 @@ import type {
   PAGE_QUERY_RESULT,
   POSTS_QUERY_RESULT,
   POST_QUERY_RESULT,
+  PRODUCT_QUERY_RESULT,
   SETTINGS_QUERY_RESULT,
 } from "@/sanity.types";
-import type { BlogPost } from "@/sanity/queries/blog-index";
-import type { CategoryArchive } from "@/sanity/queries/category";
+import type { NewsCardPost } from "@/sanity/queries/blog-index";
 import {
   BLOG_INDEX_QUERY,
-  LATEST_POST_QUERY,
-  REGULAR_POSTS_COUNT_QUERY,
-  REGULAR_POSTS_QUERY,
+  ELIGIBLE_BLOG_POSTS_COUNT_QUERY,
+  NEWS_POSTS_QUERY,
 } from "@/sanity/queries/blog-index";
-import {
-  CATEGORY_POSTS_COUNT_QUERY,
-  CATEGORY_POSTS_QUERY,
-  CATEGORY_QUERY,
-} from "@/sanity/queries/category";
 
 async function fetchCached<QueryResult>({
   params = {},
@@ -59,6 +54,16 @@ export function fetchSanityPageBySlug({
   return fetchCached({ query: PAGE_QUERY, params: { slug }, perspective, stega });
 }
 
+/** The product of one of `kinds` with this slug (shared/content-routes.ts `productRoute`). */
+export function fetchSanityProduct({
+  kinds,
+  slug,
+  perspective,
+  stega,
+}: { kinds: readonly string[]; slug: string } & DynamicFetchOptions): Promise<PRODUCT_QUERY_RESULT> {
+  return fetchCached({ query: PRODUCT_QUERY, params: { kinds: [...kinds], slug }, perspective, stega });
+}
+
 export function fetchHomePage({
   perspective,
   stega,
@@ -80,80 +85,29 @@ export function fetchBlogIndex({
   return fetchCached({ query: BLOG_INDEX_QUERY, perspective, stega });
 }
 
-export function fetchLatestPost({
-  perspective,
-  stega,
-}: DynamicFetchOptions): Promise<BlogPost | null> {
-  return fetchCached({ query: LATEST_POST_QUERY, perspective, stega });
-}
-
-export function fetchRegularPosts({
-  end,
-  latestPostId,
-  perspective,
-  start,
-  stega,
-}: {
-  end: number;
-  latestPostId: string;
-  start: number;
-} & DynamicFetchOptions): Promise<BlogPost[]> {
-  return fetchCached({
-    query: REGULAR_POSTS_QUERY,
-    params: { end, latestPostId, start },
-    perspective,
-    stega,
-  });
-}
-
-export function fetchRegularPostsCount({
-  latestPostId,
-  perspective,
-  stega,
-}: { latestPostId: string } & DynamicFetchOptions): Promise<number> {
-  return fetchCached({
-    query: REGULAR_POSTS_COUNT_QUERY,
-    params: { latestPostId },
-    perspective,
-    stega,
-  });
-}
-
-export function fetchCategory({
-  perspective,
-  slug,
-  stega,
-}: { slug: string } & DynamicFetchOptions): Promise<CategoryArchive | null> {
-  return fetchCached({ query: CATEGORY_QUERY, params: { slug }, perspective, stega });
-}
-
-export function fetchCategoryPosts({
-  categoryId,
+export function fetchNewsPosts({
   end,
   perspective,
   start,
   stega,
 }: {
-  categoryId: string;
   end: number;
   start: number;
-} & DynamicFetchOptions): Promise<BlogPost[]> {
+} & DynamicFetchOptions): Promise<NewsCardPost[]> {
   return fetchCached({
-    query: CATEGORY_POSTS_QUERY,
-    params: { categoryId, end, start },
+    query: NEWS_POSTS_QUERY,
+    params: { end, start },
     perspective,
     stega,
   });
 }
 
-export function fetchCategoryPostsCount({
-  categoryId,
+export function fetchNewsPostCount({
   perspective,
   stega,
-}: { categoryId: string } & DynamicFetchOptions): Promise<number> {
+}: DynamicFetchOptions): Promise<number> {
   return fetchCached({
-    query: CATEGORY_POSTS_COUNT_QUERY,
-    params: { categoryId },
+    query: ELIGIBLE_BLOG_POSTS_COUNT_QUERY,
     perspective,
     stega,
   });
@@ -205,4 +159,4 @@ export async function getCurrentYear(): Promise<number> {
   return new Date().getFullYear();
 }
 
-export { PAGES_SLUGS_QUERY, POSTS_SLUGS_QUERY };
+export { PAGES_SLUGS_QUERY, POSTS_SLUGS_QUERY, PRODUCTS_SLUGS_QUERY };

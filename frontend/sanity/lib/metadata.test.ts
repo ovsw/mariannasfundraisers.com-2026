@@ -4,13 +4,11 @@ import type {
   PAGE_QUERY_RESULT,
   POST_QUERY_RESULT,
 } from "@/sanity.types";
-import type { CategoryArchive } from "@/sanity/queries/category";
 import { describe, expect, it } from "vitest";
 import { verifyPostOgImageSignature } from "@/lib/post-og-image";
 import { verifyOgImageSignature } from "@/lib/post-og-image";
 import {
   generateBlogIndexMetadata,
-  generateCategoryMetadata,
   generatePageMetadata,
 } from "./metadata";
 
@@ -67,26 +65,11 @@ const blogIndex = {
   },
 } as unknown as NonNullable<BLOG_INDEX_QUERY_RESULT>;
 
-const category = {
-  _id: "category-1",
-  _type: "category",
-  title: "Categories",
-  slug: { current: "categories" },
-  description: "Compare service options.",
-  publishedPostCount: 4,
-  meta: {
-    title: "Resource Guides | Example Company",
-    description: "Compare service options.",
-    image: null,
-    noindex: false,
-  },
-} satisfies CategoryArchive;
-
 describe("generatePageMetadata", () => {
   it("uses one signed generated card for post Open Graph and Twitter metadata", () => {
     const metadata = generatePageMetadata({
       page: post,
-      path: "/blog/market-trends",
+      path: "/news/market-trends",
     });
     const image = metadata.openGraph.images[0];
     const url = new URL(image.url);
@@ -217,18 +200,12 @@ describe("generateBlogIndexMetadata", () => {
     expect(metadata.openGraph.images[0].alt).toBe(title);
     expect(metadata.twitter.title).toBe(title);
   });
-});
 
-describe("generateCategoryMetadata", () => {
-  it.each([
-    [1, "Resource Guides | Example Company"],
-    [2, "Resource Guides | Example Company - Page 2"],
-  ])("derives the category title for page %i", (pageNumber, pageTitle) => {
-    const metadata = generateCategoryMetadata({ category, page: pageNumber });
+  it("signs the news index sharing card under the news path", () => {
+    const metadata = generateBlogIndexMetadata({ blogIndex, page: 2 });
+    const url = new URL(metadata.openGraph.images[0].url);
 
-    expect(metadata.title).toEqual({ absolute: pageTitle });
-    expect(metadata.openGraph.title).toBe(pageTitle);
-    expect(metadata.openGraph.images[0].alt).toBe(pageTitle);
-    expect(metadata.twitter.title).toBe(pageTitle);
+    expect(url.pathname).toBe("/api/og/page/news/2");
+    expect(metadata.alternates.canonical).toBe("https://example.test/news/2");
   });
 });

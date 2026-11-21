@@ -1,17 +1,19 @@
-import {
-  categoryPath,
-  pagePath,
-  postPath,
-  routedDocumentPath,
-} from "../../shared/content-routes.ts";
+import { pagePath, postPath, productPath } from "../../shared/content-routes.ts";
 
 const PRESENTATION_DOCUMENT_TYPES = new Set([
   "page",
   "post",
-  "category",
   "blogIndex",
   "homePage",
+  "product",
 ]);
+
+function readKind(document: unknown) {
+  if (!document || typeof document !== "object" || !("kind" in document)) {
+    return undefined;
+  }
+  return typeof document.kind === "string" ? document.kind : undefined;
+}
 
 function readSlug(document: unknown) {
   if (!document || typeof document !== "object" || !("slug" in document)) {
@@ -34,20 +36,18 @@ export function resolveContentPath(value?: string | null) {
   return pagePath(value);
 }
 
-export function resolveCategoryPath(value?: string | null) {
-  return categoryPath(value);
-}
-
+/** `kind` is a product's kind, which sets its address (spec decision 8). */
 export function getPresentationPath(
   documentType: string,
   slug?: string | null,
+  kind?: string | null,
 ) {
-  if (documentType === "blogIndex") return "/blog";
+  if (documentType === "blogIndex") return "/news";
   if (documentType === "homePage") return "/";
   if (!isPresentationDocumentType(documentType) || !slug?.trim()) return null;
   if (documentType === "page") return pagePath(slug);
   if (documentType === "post") return postPath(slug);
-  if (documentType === "category") return routedDocumentPath("category", slug);
+  if (documentType === "product") return productPath(kind, slug);
   return null;
 }
 
@@ -56,4 +56,12 @@ export function getDocumentSlug(
   published?: unknown,
 ) {
   return draft ? readSlug(draft) : readSlug(published);
+}
+
+/** A product's kind, read like its slug: an existing draft is authoritative. */
+export function getDocumentKind(
+  draft?: unknown,
+  published?: unknown,
+) {
+  return draft ? readKind(draft) : readKind(published);
 }

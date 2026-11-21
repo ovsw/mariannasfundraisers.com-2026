@@ -4,15 +4,18 @@ import type { FooterLinkModel } from "./model";
 
 export function FooterLink({
   children,
+  className,
   dataSanity,
   link,
 }: {
   children?: ReactNode;
+  className?: string;
   dataSanity?: string;
   link: FooterLinkModel;
 }) {
   return (
     <Link
+      className={className}
       data-sanity={dataSanity}
       href={link.href}
       prefetch={false}

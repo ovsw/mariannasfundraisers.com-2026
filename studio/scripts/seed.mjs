@@ -93,6 +93,8 @@ const button = (key, text, _ref) => ({
   _type: "button",
   text,
   url: internalUrl(_ref),
+  colour: "accent",
+  icon: "chevron-right",
 });
 const meta = (title, description) => ({
   title,
@@ -110,16 +112,80 @@ export const STARTER_DOCUMENT_TYPES = new Map([
   ["blogPostSettings", "blogPostSettings"],
   ["starter-page-about", "page"],
   ["starter-author-editor", "author"],
-  ["starter-category-notes", "category"],
   ["starter-post-field-guide", "post"],
   ["starter-faq-getting-started", "faq"],
   ["starter-team-member-editor", "teamMember"],
   ["starter-testimonial-reader", "testimonial"],
+  ["productPageSettings", "productPageSettings"],
+  ["starter-product-hoagie", "product"],
+  ["starter-product-pizza", "product"],
+  ["starter-product-salsa", "product"],
+]);
+
+// Seed documents of types this site no longer has. Older seeds created them,
+// so unseed still removes them when they carry the seed marker.
+export const LEGACY_STARTER_DOCUMENT_TYPES = new Map([
+  ["starter-category-notes", "category"],
 ]);
 
 const marker = {
   _starterSeed: STARTER_SEED,
 };
+
+/** A product of each kind (spec decision 8), every field filled. */
+const nutritionValues = Object.fromEntries(
+  [
+    "calories", "totalFat", "totalFatDailyValue", "saturatedFat", "saturatedFatDailyValue",
+    "transFat", "cholesterol", "cholesterolDailyValue", "sodium", "sodiumDailyValue",
+    "totalCarbohydrates", "totalCarbohydratesDailyValue", "dietaryFiber", "dietaryFiberDailyValue",
+    "totalSugars", "addedSugars", "addedSugarsDailyValue", "protein", "vitaminD",
+    "vitaminDDailyValue", "calcium", "calciumDailyValue", "iron", "ironDailyValue",
+    "potassium", "potassiumDailyValue",
+  ].map((field, index) => [field, index]),
+);
+const starterProduct = (kind, name) => ({
+  _id: `starter-product-${kind}`,
+  _type: "product",
+  ...marker,
+  name: `Example ${name}`,
+  kind,
+  slug: slug(`example-${kind}`),
+  heroTitle: `Example ${name}`,
+  heroText: simpleText(`starter-product-${kind}-hero`, `A neutral ${kind} used to test the product page.`),
+  heroImage: { ...placeholder("landscape"), alt: `An example ${kind}.` },
+  ingredientsLabel: "Always Fresh",
+  ingredientsText: simpleText(`starter-product-${kind}-ingredients`, "Example ingredient, another ingredient."),
+  ingredientsImage: { ...placeholder("square"), alt: `The example ${kind} badge.` },
+  ...(kind === "pizza"
+    ? { note: simpleText("starter-product-pizza-note", "Please note: keep refrigerated.") }
+    : {}),
+  nutritionFacts: {
+    _type: "nutritionFacts",
+    servingText: simpleText(`starter-product-${kind}-serving`, "Servings per container: 4"),
+    ...nutritionValues,
+  },
+  menuCard: {
+    _type: "productMenuCard",
+    shortName: "Example",
+    shortDescription: `A short description of the example ${kind}.`,
+    image: { ...placeholder("landscape"), alt: `The example ${kind} on its menu card.` },
+    ...(kind === "hoagie" ? { dressing: "italian" } : {}),
+  },
+  meta: meta(`Example ${name}`, `Example metadata for a seeded ${kind}.`),
+});
+
+// A button stored on its own, not in an array, has no _key.
+const withoutKey = ({ _key, ...value }) => value;
+const kindLinks = (kind, menuRef) => ({
+  _type: "productKindLinks",
+  heroButtons: [
+    button(`starter-${kind}-more`, "more selections", menuRef),
+    button(`starter-${kind}-pricing`, "Pricing Info", menuRef),
+  ],
+  ...(kind === "salsa"
+    ? {}
+    : { ingredientsListButton: withoutKey(button(`starter-${kind}-ingredients`, "full ingredients list", menuRef)) }),
+});
 
 export const starterDocuments = [
   {
@@ -149,19 +215,6 @@ export const starterDocuments = [
     name: "Example Editor",
     slug: slug("example-editor"),
     image: placeholder("avatar"),
-  },
-  {
-    _id: "starter-category-notes",
-    _type: "category",
-    ...marker,
-    title: "Field Notes",
-    slug: slug("field-notes"),
-    description:
-      "Short articles that test category archives and article metadata.",
-    meta: meta(
-      "Field Notes | Starter Example",
-      "Example category metadata for the Starter seed.",
-    ),
   },
   {
     _id: "starter-faq-getting-started",
@@ -201,6 +254,32 @@ export const starterDocuments = [
     ),
     rating: 5,
   },
+  starterProduct("hoagie", "Hoagie"),
+  starterProduct("pizza", "Pizza"),
+  starterProduct("salsa", "Salsa"),
+  {
+    _id: "productPageSettings",
+    _type: "productPageSettings",
+    ...marker,
+    handmade: {
+      _type: "productHandmadeBlock",
+      eyebrow: "Handmade Food That",
+      title: "We'd Love to Eat",
+      richText: simpleText("starter-handmade-copy", "This tests the shared Handmade food block."),
+      buttons: [button("starter-handmade-button", "Our Kitchens", "starter-page-about")],
+      image: { ...placeholder("landscape"), alt: "Two kitchen staff in front of a truck." },
+    },
+    callToAction: {
+      _type: "productCallToAction",
+      title: "Preparing a Fundraiser?",
+      richText: simpleText("starter-cta-copy", "This tests the shared call to action."),
+      buttons: [button("starter-cta-button", "Helpful Video Guides", "starter-page-about")],
+      image: { ...placeholder("square"), alt: "" },
+    },
+    hoagie: kindLinks("hoagie", "starter-page-about"),
+    pizza: kindLinks("pizza", "starter-page-about"),
+    salsa: kindLinks("salsa", "starter-page-about"),
+  },
   {
     _id: "starter-page-about",
     _type: "page",
@@ -209,6 +288,22 @@ export const starterDocuments = [
     description: "A neutral page used to test routed page rendering.",
     slug: slug("about"),
     blocks: [
+      {
+        _key: "starter-page-banner",
+        _type: "pageBanner",
+        theme: "shaded",
+        image: { ...imageRef, alt: "Neutral placeholder image." },
+      },
+      {
+        _key: "starter-page-heading",
+        _type: "pageHeading",
+        theme: "shaded",
+        title: "About",
+        intro: simpleText(
+          "starter-page-heading-intro",
+          "A neutral page used to test routed page rendering.",
+        ),
+      },
       {
         _key: "starter-page-rich-text",
         _type: "richTextBlock",
@@ -245,6 +340,160 @@ export const starterDocuments = [
           },
         ],
       },
+      // The image-and-text family: one of each design.
+      ...[
+        ["photoLeftAndText", "shaded", "landscape"],
+        ["photoRightAndText", "shaded", "landscape"],
+        ["boxedPhotoLeftAndText", "light", "landscape"],
+        ["boxedPhotoRightAndText", "light", "landscape"],
+        ["cutoutLeftAndText", "light", "square"],
+        ["cutoutRightAndText", "light", "square"],
+        ["badgeAndText", "shaded", "square"],
+        ["videoLeftAndText", "light", "landscape"],
+        ["videoRightAndText", "light", "landscape"],
+        ["boxedVideoLeftAndText", "light", "landscape"],
+        ["boxedVideoRightAndText", "light", "landscape"],
+      ].map(([type, theme, image]) => ({
+        _key: `starter-page-${type}`,
+        _type: type,
+        theme,
+        eyebrow: "Image and text",
+        title: `A ${type.replace(/([A-Z])/g, " $1").toLowerCase()} section`,
+        richText: simpleText(
+          `starter-page-${type}-copy`,
+          "This tests one design of the image-and-text family.",
+        ),
+        ...(/^(boxedV|v)ideo/.test(type)
+          ? { youTubeUrl: "https://youtu.be/Uil1c8p_jV0" }
+          : {}),
+        buttons: [
+          button(`starter-page-${type}-button`, "Read more", "starter-page-about"),
+        ],
+        image: placeholder(image),
+      })),
+      // The three menus, each listing the seeded product of its kind.
+      ...[
+        ["hoagieMenu", "hoagie", "shaded"],
+        ["pizzaMenu", "pizza", "light"],
+        ["salsaMenu", "salsa", "shaded"],
+      ].map(([type, kind, theme]) => ({
+        _key: `starter-page-${type}`,
+        _type: type,
+        theme,
+        products: [{ _key: `starter-${kind}`, ...ref(`starter-product-${kind}`) }],
+      })),
+      {
+        _key: "starter-page-imageAndIconList",
+        _type: "imageAndIconList",
+        theme: "shaded",
+        image: placeholder("square"),
+        items: [
+          ["phone-ringing", "Call us"],
+          ["documents", "Send the forms"],
+          ["envelope", "Receive the order forms"],
+        ].map(([icon, heading], index) => ({
+          _key: `starter-icon-list-item-${index + 1}`,
+          _type: "iconListItem",
+          icon,
+          heading,
+          text: simpleText(
+            `starter-icon-list-item-${index + 1}-text`,
+            "This tests one item of the icon list.",
+          ),
+        })),
+      },
+      {
+        _key: "starter-page-twoTextColumns",
+        _type: "twoTextColumns",
+        theme: "shaded",
+        leftText: simpleText(
+          "starter-page-two-text-columns-left",
+          "This tests the left text of two text columns.",
+        ),
+        rightText: simpleText(
+          "starter-page-two-text-columns-right",
+          "This tests the right text of two text columns.",
+        ),
+      },
+      {
+        _key: "starter-page-faqList",
+        _type: "faqList",
+        theme: "light",
+        title: "Questions",
+        faqs: [
+          {
+            _key: "starter-page-faq-getting-started",
+            _type: "reference",
+            _ref: "starter-faq-getting-started",
+          },
+        ],
+      },
+      {
+        _key: "starter-page-cognitoForm",
+        _type: "cognitoForm",
+        theme: "shaded",
+        formId: "114",
+        title: "Contact form",
+        intro: simpleText(
+          "starter-page-cognito-form-intro",
+          "This tests the introduction above a Cognito form.",
+        ),
+      },
+      {
+        _key: "starter-page-cognitoFormAndText",
+        _type: "cognitoFormAndText",
+        theme: "light",
+        formId: "114",
+        title: "Contact form beside text",
+        richText: simpleText(
+          "starter-page-cognito-form-and-text",
+          "This tests the text beside a Cognito form.",
+        ),
+      },
+      {
+        _key: "starter-page-steps",
+        _type: "steps",
+        theme: "light",
+        items: ["First", "Second", "Third"].map((title) => ({
+          _key: `starter-page-step-${title.toLowerCase()}`,
+          _type: "stepItem",
+          image: placeholder("square"),
+          title: `${title} step`,
+          text: simpleText(
+            `starter-page-step-${title.toLowerCase()}-copy`,
+            "This tests the text of one step.",
+          ),
+        })),
+      },
+      {
+        _key: "starter-page-testimonials",
+        _type: "testimonials",
+        theme: "muslin",
+        eyebrow: "Quotes from our",
+        title: "Readers",
+        image: placeholder("square"),
+        testimonials: [
+          {
+            _key: "starter-page-testimonial-reader",
+            _type: "reference",
+            _ref: "starter-testimonial-reader",
+          },
+        ],
+      },
+      {
+        _key: "starter-page-callToActionWithImage",
+        _type: "callToActionWithImage",
+        theme: "shaded",
+        title: "This tests the closing call to action.",
+        richText: simpleText(
+          "starter-page-call-to-action-copy",
+          "A line of text under the heading.",
+        ),
+        buttons: [
+          button("starter-page-call-to-action-button", "Contact us", "starter-page-about"),
+        ],
+        image: placeholder("square"),
+      },
     ],
     // A replaced Scaffold lives here. The Website never renders this array.
     blocksArchive: [
@@ -277,17 +526,24 @@ export const starterDocuments = [
     author: ref("starter-author-editor"),
     publishedAt: "2026-01-15T12:00:00.000Z",
     image: { ...imageRef, caption: "Neutral placeholder image." },
-    category: ref("starter-category-notes"),
-    body: [
-      block(
-        "starter-post-intro",
-        "This article proves blog post rendering, author metadata, category links, and the sidebar.",
-      ),
-      block("starter-post-heading", "What it covers", "h2"),
-      block(
-        "starter-post-body",
-        "It is intentionally short so it can be deleted once real project content exists.",
-      ),
+    readingTime: 1,
+    blocks: [
+      {
+        _key: "starter-post-rich-text",
+        _type: "richTextBlock",
+        theme: "light",
+        richText: [
+          block(
+            "starter-post-intro",
+            "This article proves news post rendering, author metadata, and the sidebar.",
+          ),
+          block("starter-post-heading", "What it covers", "h2"),
+          block(
+            "starter-post-body",
+            "It is intentionally short so it can be deleted once real project content exists.",
+          ),
+        ],
+      },
     ],
     meta: meta(
       "Starter Field Guide | Starter Example",
@@ -319,12 +575,12 @@ export const starterDocuments = [
     _id: "blogIndex",
     _type: "blogIndex",
     ...marker,
-    title: "Blog",
-    description: "Example articles for testing the Starter blog.",
+    title: "News",
+    description: "Example articles for testing the news list.",
     blocks: [],
     meta: meta(
-      "Blog | Starter Example",
-      "Example metadata for the seeded Blog index.",
+      "News | Starter Example",
+      "Example metadata for the seeded News index.",
     ),
   },
   {
@@ -358,11 +614,11 @@ export const starterDocuments = [
       {
         _key: "starter-home-edge",
         _type: "richTextBlock",
-        theme: "dark",
+        theme: "shaded",
         title: "A different theme forms an edge.",
         richText: simpleText(
           "starter-home-edge-copy",
-          "This Dark section keeps full padding on both sides of the join.",
+          "This Shaded section keeps full padding on both sides of the join and paints a brushed edge across it.",
         ),
       },
       {
@@ -417,24 +673,12 @@ export const starterDocuments = [
           {
             _key: "starter-nav-blog",
             _type: "navigationChildLink",
-            label: "Blog",
+            label: "News",
             description: "Article index",
             destination: {
               _type: "navigationDestination",
               kind: "internal",
               internal: ref("blogIndex"),
-              openInNewTab: false,
-            },
-          },
-          {
-            _key: "starter-nav-category",
-            _type: "navigationChildLink",
-            label: "Field Notes",
-            description: "Category archive",
-            destination: {
-              _type: "navigationDestination",
-              kind: "internal",
-              internal: ref("starter-category-notes"),
               openInNewTab: false,
             },
           },
@@ -480,7 +724,7 @@ export const starterDocuments = [
           {
             _key: "starter-footer-blog",
             _type: "footerLink",
-            label: "Blog",
+            label: "News",
             destination: {
               _type: "footerDestination",
               kind: "internal",
@@ -522,7 +766,9 @@ async function assertDatasetIsEmpty(client) {
 }
 
 function assertOwnedDocument(document) {
-  const expectedType = STARTER_DOCUMENT_TYPES.get(document?._id);
+  const expectedType =
+    STARTER_DOCUMENT_TYPES.get(document?._id) ??
+    LEGACY_STARTER_DOCUMENT_TYPES.get(document?._id);
   if (!expectedType || document._type !== expectedType) return false;
   return (
     document._starterSeed?.name === STARTER_SEED.name &&
@@ -532,7 +778,10 @@ function assertOwnedDocument(document) {
 
 async function getStarterDocuments(client) {
   return client.fetch("*[_id in $ids]{_id,_type,_starterSeed}", {
-    ids: [...STARTER_DOCUMENT_TYPES.keys()],
+    ids: [
+      ...STARTER_DOCUMENT_TYPES.keys(),
+      ...LEGACY_STARTER_DOCUMENT_TYPES.keys(),
+    ],
   });
 }
 
@@ -553,6 +802,7 @@ async function assertOwnedSeedSet(client) {
       `Unseed refused: these IDs are not marked as Starter seed content: ${unsafe.map((document) => document._id).join(", ")}.`,
     );
   }
+  return documents;
 }
 
 export async function seed(client) {
@@ -577,15 +827,19 @@ export async function seed(client) {
 }
 
 export async function unseed(client) {
-  await assertOwnedSeedSet(client);
+  const documents = await assertOwnedSeedSet(client);
+  const legacyIds = documents
+    .map((document) => document._id)
+    .filter((id) => LEGACY_STARTER_DOCUMENT_TYPES.has(id));
   // Never delete replacement images uploaded by an editor.
   const assetIds = STARTER_ASSETS.map((asset) => asset.id);
+  const documentIds = [...STARTER_DOCUMENT_TYPES.keys(), ...legacyIds];
   let transaction = client.transaction();
-  for (const id of [...STARTER_DOCUMENT_TYPES.keys(), ...assetIds]) {
+  for (const id of [...documentIds, ...assetIds]) {
     transaction = transaction.delete(id);
   }
   await transaction.commit();
-  return { documents: STARTER_DOCUMENT_TYPES.size, assets: assetIds.length };
+  return { documents: documentIds.length, assets: assetIds.length };
 }
 
 async function main() {

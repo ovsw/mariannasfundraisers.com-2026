@@ -1,6 +1,6 @@
-# Next.js + Sanity Starter
+# Marianna's Fundraisers
 
-A reusable marketing website with a Next.js frontend and a separate Sanity Studio.
+The Marianna's Fundraisers Website (Next.js) and its separate Sanity Studio, built from the OVS Next.js + Sanity Starter.
 
 ## Own your copy
 
@@ -113,7 +113,7 @@ The seed is manual. It never runs during install, setup, development, build, or 
 
 Seeding needs a Sanity write token in `SANITY_AUTH_TOKEN`, either in the shell or in `studio/.env.local`.
 
-The sample content creates global settings, navigation, footer, the homepage, a normal `/about/` page, Blog settings, authors, categories, a Blog Post, FAQ, Team Member, Testimonial, relevant SEO values, and every retained Page Builder section. The homepage shows one live Scaffold and the About page archives one, so a seeded dataset fails the launch check on purpose. Use it to confirm Website rendering and Studio editing, then remove it before adding real project content:
+The sample content creates global settings, navigation, footer, the homepage, a normal `/about/` page, News settings, authors, a News post, FAQ, Team Member, Testimonial, relevant SEO values, and every retained Page Builder section. The homepage shows one live Scaffold and the About page archives one, so a seeded dataset fails the launch check on purpose. Use it to confirm Website rendering and Studio editing, then remove it before adding real project content:
 
 ```bash
 pnpm unseed
@@ -128,11 +128,11 @@ generation, previews, registration, and the Scaffold workflow. The current
 list of sections, with what each one is for, is in `docs/content-model.md`
 under "Section library".
 
-Pages accept nested slugs such as `about/our-team`. Blog routes stay reserved.
+Pages accept nested slugs such as `about/our-team`. News routes (`/news` and everything below it) stay reserved.
 SEO sharing always uses a generated branded card. The selected sharing photo
-appears inside the card. Posts fall back to their main image. Pages use a hero
-photo when a site adds `homeHero` or `innerHero` sections; this Starter has no
-hero sections. Without a photo, the card uses the logo and brand colour.
+appears inside the card. Posts fall back to their main image. Pages fall back
+to the photo of their Page banner. Without a photo, the card uses the logo and
+brand colour.
 
 ## Workspace commands
 
@@ -149,7 +149,12 @@ pnpm typecheck
 pnpm test
 pnpm build
 pnpm typegen
+pnpm storyblok:export
+pnpm storyblok:import
 ```
+
+`pnpm storyblok:export` and `pnpm storyblok:import` move the old site's
+Storyblok content into the dataset; see `docs/migration/import.md`.
 
 `pnpm verify` checks generated Sanity types, TypeScript, lint, focused tests,
 both production builds, and the Playwright acceptance journey. Playwright uses
