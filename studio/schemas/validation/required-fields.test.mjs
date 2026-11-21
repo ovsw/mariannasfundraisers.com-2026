@@ -77,6 +77,7 @@ const schema = createSchema({
         { name: "photoLeftAndText", type: "photoLeftAndText" },
         { name: "boxedPhotoRightAndText", type: "boxedPhotoRightAndText" },
         { name: "videoRightAndText", type: "videoRightAndText" },
+        { name: "boxedVideoLeftAndText", type: "boxedVideoLeftAndText" },
         { name: "imageAndIconList", type: "imageAndIconList" },
         { name: "latestNews", type: "latestNews" },
         { name: "cognitoForm", type: "cognitoForm" },
@@ -329,6 +330,16 @@ test("a video Section needs a link to one YouTube video", async () => {
     }),
     {},
   );
+  // The boxed video sections share the same fields and rules.
+  assert.deepEqual(
+    Object.keys(
+      await errors({
+        _type: "testHost",
+        boxedVideoLeftAndText: { _type: "boxedVideoLeftAndText", theme: "light", title: "How To", image },
+      }),
+    ),
+    ["boxedVideoLeftAndText.youTubeUrl"],
+  );
 });
 
 test("an Image and icon list needs items, each with an icon and a heading, but no heading of its own", async () => {
@@ -411,6 +422,8 @@ test("a news post needs a reading time in whole minutes and takes only post sect
       "badgeAndText",
       "videoLeftAndText",
       "videoRightAndText",
+      "boxedVideoLeftAndText",
+      "boxedVideoRightAndText",
       "imageAndIconList",
     ],
   );

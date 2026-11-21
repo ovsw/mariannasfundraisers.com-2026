@@ -11,6 +11,8 @@ import { cutoutRightAndTextQuery } from "./cutout-right-and-text";
 import { badgeAndTextQuery } from "./badge-and-text";
 import { videoLeftAndTextQuery } from "./video-left-and-text";
 import { videoRightAndTextQuery } from "./video-right-and-text";
+import { boxedVideoLeftAndTextQuery } from "./boxed-video-left-and-text";
+import { boxedVideoRightAndTextQuery } from "./boxed-video-right-and-text";
 import { imageAndIconListQuery } from "./image-and-icon-list";
 import { latestNewsQuery } from "./latest-news";
 import { cognitoFormQuery } from "./cognito-form";
@@ -43,6 +45,8 @@ export const pageBuilderQuery = `
     ${badgeAndTextQuery},
     ${videoLeftAndTextQuery},
     ${videoRightAndTextQuery},
+    ${boxedVideoLeftAndTextQuery},
+    ${boxedVideoRightAndTextQuery},
     ${imageAndIconListQuery},
     ${latestNewsQuery},
     ${cognitoFormQuery},

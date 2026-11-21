@@ -54,6 +54,8 @@ import cutoutRightAndText from "./schemas/blocks/cutout-right-and-text";
 import badgeAndText from "./schemas/blocks/badge-and-text";
 import videoLeftAndText from "./schemas/blocks/video-left-and-text";
 import videoRightAndText from "./schemas/blocks/video-right-and-text";
+import boxedVideoLeftAndText from "./schemas/blocks/boxed-video-left-and-text";
+import boxedVideoRightAndText from "./schemas/blocks/boxed-video-right-and-text";
 import imageAndIconList from "./schemas/blocks/image-and-icon-list";
 import latestNews from "./schemas/blocks/latest-news";
 import cognitoForm from "./schemas/blocks/cognito-form";
@@ -124,6 +126,8 @@ export const schemaTypes = [
   badgeAndText,
   videoLeftAndText,
   videoRightAndText,
+  boxedVideoLeftAndText,
+  boxedVideoRightAndText,
   imageAndIconList,
   latestNews,
   cognitoForm,

@@ -3,9 +3,9 @@ import { defineImageAndTextSection, youTubeUrlField } from "./shared/image-and-t
 
 export default defineImageAndTextSection({
   name: "videoRightAndText",
-  title: "Video right and text",
+  title: "Video right and text (to page edge)",
   description:
-    "A heading, text and buttons beside a YouTube video on the right, shown as its poster image with a play button.",
+    "A heading, text and buttons beside a YouTube video on the right, shown as its poster image with a play button and running out to the page edge.",
   icon: SquarePlayIcon,
   imageTitle: "Poster image",
   imageDescription:

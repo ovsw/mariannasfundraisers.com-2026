@@ -43,6 +43,8 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
       "badgeAndText",
       "videoLeftAndText",
       "videoRightAndText",
+      "boxedVideoLeftAndText",
+      "boxedVideoRightAndText",
       "imageAndIconList",
       "steps",
       "callToActionWithImage",

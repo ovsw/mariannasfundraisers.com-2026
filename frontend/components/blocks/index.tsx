@@ -28,6 +28,8 @@ import CutoutRightAndText, { hasCutoutRightAndTextContent } from "@/components/b
 import BadgeAndText, { hasBadgeAndTextContent } from "@/components/blocks/badge-and-text";
 import VideoLeftAndText, { hasVideoLeftAndTextContent } from "@/components/blocks/video-left-and-text";
 import VideoRightAndText, { hasVideoRightAndTextContent } from "@/components/blocks/video-right-and-text";
+import BoxedVideoLeftAndText, { hasBoxedVideoLeftAndTextContent } from "@/components/blocks/boxed-video-left-and-text";
+import BoxedVideoRightAndText, { hasBoxedVideoRightAndTextContent } from "@/components/blocks/boxed-video-right-and-text";
 import ImageAndIconList, { hasImageAndIconListContent } from "@/components/blocks/image-and-icon-list";
 import LatestNews, { hasLatestNewsContent } from "@/components/blocks/latest-news";
 import CognitoForm, { hasCognitoFormContent } from "@/components/blocks/cognito-form";
@@ -67,6 +69,8 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "badgeAndText",
   "videoLeftAndText",
   "videoRightAndText",
+  "boxedVideoLeftAndText",
+  "boxedVideoRightAndText",
   "imageAndIconList",
   "latestNews",
   "cognitoForm",
@@ -101,6 +105,8 @@ const componentMap: Partial<{
   badgeAndText: BadgeAndText,
   videoLeftAndText: VideoLeftAndText,
   videoRightAndText: VideoRightAndText,
+  boxedVideoLeftAndText: BoxedVideoLeftAndText,
+  boxedVideoRightAndText: BoxedVideoRightAndText,
   imageAndIconList: ImageAndIconList,
   latestNews: LatestNews,
   cognitoForm: CognitoForm,
@@ -295,6 +301,8 @@ function isRenderableBlock(block: Block) {
   if (block._type === "badgeAndText") return hasBadgeAndTextContent(block);
   if (block._type === "videoLeftAndText") return hasVideoLeftAndTextContent(block);
   if (block._type === "videoRightAndText") return hasVideoRightAndTextContent(block);
+  if (block._type === "boxedVideoLeftAndText") return hasBoxedVideoLeftAndTextContent(block);
+  if (block._type === "boxedVideoRightAndText") return hasBoxedVideoRightAndTextContent(block);
   if (block._type === "imageAndIconList") return hasImageAndIconListContent(block);
   if (block._type === "latestNews") return hasLatestNewsContent(block);
   if (block._type === "cognitoForm") return hasCognitoFormContent(block);

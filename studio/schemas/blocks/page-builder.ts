@@ -13,6 +13,8 @@ export const contentPageBuilderBlockTypes = [
   "badgeAndText",
   "videoLeftAndText",
   "videoRightAndText",
+  "boxedVideoLeftAndText",
+  "boxedVideoRightAndText",
   "imageAndIconList",
   "steps",
   "callToActionWithImage",
@@ -52,6 +54,8 @@ export const postPageBuilderBlockTypes = [
   "badgeAndText",
   "videoLeftAndText",
   "videoRightAndText",
+  "boxedVideoLeftAndText",
+  "boxedVideoRightAndText",
   "imageAndIconList",
 ] as const satisfies readonly (typeof contentPageBuilderBlockTypes)[number][];
 
@@ -82,6 +86,8 @@ const previewBlockTypes = new Set<string>([
   "badgeAndText",
   "videoLeftAndText",
   "videoRightAndText",
+  "boxedVideoLeftAndText",
+  "boxedVideoRightAndText",
   "imageAndIconList",
   "latestNews",
   "cognitoForm",

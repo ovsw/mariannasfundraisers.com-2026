@@ -351,6 +351,8 @@ export const starterDocuments = [
         ["badgeAndText", "shaded", "square"],
         ["videoLeftAndText", "light", "landscape"],
         ["videoRightAndText", "light", "landscape"],
+        ["boxedVideoLeftAndText", "light", "landscape"],
+        ["boxedVideoRightAndText", "light", "landscape"],
       ].map(([type, theme, image]) => ({
         _key: `starter-page-${type}`,
         _type: type,
@@ -361,7 +363,7 @@ export const starterDocuments = [
           `starter-page-${type}-copy`,
           "This tests one design of the image-and-text family.",
         ),
-        ...(type.startsWith("video")
+        ...(/^(boxedV|v)ideo/.test(type)
           ? { youTubeUrl: "https://youtu.be/Uil1c8p_jV0" }
           : {}),
         buttons: [

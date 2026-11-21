@@ -125,13 +125,20 @@ sits under the text. Each is available on every page.
 - `badgeAndText` (Badge and text). An image on the right, shown whole and
   kept short on phones, such as a logo, badge or product line-up, beside the
   text.
-- `videoLeftAndText` (Video left and text). A YouTube video on the left, drawn
-  as its poster image (the section's image, running to the page edge) with a
-  play button; it plays in a
+- `videoLeftAndText` (Video left and text (to page edge)). A YouTube video on
+  the left, drawn as its poster image (the section's image, running to the
+  page edge) with a play button; it plays in a
   window over the page once the visitor's privacy choice allows it. Takes one
   YouTube link (required) besides the shared fields.
-- `videoRightAndText` (Video right and text). The same with the video on the
-  right.
+- `videoRightAndText` (Video right and text (to page edge)). The same with the
+  video on the right.
+- `boxedVideoLeftAndText` (Video left and text (inside margins)). The same
+  video and fields, but the poster stays inside the page margins (half the
+  content width, rounded corners), as the boxed photo sections do. Use it for
+  a video that should sit in line with the page's text, as the old site's
+  "boxed" video rows did.
+- `boxedVideoRightAndText` (Video right and text (inside margins)). The same
+  with the video on the right.
 - `imageAndIconList` (Image and icon list). An illustration on the left, shown
   whole, beside one to three items, each an icon from the site's icon list, a
   heading and a few sentences (paragraphs with bold, italic and links). The

@@ -1,4 +1,4 @@
-// The renderer the eight image-and-text sections share (spec decision 12,
+// The renderer the image-and-text sections share (spec decision 12,
 // issue #15): the old "big image" row. Each section passes its own design,
 // the side its image sits on and how the image fills its frame; no field
 // chooses them.
@@ -36,6 +36,8 @@ export type ImageAndTextType =
   | "badgeAndText"
   | "videoLeftAndText"
   | "videoRightAndText"
+  | "boxedVideoLeftAndText"
+  | "boxedVideoRightAndText"
   | "imageAndIconList";
 
 export type ImageAndTextBlock = Extract<PageBlock, { _type: ImageAndTextType }>;
@@ -52,10 +54,11 @@ export type ImageAndTextProps<T extends ImageAndTextType> = Extract<
  * to the page edge; `boxedPhoto` fills its frame and is cropped too, but stays
  * inside the content box; `cutout` is shown whole inside the content box; `badge`
  * is a cut-out with a shorter frame on phones; `video` is a photo used as the
- * poster of a YouTube video.
+ * poster of a YouTube video, out to the page edge; `boxedVideo` is the same
+ * poster kept inside the content box.
  */
 export type ImageAndTextDesign = {
-  media: "photo" | "boxedPhoto" | "cutout" | "badge" | "video";
+  media: "photo" | "boxedPhoto" | "cutout" | "badge" | "video" | "boxedVideo";
   side: "left" | "right";
 };
 
@@ -78,12 +81,28 @@ function hasTextContent(block: Pick<ImageAndTextBlock, "eyebrow" | "title" | "ri
 // The Page Builder excludes sections without content from visible adjacency.
 // Keep this rule aligned with the renderer's empty result below: the image,
 // plus the text (or, for the icon list, an item), plus a video's link.
+const videoTypes = new Set<ImageAndTextType>([
+  "videoLeftAndText",
+  "videoRightAndText",
+  "boxedVideoLeftAndText",
+  "boxedVideoRightAndText",
+]);
+
+type VideoBlock = Extract<
+  ImageAndTextBlock,
+  { _type: "videoLeftAndText" | "videoRightAndText" | "boxedVideoLeftAndText" | "boxedVideoRightAndText" }
+>;
+
+function isVideoBlock(block: ImageAndTextBlock): block is VideoBlock {
+  return videoTypes.has(block._type);
+}
+
 export function hasImageAndTextContent(block: ImageAndTextBlock) {
   if (!block.image?.asset?.url) return false;
   if (block._type === "imageAndIconList") {
     return (block.items ?? []).some(hasItemContent);
   }
-  if (block._type === "videoLeftAndText" || block._type === "videoRightAndText") {
+  if (isVideoBlock(block)) {
     if (!youTubeVideoId(stegaClean(block.youTubeUrl))) return false;
   }
   return hasTextContent(block);
@@ -146,15 +165,13 @@ export function ImageAndText({
   const visibleButtons = (buttons ?? []).filter(hasSiteButtonContent);
   const items =
     block._type === "imageAndIconList" ? (block.items ?? []).filter(hasItemContent) : [];
-  const videoId =
-    block._type === "videoLeftAndText" || block._type === "videoRightAndText"
-      ? youTubeVideoId(stegaClean(block.youTubeUrl))
-      : null;
-  const cover = design.media === "photo" || design.media === "boxedPhoto" || design.media === "video";
+  const videoId = isVideoBlock(block) ? youTubeVideoId(stegaClean(block.youTubeUrl)) : null;
+  const isVideo = design.media === "video" || design.media === "boxedVideo";
+  const cover = design.media === "photo" || design.media === "boxedPhoto" || isVideo;
   // The old row drew a photo or a video poster out to the page edge, and a
-  // cut-out or badge inside the content box. Its "boxed" photo filled the
-  // half of the content box instead (640px wide at full width, rounded
-  // corners), like a cut-out's frame but cropped to fill it.
+  // cut-out or badge inside the content box. Its "boxed" photo or video
+  // poster filled the half of the content box instead (640px wide at full
+  // width, rounded corners), like a cut-out's frame but cropped to fill it.
   const bleed = design.media === "photo" || design.media === "video";
   // The old row's "extra padding": the text sits 3.5rem inside the image's
   // top and bottom edges. The old feature rows (the icon list) had none, so
@@ -296,7 +313,7 @@ export function ImageAndText({
                 design.media === "badge" ? "h-80 md:h-96" : "aspect-square lg:aspect-auto",
               )}
             >
-              {design.media === "video" && videoId ? (
+              {isVideo && videoId ? (
                 <VideoPoster title={displayTitle || displayEyebrow || "Marianna’s Fundraisers video"} videoId={videoId}>
                   {picture}
                 </VideoPoster>
