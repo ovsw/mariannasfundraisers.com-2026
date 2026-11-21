@@ -97,11 +97,12 @@ export function savedCrop(crop: Crop | null | undefined) {
  * The hotspot as a CSS object position. Studio stores the hotspot against the
  * whole image, so it is moved into the cropped area the URL serves.
  */
-function objectPosition(
+export function objectPosition(
   hotspot: { x?: number | null; y?: number | null } | null | undefined,
   crop: ReturnType<typeof savedCrop>,
+  fallback = "50% 50%",
 ) {
-  if (hotspot?.x == null || hotspot?.y == null) return "50% 50%";
+  if (hotspot?.x == null || hotspot?.y == null) return fallback;
   const { top = 0, bottom = 0, left = 0, right = 0 } = crop ?? {};
   const within = (value: number, start: number, end: number) => {
     const size = 1 - start - end;

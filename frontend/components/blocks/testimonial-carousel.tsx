@@ -13,8 +13,11 @@ export default function TestimonialCarousel({
   heading: ReactNode;
   slides: { key: string; content: ReactNode }[];
 }) {
-  const [index, setIndex] = useState(0);
-  const last = slides.length - 1;
+  const [selected, setIndex] = useState(0);
+  const last = Math.max(0, slides.length - 1);
+  // The slides can change under a kept selection (a live preview edit); keep
+  // the shown quote in range.
+  const index = Math.min(selected, last);
   const buttonClass =
     "flex size-9 items-center justify-center rounded-full bg-card text-card-foreground shadow-sm transition-opacity disabled:opacity-40";
 
@@ -27,7 +30,7 @@ export default function TestimonialCarousel({
             <button
               className={buttonClass}
               disabled={index === 0}
-              onClick={() => setIndex((current) => Math.max(0, current - 1))}
+              onClick={() => setIndex(Math.max(0, index - 1))}
               type="button"
             >
               <ChevronLeftIcon aria-hidden="true" className="size-6" />
@@ -36,7 +39,7 @@ export default function TestimonialCarousel({
             <button
               className={buttonClass}
               disabled={index === last}
-              onClick={() => setIndex((current) => Math.min(last, current + 1))}
+              onClick={() => setIndex(Math.min(last, index + 1))}
               type="button"
             >
               <ChevronRightIcon aria-hidden="true" className="size-6" />

@@ -599,8 +599,15 @@ function headingGroupFields(blocks, section, context) {
 function headedColumn(blocks, context, sectionType) {
   const visible = visibleChildren(blocks, context);
   const headingBlock = visible.find((block) => block.component === "heading");
-  const holder = { _type: sectionType, title: headingBlock?.title?.trim() };
+  const heading = headingBlock?.title?.trim();
+  const holder = { _type: sectionType, title: heading };
   rowContent({ content: visible.filter((block) => block !== headingBlock) }, context, { section: holder });
+  // A heading group first in the rest of the column sets the holder's title;
+  // the column's own heading block stays the part's heading.
+  if (heading && holder.title !== heading) {
+    context.note("needs a hand", `the heading group "${holder.title}" inside a ${sectionType} column is not imported; the column keeps its heading "${heading}"`);
+    holder.title = heading;
+  }
   if (holder.eyebrow || holder.anchorId) context.note("needs a hand", `a heading group inside a ${sectionType} column is not imported`);
   return { heading: holder.title, richText: holder.richText, buttons: holder.buttons ?? [] };
 }
@@ -832,6 +839,10 @@ function pageSections(story, context, { post = false } = {}) {
         const key = index === 0 ? row._uid : `${row._uid}-${index + 1}`;
         if (post && !POST_SECTIONS.has(name)) {
           context.note("needs a hand", `the ${row.component} row would be a ${name} section, which a news post cannot hold; it is not imported`);
+          return;
+        }
+        if (name === "Menu teaser" && story.full_slug !== "home") {
+          context.note("needs a hand", `the ${row.component} row would be a Menu teaser section, which only the home page can hold; it is not imported`);
           return;
         }
         let built = null;

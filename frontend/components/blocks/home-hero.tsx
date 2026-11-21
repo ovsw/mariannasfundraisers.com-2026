@@ -8,6 +8,7 @@ import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import { SiteButton, hasSiteButtonContent } from "@/components/site-button";
 import { urlFor } from "@/sanity/lib/image";
 import { youTubeVideoId, youTubeWatchUrl } from "../../../shared/youtube";
+import { objectPosition, savedCrop } from "./image-and-text";
 import { resolveSectionTheme } from "./section-boundaries";
 import { SectionBrush } from "./section-brush";
 
@@ -57,11 +58,8 @@ export default function HomeHero({
 }: HomeHeroProps) {
   if (!image?.asset?.url || !hasHomeHeroContent({ image, title })) return null;
 
-  const hotspot = image.hotspot;
-  const objectPosition =
-    hotspot?.x != null && hotspot?.y != null
-      ? `${Math.round(hotspot.x * 100)}% ${Math.round(hotspot.y * 100)}%`
-      : "70% 50%";
+  const crop = savedCrop(image.crop);
+  const position = objectPosition(image.hotspot, crop, "70% 50%");
   const displayHeading = stegaClean(heading)?.trim();
   const videoButton = homeHeroVideoButton(youTubeUrl);
   const visibleButtons = [
@@ -83,8 +81,8 @@ export default function HomeHero({
         placeholder={image.asset.metadata?.lqip ? "blur" : undefined}
         preload
         sizes="100vw"
-        src={urlFor({ asset: image.asset }).width(2400).fit("max").url()}
-        style={{ objectPosition }}
+        src={urlFor({ asset: image.asset, crop }).width(2400).fit("max").url()}
+        style={{ objectPosition: position }}
       />
       <div className="container">
         <div className="max-w-xl space-y-6 text-primary-foreground lg:max-w-2xl">
