@@ -3,8 +3,9 @@ import { defineImageAndTextSection } from "./shared/image-and-text";
 
 export default defineImageAndTextSection({
   name: "photoRightAndText",
-  title: "Photo right and text",
-  description: "A heading, text and buttons beside a photo on the right, cropped to fill its frame.",
+  title: "Photo right and text (to page edge)",
+  description:
+    "A heading, text and buttons beside a photo on the right, running out to the page edge and cropped to fill its frame.",
   icon: PanelRightIcon,
   imageTitle: "Photo",
   imageDescription:

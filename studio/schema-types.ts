@@ -47,6 +47,8 @@ import pageBanner from "./schemas/blocks/page-banner";
 import pageHeading from "./schemas/blocks/page-heading";
 import photoLeftAndText from "./schemas/blocks/photo-left-and-text";
 import photoRightAndText from "./schemas/blocks/photo-right-and-text";
+import boxedPhotoLeftAndText from "./schemas/blocks/boxed-photo-left-and-text";
+import boxedPhotoRightAndText from "./schemas/blocks/boxed-photo-right-and-text";
 import cutoutLeftAndText from "./schemas/blocks/cutout-left-and-text";
 import cutoutRightAndText from "./schemas/blocks/cutout-right-and-text";
 import badgeAndText from "./schemas/blocks/badge-and-text";
@@ -115,6 +117,8 @@ export const schemaTypes = [
   pageHeading,
   photoLeftAndText,
   photoRightAndText,
+  boxedPhotoLeftAndText,
+  boxedPhotoRightAndText,
   cutoutLeftAndText,
   cutoutRightAndText,
   badgeAndText,

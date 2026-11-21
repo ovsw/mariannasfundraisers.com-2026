@@ -3,14 +3,10 @@
 import type { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
 import { PortableText, type PortableTextProps } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
-import Image from "next/image";
 import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import { SiteButton, hasSiteButtonContent } from "@/components/site-button";
-import { urlFor } from "@/sanity/lib/image";
 import { youTubeVideoId, youTubeWatchUrl } from "../../../shared/youtube";
-import { objectPosition, savedCrop } from "./image-and-text";
-import { resolveSectionTheme } from "./section-boundaries";
-import { SectionBrush } from "./section-brush";
+import { HeroPanel, heroTitleClassName } from "./page-banner";
 
 type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
@@ -44,8 +40,10 @@ export function homeHeroVideoButton(youTubeUrl: string | null | undefined) {
 }
 
 // A hero: the Page Builder treats it as themeless, so it never shares a band
-// and nothing is drawn next to it. It draws its own brushed edge at its foot,
-// rising into the photo in the colour of its theme (the section below it).
+// and nothing is drawn next to it. It draws the old hero frame (`HeroPanel`):
+// a band in the colour of its theme (the section below it), the photo in a
+// panel at most 1600px wide, the brushed edge rising into its foot. The old
+// home hero stood 35vh tall on a phone and 60vh from the md breakpoint.
 export default function HomeHero({
   buttons,
   dataAttribute,
@@ -58,8 +56,6 @@ export default function HomeHero({
 }: HomeHeroProps) {
   if (!image?.asset?.url || !hasHomeHeroContent({ image, title })) return null;
 
-  const crop = savedCrop(image.crop);
-  const position = objectPosition(image.hotspot, crop, "70% 50%");
   const displayHeading = stegaClean(heading)?.trim();
   const videoButton = homeHeroVideoButton(youTubeUrl);
   const visibleButtons = [
@@ -68,61 +64,45 @@ export default function HomeHero({
   ];
 
   return (
-    <section
-      className="relative isolate flex min-h-[clamp(26rem,52vw,43rem)] items-center overflow-hidden bg-scrim pt-12 pb-24 md:pb-28"
-      data-sanity={dataAttribute?.("theme")}
+    <HeroPanel
+      contentClassName="min-h-[35vh] py-12 md:min-h-[60vh]"
+      dataAttribute={dataAttribute}
+      image={image}
+      // A phone shows the text over the photo, so the photo is dimmed there.
+      imageClassName="opacity-60 md:opacity-100"
+      theme={theme}
     >
-      <Image
-        alt={stegaClean(image.alt) || ""}
-        blurDataURL={image.asset.metadata?.lqip || undefined}
-        className="-z-10 object-cover opacity-60 md:opacity-100"
-        data-sanity={dataAttribute?.("image")}
-        fill
-        placeholder={image.asset.metadata?.lqip ? "blur" : undefined}
-        preload
-        sizes="100vw"
-        src={urlFor({ asset: image.asset, crop }).width(2400).fit("max").url()}
-        style={{ objectPosition: position }}
-      />
-      <div className="container">
-        <div className="max-w-xl space-y-6 text-primary-foreground lg:max-w-2xl">
-          <h1
-            className="max-w-[12em] text-5xl leading-none font-extrabold tracking-tight drop-shadow-lg md:text-6xl xl:text-7xl"
-            data-sanity={dataAttribute?.("title")}
-          >
-            {title}
-          </h1>
-          {displayHeading ? (
-            <p
-              className="text-2xl font-bold drop-shadow-md md:text-3xl"
-              data-sanity={dataAttribute?.("heading")}
-            >
-              {heading}
-            </p>
-          ) : null}
-          {text?.length ? (
-            <div
-              className="max-w-md space-y-4 text-lg leading-relaxed drop-shadow-md lg:text-xl"
-              data-sanity={dataAttribute?.("text")}
-            >
-              <PortableText
-                components={simpleRichTextComponents}
-                value={text as PortableTextProps["value"]}
-              />
-            </div>
-          ) : null}
-          {visibleButtons.length ? (
-            <div className="flex flex-wrap gap-4 pt-4" data-sanity={dataAttribute?.("buttons")}>
-              {visibleButtons.map((button) => (
-                <SiteButton button={button} className="max-w-full text-center whitespace-normal" key={button._key} />
-              ))}
-            </div>
-          ) : null}
+      <h1 className={heroTitleClassName} data-sanity={dataAttribute?.("title")}>
+        {title}
+      </h1>
+      {displayHeading ? (
+        <p
+          className="mt-6 text-2xl font-bold md:text-3xl"
+          data-sanity={dataAttribute?.("heading")}
+        >
+          {heading}
+        </p>
+      ) : null}
+      {text?.length ? (
+        // The old hero's text: light stone grey, 20px from the lg breakpoint,
+        // at most 32rem wide.
+        <div
+          className="mt-6 space-y-4 text-base text-primary-foreground/90 md:max-w-[40%] lg:text-xl lg:leading-relaxed 2xl:max-w-lg"
+          data-sanity={dataAttribute?.("text")}
+        >
+          <PortableText
+            components={simpleRichTextComponents}
+            value={text as PortableTextProps["value"]}
+          />
         </div>
-      </div>
-      <div className="absolute inset-x-0 bottom-0">
-        <SectionBrush edge="top" theme={resolveSectionTheme(theme)} />
-      </div>
-    </section>
+      ) : null}
+      {visibleButtons.length ? (
+        <div className="mt-8 flex flex-wrap gap-4" data-sanity={dataAttribute?.("buttons")}>
+          {visibleButtons.map((button) => (
+            <SiteButton button={button} className="max-w-full text-center whitespace-normal" key={button._key} />
+          ))}
+        </div>
+      ) : null}
+    </HeroPanel>
   );
 }

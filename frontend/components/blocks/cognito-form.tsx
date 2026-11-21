@@ -37,6 +37,12 @@ export function hasCognitoFormContent(
 // The form is Cognito's own iframe (spec decision 15); Cognito's iframe script
 // sizes it to the form. These are the only third-party scripts the section
 // loads, and only on a page that holds a form.
+//
+// The old site gave the iframe the whole content box (max-w-7xl) and the
+// introduction sat above it, left-aligned with the page. Cognito centres its
+// form at about 800px inside the iframe, so a full-width iframe puts the
+// fields where the old site had them; a narrower iframe clips the form's
+// right edge.
 export default function CognitoForm({
   bottom = "outer",
   dataAttribute,
@@ -58,23 +64,21 @@ export default function CognitoForm({
       data-sanity={dataAttribute?.("theme")}
     >
       <div className="container">
-        <div className="mx-auto max-w-3xl">
-          {intro?.length ? (
-            <RichTextContent
-              className="mb-10"
-              dataSanity={dataAttribute?.("intro")}
-              value={intro as PortableTextProps["value"]}
-            />
-          ) : null}
-          <div data-sanity={dataAttribute?.("formId")}>
-            <iframe
-              allow="payment"
-              className="block w-full border-0"
-              height={600}
-              src={cognitoFormUrl(id)}
-              title={label}
-            />
-          </div>
+        {intro?.length ? (
+          <RichTextContent
+            className="mb-10 max-w-3xl"
+            dataSanity={dataAttribute?.("intro")}
+            value={intro as PortableTextProps["value"]}
+          />
+        ) : null}
+        <div data-sanity={dataAttribute?.("formId")}>
+          <iframe
+            allow="payment"
+            className="block w-full border-0"
+            height={600}
+            src={cognitoFormUrl(id)}
+            title={label}
+          />
         </div>
       </div>
       <Script src={COGNITO_IFRAME_SCRIPT_SRC} strategy="afterInteractive" />

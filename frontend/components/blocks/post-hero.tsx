@@ -27,15 +27,18 @@ export default function PostHero({ post, stega }: PostHeroProps) {
     : undefined;
 
   return (
+    // The old post header: an extra bold 56px green title, solid-leaded, in a
+    // column 715px wide (65 characters of its 20px text), 3rem above the
+    // author's photo and name.
     <header className="container py-10 md:pb-20">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-[44.6875rem]">
         <h1
-          className="typo-feature-heading font-bold text-emphasis"
+          className="text-[3.5rem] leading-none font-extrabold text-emphasis"
           data-sanity={postDataAttribute?.("title")}
         >
           {title}
         </h1>
-        <div className="mt-6 flex items-center gap-4">
+        <div className="mt-12 flex items-center gap-4">
           {author ? <AuthorPhoto author={author} size={80} stega={stega} /> : null}
           <div className="space-y-2 text-sm">
             {author?.name ? (

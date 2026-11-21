@@ -4,7 +4,7 @@
 // only when the visitor plays the video and their privacy choice allows it,
 // through the same consent rule as analytics (spec decision 17); otherwise
 // the button opens the privacy choices, as on the old site.
-import { PlayIcon, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { analyticsAllowed, PRIVACY_EVENT, readConsentState } from "@/lib/privacy/consent";
 import { youTubeEmbedUrl, youTubeWatchUrl } from "../../../shared/youtube";
@@ -24,6 +24,10 @@ export default function VideoPoster({
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [allowed, setAllowed] = useState(false);
+  // Until the privacy widget has answered, the poster reads "play video" as
+  // on the old site; it offers the privacy choices only once they are known
+  // to block the video.
+  const [consentKnown, setConsentKnown] = useState(false);
   const [open, setOpen] = useState(false);
   const [privacyUnavailable, setPrivacyUnavailable] = useState(false);
   // Set once the visitor tries to play without consent. A choice that can
@@ -32,7 +36,11 @@ export default function VideoPoster({
   const [asked, setAsked] = useState(false);
 
   useEffect(() => {
-    const update = () => setAllowed(analyticsAllowed(readConsentState()));
+    const update = () => {
+      const state = readConsentState();
+      setAllowed(analyticsAllowed(state));
+      setConsentKnown(state.ready);
+    };
     update();
     window.addEventListener(PRIVACY_EVENT, update);
     return () => window.removeEventListener(PRIVACY_EVENT, update);
@@ -71,13 +79,28 @@ export default function VideoPoster({
         type="button"
       >
         {children}
-        <span className="absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-2xl bg-scrim/40 text-lg text-primary-foreground drop-shadow-md">
-          <PlayIcon
-            aria-hidden="true"
-            className="size-28 rounded-full border-4 border-current p-5 transition-transform duration-200 group-hover:scale-110 md:size-36"
-          />
-          <span>{allowed ? "play video" : "Privacy choices for video"}</span>
-          <span className="sr-only">: {title}</span>
+        {/* The old poster: a 10rem outlined play circle over "play video",
+            growing by half on hover. */}
+        <span className="absolute inset-0 flex items-center justify-center rounded-2xl bg-scrim/40 text-primary-foreground">
+          <span className="flex flex-col items-center drop-shadow-md transition-transform duration-200 ease-in-out group-hover:scale-150">
+            <svg
+              aria-hidden="true"
+              className="size-40"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-lg">
+              {allowed || !consentKnown ? "play video" : "Privacy choices for video"}
+            </span>
+            <span className="sr-only">: {title}</span>
+          </span>
         </span>
       </button>
       {asked && !allowed ? (

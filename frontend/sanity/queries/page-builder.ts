@@ -4,6 +4,8 @@ import { pageBannerQuery } from "./page-banner";
 import { pageHeadingQuery } from "./page-heading";
 import { photoLeftAndTextQuery } from "./photo-left-and-text";
 import { photoRightAndTextQuery } from "./photo-right-and-text";
+import { boxedPhotoLeftAndTextQuery } from "./boxed-photo-left-and-text";
+import { boxedPhotoRightAndTextQuery } from "./boxed-photo-right-and-text";
 import { cutoutLeftAndTextQuery } from "./cutout-left-and-text";
 import { cutoutRightAndTextQuery } from "./cutout-right-and-text";
 import { badgeAndTextQuery } from "./badge-and-text";
@@ -34,6 +36,8 @@ export const pageBuilderQuery = `
     ${pageHeadingQuery},
     ${photoLeftAndTextQuery},
     ${photoRightAndTextQuery},
+    ${boxedPhotoLeftAndTextQuery},
+    ${boxedPhotoRightAndTextQuery},
     ${cutoutLeftAndTextQuery},
     ${cutoutRightAndTextQuery},
     ${badgeAndTextQuery},

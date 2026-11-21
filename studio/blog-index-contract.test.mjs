@@ -36,6 +36,8 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
       "pageHeading",
       "photoLeftAndText",
       "photoRightAndText",
+      "boxedPhotoLeftAndText",
+      "boxedPhotoRightAndText",
       "cutoutLeftAndText",
       "cutoutRightAndText",
       "badgeAndText",

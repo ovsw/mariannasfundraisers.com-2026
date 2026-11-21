@@ -344,6 +344,8 @@ export const starterDocuments = [
       ...[
         ["photoLeftAndText", "shaded", "landscape"],
         ["photoRightAndText", "shaded", "landscape"],
+        ["boxedPhotoLeftAndText", "light", "landscape"],
+        ["boxedPhotoRightAndText", "light", "landscape"],
         ["cutoutLeftAndText", "light", "square"],
         ["cutoutRightAndText", "light", "square"],
         ["badgeAndText", "shaded", "square"],

@@ -29,6 +29,8 @@ type PageBlock =
 export type ImageAndTextType =
   | "photoLeftAndText"
   | "photoRightAndText"
+  | "boxedPhotoLeftAndText"
+  | "boxedPhotoRightAndText"
   | "cutoutLeftAndText"
   | "cutoutRightAndText"
   | "badgeAndText"
@@ -46,12 +48,14 @@ export type ImageAndTextProps<T extends ImageAndTextType> = Extract<
 } & SectionSceneProps;
 
 /**
- * How a section draws its image: `photo` fills its frame and is cropped,
- * `cutout` is shown whole, `badge` is shown whole at a smaller size, `video`
- * fills its frame as the poster of a YouTube video.
+ * How a section draws its image: `photo` fills its frame and is cropped, out
+ * to the page edge; `boxedPhoto` fills its frame and is cropped too, but stays
+ * inside the content box; `cutout` is shown whole inside the content box; `badge`
+ * is a cut-out with a shorter frame on phones; `video` is a photo used as the
+ * poster of a YouTube video.
  */
 export type ImageAndTextDesign = {
-  media: "photo" | "cutout" | "badge" | "video";
+  media: "photo" | "boxedPhoto" | "cutout" | "badge" | "video";
   side: "left" | "right";
 };
 
@@ -146,7 +150,16 @@ export function ImageAndText({
     block._type === "videoLeftAndText" || block._type === "videoRightAndText"
       ? youTubeVideoId(stegaClean(block.youTubeUrl))
       : null;
-  const cover = design.media === "photo" || design.media === "video";
+  const cover = design.media === "photo" || design.media === "boxedPhoto" || design.media === "video";
+  // The old row drew a photo or a video poster out to the page edge, and a
+  // cut-out or badge inside the content box. Its "boxed" photo filled the
+  // half of the content box instead (640px wide at full width, rounded
+  // corners), like a cut-out's frame but cropped to fill it.
+  const bleed = design.media === "photo" || design.media === "video";
+  // The old row's "extra padding": the text sits 3.5rem inside the image's
+  // top and bottom edges. The old feature rows (the icon list) had none, so
+  // their image is exactly as tall as the text.
+  const roomy = block._type !== "imageAndIconList";
   const alt = stegaClean(image?.alt)?.trim() || "";
   const crop = savedCrop(image?.crop);
 
@@ -154,12 +167,12 @@ export function ImageAndText({
     <Image
       alt={alt}
       blurDataURL={asset.metadata?.lqip || undefined}
-      className={cn(cover ? "object-cover" : "object-contain", cover && "rounded-2xl")}
+      className={cn("rounded-2xl", cover ? "object-cover" : "object-contain")}
       data-sanity={dataAttribute?.("image")}
       fill
       placeholder={asset.metadata?.lqip ? "blur" : undefined}
       sizes="(min-width: 1024px) 50vw, 100vw"
-      src={urlFor({ asset, crop }).width(1600).fit("max").url()}
+      src={urlFor({ asset, crop }).width(1800).fit("max").url()}
       style={cover ? { objectPosition: objectPosition(image?.hotspot, crop) } : undefined}
     />
   );
@@ -169,96 +182,128 @@ export function ImageAndText({
       aria-labelledby={headingId}
       className={cn(
         sectionSceneClassName(resolveSectionTheme(theme), top, bottom),
+        // The old section padding: 2.5rem (5rem from sm) above, 5rem (9rem
+        // from sm) below. A seam keeps its own small padding.
+        top !== "seam" && "pt-10! sm:pt-20!",
+        bottom !== "seam" && "pb-20! sm:pb-36!",
+        // A photo running to the page edge never adds a horizontal scroll
+        // where the scrollbar takes part of 100vw.
+        bleed && "overflow-x-clip",
         anchor && "scroll-mt-28",
       )}
       data-sanity={dataAttribute?.("theme")}
       id={anchor || undefined}
     >
       <div className="container">
-        <div className="grid items-center gap-split lg:grid-cols-2">
+        {/* The old "big image" row: the text fills one half of the content
+            box and sets the row's height (at least 400px); the image is
+            drawn across the other half, from the row's top to its bottom.
+            On a phone the image is a square below the text. */}
+        <div className="relative">
           <div
             className={cn(
-              "mx-auto w-full min-w-0 max-w-prose space-y-10 wrap-break-word lg:max-w-lg",
-              design.side === "left" ? "lg:col-start-2 lg:ml-auto lg:mr-0" : "lg:col-start-1 lg:mr-auto lg:ml-0",
-              "lg:row-start-1",
+              "relative min-h-[400px] lg:grid lg:grid-cols-2",
+              roomy ? "px-4 pb-14 sm:px-6 sm:pt-14" : "px-5",
             )}
           >
-            {headingId ? (
-              <h2 className="text-emphasis" id={headingId}>
-                {displayEyebrow ? (
-                  <span
-                    className="block font-condensed text-[2.25rem] leading-none font-bold text-link italic md:text-[2.625rem]"
-                    data-sanity={dataAttribute?.("eyebrow")}
-                  >
-                    {eyebrow}
-                  </span>
-                ) : null}
-                {displayTitle ? (
-                  <span
-                    className="block text-[2.875rem] leading-none font-bold md:text-[3.8125rem]"
-                    data-sanity={dataAttribute?.("title")}
-                  >
-                    {title}
-                  </span>
-                ) : null}
-              </h2>
-            ) : null}
-            {richText?.length ? (
-              <RichTextContent
-                className="prose-lg"
-                dataSanity={dataAttribute?.("richText")}
-                value={richText as PortableTextProps["value"]}
-              />
-            ) : null}
-            {items.length ? (
-              <ul className="space-y-10" data-sanity={dataAttribute?.("items")}>
-                {items.map((item) => (
-                  <li className="space-y-3" key={item._key}>
-                    <h3 className="flex items-center gap-4 text-2xl font-bold text-emphasis">
-                      <SiteIcon name={stegaClean(item.icon) as Parameters<typeof SiteIcon>[0]["name"]} />
-                      {item.heading}
-                    </h3>
-                    {item.text?.length ? (
-                      <div className="space-y-4 text-lg text-muted-foreground">
-                        <PortableText
-                          components={simpleRichTextComponents}
-                          value={item.text as PortableTextProps["value"]}
-                        />
-                      </div>
+            <div className={design.side === "left" ? "lg:col-start-2 lg:pl-8" : "lg:pr-8"}>
+              <div
+                className={cn(
+                  "mx-auto w-full min-w-0 max-w-prose space-y-12 wrap-break-word lg:max-w-lg",
+                  design.side === "left" ? "lg:mr-0 lg:ml-auto" : "lg:mr-auto lg:ml-0",
+                )}
+              >
+                {headingId ? (
+                  <h2 className="text-emphasis" id={headingId}>
+                    {displayEyebrow ? (
+                      <span
+                        className="block font-condensed text-[2.25rem] leading-none font-bold text-link italic md:text-[2.625rem]"
+                        data-sanity={dataAttribute?.("eyebrow")}
+                      >
+                        {eyebrow}
+                      </span>
                     ) : null}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-            {visibleButtons.length ? (
-              <div className="flex flex-wrap gap-4" data-sanity={dataAttribute?.("buttons")}>
-                {visibleButtons.map((button) => (
-                  // A long label wraps instead of running past a phone's edge.
-                  <SiteButton
-                    button={button}
-                    className="max-w-full text-center whitespace-normal"
-                    key={button._key}
+                    {displayTitle ? (
+                      <span
+                        className="block text-[2.875rem] leading-none font-bold md:text-[3.8125rem]"
+                        data-sanity={dataAttribute?.("title")}
+                      >
+                        {title}
+                      </span>
+                    ) : null}
+                  </h2>
+                ) : null}
+                {richText?.length ? (
+                  <RichTextContent
+                    className="prose-base xl:prose-xl"
+                    dataSanity={dataAttribute?.("richText")}
+                    value={richText as PortableTextProps["value"]}
                   />
-                ))}
+                ) : null}
+                {items.length ? (
+                  <ul className="space-y-12" data-sanity={dataAttribute?.("items")}>
+                    {items.map((item) => (
+                      <li className="space-y-3" key={item._key}>
+                        <h3 className="flex items-center gap-4 text-2xl font-bold text-emphasis">
+                          <SiteIcon name={stegaClean(item.icon) as Parameters<typeof SiteIcon>[0]["name"]} />
+                          {item.heading}
+                        </h3>
+                        {item.text?.length ? (
+                          <div className="space-y-6 text-xl leading-[1.8] text-muted-foreground">
+                            <PortableText
+                              components={simpleRichTextComponents}
+                              value={item.text as PortableTextProps["value"]}
+                            />
+                          </div>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {visibleButtons.length ? (
+                  <div className="flex flex-wrap gap-4" data-sanity={dataAttribute?.("buttons")}>
+                    {visibleButtons.map((button) => (
+                      // A long label wraps instead of running past a phone's edge.
+                      <SiteButton
+                        button={button}
+                        className="max-w-full text-center whitespace-normal"
+                        key={button._key}
+                      />
+                    ))}
+                  </div>
+                ) : null}
               </div>
-            ) : null}
+            </div>
           </div>
           <div
             className={cn(
-              "relative w-full lg:row-start-1",
-              design.side === "left" ? "lg:col-start-1" : "lg:col-start-2",
-              design.media === "badge"
-                ? "h-80 md:h-96"
-                : "aspect-square lg:aspect-auto lg:h-full lg:min-h-[25rem]",
+              "pt-20 lg:absolute lg:inset-y-0 lg:pt-0",
+              design.side === "left" ? "lg:right-1/2" : "lg:left-1/2",
+              // Out to the page edge, keeping the old 2rem gutter below the
+              // 2xl breakpoint; otherwise the half of the content box.
+              bleed
+                ? design.side === "left"
+                  ? "lg:left-[calc(50%-50vw+2rem)] 2xl:left-[calc(50%-50vw)]"
+                  : "lg:right-[calc(50%-50vw+2rem)] 2xl:right-[calc(50%-50vw)]"
+                : design.side === "left"
+                  ? "lg:left-0"
+                  : "lg:right-0",
             )}
           >
-            {design.media === "video" && videoId ? (
-              <VideoPoster title={displayTitle || displayEyebrow || "Marianna’s Fundraisers video"} videoId={videoId}>
-                {picture}
-              </VideoPoster>
-            ) : (
-              picture
-            )}
+            <div
+              className={cn(
+                "relative w-full lg:h-full",
+                design.media === "badge" ? "h-80 md:h-96" : "aspect-square lg:aspect-auto",
+              )}
+            >
+              {design.media === "video" && videoId ? (
+                <VideoPoster title={displayTitle || displayEyebrow || "Marianna’s Fundraisers video"} videoId={videoId}>
+                  {picture}
+                </VideoPoster>
+              ) : (
+                picture
+              )}
+            </div>
           </div>
         </div>
       </div>

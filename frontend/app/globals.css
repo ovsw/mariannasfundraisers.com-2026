@@ -36,6 +36,7 @@
   --brand-line: #e7e5e4; /* hairlines on light grounds */
   --brand-line-strong: #a8a29e;
   --brand-muslin: #1d1d24; /* the average colour of the muslin texture */
+  --brand-yellow: #fce534; /* old tertiary-900: the footer's rule */
 }
 
 /* Job tokens (layer 2). The defaults are the Light section theme. */
@@ -347,6 +348,10 @@
 .section-scene-primary.footer-scene {
   --color-background: var(--brand-green-dark);
   --color-muted: var(--brand-green);
+  /* The old footer's light grey text (5:1 on the darker green) and its
+     yellow rule above the copyright line. */
+  --color-muted-foreground: var(--brand-grey-light);
+  --color-border: var(--brand-yellow);
 }
 .section-scene.section-scene-muslin {
   background-image: var(--muslin-image);

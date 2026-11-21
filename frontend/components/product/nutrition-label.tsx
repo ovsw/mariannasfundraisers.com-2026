@@ -48,7 +48,7 @@ export function NutritionLabel({
 }) {
   return (
     <div
-      className="mx-auto w-full max-w-sm border-2 border-card-foreground bg-card px-2 text-card-foreground"
+      className="mx-auto w-fit max-w-full border-2 border-card-foreground bg-card px-2 text-card-foreground"
       data-sanity={dataSanity}
     >
       <div className="border-t-[1.25rem] border-b-8 border-card-foreground pt-2 pb-3 font-bold">
@@ -58,13 +58,14 @@ export function NutritionLabel({
           <span className="text-5xl">{formatNumber(values.calories)}</span>
         </p>
       </div>
-      <table className="mb-3 w-full border-collapse font-sans text-lg">
+      {/* The old label set its table in the system sans, as printed labels are, sized to its contents. */}
+      <table className="mb-3 border-collapse font-[ui-sans-serif,system-ui,sans-serif] text-lg">
         <thead>
           <tr className="border-b border-card-foreground">
-            <th scope="col" className="text-left font-normal">
+            <th scope="col" className="px-px py-0.5 text-left font-normal">
               <span className="sr-only">Nutrient</span>
             </th>
-            <th scope="col" className="text-right font-bold">
+            <th scope="col" className="px-px py-0.5 text-right font-bold">
               % Daily Value*
             </th>
           </tr>
@@ -79,7 +80,7 @@ export function NutritionLabel({
               )}
               key={row.label}
             >
-              <th scope="row" className={cn("py-0.5 text-left font-normal", row.indent && "pl-5")}>
+              <th scope="row" className={cn("px-px py-0.5 text-left font-normal", row.indent && "pl-5")}>
                 {row.label === "Added Sugars" ? (
                   <>Includes {formatNumber(row.amount)}{row.unit} Added Sugars</>
                 ) : (
@@ -89,7 +90,7 @@ export function NutritionLabel({
                   </>
                 )}
               </th>
-              <td className="py-0.5 text-right">
+              <td className="px-px py-0.5 text-right">
                 {row.noDailyValue ? (
                   <span className="sr-only">no recommended daily value</span>
                 ) : (

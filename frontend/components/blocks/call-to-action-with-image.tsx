@@ -66,33 +66,39 @@ export default function CallToActionWithImage({
       data-sanity={dataAttribute?.("theme")}
     >
       <div className="relative container flex min-h-[290px] items-center justify-center lg:justify-start">
-        <div className="space-y-8 px-[4%] lg:max-w-[33rem] lg:px-1 xl:max-w-[39rem] min-[84rem]:max-w-[42rem] min-[84rem]:px-7">
-          <div className="space-y-4 text-center lg:text-left">
-            <h2
-              className="text-4xl leading-none font-bold text-emphasis md:text-5xl"
-              data-sanity={dataAttribute?.("title")}
-              id={headingId}
-            >
-              {title}
-            </h2>
-            {richText?.length ? (
-              <RichTextContent
-                className="prose-base xl:prose-xl"
-                dataSanity={dataAttribute?.("richText")}
-                value={richText as PortableTextProps["value"]}
-              />
+        {/* As on the old site, the text column is only as wide as its text
+            (up to its max width) and its 4% side padding is taken from that
+            width, inside it: a short title such as "Preparing a Fundraiser?"
+            breaks onto two lines there. */}
+        <div className="min-w-0">
+          <div className="space-y-8 px-[4%] lg:max-w-xl xl:max-w-2xl">
+            <div className="space-y-4 text-center lg:text-left">
+              <h2
+                className="text-5xl leading-none font-bold text-emphasis"
+                data-sanity={dataAttribute?.("title")}
+                id={headingId}
+              >
+                {title}
+              </h2>
+              {richText?.length ? (
+                <RichTextContent
+                  className="prose-base xl:prose-xl"
+                  dataSanity={dataAttribute?.("richText")}
+                  value={richText as PortableTextProps["value"]}
+                />
+              ) : null}
+            </div>
+            {visibleButtons.length ? (
+              <div
+                className="flex flex-wrap justify-center gap-4 lg:justify-start"
+                data-sanity={dataAttribute?.("buttons")}
+              >
+                {visibleButtons.map((button) => (
+                  <SiteButton button={button} className="max-w-full text-center whitespace-normal" key={button._key} />
+                ))}
+              </div>
             ) : null}
           </div>
-          {visibleButtons.length ? (
-            <div
-              className="flex flex-wrap justify-center gap-4 lg:justify-start"
-              data-sanity={dataAttribute?.("buttons")}
-            >
-              {visibleButtons.map((button) => (
-                <SiteButton button={button} className="max-w-full text-center whitespace-normal" key={button._key} />
-              ))}
-            </div>
-          ) : null}
         </div>
         <div className="absolute -top-44 right-6 -bottom-10 hidden aspect-square sm:-bottom-20 lg:block min-[1344px]:right-0">
           <Image

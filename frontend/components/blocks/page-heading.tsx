@@ -2,6 +2,7 @@ import type { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
 import { PortableText, type PortableTextProps } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
 import { simpleRichTextComponents } from "@/components/simple-rich-text";
+import { cn } from "@/lib/utils";
 import {
   resolveSectionTheme,
   sectionSceneClassName,
@@ -24,6 +25,12 @@ export function hasPageHeadingContent(block: Pick<PageHeadingBlock, "title">) {
   return Boolean(stegaClean(block.title)?.trim());
 }
 
+// The old page heading section: a large bold title centred across the content
+// box, with 2.5rem below it, over an introduction in large grey text at most
+// 65 characters wide. Under a hero it starts just below the hero's brushed
+// edge (8px, the title 20px further down), since the hero's frame already
+// holds the space; at the top of a page it starts 80px down. Its band ends
+// 40px below the text (56px below the lg breakpoint).
 export default function PageHeading({
   bottom = "outer",
   dataAttribute,
@@ -36,20 +43,25 @@ export default function PageHeading({
 
   return (
     <section
-      className={sectionSceneClassName(resolveSectionTheme(theme), top, bottom)}
+      className={cn(
+        sectionSceneClassName(resolveSectionTheme(theme), top, bottom),
+        top === "edge" && "pt-2!",
+        top === "outer" && "pt-20!",
+        bottom !== "seam" && "pb-14! lg:pb-10!",
+      )}
       data-sanity={dataAttribute?.("theme")}
     >
       <div className="container">
-        <header className="mx-auto max-w-3xl text-center">
+        <header className="text-center">
           <h1
-            className="typo-feature-heading text-emphasis"
+            className="mt-5 mb-10 text-[2.875rem] leading-none font-bold text-emphasis md:text-[3.8125rem]"
             data-sanity={dataAttribute?.("title")}
           >
             {title}
           </h1>
           {intro?.length ? (
             <div
-              className="mt-6 space-y-4 text-lg text-muted-foreground"
+              className="mx-auto max-w-[65ch] space-y-[1.2em] text-xl leading-[1.8] text-muted-foreground"
               data-sanity={dataAttribute?.("intro")}
             >
               <PortableText

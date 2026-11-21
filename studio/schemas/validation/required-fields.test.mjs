@@ -75,6 +75,7 @@ const schema = createSchema({
         { name: "pageHeading", type: "pageHeading" },
         { name: "pageBanner", type: "pageBanner" },
         { name: "photoLeftAndText", type: "photoLeftAndText" },
+        { name: "boxedPhotoRightAndText", type: "boxedPhotoRightAndText" },
         { name: "videoRightAndText", type: "videoRightAndText" },
         { name: "imageAndIconList", type: "imageAndIconList" },
         { name: "latestNews", type: "latestNews" },
@@ -296,6 +297,14 @@ test("an image-and-text Section needs its image and a heading or text", async ()
     }),
     {},
   );
+  // The boxed photo sections share the same fields and rules.
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      boxedPhotoRightAndText: { _type: "boxedPhotoRightAndText", theme: "light" },
+    }),
+    ["boxedPhotoRightAndText.image", "boxedPhotoRightAndText.richText"],
+  );
 });
 
 test("a video Section needs a link to one YouTube video", async () => {
@@ -395,6 +404,8 @@ test("a news post needs a reading time in whole minutes and takes only post sect
       "richTextBlock",
       "photoLeftAndText",
       "photoRightAndText",
+      "boxedPhotoLeftAndText",
+      "boxedPhotoRightAndText",
       "cutoutLeftAndText",
       "cutoutRightAndText",
       "badgeAndText",

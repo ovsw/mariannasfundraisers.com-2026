@@ -25,13 +25,12 @@ type HeadingTag = "h2" | "h3" | "h4" | "h5" | "h6";
 
 function createHeadingComponent(
   Tag: HeadingTag,
-  className: string,
   getHeadingId?: GetHeadingId,
 ): PortableTextBlockComponent {
   return function RichTextHeading({ children, value }) {
     return (
       <Tag
-        className={cn(className, getHeadingId && "scroll-mt-28")}
+        className={getHeadingId ? "scroll-mt-28" : undefined}
         id={getHeadingId?.(value)}
       >
         {children}
@@ -40,17 +39,16 @@ function createHeadingComponent(
   };
 }
 
+// Headings, paragraphs and lists take the typography plugin's own sizes and
+// spacing, as the old site's running text did; a caller sets the size with a
+// prose size class.
 function createRichTextHeadingComponents(getHeadingId?: GetHeadingId) {
   return {
-    h2: createHeadingComponent("h2", "mb-4 mt-12 first:mt-0", getHeadingId),
-    h3: createHeadingComponent("h3", "mb-4 mt-10 first:mt-0", getHeadingId),
-    h4: createHeadingComponent("h4", "mb-4 mt-8 first:mt-0", getHeadingId),
-    h5: createHeadingComponent("h5", "mb-4 mt-8 first:mt-0", getHeadingId),
-    h6: createHeadingComponent(
-      "h6",
-      "mb-4 mt-8 text-base font-semibold first:mt-0",
-      getHeadingId,
-    ),
+    h2: createHeadingComponent("h2", getHeadingId),
+    h3: createHeadingComponent("h3", getHeadingId),
+    h4: createHeadingComponent("h4", getHeadingId),
+    h5: createHeadingComponent("h5", getHeadingId),
+    h6: createHeadingComponent("h6", getHeadingId),
   };
 }
 
@@ -63,27 +61,17 @@ const headingTextId: GetHeadingId = (block) => {
 };
 
 const richTextBlockComponents = {
-  normal: ({ children }) => <p className="mb-4">{children}</p>,
+  normal: ({ children }) => <p>{children}</p>,
   ...createRichTextHeadingComponents(headingTextId),
-  blockquote: ({ children }) => (
-    <blockquote className="my-6 border-l-2 border-border pl-4 italic">
-      {children}
-    </blockquote>
-  ),
+  blockquote: ({ children }) => <blockquote>{children}</blockquote>,
   inline: ({ children }) => <span>{children}</span>,
 } satisfies RichTextBlockComponents;
 
 export const richTextContentComponents: PortableTextProps["components"] = {
   block: richTextBlockComponents,
   list: {
-    bullet: ({ children }) => (
-      <ul className="mb-4 list-outside list-disc space-y-2 pl-6">{children}</ul>
-    ),
-    number: ({ children }) => (
-      <ol className="mb-4 list-outside list-decimal space-y-2 pl-6">
-        {children}
-      </ol>
-    ),
+    bullet: ({ children }) => <ul>{children}</ul>,
+    number: ({ children }) => <ol>{children}</ol>,
   },
   marks: {
     customLink: CustomLinkMarkRenderer,
@@ -142,9 +130,12 @@ export const richTextContentComponents: PortableTextProps["components"] = {
       const [headerRow, ...bodyRows] = rows;
       if (!headerRow) return null;
 
+      // The old site's price table: a green block of white system-sans text,
+      // a bold header row and a thin rule above each body row. The same on
+      // every theme; on the Primary ground its rules carry it.
       return (
-        <div className="relative my-8 overflow-x-auto">
-          <table className="w-full text-left text-sm">
+        <div className="not-prose relative my-6 overflow-x-auto">
+          <table className="w-full border-collapse bg-secondary text-left font-[ui-sans-serif,system-ui,sans-serif] text-lg text-secondary-foreground">
             {value.title ? (
               <caption className="sr-only">{value.title}</caption>
             ) : null}
@@ -152,7 +143,7 @@ export const richTextContentComponents: PortableTextProps["components"] = {
               <tr>
                 {headerRow.cells.map((cell: string, index: number) => (
                   <th
-                    className="border border-border bg-muted px-4 py-3 font-semibold text-foreground"
+                    className="px-4 py-1 font-bold"
                     key={`${headerRow._key ?? "header"}-${index}`}
                     scope="col"
                   >
@@ -164,10 +155,13 @@ export const richTextContentComponents: PortableTextProps["components"] = {
             <tbody>
               {bodyRows.map(
                 (row: { _key?: string; cells: string[] }, rowIndex: number) => (
-                  <tr key={row._key ?? `row-${rowIndex}`}>
+                  <tr
+                    className="border-t border-border-strong"
+                    key={row._key ?? `row-${rowIndex}`}
+                  >
                     {row.cells.map((cell, cellIndex) => (
                       <td
-                        className="border border-border px-4 py-3 align-top"
+                        className="px-4 py-1"
                         key={`${row._key ?? rowIndex}-${cellIndex}`}
                       >
                         {cell}
@@ -222,7 +216,9 @@ export default function RichTextContent({
   return (
     <div
       className={cn(
-        "prose max-w-none prose-headings:tracking-tight prose-a:text-prose-link prose-p:text-muted-foreground prose-img:rounded-lg",
+        // The old running text: grey paragraphs and list items under ink
+        // headings, with ink links (see CustomLinkMarkRenderer).
+        "prose max-w-none prose-a:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-img:rounded-lg [&_li]:marker:text-border",
         className,
       )}
       data-sanity={dataSanity}

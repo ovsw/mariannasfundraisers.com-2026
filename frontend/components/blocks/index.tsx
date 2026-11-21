@@ -21,6 +21,8 @@ import PageBanner, { hasPageBannerContent } from "@/components/blocks/page-banne
 import PageHeading, { hasPageHeadingContent } from "@/components/blocks/page-heading";
 import PhotoLeftAndText, { hasPhotoLeftAndTextContent } from "@/components/blocks/photo-left-and-text";
 import PhotoRightAndText, { hasPhotoRightAndTextContent } from "@/components/blocks/photo-right-and-text";
+import BoxedPhotoLeftAndText, { hasBoxedPhotoLeftAndTextContent } from "@/components/blocks/boxed-photo-left-and-text";
+import BoxedPhotoRightAndText, { hasBoxedPhotoRightAndTextContent } from "@/components/blocks/boxed-photo-right-and-text";
 import CutoutLeftAndText, { hasCutoutLeftAndTextContent } from "@/components/blocks/cutout-left-and-text";
 import CutoutRightAndText, { hasCutoutRightAndTextContent } from "@/components/blocks/cutout-right-and-text";
 import BadgeAndText, { hasBadgeAndTextContent } from "@/components/blocks/badge-and-text";
@@ -58,6 +60,8 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "pageHeading",
   "photoLeftAndText",
   "photoRightAndText",
+  "boxedPhotoLeftAndText",
+  "boxedPhotoRightAndText",
   "cutoutLeftAndText",
   "cutoutRightAndText",
   "badgeAndText",
@@ -90,6 +94,8 @@ const componentMap: Partial<{
   pageHeading: PageHeading,
   photoLeftAndText: PhotoLeftAndText,
   photoRightAndText: PhotoRightAndText,
+  boxedPhotoLeftAndText: BoxedPhotoLeftAndText,
+  boxedPhotoRightAndText: BoxedPhotoRightAndText,
   cutoutLeftAndText: CutoutLeftAndText,
   cutoutRightAndText: CutoutRightAndText,
   badgeAndText: BadgeAndText,
@@ -282,6 +288,8 @@ function isRenderableBlock(block: Block) {
   if (block._type === "pageHeading") return hasPageHeadingContent(block);
   if (block._type === "photoLeftAndText") return hasPhotoLeftAndTextContent(block);
   if (block._type === "photoRightAndText") return hasPhotoRightAndTextContent(block);
+  if (block._type === "boxedPhotoLeftAndText") return hasBoxedPhotoLeftAndTextContent(block);
+  if (block._type === "boxedPhotoRightAndText") return hasBoxedPhotoRightAndTextContent(block);
   if (block._type === "cutoutLeftAndText") return hasCutoutLeftAndTextContent(block);
   if (block._type === "cutoutRightAndText") return hasCutoutRightAndTextContent(block);
   if (block._type === "badgeAndText") return hasBadgeAndTextContent(block);

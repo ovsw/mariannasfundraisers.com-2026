@@ -23,6 +23,7 @@ import { resolveSectionBrushes, SectionBrush } from "@/components/blocks/section
 import RichTextContent from "@/components/rich-text-content";
 import { SiteButton, hasSiteButtonContent } from "@/components/site-button";
 import { siteUrl } from "@/lib/site-url";
+import { cn } from "@/lib/utils";
 import { dataset, projectId } from "@/sanity/lib/env";
 import { urlFor } from "@/sanity/lib/image";
 import { hasVisibleRichText, ingredientsListHref, kindLinks, type Product } from "./model";
@@ -54,6 +55,8 @@ type Section = {
   theme: SectionTheme | null;
   straightTop?: boolean;
   straightBottom?: boolean;
+  /** Margin below the section (page background), as the old site spaced its product sections. */
+  spaceAfter?: string;
   render: (boundary: SceneBoundary) => ReactNode;
 };
 
@@ -63,47 +66,69 @@ function ProductHero({ product, edit }: { product: Product; edit: DataAttribute 
   const { heroButtons } = kindLinks(product.settings, product.kind);
   const buttons = heroButtons.filter(hasSiteButtonContent);
   const asset = product.heroImage?.asset;
+  const crop = savedCrop(product.heroImage?.crop);
+  // The photo keeps its own proportions; a saved crop changes them.
+  const dimensions = asset?.metadata?.dimensions;
+  const naturalWidth = dimensions?.width ?? 2407;
+  const naturalHeight = dimensions?.height ?? 1080;
+  const photoWidth = Math.round(naturalWidth * (crop ? 1 - crop.left - crop.right : 1));
+  const photoHeight = Math.round(naturalHeight * (crop ? 1 - crop.top - crop.bottom : 1));
   return (
-    <section className="product-hero section-scene-muslin relative isolate overflow-hidden text-foreground">
-      <div className="container grid items-center gap-10 py-12 md:py-16 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:py-0">
-        <div className="max-w-xl space-y-8 lg:py-20">
+    // The old site's design: a black band with the dark table photo behind the
+    // text. From the lg breakpoint the text sits in a column at the page's
+    // left edge (5rem in, 4rem from xl), centred top to bottom, and the
+    // product photo fills the other 69% of the width at 1400px wide (1800px
+    // from xl), running off the right edge, so the photo's height sets the
+    // band's height. When the window is too narrow for both, the text column
+    // keeps the width of its button row and the photo is cut on the right.
+    // Below lg the text comes first, on black with the table photo at its
+    // foot, and the photo follows at full width; on phones the buttons fill
+    // the width.
+    <section className="product-hero section-scene-muslin relative isolate overflow-hidden text-foreground max-lg:bg-none! lg:flex">
+      <div className="relative z-10 bg-(image:--product-hero-image) bg-size-[100%_auto] bg-bottom bg-no-repeat pb-8 sm:pb-16 md:pb-20 lg:flex lg:items-center lg:bg-cover lg:bg-right-bottom lg:pb-0">
+        <div className="mx-auto mt-10 max-w-xl px-4 sm:mt-12 sm:px-6 sm:text-center md:mt-16 lg:mt-0 lg:pr-0 lg:pl-20 lg:text-left xl:pl-16">
           <h1
-            className="text-4xl leading-tight font-extrabold tracking-tight text-emphasis sm:text-5xl md:text-6xl"
+            className="text-4xl font-extrabold tracking-tight text-emphasis sm:text-5xl md:text-6xl"
             data-sanity={edit("heroTitle")}
           >
             {product.heroTitle}
           </h1>
           {hasVisibleRichText(product.heroText) ? (
             <RichTextContent
-              className="prose-lg md:prose-xl"
+              className="mt-8 text-base! sm:mx-auto sm:mt-5 sm:text-lg! md:mt-10 md:text-xl! lg:mx-0"
               dataSanity={edit("heroText")}
               value={richText(product.heroText)}
             />
           ) : null}
           {buttons.length ? (
-            <div className="flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-5 lg:justify-start">
               {buttons.map((button) => (
-                <SiteButton button={button} className="max-w-full whitespace-normal" key={button._key} />
+                <SiteButton
+                  button={button}
+                  className="max-w-full justify-center whitespace-normal sm:whitespace-nowrap"
+                  key={button._key}
+                />
               ))}
             </div>
           ) : null}
         </div>
-        {asset?.url ? (
-          <div className="relative aspect-[16/9] w-full lg:aspect-auto lg:h-[min(40rem,45vw)]">
-            <Image
-              alt={stegaClean(product.heroImage?.alt)?.trim() || ""}
-              blurDataURL={asset.metadata?.lqip || undefined}
-              className="object-contain lg:object-right"
-              data-sanity={edit("heroImage")}
-              fill
-              placeholder={asset.metadata?.lqip ? "blur" : undefined}
-              preload
-              sizes="(min-width: 1024px) 60vw, 100vw"
-              src={urlFor({ asset, crop: savedCrop(product.heroImage?.crop) }).width(1800).fit("max").url()}
-            />
-          </div>
-        ) : null}
       </div>
+      {asset?.url ? (
+        <div className="relative z-20 lg:w-[69%] lg:shrink-0">
+          <Image
+            alt={stegaClean(product.heroImage?.alt)?.trim() || ""}
+            blurDataURL={asset.metadata?.lqip || undefined}
+            className="h-auto w-full max-w-none lg:w-[1400px] xl:w-[1800px]"
+            data-sanity={edit("heroImage")}
+            height={photoHeight}
+            placeholder={asset.metadata?.lqip ? "blur" : undefined}
+            preload
+            sizes="(min-width: 1280px) 1800px, (min-width: 1024px) 1400px, 100vw"
+            src={urlFor({ asset, crop }).width(1800).fit("max").url()}
+            width={photoWidth}
+          />
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -118,10 +143,17 @@ function NoteSection({
   edit: DataAttribute;
 }) {
   return (
-    <section className={sectionSceneClassName("light", boundary.top, boundary.bottom)}>
+    // The old site showed the note under the ingredients, in their section:
+    // one centred column of 65 characters, its text at 20px from xl.
+    <section
+      className={cn(
+        sectionSceneClassName("light", boundary.top, boundary.bottom),
+        boundary.bottom !== "seam" && "sm:pb-36!",
+      )}
+    >
       <div className="container">
         <RichTextContent
-          className="prose-lg mx-auto max-w-3xl"
+          className="prose-base mx-auto max-w-[65ch] xl:prose-xl"
           dataSanity={edit("note")}
           value={richText(product.note)}
         />
@@ -143,12 +175,19 @@ function NutritionSection({
   if (!facts) return null;
   const headingId = "nutrition-facts-title";
   return (
+    // The old site's design: 9rem above and below (2.5rem and 5rem on phones),
+    // two equal columns 3.5rem apart from md, the text at 20px from xl and the
+    // label centred in its column.
     <section
       aria-labelledby={headingId}
-      className={sectionSceneClassName("shaded", boundary.top, boundary.bottom)}
+      className={cn(
+        sectionSceneClassName("shaded", boundary.top, boundary.bottom),
+        boundary.top !== "seam" && "pt-10! sm:pt-36!",
+        boundary.bottom !== "seam" && "pb-20! sm:pb-36!",
+      )}
     >
-      <div className="container grid items-start gap-split lg:grid-cols-2">
-        <div className="mx-auto w-full max-w-prose space-y-8 lg:mx-0 lg:max-w-lg">
+      <div className="container flex flex-col gap-6 md:flex-row md:gap-14">
+        <div className="w-full space-y-10 md:w-1/2">
           <h2 className="text-emphasis" id={headingId}>
             <span
               className="block font-condensed text-[2.25rem] leading-none font-bold text-link italic md:text-[2.625rem]"
@@ -162,13 +201,13 @@ function NutritionSection({
           </h2>
           {hasVisibleRichText(facts.servingText) ? (
             <RichTextContent
-              className="prose-lg"
+              className="prose-base xl:prose-xl"
               dataSanity={edit("nutritionFacts.servingText")}
               value={richText(facts.servingText)}
             />
           ) : null}
         </div>
-        <div className="lg:pt-8">
+        <div className="w-full md:w-1/2 lg:pt-8">
           <NutritionLabel dataSanity={edit("nutritionFacts")} values={facts} />
         </div>
       </div>
@@ -282,6 +321,19 @@ export function ProductPage({ product, stega }: { product: Product; stega: boole
     });
   }
 
+  // The old site's white space above the nutrition facts: the ingredients
+  // section padded 5rem below (2.5rem on phones) and left 5rem (2.5rem) of
+  // page background under it, 10rem (5rem) in all. The image-and-text section
+  // already pads 9rem (5rem) below, so 1rem (none) is added. The note ends
+  // with its own 9rem, so it takes the full 5rem (2.5rem). Below the nutrition
+  // facts the old site left 1rem before the next section.
+  const nutritionIndex = sections.findIndex((section) => section.key === "nutrition");
+  if (nutritionIndex > 0) {
+    sections[nutritionIndex - 1].spaceAfter =
+      sections[nutritionIndex - 1].key === "note" ? "mb-10 sm:mb-20" : "sm:mb-4";
+    if (nutritionIndex < sections.length - 1) sections[nutritionIndex].spaceAfter = "mb-4";
+  }
+
   const boundaries = resolveSectionBoundaries(sections);
   const brushes = resolveSectionBrushes(sections);
 
@@ -300,7 +352,10 @@ export function ProductPage({ product, stega }: { product: Product; stega: boole
         const brush = brushes[index];
         const brushTheme = boundary.theme;
         return (
-          <div className={brushTheme && (brush.top || brush.bottom) ? "relative" : undefined} key={section.key}>
+          <div
+            className={cn(brushTheme && (brush.top || brush.bottom) && "relative", section.spaceAfter) || undefined}
+            key={section.key}
+          >
             {section.render(boundary)}
             {brushTheme && brush.top ? <SectionBrush edge="top" theme={brushTheme} /> : null}
             {brushTheme && brush.bottom ? <SectionBrush edge="bottom" theme={brushTheme} /> : null}

@@ -1,10 +1,10 @@
 // Numbered steps side by side, joined by a dotted path (spec decision 12,
 // issue #18): the old "How it Works" steps of the home page.
 import type { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
-import type { PortableTextProps } from "@portabletext/react";
+import { PortableText, type PortableTextProps } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
 import Image from "next/image";
-import RichTextContent from "@/components/rich-text-content";
+import { CustomLinkMarkRenderer } from "@/components/portable-text/custom-link-mark";
 import { urlFor } from "@/sanity/lib/image";
 import {
   resolveSectionTheme,
@@ -23,6 +23,30 @@ type StepItem = NonNullable<StepsBlock["items"]>[number];
 type StepsProps = StepsBlock & {
   dataAttribute?: (path: string) => string | undefined;
 } & SectionSceneProps;
+
+// The old step text: a short list of small grey lines, each after a red
+// bullet that hangs in the margin, with bold keywords.
+const stepTextComponents: PortableTextProps["components"] = {
+  block: {
+    normal: ({ children }) => <p>{children}</p>,
+  },
+  list: {
+    bullet: ({ children }) => <ul>{children}</ul>,
+    number: ({ children }) => <ol className="list-decimal pl-4">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }) => (
+      <li className="py-1 before:-ml-4 before:inline-block before:w-4 before:text-mark before:content-['•']">
+        {children}
+      </li>
+    ),
+    number: ({ children }) => <li className="py-1">{children}</li>,
+  },
+  marks: {
+    customLink: CustomLinkMarkRenderer,
+    strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+  },
+};
 
 function hasStepContent(item: StepItem) {
   return Boolean(item.image?.asset?.url && stegaClean(item.title)?.trim());
@@ -70,7 +94,7 @@ export default function Steps({
               />
             </svg>
           ) : null}
-          <ol className="relative grid gap-12 md:grid-cols-3 md:gap-8 lg:gap-16">
+          <ol className="relative grid gap-10 sm:gap-14 md:grid-cols-3 md:gap-5 lg:gap-20">
             {steps.map((step, index) => {
               const asset = step.image?.asset;
               if (!asset?.url) return null;
@@ -80,7 +104,8 @@ export default function Steps({
                 data-sanity={dataAttribute?.(`items[_key=="${step._key}"]`)}
                 key={step._key}
               >
-                <div className="relative mx-auto mb-8 size-24 md:size-40">
+                {/* The picture shows from md up, as on the old site. */}
+                <div className="relative mx-auto mb-8 hidden size-40 md:block">
                   <Image
                     alt={stegaClean(step.image?.alt)?.trim() || ""}
                     className="object-contain"
@@ -89,23 +114,25 @@ export default function Steps({
                     src={urlFor({ asset }).width(400).fit("max").url()}
                   />
                 </div>
-                <h3 className="flex items-start gap-4 text-2xl font-semibold text-foreground">
+                <h3 className="flex items-start text-3xl font-normal text-foreground">
                   <span
                     aria-hidden="true"
-                    className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-xl text-primary-foreground"
+                    className="mr-4 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-xl text-primary-foreground"
                   >
                     {index + 1}
                   </span>
-                  <span className="py-1">
+                  <span className="py-1 text-2xl lg:font-semibold">
                     <span className="sr-only">Step {index + 1}: </span>
                     {step.title}
                   </span>
                 </h3>
                 {step.text?.length ? (
-                  <RichTextContent
-                    className="pt-2 pl-14"
-                    value={step.text as PortableTextProps["value"]}
-                  />
+                  <div className="pt-2 pl-8 text-base text-muted-foreground">
+                    <PortableText
+                      components={stepTextComponents}
+                      value={step.text as PortableTextProps["value"]}
+                    />
+                  </div>
                 ) : null}
               </li>
               );

@@ -24,6 +24,7 @@ Component code never names them; it uses job tokens.
 | `--brand-ink` | `#363232` | text `base`: headings |
 | `--brand-grey` | `#707070` | text `body`: running text |
 | `--brand-grey-light` | `#D4D4D4` | running text on Muslin |
+| `--brand-yellow` | `#FCE534` | `tertiary-900` (the footer's rule) |
 | `--brand-line`, `--brand-line-strong` | `#E7E5E4`, `#A8A29E` | hairlines |
 | `--brand-muslin` | `#1D1D24` | the average colour of the muslin photo |
 | `--brand-white`, `--brand-black` | `#FFFFFF`, `#000000` | |
@@ -36,7 +37,10 @@ whose meaning is particular to this site:
 - `foreground` is ink (headings); `muted-foreground` is the grey of running
   text and descriptions.
 - `link` is red on light grounds: eyebrows, small accent text and links
-  outside running text. `prose-link` is green: links inside running text.
+  outside running text. Links inside running text are `foreground` (ink),
+  medium weight and underlined, as the old site drew them
+  (`frontend/components/portable-text/custom-link-mark.tsx`); the green
+  `prose-link` token is no longer used for them.
 - `emphasis` is green on light grounds: section headings and the emphasised
   phrase of a headline, as the old heading blocks drew them.
 - `primary` is red, the main action (the old `accent` button). `secondary`
@@ -111,6 +115,12 @@ into Muslin.
 - `brush` (the default): the old `section-brush-2` stroke rising from a
   section's top, and `section-brush-2b` hanging from its bottom. 1920 by 60
   units.
+- `hero`: the old hero divider, 1920 by 171 units, drawn by the Home hero
+  and the Page banner themselves (`HeroPanel` in
+  `frontend/components/blocks/page-banner.tsx`). A hero sits in a band of its
+  theme's colour with the photo in a panel at most 1600px wide; the stroke
+  rises 5rem into the photo's foot, 171px tall below the 2xl breakpoint and
+  as tall as its width keeps it above.
 - `menu`: the broad stroke the old site drew above its menu sections
   (`section-brush-menu`), mirrored for a bottom edge. 1920 by 128 units. A
   section type gets it by being listed in `sectionBrushShapes` in
@@ -164,13 +174,17 @@ The site shell (spec decisions 16 to 18) draws only Sanity data; see
 `docs/content-model.md`, "Shared content".
 
 - **Header** (`frontend/components/header/`): white and sticky, with the logo
-  for light backgrounds. Each dropdown opens a Primary-themed panel with the
+  for light backgrounds. Dropdown names are grey with a light grey chevron; the
+  direct links are dark. Each dropdown opens a white card centred under its
+  name (kept inside the window) with a Primary-themed panel holding the
   group's name and description (from the `xl` breakpoint) beside two columns of
-  links, each with its icon in green, bold label and description. The action
-  button is the old outlined green button. Below `lg`, the phone menu draws the
-  same groups as an accordion.
+  links, each a green icon over a bold label and description. The action
+  button is the old outlined green button. Below `lg`, the phone menu is a
+  white card with a green edge over the top of the page: the same groups as an
+  accordion, their links on red icon squares, then the button.
 - **Footer** (`frontend/components/footer/`): the Primary theme on the old
-  footer's darker green (`.footer-scene`), the logo for dark backgrounds, the
+  footer's darker green (`.footer-scene`, which also gives it the old light
+  grey text and the yellow rule), the logo for dark backgrounds, the
   DelGrosso kitchen badge (`public/images/delgrosso-badge.webp`, decorative),
   the phone number, the tagline and parent company, contact details, the
   privacy choices control, the white-with-red button, social icons, the link

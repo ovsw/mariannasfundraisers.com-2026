@@ -77,13 +77,14 @@ colour and an optional icon; see `docs/design.md`.
   links), up to two buttons, and an optional YouTube link that adds a "Watch
   the video" button opening the video on YouTube. The photo (required) sits
   behind the text, which stays on the left: set the hotspot on the part of the
-  photo that must stay in view. Its theme is the colour of the brushed edge at
-  its foot: choose the theme of the section below it. Use it as the first
-  section of the home page. Available on the home page.
-- `pageBanner` (Page banner). A full-width photo at the top of an inner page,
-  at one height, with an optional title over it. When it has a title, the
-  title is the page's main heading. Its theme is the colour of the brushed
-  edge at its foot: choose the theme of the section below it. Use it as the
+  photo that must stay in view. Its theme is the colour of the band the photo
+  sits in and of the brushed edge at its foot: choose the theme of the section
+  below it. Use it as the first section of the home page. Available on the home page.
+- `pageBanner` (Page banner). A wide photo at the top of an inner page, with
+  an optional title over it. When it has a title, the title is the page's
+  main heading, and the banner is shorter than one without a title. Its theme
+  is the colour of the band the photo sits in and of the brushed edge at its
+  foot: choose the theme of the section below it. Use it as the
   first section of a page. Available on pages, not the home page.
 - `pageHeading` (Page heading). The page's main heading, centred, with an
   optional short introduction (paragraphs with bold, italic and links). Use it
@@ -103,20 +104,30 @@ buttons, an image with alt text (required), and an optional Anchor ID
 frame: choose the section that has the design you want. On a phone the image
 sits under the text. Each is available on every page.
 
-- `photoLeftAndText` (Photo left and text). A photo on the left, cropped to
-  fill its frame (set the hotspot), beside the text. Use it for a real photo:
+- `photoLeftAndText` (Photo left and text (to page edge)). A photo on the
+  left, running out to the page edge and cropped to fill its frame (set the
+  hotspot), beside the text. Use it for a real photo:
   people, food, the kitchen.
-- `photoRightAndText` (Photo right and text). The same with the photo on the
-  right.
+- `photoRightAndText` (Photo right and text (to page edge)). The same with the
+  photo on the right.
+- `boxedPhotoLeftAndText` (Photo left and text (inside margins)). A photo on
+  the left, kept inside the page margins (half the content width, rounded
+  corners) and cropped to fill its frame (set the hotspot), beside the text.
+  Use it for a real photo that should sit in line with the page's text
+  rather than run to the edge, as the old site's "boxed" rows did.
+- `boxedPhotoRightAndText` (Photo right and text (inside margins)). The same
+  with the photo on the right.
 - `cutoutLeftAndText` (Cutout left and text). An illustration or cutout on the
   left, shown whole and never cropped, beside the text. Use it for drawings,
   product shots on a transparent background and document previews.
 - `cutoutRightAndText` (Cutout right and text). The same with the image on the
   right.
-- `badgeAndText` (Badge and text). A smaller image on the right, shown whole,
-  such as a logo, badge or product line-up, beside the text.
+- `badgeAndText` (Badge and text). An image on the right, shown whole and
+  kept short on phones, such as a logo, badge or product line-up, beside the
+  text.
 - `videoLeftAndText` (Video left and text). A YouTube video on the left, drawn
-  as its poster image (the section's image) with a play button; it plays in a
+  as its poster image (the section's image, running to the page edge) with a
+  play button; it plays in a
   window over the page once the visitor's privacy choice allows it. Takes one
   YouTube link (required) besides the shared fields.
 - `videoRightAndText` (Video right and text). The same with the video on the

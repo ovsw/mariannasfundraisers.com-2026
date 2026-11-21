@@ -60,31 +60,35 @@ export default function FaqList({
       data-sanity={dataAttribute?.("theme")}
     >
       <div className="container">
+        {/* The old site's FAQ: a bold centred heading over a 48rem list of
+            questions, a 2px rule above the list and hairlines between the
+            questions; an open question turns red and its answer is large
+            running text. */}
         <div className="mx-auto max-w-3xl">
           <h2
-            className="typo-section-heading text-center text-foreground"
+            className="text-center text-3xl font-bold text-foreground sm:text-5xl sm:leading-none"
             data-sanity={dataAttribute?.("title")}
             id={headingId}
           >
             {title}
           </h2>
           <Accordion
-            className="mt-10 border-t border-border"
+            className="mt-12 border-t-2 border-border"
             data-sanity={dataAttribute?.("faqs")}
             type="multiple"
           >
             {visibleFaqs.map((faq) => (
               <AccordionItem
-                className="border-border"
+                className="border-border pb-6"
                 key={faq._id}
                 value={faq._id}
               >
-                <AccordionTrigger className="items-center py-5 text-lg font-semibold text-foreground hover:no-underline data-[state=open]:text-emphasis">
+                <AccordionTrigger className="items-center gap-6 pt-6 pb-0 text-2xl font-semibold text-foreground hover:no-underline data-[state=open]:text-link/70 [&>svg]:size-6 [&>svg]:translate-y-0">
                   {faq.title}
                 </AccordionTrigger>
-                <AccordionContent className="pr-10">
+                <AccordionContent className="pt-2 pr-12 pb-0">
                   <RichTextContent
-                    className="prose-lg"
+                    className="max-w-[65ch] prose-xl"
                     value={faq.body as PortableTextProps["value"]}
                   />
                 </AccordionContent>
