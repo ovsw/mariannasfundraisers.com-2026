@@ -17,6 +17,11 @@ import { twoTextColumnsQuery } from "./two-text-columns";
 import { hoagieMenuQuery } from "./hoagie-menu";
 import { pizzaMenuQuery } from "./pizza-menu";
 import { salsaMenuQuery } from "./salsa-menu";
+import { homeHeroQuery } from "./home-hero";
+import { stepsQuery } from "./steps";
+import { menuTeaserQuery } from "./menu-teaser";
+import { callToActionWithImageQuery } from "./call-to-action-with-image";
+import { testimonialsQuery } from "./testimonials";
 // page-builder-generator:query-imports
 
 export const pageBuilderQuery = `
@@ -42,6 +47,11 @@ export const pageBuilderQuery = `
     ${hoagieMenuQuery},
     ${pizzaMenuQuery},
     ${salsaMenuQuery},
+    ${homeHeroQuery},
+    ${stepsQuery},
+    ${menuTeaserQuery},
+    ${callToActionWithImageQuery},
+    ${testimonialsQuery},
     ${"" /* page-builder-generator:query-spreads */}
   }
 `;

@@ -435,6 +435,50 @@ export const starterDocuments = [
           "This tests the introduction above a Cognito form.",
         ),
       },
+      {
+        _key: "starter-page-steps",
+        _type: "steps",
+        theme: "light",
+        items: ["First", "Second", "Third"].map((title) => ({
+          _key: `starter-page-step-${title.toLowerCase()}`,
+          _type: "stepItem",
+          image: placeholder("square"),
+          title: `${title} step`,
+          text: simpleText(
+            `starter-page-step-${title.toLowerCase()}-copy`,
+            "This tests the text of one step.",
+          ),
+        })),
+      },
+      {
+        _key: "starter-page-testimonials",
+        _type: "testimonials",
+        theme: "muslin",
+        eyebrow: "Quotes from our",
+        title: "Readers",
+        image: placeholder("square"),
+        testimonials: [
+          {
+            _key: "starter-page-testimonial-reader",
+            _type: "reference",
+            _ref: "starter-testimonial-reader",
+          },
+        ],
+      },
+      {
+        _key: "starter-page-callToActionWithImage",
+        _type: "callToActionWithImage",
+        theme: "shaded",
+        title: "This tests the closing call to action.",
+        richText: simpleText(
+          "starter-page-call-to-action-copy",
+          "A line of text under the heading.",
+        ),
+        buttons: [
+          button("starter-page-call-to-action-button", "Contact us", "starter-page-about"),
+        ],
+        image: placeholder("square"),
+      },
     ],
     // A replaced Scaffold lives here. The Website never renders this array.
     blocksArchive: [

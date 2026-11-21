@@ -34,6 +34,11 @@ import TwoTextColumns, { hasTwoTextColumnsContent } from "@/components/blocks/tw
 import HoagieMenu, { hasHoagieMenuContent } from "@/components/blocks/hoagie-menu";
 import PizzaMenu, { hasPizzaMenuContent } from "@/components/blocks/pizza-menu";
 import SalsaMenu, { hasSalsaMenuContent } from "@/components/blocks/salsa-menu";
+import HomeHero, { hasHomeHeroContent } from "@/components/blocks/home-hero";
+import Steps, { hasStepsContent } from "@/components/blocks/steps";
+import MenuTeaser, { hasMenuTeaserContent } from "@/components/blocks/menu-teaser";
+import CallToActionWithImage, { hasCallToActionWithImageContent } from "@/components/blocks/call-to-action-with-image";
+import Testimonials, { hasTestimonialsContent } from "@/components/blocks/testimonials";
 // page-builder-generator:component-imports
 import { dataset, projectId } from "@/sanity/lib/env";
 
@@ -66,6 +71,11 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "hoagieMenu",
   "pizzaMenu",
   "salsaMenu",
+  "homeHero",
+  "steps",
+  "menuTeaser",
+  "callToActionWithImage",
+  "testimonials",
   // page-builder-generator:editing-types
 ]);
 
@@ -93,6 +103,11 @@ const componentMap: Partial<{
   hoagieMenu: HoagieMenu,
   pizzaMenu: PizzaMenu,
   salsaMenu: SalsaMenu,
+  homeHero: HomeHero,
+  steps: Steps,
+  menuTeaser: MenuTeaser,
+  callToActionWithImage: CallToActionWithImage,
+  testimonials: Testimonials,
   // page-builder-generator:component-map
 };
 
@@ -110,7 +125,7 @@ const sectionBrushShapes: Partial<Record<Block["_type"], SectionBrushShape>> =
 // Heroes draw their own edge. Their theme picks that edge's colour, not a
 // background, so the Page Builder treats them as themeless: they never share
 // a band and nothing is drawn next to them.
-const selfEdgedBlockTypes = new Set<Block["_type"]>(["pageBanner"]);
+const selfEdgedBlockTypes = new Set<Block["_type"]>(["pageBanner", "homeHero"]);
 
 export default function Blocks({
   blocks,
@@ -267,6 +282,11 @@ function isRenderableBlock(block: Block) {
   if (block._type === "hoagieMenu") return hasHoagieMenuContent(block);
   if (block._type === "pizzaMenu") return hasPizzaMenuContent(block);
   if (block._type === "salsaMenu") return hasSalsaMenuContent(block);
+  if (block._type === "homeHero") return hasHomeHeroContent(block);
+  if (block._type === "steps") return hasStepsContent(block);
+  if (block._type === "menuTeaser") return hasMenuTeaserContent(block);
+  if (block._type === "callToActionWithImage") return hasCallToActionWithImageContent(block);
+  if (block._type === "testimonials") return hasTestimonialsContent(block);
   // page-builder-generator:visible-blocks
   return true;
 }

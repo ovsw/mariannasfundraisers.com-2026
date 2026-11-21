@@ -14,6 +14,7 @@
     "post": 18,
     "redirect": 5,
     "faq": 14,
+    "testimonial": 3,
     "product": 16,
     "productPageSettings": 1,
     "settings": 1,
@@ -34,8 +35,12 @@
     "badgeAndText": 2,
     "salsaMenu": 2,
     "faqList": 2,
-    "scaffold": 6,
+    "homeHero": 1,
+    "steps": 1,
     "videoRightAndText": 4,
+    "menuTeaser": 1,
+    "callToActionWithImage": 2,
+    "testimonials": 1,
     "latestNews": 1,
     "imageAndIconList": 6,
     "videoLeftAndText": 3,
@@ -43,13 +48,7 @@
     "hoagieMenu": 1,
     "pizzaMenu": 1
   },
-  "scaffolds": {
-    "Home hero": 1,
-    "Steps": 1,
-    "Menu teaser": 1,
-    "Call to action with image": 2,
-    "Testimonials": 1
-  },
+  "scaffolds": {},
   "skipped": [
     {
       "story": "/privacy-policy",

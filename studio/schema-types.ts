@@ -60,6 +60,11 @@ import twoTextColumns from "./schemas/blocks/two-text-columns";
 import hoagieMenu from "./schemas/blocks/hoagie-menu";
 import pizzaMenu from "./schemas/blocks/pizza-menu";
 import salsaMenu from "./schemas/blocks/salsa-menu";
+import homeHero from "./schemas/blocks/home-hero";
+import steps, { stepItem } from "./schemas/blocks/steps";
+import menuTeaser, { menuTeaserItem } from "./schemas/blocks/menu-teaser";
+import callToActionWithImage from "./schemas/blocks/call-to-action-with-image";
+import testimonials from "./schemas/blocks/testimonials";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -99,6 +104,8 @@ export const schemaTypes = [
   richTextContent,
   simpleRichText,
   iconListItem,
+  stepItem,
+  menuTeaserItem,
   blogPostSidebarAction,
   blogPostSidebar,
   // blocks
@@ -121,5 +128,10 @@ export const schemaTypes = [
   hoagieMenu,
   pizzaMenu,
   salsaMenu,
+  homeHero,
+  steps,
+  menuTeaser,
+  callToActionWithImage,
+  testimonials,
   // page-builder-generator:block-types
 ];

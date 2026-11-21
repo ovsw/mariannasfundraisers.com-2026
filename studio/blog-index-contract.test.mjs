@@ -42,6 +42,9 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
       "videoLeftAndText",
       "videoRightAndText",
       "imageAndIconList",
+      "steps",
+      "callToActionWithImage",
+      "testimonials",
     ],
   );
   assert.equal(

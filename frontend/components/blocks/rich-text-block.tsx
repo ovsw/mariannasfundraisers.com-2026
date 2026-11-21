@@ -90,7 +90,12 @@ export default function RichTextBlock({
             data-sanity={dataAttribute?.("buttons")}
           >
             {visibleButtons.map((button) => (
-              <SiteButton button={button} key={button._key} />
+              // A long label wraps instead of running past a phone's edge.
+              <SiteButton
+                button={button}
+                className="max-w-full text-center whitespace-normal"
+                key={button._key}
+              />
             ))}
           </div>
         ) : null}

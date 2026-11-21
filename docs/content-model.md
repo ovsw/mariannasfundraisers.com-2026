@@ -71,6 +71,15 @@ the only look setting is `theme` (Light, Shaded, Muslin or Primary
 background) where a section has one. A button inside a section also has a
 colour and an optional icon; see `docs/design.md`.
 
+- `homeHero` (Home hero). The top of the home page: a full-width photo with a
+  large title (required; the page's main heading), an optional smaller
+  heading under it, an optional short text (paragraphs with bold, italic and
+  links), up to two buttons, and an optional YouTube link that adds a "Watch
+  the video" button opening the video on YouTube. The photo (required) sits
+  behind the text, which stays on the left: set the hotspot on the part of the
+  photo that must stay in view. Its theme is the colour of the brushed edge at
+  its foot: choose the theme of the section below it. Use it as the first
+  section of the home page. Available on the home page.
 - `pageBanner` (Page banner). A full-width photo at the top of an inner page,
   at one height, with an optional title over it. When it has a title, the
   title is the page's main heading. Its theme is the colour of the brushed
@@ -139,6 +148,32 @@ sits under the text. Each is available on every page.
   chosen: the section always shows the newest. With no published posts it
   shows nothing. Use it once, near the end of the home page. Available on the
   home page.
+- `steps` (Steps). One to three numbered steps side by side, joined by a
+  dotted path; on a phone they stack. Each step has a square picture shown
+  whole (required), a title shown after its number (required) and optional
+  text (a few lines or a short list). The section has no heading of its own:
+  put a Rich Text section with the heading above it. Use it for a short
+  process, as "How it Works" on the home page. Available on every page.
+- `menuTeaser` (Menu teaser). A heading (required) with an optional eyebrow
+  and introduction (paragraphs with bold, italic and links), over exactly two
+  parts. Each part is a large cut-out food photo shown whole (required) beside
+  a heading (required), optional text and up to two buttons. The first part
+  has its photo on the right, the second on the left; on a phone the photo
+  sits above its text. Use it once on the home page to lead to the hoagie and
+  pizza menus. Available on the home page.
+- `callToActionWithImage` (Call to action with image). A heading (required),
+  an optional line of text and up to two buttons beside a cut-out photo
+  (required, shown whole) that stands out of the block's top. Use it as a
+  page's one closing call to action, as on the home page and How it Works.
+  The product pages draw the same design from Product Page Settings.
+  Available on every page.
+- `testimonials` (Testimonials). A heading (required) with an optional
+  eyebrow, over customer quotes shown one at a time, with
+  previous and next buttons beside the heading, and a cut-out photo of a
+  person (required, shown whole) on the right on wide screens. The quotes are
+  `testimonial` records (a name, an optional place or role, and the quote),
+  picked in the order they are shown, so a quote used twice is edited once.
+  Use it once on a page. Available on every page.
 
 The three menus list products. Each holds an ordered list of references to
 products of its kind and draws each product's menu card (short name, short
