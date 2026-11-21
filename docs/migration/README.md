@@ -16,6 +16,9 @@ screenshots: Ovi gives the visual verdict.
 | `seed/authors/` | The four author photos from the old code. | The importer (ticket #17) |
 | `import.md` | How to run the Storyblok importer and what it does. | People and the importer tickets |
 | `parity-report.md`, `parity-report.json` | The URL and SEO parity of the new site with this inventory: every difference, and the differences that are on purpose with their reason. Rewritten by every run of the parity script. | Ovi, and the launch-readiness ticket (#21) |
+| `parity-report-vercel.md`, `parity-report-vercel.json` | The same check against the Vercel address of the integration branch (`--report parity-report-vercel --preview`). | Ovi |
+| `launch-report.md` | The launch-readiness proof (ticket #21): import counts against the refreshed export, the second run that changes nothing, the Scaffold and document checks, both parity runs, the Studio deploy. | Ovi |
+| `go-live.md` | The go-live checklist and the list of differences on purpose. | Ovi |
 | `import-report.md`, `import-report.json` | The importer's report: what it found, built, dropped and left for a hand, and every image without alt text. Rewritten by every run of `pnpm storyblok:import`. | Ovi, and the tickets that replace Scaffolds |
 
 ## Refresh
@@ -72,6 +75,17 @@ node scripts/migration/parity.mjs http://localhost:3460
 
 Without `NEXT_PUBLIC_SITE_ENV=production` every page is noindex. The
 redirects come from the dataset when the build runs, so build after an import.
+
+`--report <name>` writes `<name>.md` and `.json` instead of `parity-report`.
+A Vercel preview sits behind Vercel Authentication and is noindex on every
+page. To check one, open a share link for it (the Vercel connector's
+`get_access_to_vercel_url` makes one), keep the `_vercel_jwt` cookie it sets,
+and pass it in `PARITY_COOKIE`; `--preview` lists the noindex answers as on
+purpose and checks the sitemap against the old site's indexing:
+
+```sh
+PARITY_COOKIE='_vercel_jwt=<cookie value>' node scripts/migration/parity.mjs https://<preview address> --report parity-report-vercel --preview
+```
 `node --test scripts/migration-parity.test.mjs` tests the comparison.
 
 ## Findings for later tickets

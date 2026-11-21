@@ -56,15 +56,17 @@ test("a post of several rows keeps their order, themes and video, and never hold
   const post = postFor(documents, source.slug);
   const rows = source.content.body.flatMap((section) => section.content);
 
+  // The first row holds only an empty paragraph: it is dropped and counted,
+  // since an empty Rich Text section draws nothing and fails Studio's rules.
   assert.deepEqual(
     post.blocks.map((block) => [block._type, block._key, block.theme]),
     [
-      ["richTextBlock", rows[0]._uid, "light"],
       ["videoRightAndText", rows[1]._uid, "light"],
       ["richTextBlock", rows[2]._uid, "light"],
     ],
   );
-  assert.equal(post.blocks[1].youTubeUrl, rows[1].youTubeLink);
+  assert.equal(post.blocks[0].youTubeUrl, rows[1].youTubeLink);
+  assert.equal(report.dropped["empty rows"], 1);
   assert.deepEqual(report.scaffolds, {});
   // The old news template never drew body_rte; it is counted, not imported.
   assert.equal(report.dropped["news: body_rte"], 1);

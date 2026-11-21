@@ -1,56 +1,7 @@
 {
-  "checkedAt": "2026-11-20T23:49:03.521Z",
+  "checkedAt": "2026-11-21T00:31:10.175Z",
   "origin": "http://localhost:3460",
-  "differences": [
-    {
-      "path": "/about-us/our-history",
-      "field": "redirect",
-      "old": "permanent redirect to /our-story-and-promise",
-      "new": "404"
-    },
-    {
-      "path": "/about-us/our-promise",
-      "field": "redirect",
-      "old": "permanent redirect to /our-story-and-promise",
-      "new": "404"
-    },
-    {
-      "path": "/about-us/our-team",
-      "field": "redirect",
-      "old": "permanent redirect to /hoagie-heroes",
-      "new": "404"
-    },
-    {
-      "path": "/testimonials",
-      "field": "redirect",
-      "old": "permanent redirect to /success-stories",
-      "new": "404"
-    },
-    {
-      "path": "/about-us/join-our-team",
-      "field": "redirect",
-      "old": "permanent redirect to /jobs",
-      "new": "404"
-    },
-    {
-      "path": "/about-us/in-the-news",
-      "field": "redirect",
-      "old": "permanent redirect to /news",
-      "new": "404"
-    },
-    {
-      "path": "/about-us/contact-us",
-      "field": "redirect",
-      "old": "permanent redirect to /contact-us",
-      "new": "404"
-    },
-    {
-      "path": "/selling-tools",
-      "field": "redirect",
-      "old": "permanent redirect to /fundraiser-resources",
-      "new": "404"
-    }
-  ],
+  "differences": [],
   "onPurpose": [
     {
       "path": "/news",

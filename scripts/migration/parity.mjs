@@ -2,7 +2,7 @@
 // URL and SEO parity of the new site with the old one (spec testing seam 2,
 // ticket #20).
 //
-//   node scripts/migration/parity.mjs <new origin>
+//   node scripts/migration/parity.mjs <new origin> [--report <name>] [--preview]
 //
 // Reads docs/migration/url-inventory.json (the reference capture of the old
 // site) and asks the new origin for every URL, every old redirect and the
@@ -10,7 +10,11 @@
 // title, description, noindex and sitemap membership by value, and sharing
 // images by presence only. The differences that are on purpose are listed
 // apart, with the reason; every other difference is printed and fails the run.
-// Writes docs/migration/parity-report.md and .json.
+// Writes docs/migration/parity-report.md and .json, or <name>.md and .json
+// with --report. A Vercel preview behind Vercel Authentication answers with
+// its login redirect; set PARITY_COOKIE to the `_vercel_jwt=...` cookie a
+// share link sets, and pass --preview: a preview marks every page noindex
+// (docs/migration/README.md, "Parity").
 
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -29,6 +33,7 @@ export const ON_PURPOSE = {
   sharingAlt: "the new site gives every sharing image an alt text (spec decision 21)",
   sharingCard: "a page without a sharing image falls back to the generated card (spec decision 19)",
   noindexSitemap: "the sitemap leaves out noindex pages (spec decision 19)",
+  previewNoindex: "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)",
 };
 
 /** The path a page of the old site has on the new site: a malformed news address gets its clean one. */
@@ -47,9 +52,11 @@ const isTemporary = (status) => TEMPORARY.includes(status);
  * sharing } }, sitemap: [path], redirects: { [source]: { status, location } } }`,
  * with each `location` a path on the new site or an outside URL. Returns the
  * differences and the differences that are on purpose, each
- * `{ path, field, old, new }`, the latter with `why`.
+ * `{ path, field, old, new }`, the latter with `why`. With `preview`, the
+ * site is a preview deployment, which marks every page noindex: a page the old
+ * site indexed counts as indexed for the sitemap, and its noindex is on purpose.
  */
-export function compareInventory(inventory, observed) {
+export function compareInventory(inventory, observed, { preview = false } = {}) {
   const differences = [];
   const onPurpose = [];
   const differ = (entry) => differences.push(entry);
@@ -86,7 +93,9 @@ export function compareInventory(inventory, observed) {
         differ({ path: target, field: "description", old: url.description, new: page.description });
       }
       if (Boolean(page.noindex) !== Boolean(url.noindex)) {
-        differ({ path: target, field: "noindex", old: Boolean(url.noindex), new: Boolean(page.noindex) });
+        const entry = { path: target, field: "noindex", old: Boolean(url.noindex), new: Boolean(page.noindex) };
+        if (preview && page.noindex) intended(entry, ON_PURPOSE.previewNoindex);
+        else differ(entry);
       }
       for (const [tag, why] of [["og:image", ON_PURPOSE.sharingCard], ["og:image:alt", ON_PURPOSE.sharingAlt]]) {
         const had = Boolean(url.sharing?.[tag]);
@@ -98,7 +107,7 @@ export function compareInventory(inventory, observed) {
       }
     }
 
-    const noindex = page.status === 200 ? Boolean(page.noindex) : Boolean(url.noindex);
+    const noindex = page.status === 200 && !preview ? Boolean(page.noindex) : Boolean(url.noindex);
     const inSitemap = sitemap.has(target);
     if (url.inSitemap && !noindex) expectedInSitemap.add(target);
     if (inSitemap && noindex) differ({ path: target, field: "sitemap", old: "left out: noindex (spec decision 19)", new: true });
@@ -139,8 +148,34 @@ export function locationOf(location, origin) {
   return `${normalizePath(decodeURI(url.pathname))}${url.search}`;
 }
 
+const USAGE = "Usage: node scripts/migration/parity.mjs <new origin> [--report <name>] [--preview]";
+
+/** The origin to check and the report's file name, without its extension. */
+export function parseArguments(args) {
+  const options = { origin: null, report: "parity-report", preview: false };
+  for (let index = 0; index < args.length; index++) {
+    const arg = args[index];
+    if (arg === "--preview") options.preview = true;
+    else if (arg === "--report") {
+      const value = args[++index];
+      if (!value || value.startsWith("-") || !/^[a-z0-9-]+$/.test(value)) throw new Error(`--report needs a name of lowercase letters, digits and hyphens. ${USAGE}`);
+      options.report = value;
+    } else if (arg.startsWith("--") || options.origin) throw new Error(`Unexpected argument ${arg}. ${USAGE}`);
+    else options.origin = arg.replace(/\/+$/, "");
+  }
+  if (!options.origin) throw new Error(USAGE);
+  return options;
+}
+
+/** The request headers: a browser-like agent, and the preview's cookie when one is set. */
+export function requestHeaders(env = process.env) {
+  const headers = { "user-agent": "Mozilla/5.0 (parity check)" };
+  if (env.PARITY_COOKIE?.trim()) headers.cookie = env.PARITY_COOKIE.trim();
+  return headers;
+}
+
 async function fetchManual(url) {
-  const response = await fetch(url, { redirect: "manual", headers: { "user-agent": "Mozilla/5.0 (parity check)" } });
+  const response = await fetch(url, { redirect: "manual", headers: requestHeaders() });
   const body = response.status === 200 ? await response.text() : "";
   return { status: response.status, location: response.headers.get("location"), body };
 }
@@ -159,7 +194,7 @@ export async function observe(inventory, origin) {
     const { status, location } = await fetchManual(`${origin}${redirect.source}`);
     redirects[redirect.source] = { status, location: locationOf(location, origin) };
   }
-  const sitemapResponse = await fetch(`${origin}/sitemap.xml`);
+  const sitemapResponse = await fetch(`${origin}/sitemap.xml`, { headers: requestHeaders() });
   if (!sitemapResponse.ok) throw new Error(`${origin}/sitemap.xml answered ${sitemapResponse.status}`);
   return { pages, redirects, sitemap: sitemapPaths(await sitemapResponse.text()) };
 }
@@ -170,12 +205,13 @@ function table(rows, headers) {
   return [`| ${headers.join(" | ")} |`, `| ${headers.map(() => "---").join(" | ")} |`, ...rows.map((row) => `| ${row.map(cell).join(" | ")} |`)].join("\n") + "\n";
 }
 
-export function reportMarkdown(result, { origin, inventory, checkedAt }) {
+export function reportMarkdown(result, { origin, inventory, checkedAt, report = "parity-report", preview = false }) {
+  const command = [origin, report === "parity-report" ? "" : `--report ${report}`, preview ? "--preview" : ""].filter(Boolean).join(" ");
   const lines = [
     "# URL and SEO parity report",
     "",
-    `Checked ${checkedAt} by \`node scripts/migration/parity.mjs ${origin}\` against the old-site inventory captured ${inventory.capturedAt} ([\`url-inventory.json\`](url-inventory.json)).`,
-    "The machine-readable version is [`parity-report.json`](parity-report.json).",
+    `Checked ${checkedAt} by \`node scripts/migration/parity.mjs ${command}\` against the old-site inventory captured ${inventory.capturedAt} ([\`url-inventory.json\`](url-inventory.json)).`,
+    `The machine-readable version is [\`${report}.json\`](${report}.json).`,
     "",
     "Status, redirect target, title, description, noindex and sitemap membership compare by value; sharing images by presence only. A redirect compares by permanence (301 and 308 are both permanent) and target. Sitemap entries compare by path, so the host the build names does not matter.",
     "",
@@ -192,13 +228,12 @@ export function reportMarkdown(result, { origin, inventory, checkedAt }) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const origin = process.argv[2]?.replace(/\/+$/, "");
-  if (!origin) throw new Error("Usage: node scripts/migration/parity.mjs <new origin>");
+  const { origin, report, preview } = parseArguments(process.argv.slice(2));
   const inventory = JSON.parse(readFileSync(path.join(migrationDir, "url-inventory.json"), "utf8"));
-  const result = compareInventory(inventory, await observe(inventory, origin));
+  const result = compareInventory(inventory, await observe(inventory, origin), { preview });
   const checkedAt = new Date().toISOString();
-  writeFileSync(path.join(migrationDir, "parity-report.json"), `${JSON.stringify({ checkedAt, origin, ...result }, null, 2)}\n`);
-  writeFileSync(path.join(migrationDir, "parity-report.md"), reportMarkdown(result, { origin, inventory, checkedAt }));
+  writeFileSync(path.join(migrationDir, `${report}.json`), `${JSON.stringify({ checkedAt, origin, ...result }, null, 2)}\n`);
+  writeFileSync(path.join(migrationDir, `${report}.md`), reportMarkdown(result, { origin, inventory, checkedAt, report, preview }));
   for (const d of result.differences) console.log(`${d.path}  ${d.field}\n  old: ${JSON.stringify(d.old)}\n  new: ${JSON.stringify(d.new)}`);
   console.log(`\n${inventory.urls.length} URLs and ${inventory.redirects.length} redirects compared with ${origin}: ${result.differences.length} differences, ${result.onPurpose.length} on purpose.`);
   process.exitCode = result.differences.length ? 1 : 0;

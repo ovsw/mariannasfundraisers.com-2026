@@ -29,6 +29,8 @@ export function reportMarkdown(report, { source }) {
         ["Product stories", f.product],
         ["News stories", f.news],
         ["Files", `${f.files} (${f.images} images, ${f.documentFiles} documents)`],
+        ["Files from Storyblok", f.storyblokFiles],
+        ["Files from the old code (logos, author photos)", f.files - f.storyblokFiles],
       ],
       ["What", "Count"],
     ),

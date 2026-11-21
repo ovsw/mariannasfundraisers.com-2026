@@ -1,24 +1,15 @@
 # URL and SEO parity report
 
-Checked 2026-11-20T23:49:03.521Z by `node scripts/migration/parity.mjs http://localhost:3460` against the old-site inventory captured 2026-11-20T18:15:10.421Z ([`url-inventory.json`](url-inventory.json)).
+Checked 2026-11-21T00:31:10.175Z by `node scripts/migration/parity.mjs http://localhost:3460` against the old-site inventory captured 2026-11-20T18:15:10.421Z ([`url-inventory.json`](url-inventory.json)).
 The machine-readable version is [`parity-report.json`](parity-report.json).
 
 Status, redirect target, title, description, noindex and sitemap membership compare by value; sharing images by presence only. A redirect compares by permanence (301 and 308 are both permanent) and target. Sitemap entries compare by path, so the host the build names does not matter.
 
-67 URLs and 11 redirects compared. Sitemap: 62 URLs found, 62 expected. 8 differences, 55 on purpose.
+67 URLs and 11 redirects compared. Sitemap: 62 URLs found, 62 expected. 0 differences, 55 on purpose.
 
 ## Differences
 
-| Path | Field | Old | New |
-| --- | --- | --- | --- |
-| `/about-us/our-history` | redirect | permanent redirect to /our-story-and-promise | 404 |
-| `/about-us/our-promise` | redirect | permanent redirect to /our-story-and-promise | 404 |
-| `/about-us/our-team` | redirect | permanent redirect to /hoagie-heroes | 404 |
-| `/testimonials` | redirect | permanent redirect to /success-stories | 404 |
-| `/about-us/join-our-team` | redirect | permanent redirect to /jobs | 404 |
-| `/about-us/in-the-news` | redirect | permanent redirect to /news | 404 |
-| `/about-us/contact-us` | redirect | permanent redirect to /contact-us | 404 |
-| `/selling-tools` | redirect | permanent redirect to /fundraiser-resources | 404 |
+None.
 
 ## Differences on purpose
 
