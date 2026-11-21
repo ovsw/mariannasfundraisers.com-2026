@@ -8,6 +8,10 @@ import { createDataAttribute, stegaClean } from "next-sanity";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import BreadcrumbJsonLd from "@/components/breadcrumb-json-ld";
+import CallToActionWithImage, {
+  hasCallToActionWithImageContent,
+  type CallToActionWithImageProps,
+} from "@/components/blocks/call-to-action-with-image";
 import { ImageAndText, savedCrop, type ImageAndTextProps } from "@/components/blocks/image-and-text";
 import {
   resolveSectionBoundaries,
@@ -19,7 +23,6 @@ import { resolveSectionBrushes, SectionBrush } from "@/components/blocks/section
 import RichTextContent from "@/components/rich-text-content";
 import { SiteButton, hasSiteButtonContent } from "@/components/site-button";
 import { siteUrl } from "@/lib/site-url";
-import { cn } from "@/lib/utils";
 import { dataset, projectId } from "@/sanity/lib/env";
 import { urlFor } from "@/sanity/lib/image";
 import { hasVisibleRichText, ingredientsListHref, kindLinks, type Product } from "./model";
@@ -167,64 +170,6 @@ function NutritionSection({
   );
 }
 
-function CallToAction({
-  boundary,
-  block,
-  edit,
-}: {
-  boundary: ResolvedSectionBoundary;
-  block: NonNullable<NonNullable<Product["settings"]>["callToAction"]>;
-  edit: DataAttribute;
-}) {
-  const buttons = (block.buttons ?? []).filter(hasSiteButtonContent);
-  const asset = block.image?.asset;
-  const headingId = "product-call-to-action-title";
-  return (
-    <section
-      aria-labelledby={headingId}
-      className={cn(sectionSceneClassName("muslin", boundary.top, boundary.bottom), "overflow-hidden")}
-    >
-      <div className="container grid items-center gap-10 lg:grid-cols-2">
-        <div className="max-w-xl space-y-6">
-          <h2
-            className="text-4xl leading-tight font-bold text-emphasis md:text-5xl"
-            data-sanity={edit("callToAction.title")}
-            id={headingId}
-          >
-            {block.title}
-          </h2>
-          {hasVisibleRichText(block.richText) ? (
-            <RichTextContent
-              className="prose-lg"
-              dataSanity={edit("callToAction.richText")}
-              value={richText(block.richText)}
-            />
-          ) : null}
-          {buttons.length ? (
-            <div className="flex flex-wrap gap-4 pt-2" data-sanity={edit("callToAction.buttons")}>
-              {buttons.map((button) => (
-                <SiteButton button={button} className="max-w-full whitespace-normal" key={button._key} />
-              ))}
-            </div>
-          ) : null}
-        </div>
-        {asset?.url ? (
-          <div className="relative mx-auto aspect-square w-full max-w-md lg:mr-0">
-            <Image
-              alt={stegaClean(block.image?.alt)?.trim() || ""}
-              className="object-contain object-bottom"
-              data-sanity={edit("callToAction.image")}
-              fill
-              sizes="(min-width: 1024px) 28rem, 100vw"
-              src={urlFor({ asset, crop: savedCrop(block.image?.crop) }).width(900).fit("max").url()}
-            />
-          </div>
-        ) : null}
-      </div>
-    </section>
-  );
-}
-
 /** The image-and-text renderer, fed by product fields under the names it reads. */
 function imageAndTextBlock(
   block: Record<string, unknown>,
@@ -309,11 +254,23 @@ export function ProductPage({ product, stega }: { product: Product; stega: boole
       ),
     });
   }
-  if (callToAction && stegaClean(callToAction.title)?.trim()) {
+  if (callToAction && hasCallToActionWithImageContent(callToAction)) {
     sections.push({
       key: "callToAction",
       theme: "muslin",
-      render: (boundary) => <CallToAction block={callToAction} boundary={boundary} edit={editSettings} />,
+      render: (boundary) => (
+        <CallToActionWithImage
+          {...({
+            _key: "callToAction",
+            _type: "callToActionWithImage",
+            ...callToAction,
+            ...boundary,
+            theme: "muslin",
+            dataAttribute: (path: string) =>
+              path === "theme" ? undefined : editSettings(`callToAction.${path}`),
+          } as unknown as CallToActionWithImageProps)}
+        />
+      ),
     });
   }
 

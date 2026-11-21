@@ -1,0 +1,1050 @@
+[
+ {
+  "name": "Home",
+  "uuid": "13bbc481-bfb2-4752-a2bd-c8f99d8c79e6",
+  "full_slug": "home",
+  "slug": "home",
+  "is_startpage": false,
+  "content": {
+   "_uid": "d9c6a759-e5ae-4605-a985-7e6d774d7994",
+   "body": [
+    {
+     "_uid": "30b9e767-bf79-44ad-b8b7-e6a09837fc1a",
+     "text": {
+      "type": "doc",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "text": "Empowering groups to raise funds for worthy causes by selling fresh, handmade Italian-American foods to customers of all ages, in the Pittsburgh to Harrisburg, PA areas and markets into Maryland and West Virginia.",
+          "type": "text"
+         }
+        ]
+       }
+      ]
+     },
+     "type": "normal",
+     "title": "\"The Fundraiser That Sells Itself\"",
+     "height": "tall",
+     "hidden": false,
+     "buttons": [],
+     "content": [
+      {
+       "_uid": "d17e76f4-8e9a-49e7-84d1-43b5a913b3d8",
+       "level": "h1",
+       "title": "The Fundraiser that sells itself",
+       "component": "heading"
+      }
+     ],
+     "is_tall": true,
+     "component": "hero",
+     "youTubeLink": "https://www.youtube.com/watch?v=3nQNiWdeH2Q",
+     "border_color": "light",
+     "background_color": "white",
+     "background_image": {
+      "id": 17302666,
+      "alt": "",
+      "name": "",
+      "focus": "",
+      "title": "",
+      "source": "",
+      "filename": "https://a.storyblok.com/f/133593/2500x1669/ef680a23a1/mfs-2024-boys-football-team.jpg",
+      "copyright": "",
+      "fieldtype": "asset",
+      "meta_data": {},
+      "is_external_url": false
+     }
+    },
+    {
+     "_uid": "09b58222-052d-4593-bdc7-563f301198e1",
+     "name": "How it works 1",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "87cc918e-61ca-457d-a74b-3fbd0556ab35",
+       "name": "Section Heading",
+       "content": [
+        {
+         "_uid": "195ccfcc-621c-4ae7-b9e4-5fa5b795f865",
+         "title": "Running a Fundraiser",
+         "eyebrow": "How it Works",
+         "anchor_id": "",
+         "component": "heading-group",
+         "heading_level": ""
+        }
+       ],
+       "component": "row-single-column"
+      },
+      {
+       "_uid": "06b2eb5b-0436-47c2-9846-b91aa3070b9a",
+       "steps": [
+        {
+         "_uid": "06a69918-e3ed-4185-8b74-53f76bc68a74",
+         "image": {
+          "id": 3601414,
+          "alt": "call icon",
+          "name": "",
+          "focus": null,
+          "title": "",
+          "filename": "https://a.storyblok.com/f/133593/200x200/f116cb83e1/hiw-call.png",
+          "copyright": "",
+          "fieldtype": "asset"
+         },
+         "title": "Contact Us",
+         "component": "step",
+         "description": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "bullet_list",
+            "content": [
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "content": [
+                 {
+                  "text": "set up ",
+                  "type": "text"
+                 },
+                 {
+                  "text": "delivery date",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "bold"
+                   }
+                  ]
+                 }
+                ]
+               }
+              ]
+             },
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "content": [
+                 {
+                  "text": "send ",
+                  "type": "text"
+                 },
+                 {
+                  "text": "documentation",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "bold"
+                   }
+                  ]
+                 }
+                ]
+               }
+              ]
+             },
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "content": [
+                 {
+                  "text": "receive sale ",
+                  "type": "text"
+                 },
+                 {
+                  "text": "confirmation",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "bold"
+                   }
+                  ]
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        },
+        {
+         "_uid": "cdbbbdb1-eddd-4efd-8774-c2cc8ba62b78",
+         "image": {
+          "id": 3601415,
+          "alt": "sell icon",
+          "name": "",
+          "focus": null,
+          "title": "",
+          "filename": "https://a.storyblok.com/f/133593/200x200/1b801de5b2/hiw-sell.png",
+          "copyright": "",
+          "fieldtype": "asset"
+         },
+         "title": "Start Selling",
+         "component": "step",
+         "description": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "bullet_list",
+            "content": [
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "content": [
+                 {
+                  "text": "decide your ",
+                  "type": "text"
+                 },
+                 {
+                  "text": "selling price",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "bold"
+                   }
+                  ]
+                 }
+                ]
+               }
+              ]
+             },
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "content": [
+                 {
+                  "text": "fill out & distribute ",
+                  "type": "text"
+                 },
+                 {
+                  "text": "order forms",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "bold"
+                   }
+                  ]
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        },
+        {
+         "_uid": "87ba2b53-eb2f-4d3b-a454-0b59b88ba211",
+         "image": {
+          "id": 3601416,
+          "alt": "submit order icon",
+          "name": "",
+          "focus": null,
+          "title": "",
+          "filename": "https://a.storyblok.com/f/133593/200x200/18d4e2cf0d/hiw-submit.png",
+          "copyright": "",
+          "fieldtype": "asset"
+         },
+         "title": "Submit Order",
+         "component": "step",
+         "description": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "bullet_list",
+            "content": [
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "content": [
+                 {
+                  "text": "tally up",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "bold"
+                   }
+                  ]
+                 },
+                 {
+                  "text": " all orders from your sellers",
+                  "type": "text"
+                 }
+                ]
+               }
+              ]
+             },
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "content": [
+                 {
+                  "text": "submit order",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "bold"
+                   }
+                  ]
+                 },
+                 {
+                  "text": " online",
+                  "type": "text"
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        }
+       ],
+       "component": "row-steps"
+      },
+      {
+       "_uid": "6478e5af-5622-44c3-9293-17137764dda6",
+       "name": "It's that Easy",
+       "image": {
+        "id": 4036210,
+        "alt": "Illustration of a town and a Marianna's refrigerated truck driving down the road",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/133593/6650x3117/9b0ade146d/mfs-truck-in-town.jpg",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+       },
+       "content": [
+        {
+         "_uid": "84683ee6-3ca7-4a22-90e1-fcfb8ac27bd7",
+         "title": "We Take Care of the Rest",
+         "eyebrow": "That's it!",
+         "anchor_id": "",
+         "component": "heading-group"
+        },
+        {
+         "_uid": "47064d7e-e457-460f-8262-694eaf5cea86",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "All that’s left is to receive your freshly prepared order, on the set date, at the location you specified.",
+              "type": "text",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "We have tips and guides as well as detailed step-by-step instructions on how to prepare for the delivery and create the best experience on your event day! ",
+              "type": "text",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Click the Step-by-Step Guide button to view our Fundraiser Guide Checklist & Helpful Videos! ",
+              "type": "text",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        },
+        {
+         "_uid": "45dc1871-5798-43fa-ba63-bb0a84a1acd7",
+         "content": [
+          {
+           "_uid": "f2b1497c-9b1d-4446-a0b4-961417b566f6",
+           "icon": "price-tag",
+           "link": {
+            "id": "61378474-efbd-4742-94da-475c6b09727f",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": "pricing-info"
+           },
+           "text": "Pricing Info",
+           "style": "accent",
+           "target": false,
+           "component": "button",
+           "icon_position": "left"
+          },
+          {
+           "_uid": "2b51ea56-b368-4108-a8fa-d40d3244d9d1",
+           "icon": "book-spells",
+           "link": {
+            "id": "f813b1eb-abe7-4912-ae8c-ebbfa66aa464",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": "10-steps-to-success"
+           },
+           "text": "Step-by-Step Guide",
+           "style": "primary",
+           "target": false,
+           "component": "button",
+           "icon_position": "left"
+          }
+         ],
+         "component": "button-group"
+        }
+       ],
+       "component": "row-big-image",
+       "badge_image": false,
+       "is_reversed": false,
+       "youTubeLink": "https://youtu.be/Uil1c8p_jV0",
+       "contain_image": false,
+       "extra_padding": false
+      }
+     ],
+     "component": "section",
+     "background": "light",
+     "margin_top": "none",
+     "padding_top": "",
+     "margin_bottom": "default",
+     "decoration_top": "default",
+     "padding_bottom": "default",
+     "decoration_bottom": ""
+    },
+    {
+     "_uid": "a5ffe4bc-0df2-47cb-9a83-70eb022e9ea5",
+     "name": "Menu",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "bdd7e853-c424-4690-b34e-54a2f1ffd105",
+       "intro": [
+        {
+         "_uid": "b1e07cd9-27af-43ec-a49f-27b1f3dbf757",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "From the ",
+              "type": "text"
+             },
+             {
+              "text": "Kitchens of DelGrosso,",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " our famous Italian-American Handmade Food is ",
+              "type": "text"
+             },
+             {
+              "text": "guaranteed fresh",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": ", and prepared by our dedicated Hoagie Heroes in our ",
+              "type": "text"
+             },
+             {
+              "text": "safe, clean-obsessed",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " kitchens.",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        }
+       ],
+       "heading": [
+        {
+         "_uid": "af073c5d-f893-408e-b584-e505c3e399c1",
+         "title": "Fresh & Clean Obsessed",
+         "eyebrow": "Handmade Food Menu",
+         "subtitle": "",
+         "anchor_id": "",
+         "component": "heading-group"
+        }
+       ],
+       "image_1": {
+        "id": 4086887,
+        "alt": "",
+        "name": "",
+        "focus": null,
+        "title": "",
+        "filename": "https://a.storyblok.com/f/133593/1717x1087/b6573073a1/hoagie-image-group-badge-3.jpg",
+        "copyright": "",
+        "fieldtype": "asset"
+       },
+       "image_2": {
+        "id": 3885579,
+        "alt": "Marianna's 12'' Pepperoni Pizza",
+        "name": "",
+        "focus": null,
+        "title": "",
+        "filename": "https://a.storyblok.com/f/133593/1167x1157/3a4e601816/pizza-image-group.jpg",
+        "copyright": "",
+        "fieldtype": "asset"
+       },
+       "component": "row-menu-teaser-one-off",
+       "content_1": [
+        {
+         "_uid": "b9fa82f4-f6e4-4385-8c99-e23485f907aa",
+         "level": "h3",
+         "style": "h1",
+         "title": "14'' Famous Hoagies",
+         "component": "heading"
+        },
+        {
+         "_uid": "09de466c-e14a-4847-b708-e9dd5ca8c13b",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "The largest, freshest, and best-tasting hoagies available in fundraising!",
+              "type": "text",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             },
+             {
+              "type": "hard_break",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             },
+             {
+              "type": "hard_break",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             },
+             {
+              "text": "All our hoagies are made with the freshest ingredients and come with either Marianna’s own Italian Dressing or Sweet & Sassy Mayo!",
+              "type": "text",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        },
+        {
+         "_uid": "9aa5c512-1aa2-48d4-b32e-ea8187e137c3",
+         "content": [
+          {
+           "_uid": "a84c9f6f-2d42-4f5a-b138-89c744364303",
+           "icon": "hoagie",
+           "link": {
+            "id": "fa6265db-3dfc-41bd-bdda-910c42723ef6",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": "products/"
+           },
+           "text": "See Hoagie Menu",
+           "style": "accent",
+           "target": false,
+           "component": "button",
+           "icon_position": "left"
+          }
+         ],
+         "component": "button-group"
+        }
+       ],
+       "content_2": [
+        {
+         "_uid": "190b5b7c-51c6-45c5-b0b0-39413b313a3e",
+         "level": "h3",
+         "style": "h1",
+         "title": "12'' Delicious Pizzas",
+         "component": "heading"
+        },
+        {
+         "_uid": "c4d02d00-0c37-47e8-9e8b-175527840e23",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Always fresh & delicious at delivery! You can can always freeze them for later. ",
+              "type": "text",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             },
+             {
+              "type": "hard_break",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             },
+             {
+              "type": "hard_break",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             },
+             {
+              "text": "With three kinds to choose from, they go great with our famous hoagies!",
+              "type": "text",
+              "marks": [
+               {
+                "type": "styled",
+                "attrs": {
+                 "class": ""
+                }
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        },
+        {
+         "_uid": "7e85a7bc-0b68-4937-bdcf-d00d7f3edf7a",
+         "content": [
+          {
+           "_uid": "cc24594f-b2de-4a10-ae0d-81347a02952c",
+           "icon": "pizza",
+           "link": {
+            "id": "fa6265db-3dfc-41bd-bdda-910c42723ef6",
+            "url": "",
+            "anchor": "pizza",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": "products/"
+           },
+           "text": "See Pizza Menu",
+           "style": "accent",
+           "target": false,
+           "component": "button",
+           "icon_position": "left"
+          }
+         ],
+         "component": "button-group"
+        }
+       ]
+      }
+     ],
+     "component": "section",
+     "background": "shaded",
+     "margin_top": "default",
+     "padding_top": "default",
+     "margin_bottom": "none",
+     "decoration_top": "brushed2",
+     "padding_bottom": "default",
+     "overflow_hidden": true,
+     "decoration_bottom": ""
+    },
+    {
+     "_uid": "b61c8056-9ad2-4382-844b-c25daec2f297",
+     "name": "CTA - 40 Years of Experience",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "ffa6c174-4df8-4e4d-a0cf-9370515cc337",
+       "name": "Over 40 Years of Experience",
+       "image": {
+        "id": 3771769,
+        "alt": "",
+        "name": "",
+        "focus": null,
+        "title": "",
+        "filename": "https://a.storyblok.com/f/133593/632x632/0714d60d8a/diane-on-the-phone.png",
+        "copyright": "",
+        "fieldtype": "asset"
+       },
+       "component": "row-two-columns-cta",
+       "content_main": [
+        {
+         "_uid": "c7b05939-f1a8-4db9-9ca4-8018c066f0fc",
+         "level": "h2",
+         "style": "h1",
+         "title": "Over 40 years of experience, one phone call away",
+         "component": "heading"
+        },
+        {
+         "_uid": "7c4de6ba-5281-4943-a058-70e2293f37ab",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Running a fundraiser can be overwhelming.",
+              "type": "text"
+             },
+             {
+              "type": "hard_break"
+             },
+             {
+              "text": "We're here to help!",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        }
+       ],
+       "content_buttons": [
+        {
+         "_uid": "b0a7dc0d-62f4-4a79-bce5-fbb2c6750e12",
+         "icon": "phone-ringing",
+         "link": {
+          "id": "",
+          "url": "tel:8146842666",
+          "linktype": "url",
+          "fieldtype": "multilink",
+          "cached_url": "tel:8146842666"
+         },
+         "text": "Get Support",
+         "style": "light-primary",
+         "target": false,
+         "component": "button",
+         "icon_position": "left"
+        }
+       ]
+      }
+     ],
+     "component": "section",
+     "background": "muslin",
+     "margin_top": "none",
+     "padding_top": "default",
+     "margin_bottom": "default",
+     "decoration_top": "default",
+     "padding_bottom": "default",
+     "decoration_bottom": "brushed2"
+    },
+    {
+     "_uid": "6e38e8e5-78aa-4c85-ab7d-ce005d3b440a",
+     "name": "Hoagie Heroes",
+     "width": "full",
+     "content": [
+      {
+       "_uid": "5ecb92b9-d139-484f-96fb-2d96a81a2029",
+       "name": "",
+       "image": {
+        "id": 19652146,
+        "alt": "",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/133593/5712x4284/76b17f161b/rev-hoagie-heroes-in-front-of-truck.jpg",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+       },
+       "content": [
+        {
+         "_uid": "0af66110-3307-41ff-bd40-c49f17a39686",
+         "title": "Hoagie Heroes",
+         "eyebrow": "Our Goal",
+         "component": "heading-group"
+        },
+        {
+         "_uid": "f0f21a50-374d-4ae1-ab20-839088dd0f1a",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "We believe that ",
+              "type": "text"
+             },
+             {
+              "text": "a lot of good can come from doing small things",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": ", so we take pride in making your community better one hoagie and pizza at a time.",
+              "type": "text"
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "In 1981, the DelGrosso Family established Marianna’s Fundraisers as a way to help organizations meet their fundraising goals. Today, our mission is unchanged:",
+              "type": "text"
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Help groups raise funds for worthy causes: non-profit organizations, school groups/activities, churches, fire halls, and clubs.",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        },
+        {
+         "_uid": "5d595228-53ae-4bc0-9e6b-d84ed5719148",
+         "content": [
+          {
+           "_uid": "2e28a412-3690-4ed7-9cdb-99d42de5eb2d",
+           "icon": "book-spells",
+           "link": {
+            "id": "add21ebc-4b98-415d-a54a-b448d06a849b",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": "our-story-and-promise"
+           },
+           "text": "Our Story",
+           "style": "accent",
+           "target": false,
+           "component": "button",
+           "icon_position": "left"
+          },
+          {
+           "_uid": "7d4b1a72-1011-47b1-bd21-3ba8bd805b5c",
+           "icon": "people",
+           "link": {
+            "id": "d9a1493b-6ff6-49bb-8e88-fd2ab66af4cf",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": "our-leadership"
+           },
+           "text": "Our Team",
+           "style": "light-accent",
+           "target": false,
+           "component": "button",
+           "icon_position": "left"
+          }
+         ],
+         "component": "button-group"
+        }
+       ],
+       "component": "row-big-image",
+       "is_reversed": true,
+       "contain_image": false,
+       "extra_padding": true
+      }
+     ],
+     "component": "section",
+     "background": "light",
+     "margin_top": "none",
+     "is_reversed": false,
+     "padding_top": "default",
+     "margin_bottom": "overlapping",
+     "decoration_top": "default",
+     "padding_bottom": "large",
+     "decoration_bottom": "brushed2"
+    },
+    {
+     "_uid": "ff77dafb-beb6-4ee7-b5f1-d0235a2e48e0",
+     "name": "Featured Testimonials",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "4f6f5c3c-08cd-4a88-b16e-721f49b6b6d4",
+       "image": {
+        "id": 3639405,
+        "alt": "",
+        "name": "",
+        "focus": null,
+        "title": "",
+        "filename": "https://a.storyblok.com/f/133593/668x872/2c64f1706a/mfs-nov-21-37web.png",
+        "copyright": "",
+        "fieldtype": "asset"
+       },
+       "heading": [
+        {
+         "_uid": "645b967b-4e71-4440-9616-8ff7d4934b7a",
+         "title": "Hoagie Heroes",
+         "eyebrow": "Quotes From Our",
+         "anchor_id": "",
+         "component": "heading-group"
+        }
+       ],
+       "component": "row-testimonials",
+       "testimonials_list": [
+        {
+         "_uid": "f851efa9-ba6d-481b-a8f3-8a928b13557e",
+         "text": "I can't thank the staff and driver enough for all of their help. Everyone was extremely friendly and helpful. Giving us Bags with the order was extremely helpful. I will highly recommend this Company and we will be doing this fundraiser again. I look forward to working with you.\n",
+         "component": "testimonial",
+         "author_info": "Verona, PA",
+         "author_name": "Suzie"
+        },
+        {
+         "_uid": "9219518b-db71-4b05-8267-22d65c4f27f5",
+         "text": "Everyone we came in contact with was friendly and professional. This was our first time fundraising at our church, and you made it a breeze!\n",
+         "component": "testimonial",
+         "author_info": "Worthington, PA",
+         "author_name": "Megan"
+        },
+        {
+         "_uid": "9077bc00-d483-46b6-bcff-bd5607a6ce9e",
+         "text": "Keep up the good work! Other providers cannot equal your product, assistance, and prices!!!\n\n",
+         "component": "testimonial",
+         "author_info": "Middletown, PA",
+         "author_name": "Ronald"
+        }
+       ]
+      }
+     ],
+     "component": "section",
+     "background": "muslin",
+     "margin_top": "default",
+     "padding_top": "",
+     "margin_bottom": "default",
+     "decoration_top": "default",
+     "padding_bottom": "",
+     "decoration_bottom": ""
+    }
+   ],
+   "component": "page",
+   "seo_image": {
+    "id": 3901787,
+    "alt": null,
+    "name": "",
+    "focus": null,
+    "title": null,
+    "filename": "https://a.storyblok.com/f/133593/2400x1602/188da13463/hoagie-hero-kid-wrestler-hoagie-wrapped.jpg",
+    "copyright": null,
+    "fieldtype": "asset"
+   },
+   "seo_title": "The Fundraiser that Sells Itself",
+   "seo_noindex": false,
+   "seo_description": "Empowering groups to raise funds for worthy causes by selling fresh, handmade Italian-American foods to customers of all ages."
+  }
+ }
+]

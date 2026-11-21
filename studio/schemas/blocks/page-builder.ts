@@ -12,6 +12,9 @@ export const contentPageBuilderBlockTypes = [
   "videoLeftAndText",
   "videoRightAndText",
   "imageAndIconList",
+  "steps",
+  "callToActionWithImage",
+  "testimonials",
   // page-builder-generator:content-types
 ] as const;
 
@@ -28,6 +31,8 @@ const generalOnlyPageBuilderBlockTypes = [
 
 const homeOnlyPageBuilderBlockTypes = [
   "latestNews",
+  "homeHero",
+  "menuTeaser",
   // page-builder-generator:home-types
 ] as const;
 
@@ -79,6 +84,11 @@ const previewBlockTypes = new Set<string>([
   "hoagieMenu",
   "pizzaMenu",
   "salsaMenu",
+  "homeHero",
+  "steps",
+  "menuTeaser",
+  "callToActionWithImage",
+  "testimonials",
   // page-builder-generator:preview-types
 ]);
 

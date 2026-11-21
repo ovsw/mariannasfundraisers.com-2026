@@ -28,6 +28,7 @@ What the importer (`pnpm storyblok:import`, ticket #13) found in the Storyblok e
 | productPageSettings | 1 |
 | redirect | 13 |
 | settings | 1 |
+| testimonial | 3 |
 
 Imported as published although unpublished in Storyblok (spec decision 4): /flavored-salsas/menu, /special-fundraising-events.
 
@@ -36,13 +37,16 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | Section | Count |
 | --- | --- |
 | badgeAndText | 2 |
+| callToActionWithImage | 2 |
 | cognitoForm | 4 |
 | cutoutLeftAndText | 23 |
 | cutoutRightAndText | 12 |
 | faqList | 2 |
 | hoagieMenu | 1 |
+| homeHero | 1 |
 | imageAndIconList | 6 |
 | latestNews | 1 |
+| menuTeaser | 1 |
 | pageBanner | 27 |
 | pageHeading | 21 |
 | photoLeftAndText | 19 |
@@ -50,20 +54,15 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | pizzaMenu | 1 |
 | richTextBlock | 27 |
 | salsaMenu | 2 |
-| scaffold | 6 |
+| steps | 1 |
+| testimonials | 1 |
 | twoTextColumns | 2 |
 | videoLeftAndText | 3 |
 | videoRightAndText | 4 |
 
 Scaffolds by the section that will replace them:
 
-| Intended section | Scaffolds |
-| --- | --- |
-| Call to action with image | 2 |
-| Home hero | 1 |
-| Menu teaser | 1 |
-| Steps | 1 |
-| Testimonials | 1 |
+None.
 
 ## News addresses that change
 

@@ -41,9 +41,9 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
 
 - **IDs.** A document's ID comes from its story UUID: `page-<uuid>`,
   `post-<uuid>` and `product-<uuid>`; the home story is the `homePage`
-  singleton. An FAQ record's ID is `faq-<story uuid>-<item _uid>`, as a
-  `_uid` is unique only inside one story. A section's `_key` is its row's
-  `_uid`.
+  singleton. An FAQ record's ID is `faq-<story uuid>-<item _uid>` and a
+  testimonial's `testimonial-<story uuid>-<item _uid>`, as a `_uid` is unique
+  only inside one story. A section's `_key` is its row's `_uid`.
 - **Files.** Every Storyblok file the stories use (158) is downloaded once and
   uploaded with `source.url` set to its Storyblok URL; later runs match it by
   that URL. An image field keeps its alt text and focal point (as the
@@ -61,12 +61,12 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   in `scripts/migration/block-inventory.mjs`. Built: the hero as **Page
   banner** (its edge colour as theme), **Page heading**, **Rich Text**
   with its button row, and the old "big image" rows as their image-and-text
-  sections, Cognito form, FAQ list and Two text columns (below). Every other
-  row becomes a **Scaffold** that holds the row's text and names its
-  intended section. A later ticket replaces them by mapping its rows in
-  `studio/scripts/storyblok/transform.mjs`. The home page ends with the
-  **Latest news** section, which the old home page drew from code (ticket
-  #17).
+  sections, Cognito form, FAQ list and Two text columns, and the home page's
+  sections (below). Any other row becomes a **Scaffold** that holds the row's
+  text and names its intended section; a later ticket replaces it by mapping
+  its row in `studio/scripts/storyblok/transform.mjs`. The home page ends
+  with the **Latest news** section, which the old home page drew from code
+  (ticket #17).
 - **Big image rows** (spec decision 12, ticket #15). The old switches pick
   the section, in this order (`bigImageSection` in
   `scripts/migration/block-inventory.mjs`): a YouTube link makes **Video
@@ -95,6 +95,19 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   never shows and are dropped and counted. A row of two text columns becomes **Two text
   columns**. A form without an ID, a list without a title or FAQs, or a row
   with an empty column stays a Scaffold and is listed under "needs a hand".
+- **Home page** (spec decision 12, ticket #18). The old home hero becomes
+  **Home hero**: its photo, its title (the heading the old site drew), its
+  text, its buttons and its YouTube link, with its edge colour as theme; its
+  `content` heading repeats the title, was never drawn, and is dropped and
+  counted. `row-steps` becomes **Steps** (each step's picture, title and
+  list). `row-menu-teaser-one-off` becomes **Menu teaser**: the heading
+  group's eyebrow and title, the introduction, and its two columns as the two
+  parts (photo, heading, text and buttons). `row-two-columns-cta` becomes
+  **Call to action with image** on the home page and How it Works (on product
+  pages it is the shared call to action, below). `row-testimonials` becomes
+  **Testimonials**, and each of its three quotes a `testimonial` record: the
+  name, the place as its title, and the quote. A hero or row without its
+  photo, heading or items stays a Scaffold and is listed under "needs a hand".
 - **Products** (spec decisions 8 and 20, ticket #16, `storyblok/products.mjs`).
   Each of the 16 product pages becomes one `product` (`product-<uuid>`), from
   fixed places in its body: the product hero (hero title, text and photo), the

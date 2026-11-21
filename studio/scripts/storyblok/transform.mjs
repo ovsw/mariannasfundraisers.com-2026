@@ -6,8 +6,10 @@
 // Built here: the home page and every page, with Page banner, Page heading,
 // Rich Text (with its button row), the eight image-and-text sections of the
 // old "big image" row (issue #15), and Cognito form, FAQ list (with its `faq`
-// records) and Two text columns (issue #19). Every other row becomes a
-// Scaffold that holds the row's text and names its intended section. Product
+// records) and Two text columns (issue #19), and the home page's Home hero,
+// Steps, Menu teaser, Call to action with image and Testimonials (with its
+// `testimonial` records, issue #18). Every other row becomes a Scaffold that
+// holds the row's text and names its intended section. Product
 // pages become products and the old menu rows the menu sections (issue #16,
 // products.mjs). News posts, their authors, the news list and the Latest
 // news section (issue #17) are built here too, with news.mjs. The site
@@ -515,6 +517,232 @@ function faqListSection(list, key, theme, context) {
   return { _key: key, _type: "faqList", theme, title, faqs };
 }
 
+/**
+ * The old home hero as the Home hero section (issue #18): its photo, its
+ * title (the heading the old site drew), its text and buttons, and its
+ * YouTube link. The hero's `content` heading repeats the title and the old
+ * site never drew it; it is a dropped option. Null without a photo or a
+ * title: the hero then stays a Scaffold.
+ */
+function homeHeroSection(hero, nextTheme, context) {
+  const image = imageFromAsset(hero.background_image, context);
+  const title = hero.title?.trim();
+  if (!image || !title) {
+    context.note("needs a hand", `the home hero has no ${image ? "title" : "photo"}; it stays a Scaffold`);
+    return null;
+  }
+  const theme = BANNER_EDGE_THEMES[hero.border_color] ?? nextTheme ?? "light";
+  const section = { _key: hero._uid, _type: "homeHero", theme, image, title };
+  const text = simpleRichText(richTextToBlocks(hero.text, context), context);
+  if (text.length) section.text = withKeys(text, "b");
+  const buttons = (hero.buttons ?? [])
+    .filter((block) => block.component === "button" && !block.hidden)
+    .map((block) => button(block, context))
+    .filter(Boolean);
+  if (buttons.length > 2) context.note("needs a hand", `the home hero has ${buttons.length} buttons; only the first two are imported`);
+  if (buttons.length) section.buttons = buttons.slice(0, 2);
+  const link = hero.youTubeLink?.trim();
+  if (link) {
+    if (youTubeVideoId(link)) section.youTubeUrl = /^[a-z]+:\/\//i.test(link) ? link : `https://${link}`;
+    else context.note("needs a hand", `the home hero's video link "${link}" is not a YouTube video link; it is not imported`);
+  }
+  return section;
+}
+
+/** An old "How it Works" steps row as the Steps section (issue #18), or null when no step has a picture and a title. */
+function stepsSection(row, theme, context) {
+  const at = context.at;
+  const items = [];
+  (row.steps ?? []).forEach((step, index) => {
+    context.at = `${at} > steps[${index}]`;
+    if (step.hidden) {
+      context.drop(context.at, `hidden step "${step.title ?? ""}"`, "hidden blocks");
+      return;
+    }
+    const title = step.title?.trim();
+    const image = imageFromAsset(step.image, context);
+    if (!title || !image) {
+      context.note("needs a hand", `the step "${title ?? ""}" has no ${title ? "picture" : "title"}; it is not imported`);
+      return;
+    }
+    const item = { _key: step._uid, _type: "stepItem", image, title };
+    // Under the step's title (an h3), so a heading in its text starts at h4.
+    const text = outlineHeadings(richTextToBlocks(step.description, context), 3);
+    if (text.length) item.text = withKeys(text, "b");
+    items.push(item);
+  });
+  context.at = at;
+  if (!items.length) {
+    context.note("needs a hand", "the steps row has no step with a picture and a title; it stays a Scaffold");
+    return null;
+  }
+  if (items.length > 3) context.note("needs a hand", `the steps row has ${items.length} steps; only the first three are imported`);
+  return { _key: row._uid, _type: "steps", theme, items: items.slice(0, 3) };
+}
+
+/**
+ * The leading heading group of an old row's `heading` field: its eyebrow and
+ * title go into `section`. A subtitle, an anchor ID or another block has no
+ * field and is listed under "needs a hand".
+ */
+function headingGroupFields(blocks, section, context) {
+  const visible = visibleChildren(blocks, context);
+  const [group, ...others] = visible;
+  if (group?.component === "heading-group") {
+    if (group.eyebrow?.trim()) section.eyebrow = group.eyebrow.trim();
+    if (group.title?.trim()) section.title = group.title.trim();
+    if (group.subtitle?.trim()) context.note("needs a hand", `the subtitle "${group.subtitle.trim()}" has no field in a ${section._type} section; it is not imported`);
+    if (group.anchor_id?.trim()) context.note("needs a hand", `anchor ID "${group.anchor_id}" has no field in a ${section._type} section`);
+  } else if (group) others.unshift(group);
+  for (const block of others) context.note("needs a hand", `a ${block.component} block in the ${section._type} heading is not imported`);
+}
+
+/** One text column of an old row (a heading, text and buttons) as a part's `heading`, rich text and buttons. */
+function headedColumn(blocks, context, sectionType) {
+  const visible = visibleChildren(blocks, context);
+  const headingBlock = visible.find((block) => block.component === "heading");
+  const heading = headingBlock?.title?.trim();
+  const holder = { _type: sectionType, title: heading };
+  rowContent({ content: visible.filter((block) => block !== headingBlock) }, context, { section: holder });
+  // A heading group first in the rest of the column sets the holder's title;
+  // the column's own heading block stays the part's heading.
+  if (heading && holder.title !== heading) {
+    context.note("needs a hand", `the heading group "${holder.title}" inside a ${sectionType} column is not imported; the column keeps its heading "${heading}"`);
+    holder.title = heading;
+  }
+  if (holder.eyebrow || holder.anchorId) context.note("needs a hand", `a heading group inside a ${sectionType} column is not imported`);
+  return { heading: holder.title, richText: holder.richText, buttons: holder.buttons ?? [] };
+}
+
+/**
+ * The old home page's menu teaser as the Menu teaser section (issue #18): the
+ * heading group and introduction, and its two parts (photo, heading, text and
+ * buttons). Null when the heading or a part's photo or heading is missing.
+ */
+function menuTeaserSection(row, theme, context) {
+  const section = { _key: row._uid, _type: "menuTeaser", theme };
+  headingGroupFields(row.heading, section, context);
+  const introBlocks = visibleChildren(row.intro, context);
+  const intro = simpleRichText(
+    introBlocks.flatMap((block) => {
+      if (block.component === "rich-text-basic") return richTextToBlocks(block.text, context);
+      context.note("needs a hand", `a ${block.component} block in the Menu teaser introduction is not imported`);
+      return [];
+    }),
+    context,
+  );
+  if (intro.length) section.intro = withKeys(intro, "b");
+  const items = [1, 2].map((n) => {
+    const column = headedColumn(row[`content_${n}`], context, "menuTeaser");
+    const image = imageFromAsset(row[`image_${n}`], context);
+    if (!column.heading || !image) {
+      context.note("needs a hand", `part ${n} of the Menu teaser has no ${image ? "heading" : "photo"}; the row stays a Scaffold`);
+      return null;
+    }
+    const item = { _key: `content-${n}`, _type: "menuTeaserItem", image, heading: column.heading };
+    if (column.richText) item.text = column.richText;
+    if (column.buttons.length > 2) context.note("needs a hand", `part ${n} of the Menu teaser has ${column.buttons.length} buttons; only the first two are imported`);
+    if (column.buttons.length) item.buttons = column.buttons.slice(0, 2);
+    return item;
+  });
+  if (!section.title) {
+    context.note("needs a hand", "the Menu teaser has no heading; it stays a Scaffold");
+    return null;
+  }
+  if (items.some((item) => !item)) return null;
+  section.items = items;
+  return section;
+}
+
+/**
+ * An old call-to-action row (heading, text and buttons beside a photo) as the
+ * Call to action with image section (issue #18). Null without a heading or a
+ * photo. On product pages the same row is the shared call to action in
+ * Product Page Settings instead (products.mjs).
+ */
+function callToActionSection(row, theme, context) {
+  const column = headedColumn(row.content_main, context, "callToActionWithImage");
+  const image = imageFromAsset(row.image, context);
+  if (!column.heading || !image) {
+    context.note("needs a hand", `the call to action has no ${image ? "heading" : "photo"}; it stays a Scaffold`);
+    return null;
+  }
+  const section = { _key: row._uid, _type: "callToActionWithImage", theme, title: column.heading };
+  if (column.richText) section.richText = column.richText;
+  const buttons = [
+    ...column.buttons,
+    ...visibleChildren(row.content_buttons, context)
+      .filter((block) => {
+        if (block.component === "button") return true;
+        context.note("needs a hand", `a ${block.component} block among the call to action's buttons is not imported`);
+        return false;
+      })
+      .map((block) => button(block, context))
+      .filter(Boolean),
+  ];
+  if (buttons.length > 2) context.note("needs a hand", `the call to action has ${buttons.length} buttons; only the first two are imported`);
+  if (buttons.length) section.buttons = buttons.slice(0, 2);
+  section.image = image;
+  return section;
+}
+
+/**
+ * The document ID of an old testimonial. A `_uid` is unique only inside one
+ * story, so the ID starts with the story UUID.
+ */
+export function testimonialDocumentId(storyUuid, item) {
+  return `testimonial-${storyUuid}-${item._uid}`;
+}
+
+/** An old testimonial's plain text as paragraphs: a blank line starts a new one. */
+function testimonialBody(text) {
+  return String(text ?? "")
+    .split(/\n\s*\n/)
+    .map((part) => paragraph(part))
+    .filter(Boolean);
+}
+
+/**
+ * The old testimonials row as the Testimonials section (issue #18); each of
+ * its quotes becomes a `testimonial` record (name, the place as its title, and
+ * the quote). Null without a heading, a photo or one quote with a name and
+ * text.
+ */
+function testimonialsSection(row, theme, context) {
+  const section = { _key: row._uid, _type: "testimonials", theme };
+  headingGroupFields(row.heading, section, context);
+  const image = imageFromAsset(row.image, context);
+  const at = context.at;
+  const testimonials = [];
+  const records = [];
+  (row.testimonials_list ?? []).forEach((item, index) => {
+    context.at = `${at} > testimonials_list[${index}]`;
+    if (item.hidden) {
+      context.drop(context.at, `hidden testimonial "${item.author_name ?? ""}"`, "hidden blocks");
+      return;
+    }
+    const name = item.author_name?.trim();
+    const body = testimonialBody(item.text);
+    if (!name || !body.length) {
+      context.note("needs a hand", `the testimonial "${name ?? ""}" has no ${name ? "text" : "name"}; it is not imported`);
+      return;
+    }
+    const document = { _id: testimonialDocumentId(context.storyUuid, item), _type: "testimonial", name, body: withKeys(body, "b") };
+    if (item.author_info?.trim()) document.title = item.author_info.trim();
+    records.push(document);
+    testimonials.push({ _key: item._uid, _type: "reference", _ref: document._id });
+  });
+  context.at = at;
+  if (!section.title || !image || !testimonials.length) {
+    context.note("needs a hand", `the testimonials row has no ${!section.title ? "heading" : !image ? "photo" : "testimonial with a name and text"}; it stays a Scaffold`);
+    return null;
+  }
+  context.shared.testimonials.push(...records);
+  section.image = image;
+  section.testimonials = testimonials;
+  return section;
+}
+
 function scaffold(key, name, theme, source, content, context) {
   const richText = withKeys(content.filter(Boolean), "b");
   const section = {
@@ -563,7 +791,9 @@ function pageSections(story, context, { post = false } = {}) {
         return;
       }
       if (block.component === "hero" && story.full_slug === "home") {
-        push(scaffold(block._uid, "Home hero", null, "home hero", blockToPortableText(block, context), context));
+        const next = body.slice(blockIndex + 1).find((b) => b.component === "section");
+        const hero = homeHeroSection(block, THEMES[next?.background ?? ""], context);
+        push(hero ?? scaffold(block._uid, "Home hero", null, "home hero", blockToPortableText(block, context), context));
         return;
       }
       if (block.component === "hero" && post) {
@@ -613,12 +843,20 @@ function pageSections(story, context, { post = false } = {}) {
           context.note("needs a hand", `the ${row.component} row would be a ${name} section, which a news post cannot hold; it is not imported`);
           return;
         }
+        if (name === "Menu teaser" && story.full_slug !== "home") {
+          context.note("needs a hand", `the ${row.component} row would be a Menu teaser section, which only the home page can hold; it is not imported`);
+          return;
+        }
         let built = null;
         if (IMAGE_AND_TEXT_TYPES[name]) built = imageAndTextSection(row, name, theme, context);
         else if (PRODUCT_MENU_TYPES[name]) built = productMenuSection(row, name, theme, context);
         else if (name === "Cognito form") built = cognitoFormSection(row, theme, context);
         else if (name === "FAQ list") built = faqListSection(faqLists[index], key, theme, context);
         else if (name === "Two text columns") built = twoTextColumnsSection(row, theme, context);
+        else if (name === "Steps") built = stepsSection(row, theme, context);
+        else if (name === "Menu teaser") built = menuTeaserSection(row, theme, context);
+        else if (name === "Call to action with image") built = callToActionSection(row, theme, context);
+        else if (name === "Testimonials") built = testimonialsSection(row, theme, context);
         if (post && IMAGE_AND_TEXT_TYPES[name] && !built) {
           context.note("needs a hand", `the ${name} row cannot be its section in a news post; it is not imported`);
           return;
@@ -751,6 +989,7 @@ export function planImport(source, options = {}) {
     usedOverrides: new Set(),
     seed: options.seed ?? null,
     faqs: [],
+    testimonials: [],
   };
 
   const files = collectFiles(stories);
@@ -795,6 +1034,11 @@ export function planImport(source, options = {}) {
   for (const faq of shared.faqs) {
     count(report.documents, faq._type);
     documents.push(faq);
+  }
+  // The testimonial records the Testimonials section points at (issue #18).
+  for (const testimonial of shared.testimonials) {
+    count(report.documents, testimonial._type);
+    documents.push(testimonial);
   }
 
   // Products and Product Page Settings (issue #16).

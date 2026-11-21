@@ -41,6 +41,7 @@ test("a dry run counts the stories by kind and the files", () => {
   // The news story is a post; its malformed slug adds a redirect (issue #17).
   assert.deepEqual(report.documents, { page: 4, post: 1, redirect: 1 });
   assert.deepEqual(report.sections, {
+    callToActionWithImage: 1,
     cognitoForm: 1,
     cutoutLeftAndText: 1,
     imageAndIconList: 3,
@@ -48,7 +49,6 @@ test("a dry run counts the stories by kind and the files", () => {
     pageHeading: 1,
     photoLeftAndText: 1,
     richTextBlock: 4,
-    scaffold: 1,
   });
   assert.deepEqual(
     report.skipped.map(({ story }) => story),
@@ -84,11 +84,9 @@ test("each row becomes one section, with its wrapper's background as theme", () 
       ["imageAndIconList", "shaded", null],
       ["richTextBlock", "light", "Submit & Receive  Order"],
       ["imageAndIconList", "light", null],
-      ["scaffold", null, "Call to action with image"],
+      ["callToActionWithImage", "muslin", "Preparing a Fundraiser?"],
     ],
   );
-  // A Scaffold names its intended section and keeps the wrapper's theme in words.
-  assert.match(document.blocks[8].proposedSectionShape, /^Call to action with image, theme muslin\./);
   // The Page heading keeps its introduction as simple rich text.
   assert.equal(document.blocks[1].intro[0].children[0].text.slice(0, 22), "It's as easy as 1, 2, ");
 });

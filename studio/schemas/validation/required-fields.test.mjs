@@ -82,6 +82,11 @@ const schema = createSchema({
         { name: "faqList", type: "faqList" },
         { name: "twoTextColumns", type: "twoTextColumns" },
         { name: "hoagieMenu", type: "hoagieMenu" },
+        { name: "homeHero", type: "homeHero" },
+        { name: "steps", type: "steps" },
+        { name: "menuTeaser", type: "menuTeaser" },
+        { name: "callToActionWithImage", type: "callToActionWithImage" },
+        { name: "testimonials", type: "testimonials" },
         { name: "richText", type: "richTextContent" },
       ],
     },
@@ -456,6 +461,126 @@ test("Two text columns needs both texts, so it never draws one column", async ()
     }),
     {},
   );
+});
+
+// The home page sections (issue #18).
+test("a Home hero needs its photo and title; its YouTube link must be one video", async () => {
+  assert.deepEqual(
+    await errorPaths({ _type: "testHost", homeHero: { _type: "homeHero", theme: "light", title: "  " } }),
+    ["homeHero.image", "homeHero.title"],
+  );
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      homeHero: { _type: "homeHero", theme: "light", image, title: "The Fundraiser That Sells Itself", youTubeUrl: "https://example.com/video" },
+    }),
+    ["homeHero.youTubeUrl"],
+  );
+  // The heading, text, buttons and video link are optional.
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      homeHero: {
+        _type: "homeHero",
+        theme: "light",
+        image,
+        title: "The Fundraiser That Sells Itself",
+        youTubeUrl: "https://www.youtube.com/watch?v=3nQNiWdeH2Q",
+      },
+    }),
+    {},
+  );
+});
+
+test("Steps needs one to three steps, each with its picture and title", async () => {
+  assert.deepEqual(
+    await errorPaths({ _type: "testHost", steps: { _type: "steps", theme: "light", items: [] } }),
+    ["steps.items"],
+  );
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      steps: { _type: "steps", theme: "light", items: [{ _key: "one", _type: "stepItem", title: " " }] },
+    }),
+    ["steps.items.[one].image", "steps.items.[one].title"],
+  );
+  const step = (key) => ({ _key: key, _type: "stepItem", image, title: "Contact Us" });
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      steps: { _type: "steps", theme: "light", items: ["a", "b", "c", "d"].map(step) },
+    }),
+    ["steps.items"],
+  );
+  assert.deepEqual(
+    await errors({ _type: "testHost", steps: { _type: "steps", theme: "light", items: ["a", "b", "c"].map(step) } }),
+    {},
+  );
+});
+
+test("a Menu teaser needs its heading and exactly two parts, each with its photo and heading", async () => {
+  const part = (key, heading = "14'' Famous Hoagies") => ({ _key: key, _type: "menuTeaserItem", image, heading });
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      menuTeaser: { _type: "menuTeaser", theme: "shaded", title: " ", items: [part("one")] },
+    }),
+    ["menuTeaser.items", "menuTeaser.title"],
+  );
+  assert.deepEqual(
+    await errorPaths({
+      _type: "testHost",
+      menuTeaser: {
+        _type: "menuTeaser",
+        theme: "shaded",
+        title: "Fresh & Clean Obsessed",
+        items: [part("one"), { _key: "two", _type: "menuTeaserItem", heading: " " }],
+      },
+    }),
+    ["menuTeaser.items.[two].heading", "menuTeaser.items.[two].image"],
+  );
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      menuTeaser: { _type: "menuTeaser", theme: "shaded", title: "Fresh & Clean Obsessed", items: [part("one"), part("two", "12'' Delicious Pizzas")] },
+    }),
+    {},
+  );
+});
+
+test("a Call to action with image needs its heading and photo", async () => {
+  assert.deepEqual(
+    await errorPaths({ _type: "testHost", callToActionWithImage: { _type: "callToActionWithImage", theme: "muslin", title: " " } }),
+    ["callToActionWithImage.image", "callToActionWithImage.title"],
+  );
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      callToActionWithImage: { _type: "callToActionWithImage", theme: "muslin", title: "Over 40 years of experience", image },
+    }),
+    {},
+  );
+});
+
+test("Testimonials needs its heading, photo and at least one testimonial; a testimonial needs a name and a quote", async () => {
+  assert.deepEqual(
+    await errorPaths({ _type: "testHost", testimonials: { _type: "testimonials", theme: "muslin", title: " ", testimonials: [] } }),
+    ["testimonials.image", "testimonials.testimonials", "testimonials.title"],
+  );
+  assert.deepEqual(
+    await errors({
+      _type: "testHost",
+      testimonials: {
+        _type: "testimonials",
+        theme: "muslin",
+        title: "Hoagie Heroes",
+        image,
+        testimonials: [{ _key: "one", _type: "reference", _ref: "testimonial-one" }],
+      },
+    }),
+    {},
+  );
+  assert.deepEqual((await errorPaths({ _type: "testimonial", name: " " })).sort(), ["body", "name"]);
 });
 
 // Products (issue #16): the product template draws every product from these
