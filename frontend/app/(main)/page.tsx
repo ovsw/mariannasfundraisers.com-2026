@@ -1,4 +1,5 @@
 import Blocks from "@/components/blocks";
+import { blocksDrawPageTitle } from "@/components/blocks/page-title";
 import VideoJsonLd from "@/components/video-json-ld";
 import WebsiteJsonLd from "@/components/website-json-ld";
 import { siteUrl } from "@/lib/site-url";
@@ -52,13 +53,11 @@ async function CachedIndexPage({ perspective, stega }: DynamicFetchOptions) {
     <>
       <WebsiteJsonLd siteUrl={siteUrl} />
       <VideoJsonLd content={page.blocks ?? []} />
-      {stegaClean(page.title)?.trim() ? (
-        <header>
-          <h1>{page.title}</h1>
-          {stegaClean(page.description)?.trim() ? (
-            <p>{page.description}</p>
-          ) : null}
-        </header>
+      {/* A section that draws the page's h1 replaces this one (see
+          components/blocks/page-title.ts). */}
+      {stegaClean(page.title)?.trim() &&
+      !blocksDrawPageTitle(page.blocks ?? []) ? (
+        <h1 className="sr-only">{page.title}</h1>
       ) : null}
       <Blocks
         blocks={page.blocks ?? []}

@@ -6,6 +6,7 @@ import {
   STARTER_ASSETS,
   STARTER_DOCUMENT_TYPES,
   STARTER_IMAGE_ASSET_ID,
+  LEGACY_STARTER_DOCUMENT_TYPES,
   seed,
   starterDocuments,
   unseed,
@@ -103,6 +104,27 @@ test("unseed deletes marked starter IDs and preserves unrelated documents", asyn
   assert.equal(deletedIds.includes("image-extra-owned"), false);
 });
 
+test("unseed also deletes a marked legacy category from older seeds", async () => {
+  const legacyCategory = {
+    _id: "starter-category-notes",
+    _type: "category",
+    _starterSeed: starterDocuments[0]._starterSeed,
+  };
+  const client = createFakeClient({
+    documents: [...starterDocuments, legacyCategory],
+  });
+  const result = await unseed(client);
+  const deletedIds = client.calls.commits[0].map((operation) => operation.id);
+
+  assert.equal(LEGACY_STARTER_DOCUMENT_TYPES.get(legacyCategory._id), "category");
+  assert.equal(result.documents, STARTER_DOCUMENT_TYPES.size + 1);
+  assert.ok(deletedIds.includes("starter-category-notes"));
+});
+
+test("seed creates no category documents or references", () => {
+  assert.doesNotMatch(JSON.stringify(starterDocuments), /category/i);
+});
+
 test("unseed refuses unmarked starter IDs", async () => {
   const documents = starterDocuments.map((document) =>
     document._id === "homePage"
@@ -168,7 +190,10 @@ test("homepage seed demonstrates a seam and a straight edge", () => {
   const home = starterDocuments.find((document) => document._id === "homePage");
   const themed = home.blocks.filter((block) => block._type !== "scaffold");
   for (const block of themed) {
-    assert.ok(["light", "dark"].includes(block.theme), block._key);
+    assert.ok(
+      ["light", "shaded", "muslin", "primary"].includes(block.theme),
+      block._key,
+    );
   }
   const joins = themed.slice(1).map((block, index) => ({
     match: themed[index].theme === block.theme,

@@ -62,10 +62,10 @@ describe("createBlogPostingJsonLd", () => {
       image: "https://cdn.sanity.io/images/post.jpg",
       datePublished: "2025-04-01T12:00:00.000Z",
       dateModified: "2025-04-03T15:30:00.000Z",
-      url: "https://example.com/blog/service-guide",
+      url: "https://example.com/news/service-guide",
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": "https://example.com/blog/service-guide",
+        "@id": "https://example.com/news/service-guide",
       },
       author: {
         "@type": "Organization",

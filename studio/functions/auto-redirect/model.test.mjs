@@ -54,7 +54,7 @@ test("creates a canonical permanent redirect for a page rename", () => {
   );
 });
 
-test("creates post and category redirects in their public namespaces", () => {
+test("creates post redirects in the news namespace", () => {
   const post = planAutoRedirect({
     event: {
       beforeSlug: "old-post",
@@ -65,23 +65,10 @@ test("creates post and category redirects in their public namespaces", () => {
     liveRoutes: [],
     redirects: [],
   });
-  const category = planAutoRedirect({
-    event: {
-      beforeSlug: "old-category",
-      documentId: "category-id",
-      documentType: "category",
-      slug: "new-category",
-    },
-    liveRoutes: [],
-    redirects: [],
-  });
 
   assert.equal(post.action, "apply");
-  assert.equal(post.source, "/blog/old-post");
-  assert.equal(post.destination, "/blog/new-post");
-  assert.equal(category.action, "apply");
-  assert.equal(category.source, "/blog/category/old-category");
-  assert.equal(category.destination, "/blog/category/new-category");
+  assert.equal(post.source, "/news/old-post");
+  assert.equal(post.destination, "/news/new-post");
 });
 
 test("flattens incoming redirects after repeated renames", () => {
@@ -119,8 +106,8 @@ test("flattens incoming redirects after repeated renames", () => {
   );
 });
 
-test("rejects page renames into or out of the blog namespace", () => {
-  for (const [beforeSlug, slug] of [["about", "blog/post"], ["blog/post", "about"]]) {
+test("rejects page renames into or out of the news namespace", () => {
+  for (const [beforeSlug, slug] of [["about", "news/post"], ["news/post", "about"]]) {
     const plan = planAutoRedirect({
       event: { beforeSlug, slug, documentId: "page-id", documentType: "page" },
       liveRoutes: [], redirects: [],
@@ -525,7 +512,7 @@ test("blocks pending inactive-source edits, live routes, and redirect cycles", (
 test("rejects reserved, unsafe, unsupported, and first-publish events", () => {
   for (const event of [
     {
-      beforeSlug: "blog",
+      beforeSlug: "news",
       documentId: "page-id",
       documentType: "page",
       slug: "new",
@@ -547,7 +534,7 @@ test("rejects reserved, unsafe, unsupported, and first-publish events", () => {
 });
 
 test("ignores draft and release renames for every routed document type", () => {
-  for (const documentType of ["page", "post", "category"]) {
+  for (const documentType of ["page", "post"]) {
     for (const documentId of ["drafts.document-id", "versions.release-id.document-id"]) {
       const plan = planAutoRedirect({
         event: { documentId, documentType, beforeSlug: "old", slug: "new" },

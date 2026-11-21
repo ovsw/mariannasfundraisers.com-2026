@@ -4,12 +4,12 @@ import { blogPostSidebarFields } from "../blocks/shared/blog-post-sidebar";
 
 export default defineType({
   name: "blogPostSettings",
-  title: "Blog Post Settings",
+  title: "News Post Settings",
   type: "document",
   icon: PanelRight,
-  description: "Shared sidebar content shown on blog post pages.",
+  description: "Shared sidebar content shown on news post pages.",
   fields: blogPostSidebarFields,
   preview: {
-    prepare: () => ({ title: "Blog Post Settings" }),
+    prepare: () => ({ title: "News Post Settings" }),
   },
 });

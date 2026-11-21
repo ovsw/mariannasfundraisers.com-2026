@@ -1,0 +1,1439 @@
+[
+ {
+  "name": "How it Works",
+  "uuid": "52c39a44-95f4-4db5-95a8-04be090ce92e",
+  "full_slug": "how-it-works",
+  "slug": "how-it-works",
+  "is_startpage": false,
+  "content": {
+   "_uid": "ed1e6ce2-221c-424c-92b6-4a21e68f22b5",
+   "body": [
+    {
+     "_uid": "c85b00af-38a1-4f82-81b8-8523159593b1",
+     "text": {
+      "type": "doc",
+      "content": [
+       {
+        "type": "paragraph"
+       }
+      ]
+     },
+     "type": "product",
+     "title": "",
+     "height": "empty",
+     "hidden": false,
+     "buttons": [],
+     "content": [
+      {
+       "_uid": "7a2e1576-1724-46bc-a532-3398e400ed09",
+       "level": "h1",
+       "style": "h1",
+       "title": "The Fundraiser that sells itself",
+       "component": "heading"
+      }
+     ],
+     "is_tall": true,
+     "component": "hero",
+     "youTubeLink": "",
+     "border_color": "shaded",
+     "background_color": "shaded",
+     "background_image": {
+      "id": 4060956,
+      "alt": "Marianna's refrigerated truck",
+      "name": "",
+      "focus": "",
+      "title": "",
+      "source": "",
+      "filename": "https://a.storyblok.com/f/133593/6000x1975/fc3b3e8bde/mfs-truck-on-grey.jpg",
+      "copyright": "",
+      "fieldtype": "asset",
+      "is_external_url": false
+     }
+    },
+    {
+     "_uid": "7e5427d4-3b0c-43a7-9f67-a7d6808a2407",
+     "name": "Main Page Heading",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "34945589-f8da-44d0-8d1d-ee2c60e0cbcb",
+       "name": "",
+       "content": [
+        {
+         "_uid": "57ecb4c4-89f7-4fa3-8f2d-f73042f25f02",
+         "component": "page-heading",
+         "intro_text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "It's as easy as 1, 2, 3! Here's a quick view at how easy our process is, from first contact to delivery, with enthusiastic support available at every step.",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "heading_title": "How it Works"
+        }
+       ],
+       "component": "row-single-column"
+      }
+     ],
+     "component": "section",
+     "background": "shaded",
+     "margin_top": "none",
+     "is_reversed": false,
+     "padding_top": "small",
+     "margin_bottom": "default",
+     "decoration_top": "default",
+     "padding_bottom": "small",
+     "decoration_bottom": "brushed2"
+    },
+    {
+     "_uid": "470cb04a-1f76-4815-93eb-5076084bafd7",
+     "name": "Step 1",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "9f2f7df3-88b0-4162-be1f-680f6233cc71",
+       "name": "",
+       "content": [
+        {
+         "_uid": "22664bfb-83ab-465c-b8db-933b5344193a",
+         "title": " Contact Us",
+         "eyebrow": "Step 1:",
+         "anchor_id": "",
+         "component": "heading-group"
+        }
+       ],
+       "component": "row-single-column"
+      },
+      {
+       "_uid": "1cad43cd-4762-414e-82ea-4b4dc9259cf6",
+       "name": "1 Contact Us",
+       "image": {
+        "id": 3684775,
+        "alt": "illustration of woman sitting at desk with headset",
+        "name": "",
+        "focus": null,
+        "title": "",
+        "filename": "https://a.storyblok.com/f/133593/562x511/a10f79e702/mariannas-how-it-works-call-us.png",
+        "copyright": "",
+        "fieldtype": "asset"
+       },
+       "content": [
+        {
+         "_uid": "51c979e9-2f8b-4d51-a9d6-20b658dd76e6",
+         "icon": "phone-ringing",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Call",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " ",
+              "type": "text"
+             },
+             {
+              "text": "(814) 684-2666",
+              "type": "text",
+              "marks": [
+               {
+                "type": "link",
+                "attrs": {
+                 "href": "tel:8146842666",
+                 "uuid": null,
+                 "anchor": null,
+                 "target": null,
+                 "linktype": "url"
+                }
+               }
+              ]
+             },
+             {
+              "text": " ext. 206 ",
+              "type": "text"
+             },
+             {
+              "text": "to set up",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " your ",
+              "type": "text"
+             },
+             {
+              "text": "Delivery Date",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " and ",
+              "type": "text"
+             },
+             {
+              "text": "Time",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " ",
+              "type": "text"
+             },
+             {
+              "text": "of your Sale",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": ". A Marianna's Customer Support Representative will help get you started and answer any questions you may have.",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Call Us",
+         "component": "feature-group",
+         "heading_level": "h3"
+        },
+        {
+         "_uid": "27603979-b8d2-4424-b139-a9ed4b0d86c4",
+         "icon": "documents",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "If applicable, email your valid ",
+              "type": "text"
+             },
+             {
+              "text": "Sales Tax Exempt Form",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " to",
+              "type": "text"
+             },
+             {
+              "text": " ",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": "mariannas@delgrossos.com",
+              "type": "text",
+              "marks": [
+               {
+                "type": "link",
+                "attrs": {
+                 "href": "mariannas@delgrossos.com",
+                 "uuid": null,
+                 "anchor": null,
+                 "target": "_self",
+                 "linktype": "email"
+                }
+               }
+              ]
+             },
+             {
+              "text": ". ",
+              "type": "text"
+             },
+             {
+              "text": "Please Note:",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " Employer Identification Numbers (EIN) cannot be accepted as Sales Tax Exempt Numbers.",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Tax Exemption Form",
+         "component": "feature-group",
+         "heading_level": "h3"
+        },
+        {
+         "_uid": "b3622a23-3ac0-4f6d-94ae-6ec72358f5c3",
+         "icon": "envelope",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Order Forms and Sale Confirmation will be ",
+              "type": "text"
+             },
+             {
+              "text": "mailed out",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " to you via USPS 3-Day Priority. These will come in handy in the next step.",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Receive Order Forms",
+         "component": "feature-group",
+         "heading_level": "h3"
+        }
+       ],
+       "component": "row-big-image",
+       "is_reversed": true,
+       "contain_image": true,
+       "extra_padding": false
+      }
+     ],
+     "component": "section",
+     "background": "",
+     "margin_top": "default",
+     "padding_top": "",
+     "margin_bottom": "default",
+     "decoration_top": "",
+     "padding_bottom": "",
+     "decoration_bottom": ""
+    },
+    {
+     "_uid": "4da63aed-f5ca-462d-863f-be57e8a23a11",
+     "name": "Step 1",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "144a813f-293b-48b8-b1a9-d765655e4922",
+       "name": "",
+       "content": [
+        {
+         "_uid": "79e2f393-592e-43e7-bc49-eef6b89989ea",
+         "title": "Start Selling",
+         "eyebrow": "Step 2:",
+         "component": "heading-group"
+        }
+       ],
+       "component": "row-single-column"
+      },
+      {
+       "_uid": "c137954d-8bbf-452a-8343-6bd600d43e5d",
+       "name": "1 Contact Us",
+       "image": {
+        "id": 3734471,
+        "alt": null,
+        "name": "",
+        "focus": null,
+        "title": null,
+        "filename": "https://a.storyblok.com/f/133593/562x511/3e6bcebc1a/mariannas-how-it-works-start-selling.png",
+        "copyright": null,
+        "fieldtype": "asset"
+       },
+       "content": [
+        {
+         "_uid": "71afe881-bbb9-4487-b5e0-575c5d1df617",
+         "icon": "price-tag",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "See our ",
+              "type": "text"
+             },
+             {
+              "text": "Pricing Info Page",
+              "type": "text",
+              "marks": [
+               {
+                "type": "link",
+                "attrs": {
+                 "href": "/pricing-info",
+                 "uuid": "61378474-efbd-4742-94da-475c6b09727f",
+                 "anchor": null,
+                 "target": null,
+                 "linktype": "story"
+                }
+               }
+              ]
+             },
+             {
+              "text": " for information on item costs and ",
+              "type": "text"
+             },
+             {
+              "text": "helpful resources",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " on how to decide on your Selling Price. ",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Decide on your Selling Price",
+         "component": "feature-group",
+         "heading_level": "h3"
+        },
+        {
+         "_uid": "217076f9-3d13-4cc9-b69d-d4669bb25dbd",
+         "icon": "documents-checked",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Now that you have all the necessary info, you can fill out all the forms with your ",
+              "type": "text"
+             },
+             {
+              "text": "Order Due Date, Delivery Date, and Pricing Info",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": ". ",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Fill out Order Forms",
+         "component": "feature-group",
+         "heading_level": "h3"
+        },
+        {
+         "_uid": "eae83674-2e2a-4471-a72b-82988e161a5d",
+         "icon": "envelope",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Now it's time to distribute your forms to all your Sellers. Please ",
+              "type": "text"
+             },
+             {
+              "text": "make sure",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " that your Sellers know when to return the Order Forms back to you.",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Distribute Forms",
+         "component": "feature-group",
+         "heading_level": "h3"
+        }
+       ],
+       "component": "row-big-image",
+       "is_reversed": true,
+       "contain_image": true,
+       "extra_padding": false
+      }
+     ],
+     "component": "section",
+     "background": "shaded",
+     "margin_top": "default",
+     "padding_top": "",
+     "margin_bottom": "default",
+     "decoration_top": "brushed2",
+     "padding_bottom": "",
+     "overflow_hidden": false,
+     "decoration_bottom": "brushed2"
+    },
+    {
+     "_uid": "780d0005-bea1-46a5-acc5-12b483329ff4",
+     "name": "Step 1",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "68f13a9d-13af-4a41-a752-6447c2651d3e",
+       "name": "",
+       "content": [
+        {
+         "_uid": "cd6b5976-5aee-448a-8525-f061a75c4392",
+         "title": "Submit & Receive  Order",
+         "eyebrow": "Step 3:",
+         "anchor_id": "",
+         "component": "heading-group"
+        }
+       ],
+       "component": "row-single-column"
+      },
+      {
+       "_uid": "8cfdf42b-bab9-4382-bea8-6bc41534870c",
+       "name": "1 Contact Us",
+       "image": {
+        "id": 3734470,
+        "alt": null,
+        "name": "",
+        "focus": null,
+        "title": null,
+        "filename": "https://a.storyblok.com/f/133593/562x511/1929bdc0c6/mariannas-how-it-works-place-order.png",
+        "copyright": null,
+        "fieldtype": "asset"
+       },
+       "content": [
+        {
+         "_uid": "8bcc39d4-cbd4-4549-9ac9-1ffeee1bc1c9",
+         "icon": "hand-asking",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "attrs": {
+             "textAlign": null
+            },
+            "content": [
+             {
+              "text": "Request ",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": "all",
+              "type": "text"
+             },
+             {
+              "text": " Order Forms",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " ",
+              "type": "text"
+             },
+             {
+              "text": "back",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": " from your sellers",
+              "type": "text"
+             },
+             {
+              "text": " Ten days before ",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": "your scheduled Delivery Date, or earlier if you feel it's needed.  Then, tally your orders using our ",
+              "type": "text"
+             },
+             {
+              "text": "Order Tally Spreadsheet.",
+              "type": "text",
+              "marks": [
+               {
+                "type": "link",
+                "attrs": {
+                 "href": "/documents-and-forms",
+                 "uuid": "f23baae3-6d33-48a5-b582-b75402ab2d3c",
+                 "anchor": null,
+                 "target": "_self",
+                 "linktype": "story"
+                }
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Gather Order Forms",
+         "component": "feature-group",
+         "heading_level": "h3"
+        },
+        {
+         "_uid": "d10bb850-4da4-4916-8aa0-e97a4f5aa4e0",
+         "icon": "paper-plane",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Eight business days before ",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": "your Delivery Date, ",
+              "type": "text"
+             },
+             {
+              "text": "submit your order here",
+              "type": "text",
+              "marks": [
+               {
+                "type": "link",
+                "attrs": {
+                 "href": "/submit-your-order",
+                 "uuid": "10047fdc-54b0-414a-9a26-b25566ee2b5a",
+                 "anchor": null,
+                 "target": null,
+                 "linktype": "story"
+                }
+               }
+              ]
+             },
+             {
+              "text": ", or at ",
+              "type": "text"
+             },
+             {
+              "text": "mariannas@delgrossos.com",
+              "type": "text",
+              "marks": [
+               {
+                "type": "link",
+                "attrs": {
+                 "href": "mariannas@delgrossos.com",
+                 "uuid": null,
+                 "anchor": null,
+                 "target": null,
+                 "linktype": "email"
+                }
+               }
+              ]
+             },
+             {
+              "text": ".",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Submit Your Order",
+         "component": "feature-group",
+         "heading_level": "h3"
+        },
+        {
+         "_uid": "7e07f31a-3de5-44fa-9260-ea42b3750b65",
+         "icon": "delivery-truck",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "On your Delivery Date, be ready to receive your order. ",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             },
+             {
+              "text": "This final step is an important one, please read our guide on ",
+              "type": "text"
+             },
+             {
+              "text": "how to prepare for receiving a shipment",
+              "type": "text",
+              "marks": [
+               {
+                "type": "link",
+                "attrs": {
+                 "href": "/10-steps-to-success",
+                 "uuid": "f813b1eb-abe7-4912-ae8c-ebbfa66aa464",
+                 "anchor": null,
+                 "target": null,
+                 "linktype": "story"
+                }
+               }
+              ]
+             },
+             {
+              "text": " (#9 on our 10 Steps to Success)",
+              "type": "text"
+             },
+             {
+              "text": ".",
+              "type": "text",
+              "marks": [
+               {
+                "type": "bold"
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         "heading": "Receive Order Shipment",
+         "component": "feature-group",
+         "heading_level": "h3"
+        }
+       ],
+       "component": "row-big-image",
+       "is_reversed": true,
+       "contain_image": true,
+       "extra_padding": false
+      }
+     ],
+     "component": "section",
+     "background": "",
+     "margin_top": "default",
+     "padding_top": "",
+     "margin_bottom": "default",
+     "decoration_top": "",
+     "padding_bottom": "",
+     "overflow_hidden": false,
+     "decoration_bottom": ""
+    },
+    {
+     "_uid": "2a380456-e2d9-4d41-a5a4-2c69eb8c159a",
+     "name": "CTA - 40 Years of Experience",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "745d3248-aebf-41fb-acce-0c55a8fd5001",
+       "name": "Over 40 Years of Experience",
+       "image": {
+        "id": 3771769,
+        "alt": "",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/133593/632x632/0714d60d8a/diane-on-the-phone.png",
+        "copyright": "",
+        "fieldtype": "asset",
+        "is_private": "",
+        "is_external_url": false
+       },
+       "component": "row-two-columns-cta",
+       "content_main": [
+        {
+         "_uid": "5660d57c-923d-4fe9-85a3-7171525e12a0",
+         "level": "h2",
+         "style": "h1",
+         "title": "Preparing a Fundraiser? ",
+         "anchor_id": "",
+         "component": "heading"
+        },
+        {
+         "_uid": "82d45469-2a07-4232-8128-b7fb756f0bc8",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Our Team can help with these informative video guides!",
+              "type": "text"
+             },
+             {
+              "type": "hard_break"
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        }
+       ],
+       "content_buttons": [
+        {
+         "_uid": "0c05d6ba-0e62-47dd-a933-6538c5096004",
+         "icon": "share",
+         "link": {
+          "id": "1a0e0ce3-b75e-4426-8411-691074fea16d",
+          "url": "",
+          "linktype": "story",
+          "fieldtype": "multilink",
+          "cached_url": "video-guides"
+         },
+         "text": "Helpful Video Guides",
+         "style": "light-primary",
+         "target": true,
+         "component": "button",
+         "icon_position": "left"
+        }
+       ]
+      }
+     ],
+     "component": "section",
+     "background": "muslin",
+     "margin_top": "default",
+     "padding_top": "default",
+     "margin_bottom": "none",
+     "decoration_top": "default",
+     "padding_bottom": "default",
+     "decoration_bottom": "brushed2"
+    }
+   ],
+   "component": "page",
+   "seo_image": {
+    "id": 4149690,
+    "alt": "Marianna's Italian Hoagie",
+    "name": "",
+    "focus": null,
+    "title": "",
+    "filename": "https://a.storyblok.com/f/133593/2407x1080/bc13216698/italian-hoagie-on-table.jpg",
+    "copyright": "",
+    "fieldtype": "asset"
+   },
+   "seo_title": "How it Works",
+   "seo_noindex": false,
+   "seo_description": "It's as easy as 1, 2, 3! Here's a quick view at how easy our process is, from first contact to delivery, with enthusiastic support available at every step."
+  }
+ },
+ {
+  "name": "Contact Us",
+  "uuid": "457b6238-729f-4779-88ce-11548d35fa7a",
+  "full_slug": "contact-us",
+  "slug": "contact-us",
+  "is_startpage": false,
+  "content": {
+   "_uid": "9d89d38a-abb5-41ef-a7f1-3e1a7f9c1fda",
+   "body": [
+    {
+     "_uid": "26596878-7d23-4339-9e2e-3f35a5cd15c3",
+     "text": {
+      "type": "doc",
+      "content": [
+       {
+        "type": "paragraph"
+       }
+      ]
+     },
+     "title": "Contact Us",
+     "height": "short",
+     "hidden": false,
+     "buttons": [],
+     "content": [],
+     "is_tall": false,
+     "component": "hero",
+     "youTubeLink": "",
+     "border_color": "shaded",
+     "background_color": "shaded",
+     "background_image": {
+      "id": 3901786,
+      "alt": "smiling young girl playing the violin, sporting the green hoagie hero cape",
+      "name": "",
+      "focus": null,
+      "title": null,
+      "filename": "https://a.storyblok.com/f/133593/2400x1602/dbc822788b/hoagie-hero-kid-violin.jpg",
+      "copyright": null,
+      "fieldtype": "asset"
+     }
+    },
+    {
+     "_uid": "41fbeee0-6677-4a1f-800b-622c4a285319",
+     "name": "Hoagie Heroes",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "58ef0a7a-f03b-4564-bf5a-7dec634a55db",
+       "name": "",
+       "image": {
+        "id": 3771769,
+        "alt": "",
+        "name": "",
+        "focus": null,
+        "title": "",
+        "filename": "https://a.storyblok.com/f/133593/632x632/0714d60d8a/diane-on-the-phone.png",
+        "copyright": "",
+        "fieldtype": "asset"
+       },
+       "content": [
+        {
+         "_uid": "9a29346b-dd31-46cc-aa73-98fc071d8a62",
+         "title": "For You",
+         "eyebrow": "We're Here",
+         "anchor_id": "",
+         "component": "heading-group"
+        },
+        {
+         "_uid": "2afd54a5-9dc7-4f29-90d0-c869b0aa6777",
+         "text": {
+          "type": "doc",
+          "attrs": {
+           "backgroundColor": null
+          },
+          "content": [
+           {
+            "type": "paragraph",
+            "attrs": {
+             "textAlign": null
+            },
+            "content": [
+             {
+              "text": "Have a question or need help? Want to get in touch, or find a sale near you?  Our Staff is happy to help you in any way they can! 😊",
+              "type": "text"
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "attrs": {
+             "textAlign": null
+            },
+            "content": [
+             {
+              "text": "With over 45 years experience helping groups raise money, our team is ready to assist you.",
+              "type": "text"
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "attrs": {
+             "textAlign": null
+            },
+            "content": [
+             {
+              "text": "You can get in touch via:",
+              "type": "text"
+             }
+            ]
+           },
+           {
+            "type": "bullet_list",
+            "content": [
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "attrs": {
+                 "textAlign": null
+                },
+                "content": [
+                 {
+                  "text": "email:",
+                  "type": "text"
+                 },
+                 {
+                  "text": " ",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "styled",
+                    "attrs": {
+                     "class": ""
+                    }
+                   }
+                  ]
+                 },
+                 {
+                  "text": "mariannas@delgrossos.com",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "link",
+                    "attrs": {
+                     "href": "mailto:mariannas@delgrossos.com",
+                     "uuid": null,
+                     "anchor": null,
+                     "target": null,
+                     "linktype": null
+                    }
+                   },
+                   {
+                    "type": "bold"
+                   },
+                   {
+                    "type": "underline"
+                   }
+                  ]
+                 }
+                ]
+               }
+              ]
+             },
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "attrs": {
+                 "textAlign": null
+                },
+                "content": [
+                 {
+                  "text": "phone: (",
+                  "type": "text"
+                 },
+                 {
+                  "text": "814) 684-2666",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "link",
+                    "attrs": {
+                     "href": "tel:8146842666",
+                     "uuid": null,
+                     "anchor": null,
+                     "target": null,
+                     "linktype": null
+                    }
+                   },
+                   {
+                    "type": "bold"
+                   },
+                   {
+                    "type": "underline"
+                   }
+                  ]
+                 },
+                 {
+                  "text": " ",
+                  "type": "text",
+                  "marks": [
+                   {
+                    "type": "styled",
+                    "attrs": {
+                     "class": ""
+                    }
+                   }
+                  ]
+                 },
+                 {
+                  "text": "ext. 206",
+                  "type": "text"
+                 }
+                ]
+               }
+              ]
+             },
+             {
+              "type": "list_item",
+              "content": [
+               {
+                "type": "paragraph",
+                "attrs": {
+                 "textAlign": null
+                },
+                "content": [
+                 {
+                  "text": "the form below:",
+                  "type": "text"
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        }
+       ],
+       "component": "row-big-image",
+       "is_reversed": true,
+       "youTubeLink": "",
+       "contain_image": true,
+       "extra_padding": true
+      },
+      {
+       "_uid": "ed1b5f45-a67e-44d9-851e-e5fe34fbce7e",
+       "name": "Support Form",
+       "content": [
+        {
+         "_uid": "8399e884-2daa-4e0f-9e3f-f578e45ec038",
+         "component": "form_cognito",
+         "cognito_form_id": "114"
+        }
+       ],
+       "component": "row-single-column"
+      }
+     ],
+     "component": "section",
+     "background": "shaded",
+     "margin_top": "none",
+     "is_reversed": false,
+     "padding_top": "default",
+     "margin_bottom": "none",
+     "decoration_top": "default",
+     "padding_bottom": "large",
+     "overflow_hidden": false,
+     "decoration_bottom": "none"
+    }
+   ],
+   "component": "page",
+   "seo_image": {
+    "id": null,
+    "alt": null,
+    "name": "",
+    "focus": null,
+    "title": null,
+    "filename": "",
+    "copyright": null,
+    "fieldtype": "asset"
+   },
+   "seo_title": "Contact Us",
+   "seo_noindex": false,
+   "seo_description": "Have a question or need help? Want to get in touch, or find a sale near you? Our Staff is happy to help you in any way they can! 😊"
+  }
+ },
+ {
+  "name": "How It's Made",
+  "uuid": "53abb6f0-3f74-435b-88ab-eff74b138cfd",
+  "full_slug": "how-it-is-made",
+  "slug": "how-it-is-made",
+  "is_startpage": false,
+  "content": {
+   "_uid": "9d89d38a-abb5-41ef-a7f1-3e1a7f9c1fda",
+   "body": [
+    {
+     "_uid": "26596878-7d23-4339-9e2e-3f35a5cd15c3",
+     "text": {
+      "type": "doc",
+      "content": [
+       {
+        "type": "paragraph"
+       }
+      ]
+     },
+     "title": "",
+     "height": "empty",
+     "hidden": false,
+     "buttons": [],
+     "content": [],
+     "is_tall": false,
+     "component": "hero",
+     "youTubeLink": "",
+     "border_color": "shaded",
+     "background_color": "shaded",
+     "background_image": {
+      "id": 3901826,
+      "alt": "Container filled with vacuum sealed lettuce bags",
+      "name": "",
+      "focus": "",
+      "title": "",
+      "source": "",
+      "filename": "https://a.storyblok.com/f/133593/2400x1602/f2ab441055/lettuce.jpg",
+      "copyright": "",
+      "fieldtype": "asset",
+      "is_external_url": false
+     }
+    },
+    {
+     "_uid": "d86facfc-5059-477d-ac4c-08c1ebb1c061",
+     "name": "Hoagie Heroes",
+     "width": "full",
+     "content": [
+      {
+       "_uid": "bee51634-23c5-4d43-a9ed-04c83f62245c",
+       "name": "",
+       "image": {
+        "id": 3901824,
+        "alt": null,
+        "name": "",
+        "focus": null,
+        "title": null,
+        "filename": "https://a.storyblok.com/f/133593/2400x1602/fb09cdecd2/slicing-machine-close-up.jpg",
+        "copyright": null,
+        "fieldtype": "asset"
+       },
+       "content": [
+        {
+         "_uid": "94806b9a-fd2f-4154-8fa1-50883bc222f7",
+         "title": "Hoagies",
+         "eyebrow": "Famous",
+         "anchor_id": "",
+         "component": "heading-group"
+        },
+        {
+         "_uid": "147d3d56-4925-4384-8f1e-3c5a233deb34",
+         "text": {
+          "type": "doc",
+          "content": [
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Our team chooses only the best quality meats and cheeses that are sliced in-house each morning before hoagie assembly. ",
+              "type": "text"
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Each ",
+              "type": "text"
+             },
+             {
+              "text": "hoagie",
+              "type": "text",
+              "marks": [
+               {
+                "type": "link",
+                "attrs": {
+                 "href": "/menu/",
+                 "uuid": "fa6265db-3dfc-41bd-bdda-910c42723ef6",
+                 "anchor": "hoagies",
+                 "target": null,
+                 "linktype": "story"
+                }
+               }
+              ]
+             },
+             {
+              "text": " comes with shredded Lettuce, sliced Tomatoes, and diced Onions (except Ham Club - no onions). ",
+              "type": "text"
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "The vegetables are vacuum sealed individually at our facility to maximize freshness and taste. This process also keeps our hoagies from mixing in flavors that you may not want. The customer chooses which toppings to enjoy on their hoagie.",
+              "type": "text"
+             }
+            ]
+           },
+           {
+            "type": "paragraph",
+            "content": [
+             {
+              "text": "Our condiments have become a fan favorite of many customers. Our homemade Italian Dressing and Sweet and Sassy Mayo are the perfect compliments to our hoagies.",
+              "type": "text"
+             }
+            ]
+           }
+          ]
+         },
+         "component": "rich-text-basic"
+        }
+       ],
+       "component": "row-big-image",
+       "is_reversed": true,
+       "youTubeLink": "",
+       "contain_image": false,
+       "extra_padding": false
+      }
+     ],
+     "component": "section",
+     "background": "shaded",
+     "margin_top": "none",
+     "is_reversed": false,
+     "padding_top": "large",
+     "margin_bottom": "default",
+     "decoration_top": "brushed1",
+     "padding_bottom": "large",
+     "decoration_bottom": "brushed2"
+    }
+   ],
+   "component": "page",
+   "seo_image": {
+    "id": null,
+    "alt": null,
+    "name": "",
+    "focus": null,
+    "title": null,
+    "filename": "",
+    "copyright": null,
+    "fieldtype": "asset"
+   },
+   "seo_title": "How it's Made",
+   "seo_noindex": false,
+   "seo_description": "A look behind the scenes at how Marianna's famous hoagies & delicious pizzas are made in the DelGrosso Kitchens."
+  }
+ },
+ {
+  "name": "Menu Page",
+  "uuid": "fa6265db-3dfc-41bd-bdda-910c42723ef6",
+  "full_slug": "products/",
+  "slug": "products",
+  "is_startpage": true,
+  "content": {
+   "_uid": "059ac889-3a19-407d-a0e2-22718e2e25cc",
+   "body": [
+    {
+     "_uid": "c916dd5a-9b66-48a1-a487-504647e04a50",
+     "name": "Hoagies",
+     "width": "default",
+     "content": [
+      {
+       "_uid": "35b28071-f390-4eee-acaa-a76464001cd4",
+       "name": "Hoagies Heading",
+       "content": [
+        {
+         "_uid": "9598f1e9-b53e-4868-81c8-14402a806653",
+         "title": "14\"  Hoagies",
+         "eyebrow": "Our Famous",
+         "anchor_id": "hoagies",
+         "component": "heading-group",
+         "heading_level": "h1"
+        }
+       ],
+       "component": "row-single-column"
+      }
+     ],
+     "component": "section",
+     "background": "shaded",
+     "margin_top": "none",
+     "padding_top": "large",
+     "margin_bottom": "default",
+     "decoration_top": "",
+     "padding_bottom": "large",
+     "overflow_hidden": true,
+     "decoration_bottom": "brushed2"
+    }
+   ],
+   "component": "page",
+   "seo_image": {
+    "id": 4149690,
+    "alt": "Marianna's Italian Hoagie",
+    "name": "",
+    "focus": null,
+    "title": "",
+    "filename": "https://a.storyblok.com/f/133593/2407x1080/bc13216698/italian-hoagie-on-table.jpg",
+    "copyright": "",
+    "fieldtype": "asset"
+   },
+   "seo_title": "Our 14\" Famous Hoagies and Delicious 12\" Pizzas",
+   "seo_noindex": false,
+   "seo_description": "Our hoagies and pizzas are freshly made each morning before delivery. Many delicious varieties available!"
+  }
+ },
+ {
+  "name": "Winner: 2024 Hometown Favorite Sandwich",
+  "uuid": "a8712100-6134-40d1-b240-958164b82131",
+  "full_slug": "news/winner:-2024-hometown-favorite-sandwich",
+  "slug": "winner:-2024-hometown-favorite-sandwich",
+  "is_startpage": false,
+  "content": {
+   "_uid": "2819a299-535b-45ba-b553-20b3b6934024",
+   "body": [],
+   "date": "2024-11-07 00:00",
+   "title": "Winner: 2024 Hometown Favorite Sandwich",
+   "author": "todd",
+   "excerpt": "Proud four-time winner of the Hometown Favorite Sandwich Award!",
+   "component": "blog-post",
+   "seo_title": "",
+   "main_image": {
+    "id": 4111170,
+    "alt": "Marianna's Italian Hoagie Hometown Favorite Award Winner",
+    "name": "",
+    "focus": "",
+    "title": "",
+    "source": "",
+    "filename": "https://a.storyblok.com/f/133593/1485x1020/2f1b46c4a9/mfs-hometown.jpg",
+    "copyright": "",
+    "fieldtype": "asset",
+    "is_external_url": false
+   },
+   "reading_time": "1",
+   "seo_description": ""
+  }
+ }
+]

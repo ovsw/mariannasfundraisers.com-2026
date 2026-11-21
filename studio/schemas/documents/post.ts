@@ -4,6 +4,7 @@ import { FileText } from "lucide-react";
 import meta from "../blocks/shared/meta";
 import { postPath } from "../../../shared/content-routes.ts";
 import { uniqueRoutedSlug } from "../validation/routed-slug";
+import { postBlocksField } from "../blocks/page-builder";
 
 export default defineType({
   name: "post",
@@ -30,7 +31,17 @@ export default defineType({
       title: "Title",
       type: "string",
       group: "content",
+      description:
+        "The post's name: on its card in the news list, in search results and when shared.",
       validation: (rule) => [requiredText(rule), rule.max(96)],
+    }),
+    defineField({
+      name: "heading",
+      title: "Headline on the post's page",
+      type: "string",
+      group: "content",
+      description:
+        "Optional. The large headline at the top of the post's own page, when it should differ from the title. Leave empty to show the title.",
     }),
     defineField({
       name: "slug",
@@ -81,9 +92,11 @@ export default defineType({
     }),
     defineField({
       name: "image",
-      title: "Image",
+      title: "Main image",
       type: "image",
       group: "settings",
+      description:
+        "The photo on the post's card in the news list and the Latest news section, and its sharing image.",
       options: {
         hotspot: true,
       },
@@ -103,19 +116,20 @@ export default defineType({
       ],
     }),
     defineField({
-      name: "category",
-      title: "Category",
-      type: "reference",
-      to: [{ type: "category" }],
+      name: "readingTime",
+      title: "Reading time",
+      type: "number",
       group: "settings",
-      validation: (Rule) => Rule.required(),
+      description: "Minutes, shown in the post's header and on its card: \"2 min read\".",
+      validation: (Rule) =>
+        Rule.required()
+          .integer()
+          .min(1)
+          .error("Add the reading time in whole minutes, 1 or more."),
     }),
-    defineField({
-      name: "body",
-      title: "Body",
-      type: "richTextContent",
-      group: "content",
-    }),
+    // The post's body: sections, as the old posts were built (spec decision
+    // 9, issue #17). The post template draws the header above them.
+    postBlocksField,
     meta,
   ],
 

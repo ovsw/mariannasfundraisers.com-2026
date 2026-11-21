@@ -9,7 +9,10 @@ type CustomLinkMark = {
   openInNewTab?: boolean | null;
 };
 
-/** Shared rendering and safety rules for every inline Portable Text link. */
+/**
+ * Shared rendering and safety rules for every inline Portable Text link. As on
+ * the old site, a link in running text is ink, medium weight and underlined.
+ */
 export const CustomLinkMarkRenderer: PortableTextMarkComponent<CustomLinkMark> = ({
   children,
   value,
@@ -21,7 +24,7 @@ export const CustomLinkMarkRenderer: PortableTextMarkComponent<CustomLinkMark> =
 
   return (
     <Link
-      className="font-medium text-prose-link underline decoration-prose-link/30 underline-offset-4 hover:text-prose-link-hover hover:decoration-prose-link-hover"
+      className="font-medium text-foreground underline hover:decoration-2"
       href={href}
       rel={openInNewTab ? "noopener noreferrer" : undefined}
       target={openInNewTab ? "_blank" : undefined}

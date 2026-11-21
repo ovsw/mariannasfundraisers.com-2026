@@ -41,7 +41,6 @@ export function defineDestinationType(name: "navigationDestination" | "footerDes
           { type: "homePage" },
           { type: "page" },
           { type: "post" },
-          { type: "category" },
           { type: "blogIndex" },
         ],
         hidden: ({ parent }) => parent?.kind !== "internal",

@@ -1,0 +1,394 @@
+{
+  "checkedAt": "2026-11-21T00:31:10.175Z",
+  "origin": "http://localhost:3460",
+  "differences": [],
+  "onPurpose": [
+    {
+      "path": "/news",
+      "field": "og:image",
+      "old": "absent",
+      "new": "present",
+      "why": "a page without a sharing image falls back to the generated card (spec decision 19)"
+    },
+    {
+      "path": "/news",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/winner-2025-hometown-favorite-sandwich",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Winner: 2025 Hometown Favorite Sandwich | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/winner-2025-hometown-favorite-sandwich",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/salsa-sales-supporting-waly-warmth-",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/salsa-sales-supporting-waly-warmth",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/salsa-sales-supporting-waly-warmth",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Salsa Sales Supporting Waly Warmth! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/salsa-sales-supporting-waly-warmth",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/fund-fiesta-is-here-",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/fund-fiesta-is-here",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/fund-fiesta-is-here",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Fund Fiesta is Here! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/fund-fiesta-is-here",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/promotion-spotlight-",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/promotion-spotlight",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/promotion-spotlight",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Promotion Spotlight! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/promotion-spotlight",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/exciting-promotion-",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/exciting-promotion",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/exciting-promotion",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Exciting Promotion! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/exciting-promotion",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/winner:-2024-hometown-favorite-sandwich",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/winner-2024-hometown-favorite-sandwich",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/winner-2024-hometown-favorite-sandwich",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Winner: 2024 Hometown Favorite Sandwich | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Marianna's Teaming Up With The Four Diamonds Mini-THON | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Proud To Partner With SkillsUSA Pennsylvania | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/menu",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/menu",
+      "field": "sitemap",
+      "old": true,
+      "new": false,
+      "why": "the sitemap leaves out noindex pages (spec decision 19)"
+    },
+    {
+      "path": "/news/winner-2023-hometown-favorite-sandwich",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Winner: 2023 Hometown Favorite Sandwich | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/flavored-salsas",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas",
+      "field": "sitemap",
+      "old": true,
+      "new": false,
+      "why": "the sitemap leaves out noindex pages (spec decision 19)"
+    },
+    {
+      "path": "/news/a-scary-successful-sampling",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "A \"Scary\" Successful Sampling | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/a-scary-successful-sampling",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "A New Hoagie Is Joining The Marianna's Lineup | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/a-positive-partnership",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "A Positive Partnership! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/a-positive-partnership",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/order-received",
+      "field": "og:image",
+      "old": "absent",
+      "new": "present",
+      "why": "a page without a sharing image falls back to the generated card (spec decision 19)"
+    },
+    {
+      "path": "/order-received",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/winner-2022-hometown-favorite-sandwich",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Winner: 2022 Hometown Favorite Sandwich | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/flavored-salsas/sunset-salsa",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/hours-of-operation",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/products/smoked-ham-cheddar-hoagie",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/products/italian-hoagie",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/products/pepperoni-pizza",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/salsa-pricing-info",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/cowboy-salsa",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/national-pizza-day-february-9th-2022",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/mph-salsa",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/schedule-a-free-tasting",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/special-fundraising-events",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/fresh-and-clean-obsessed",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/hoagie-heroes",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/video-guides",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/documents-and-forms",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/fundraiser-frequently-asked-questions",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/jobs",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/ingredients-list",
+      "field": "sitemap",
+      "old": true,
+      "new": false,
+      "why": "the sitemap leaves out noindex pages (spec decision 19)"
+    }
+  ],
+  "sitemapExpected": 62,
+  "sitemapFound": 62
+}

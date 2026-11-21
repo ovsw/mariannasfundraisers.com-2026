@@ -1,0 +1,118 @@
+# Old site reference capture
+
+This folder holds the old mariannasfundraisers.com (Next.js 12 and Storyblok),
+captured on 2026-11-20 as input for the rebuild (issue #3, ticket #10). Later
+tickets build from these files. No check compares the new site with the
+screenshots: Ovi gives the visual verdict.
+
+| File | What it holds | Who reads it |
+| --- | --- | --- |
+| `screenshots/` | Full-page WebP screenshots of the 67 URLs at 1440 px and 390 px. The name is the path, with `/` as `__`, `home` for `/`, and other characters percent-encoded (`:` is `%3A`). | Agents that build sections and the shell |
+| `url-inventory.json` | For each URL: status, title, description, robots and noindex, canonical, which sharing tags are present, sitemap membership, page kind, malformed slug. Also the 11 redirects of the old Next config with their live response. | The parity script (ticket #20) |
+| `url-inventory.md` | The same inventory as a table. | People |
+| `block-inventory.json` | For each Storyblok story, its rows in order and the section, product field or post section each becomes; hidden blocks; dropped option values; the shared product rows check; the menu card of each product. | The importer tickets |
+| `block-inventory.md` | The same inventory as tables. | People |
+| `seed/hard-coded-content.json` | What the old code hard-codes: navigation groups, action buttons, phone menu, footer columns, legal links, privacy controls, social links, phone, email, address, copyright owner, the four authors, the news headings and the 11 redirects. Dropped links carry `dropped: true` and a reason. | The importer (tickets #13, #14, #17, #20) |
+| `seed/authors/` | The four author photos from the old code. | The importer (ticket #17) |
+| `import.md` | How to run the Storyblok importer and what it does. | People and the importer tickets |
+| `parity-report.md`, `parity-report.json` | The URL and SEO parity of the new site with this inventory: every difference, and the differences that are on purpose with their reason. Rewritten by every run of the parity script. | Ovi, and the launch-readiness ticket (#21) |
+| `parity-report-vercel.md`, `parity-report-vercel.json` | The same check against the Vercel address of the integration branch (`--report parity-report-vercel --preview`). | Ovi |
+| `launch-report.md` | The launch-readiness proof (ticket #21): import counts against the refreshed export, the second run that changes nothing, the Scaffold and document checks, both parity runs, the Studio deploy. | Ovi |
+| `go-live.md` | The go-live checklist and the list of differences on purpose. | Ovi |
+| `import-report.md`, `import-report.json` | The importer's report: what it found, built, dropped and left for a hand, and every image without alt text. Rewritten by every run of `pnpm storyblok:import`. | Ovi, and the tickets that replace Scaffolds |
+
+## Refresh
+
+Run from the repository root. The Storyblok export is not in git; unzip
+`/storage/backups/mfr/mfr-storyblok-export-2026-11-20.zip` (or a newer export)
+to a folder first.
+
+```sh
+node scripts/migration/capture-url-inventory.mjs --export <export folder>
+node scripts/migration/block-inventory.mjs --export <export folder>
+node scripts/migration/capture-screenshots.mjs
+```
+
+The screenshot script reads the URL list from `url-inventory.json`, so run the
+inventory first. It uses the repository's Playwright with headless Google
+Chrome, scrolls each page once so lazy images load, pins the fixed header to
+the top of the page, and closes the iubenda consent banner when iubenda shows
+one (from some regions it shows none). Add `--only <path>` to capture one page.
+`node --test scripts/migration-reference.test.mjs` checks the counts.
+
+## Parity
+
+`node scripts/migration/parity.mjs <new origin>` (spec testing seam 2, ticket
+#20) asks the new site for every URL of `url-inventory.json`, every old
+redirect and its sitemap, without following redirects, and writes
+`parity-report.md` and `.json`. Status, redirect target, title, description,
+noindex and sitemap membership compare by value; sharing images by presence
+only; a redirect by permanence (301 and 308 are both permanent) and target.
+Sitemap entries compare by path, so the host a build names does not matter.
+
+The differences on purpose are listed apart, with their reason: the five
+malformed news addresses (the post moves to its clean address, the old one
+redirects there), the `NOTITLE` titles of 13 news posts (the new site names
+the post), the sharing-image alt text the new site adds, the generated
+sharing card on pages that had no sharing image, and the three noindex pages
+the old sitemap listed (the new sitemap leaves out noindex pages). Every
+other difference is printed, and the run exits with 1.
+
+To check a local production build, build and start the Website as production
+with the real site URL, then point the script at it:
+
+```sh
+cd frontend
+NEXT_PUBLIC_SITE_ENV=production NEXT_PUBLIC_SITE_URL=https://www.mariannasfundraisers.com pnpm build
+NEXT_PUBLIC_SITE_ENV=production NEXT_PUBLIC_SITE_URL=https://www.mariannasfundraisers.com pnpm exec next start --port 3460
+```
+
+Keep that server running, and in a second terminal, from the repository root:
+
+```sh
+node scripts/migration/parity.mjs http://localhost:3460
+```
+
+Without `NEXT_PUBLIC_SITE_ENV=production` every page is noindex. The
+redirects come from the dataset when the build runs, so build after an import.
+
+`--report <name>` writes `<name>.md` and `.json` instead of `parity-report`.
+A Vercel preview sits behind Vercel Authentication and is noindex on every
+page. To check one, open a share link for it (the Vercel connector's
+`get_access_to_vercel_url` makes one), keep the `_vercel_jwt` cookie it sets,
+and pass it in `PARITY_COOKIE`; `--preview` lists the noindex answers as on
+purpose and checks the sitemap against the old site's indexing:
+
+```sh
+PARITY_COOKIE='_vercel_jwt=<cookie value>' node scripts/migration/parity.mjs https://<preview address> --report parity-report-vercel --preview
+```
+`node --test scripts/migration-parity.test.mjs` tests the comparison.
+
+## Findings for later tickets
+
+- 13 of the 18 news posts have no title or description in the old HTML: the
+  title is `NOTITLE Marianna's Fundraisers`. The other five have a real title
+  and description. The parity script expects a real title on the new site.
+- Five URLs are noindex: `/flavored-salsas`, `/flavored-salsas/menu`,
+  `/ingredients-list`, `/accessibility-statement`, `/accessibility-policy`.
+- The canonicals of `/flavored-salsas` and `/products` end in a slash; every
+  other canonical is the path without one.
+- The call-to-action row shared by the product pages is not the same on all 16:
+  `products/pepperoni-pizza` has no line break where the other 15 have one.
+  The importer stops on a difference (spec decision 20), so ticket #16 needs an
+  override or a rule for it. The Handmade food row is the same on all 16.
+- Copied stories keep their block `_uid`s: 80 rows share a `_uid` with a row in
+  another story. A `_uid` is unique only inside one story, so document IDs must
+  come from the story UUID (spec decision 20), and keys from the `_uid` stay
+  unique only within one array.
+- The stories `privacy-policy` and `terms-and-conditions` exist in Storyblok,
+  but their URLs redirect to iubenda.
+- `schedule-a-free-tasting` has a text column beside its Cognito form. The
+  block inventory notes it as needing a hand; ticket #19 gave the Cognito form
+  section an optional introduction, and the importer puts that text there.
+- Three page banners carry text (`schedule-a-free-tasting`,
+  `advertising-templates`, `ingredients-list`). The Page banner section has no
+  text field, so the block inventory lists the text as dropped.
+- The block inventory counts 29 Page banners (spec: 28) including the two
+  stories above, and 1,143 blocks inside story bodies (spec: 1,181 block
+  instances). The story, section wrapper and big image counts match the spec.

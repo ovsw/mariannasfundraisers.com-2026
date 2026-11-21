@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  getDocumentKind,
   getDocumentSlug,
   getPresentationPath,
   isPresentationDocumentType,
-  resolveCategoryPath,
   resolveContentPath,
 } from "./routes.ts";
 import { resolve } from "./resolve.ts";
@@ -26,19 +26,19 @@ test("resolves a normal page slug to a canonical path", () => {
 });
 
 test("resolves a normal post slug to a canonical path", () => {
-  assert.equal(getPresentationPath("post", "first-post"), "/blog/first-post");
+  assert.equal(getPresentationPath("post", "first-post"), "/news/first-post");
 });
 
-test("resolves a category slug under the blog category namespace", () => {
+test("has no category routes", () => {
+  assert.equal(getPresentationPath("category", "categories"), null);
   assert.equal(
-    getPresentationPath("category", "categories"),
-    "/blog/category/categories",
+    resolve.mainDocuments.some(({ route }) => route.includes("category")),
+    false,
   );
-  assert.equal(resolveCategoryPath("/categories/"), "/blog/category/categories");
 });
 
-test("resolves the Blog Index singleton without an authored slug", () => {
-  assert.equal(getPresentationPath("blogIndex"), "/blog");
+test("resolves the News Index singleton without an authored slug", () => {
+  assert.equal(getPresentationPath("blogIndex"), "/news");
 });
 
 test("missing and empty slugs disable Presentation navigation", () => {
@@ -60,11 +60,29 @@ test("an existing draft is authoritative when resolving its slug", () => {
 test("unsupported document types do not expose the action", () => {
   assert.equal(isPresentationDocumentType("page"), true);
   assert.equal(isPresentationDocumentType("post"), true);
-  assert.equal(isPresentationDocumentType("category"), true);
+  assert.equal(isPresentationDocumentType("category"), false);
   assert.equal(isPresentationDocumentType("blogIndex"), true);
   assert.equal(isPresentationDocumentType("author"), false);
 });
 
 test("matches nested page paths when Presentation follows the preview", () => {
   assert.equal(resolve.mainDocuments.at(-1).route, "/:slug(.+)");
+});
+
+test("resolves a product to the address its kind sets", () => {
+  assert.equal(getPresentationPath("product", "italian-hoagie", "hoagie"), "/products/italian-hoagie");
+  assert.equal(getPresentationPath("product", "mph-salsa", "salsa"), "/flavored-salsas/mph-salsa");
+  assert.equal(getPresentationPath("product", "mph-salsa"), null);
+  assert.equal(isPresentationDocumentType("product"), true);
+  assert.equal(getDocumentKind({ kind: "pizza" }, { kind: "hoagie" }), "pizza");
+  assert.equal(getDocumentKind(undefined, { kind: "hoagie" }), "hoagie");
+});
+
+test("product addresses find a product or the page that owns them", () => {
+  const routes = resolve.mainDocuments.map(({ route }) => route);
+  assert.ok(routes.indexOf("/products/:slug") < routes.indexOf("/:slug(.+)"));
+  assert.ok(routes.indexOf("/flavored-salsas/:slug") < routes.indexOf("/:slug(.+)"));
+  const salsa = resolve.mainDocuments.find(({ route }) => route === "/flavored-salsas/:slug");
+  assert.match(salsa.filter, /_type == "product" && kind == "salsa"/);
+  assert.match(salsa.filter, /_type == "page" && slug\.current in \["flavored-salsas\/" \+ \$slug/);
 });

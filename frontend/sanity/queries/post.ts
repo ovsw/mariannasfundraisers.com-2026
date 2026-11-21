@@ -4,22 +4,21 @@ import { ROOT_SLUG_FILTER } from "../../../shared/root-slug-filter";
 import { publishedPostFilter } from "./blog-post-listing";
 import { imageQuery } from "./shared/image";
 import { metaQuery } from "./shared/meta";
-import { richTextContentQuery } from "./shared/rich-text-content";
+import { pageBuilderQuery } from "./page-builder";
 
 const POST_PROJECTION = groq`{
-    // richTextContent V2
     _id,
     _type,
     title,
+    heading,
     slug,
     publishedAt,
     "excerpt": pt::text(excerpt),
     image{
       ${imageQuery}
     },
-    body[]{
-      ${richTextContentQuery}
-    },
+    readingTime,
+    ${pageBuilderQuery},
     author->{
       _id,
       _type,
@@ -40,12 +39,6 @@ const POST_PROJECTION = groq`{
         },
         alt
       }
-    },
-    category->{
-      _id,
-      _type,
-      title,
-      slug
     },
     _createdAt,
     _updatedAt,

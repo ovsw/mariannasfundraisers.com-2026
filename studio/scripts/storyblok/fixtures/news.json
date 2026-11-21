@@ -1,0 +1,451 @@
+[
+  {
+    "name": "Winner: 2024 Hometown Favorite Sandwich",
+    "uuid": "a8712100-6134-40d1-b240-958164b82131",
+    "full_slug": "news/winner:-2024-hometown-favorite-sandwich",
+    "slug": "winner:-2024-hometown-favorite-sandwich",
+    "is_startpage": false,
+    "content": {
+      "_uid": "2819a299-535b-45ba-b553-20b3b6934024",
+      "body": [
+        {
+          "_uid": "96ccf2b0-a00b-4f49-b8a0-c084c2a022e5",
+          "name": "Hoagie Heroes",
+          "width": "full",
+          "content": [
+            {
+              "_uid": "75990831-7488-492c-9e0e-c00a26028557",
+              "name": "",
+              "image": {
+                "id": 18395836,
+                "alt": "",
+                "name": "",
+                "focus": "1827x987:1828x988",
+                "title": "",
+                "source": "",
+                "filename": "https://a.storyblok.com/f/133593/4032x3024/c866d1b2c4/2024-hometown-favorites-award.jpeg",
+                "copyright": "",
+                "fieldtype": "asset",
+                "meta_data": {
+                  "alt": "",
+                  "title": "",
+                  "source": "",
+                  "copyright": ""
+                },
+                "content_type": "jpeg",
+                "is_external_url": false
+              },
+              "content": [
+                {
+                  "_uid": "b58c3cfa-6f5c-402f-923f-33312f3bf00e",
+                  "title": "Hometown Favorite Sandwich",
+                  "eyebrow": "Four-Time Winner!",
+                  "component": "heading-group",
+                  "heading_level": ""
+                },
+                {
+                  "_uid": "08b9aac7-0d47-4d7a-8f14-ca2912c7ed27",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Marianna’s Fundraisers has been awarded Hometown Favorite Sandwich once again for our famous Italian Hoagie—making this our fourth consecutive win!",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Congratulations to our sister company, DelGrosso’s Park & Laguna Splash who was awarded Hometown Favorite Family Entertainment Venue! ",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "A heartfelt thank you to everyone who voted and showed their support.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "We’re also grateful to The Altoona Mirror for hosting such a wonderful celebration to honor all the winners of the Hometown Favorite Awards!",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "component": "row-big-image",
+              "is_reversed": true,
+              "youTubeLink": "",
+              "contain_image": false,
+              "extra_padding": true
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "default",
+          "is_reversed": false,
+          "padding_top": "default",
+          "margin_bottom": "default",
+          "decoration_top": "default",
+          "padding_bottom": "default",
+          "decoration_bottom": "none"
+        }
+      ],
+      "date": "2024-11-07 00:00",
+      "title": "Winner: 2024 Hometown Favorite Sandwich",
+      "author": "todd",
+      "excerpt": "Proud four-time winner of the Hometown Favorite Sandwich Award!",
+      "component": "blog-post",
+      "seo_title": "",
+      "main_image": {
+        "id": 4111170,
+        "alt": "Marianna's Italian Hoagie Hometown Favorite Award Winner",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/133593/1485x1020/2f1b46c4a9/mfs-hometown.jpg",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      },
+      "reading_time": "1",
+      "seo_description": ""
+    }
+  },
+  {
+    "name": "Hoagies on TV",
+    "uuid": "04794cff-8a21-4abf-9070-181194416add",
+    "full_slug": "news/mariannas-hoagies-on-tv",
+    "slug": "mariannas-hoagies-on-tv",
+    "is_startpage": false,
+    "content": {
+      "_uid": "9468519d-9d5f-4a36-ba69-7db00e42a31c",
+      "body": [
+        {
+          "_uid": "19d3b508-168e-4d1a-9680-e4fc71ba1e9f",
+          "name": "Hoagie Heroes",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "771670a4-f65e-4ced-b563-eac3ed375117",
+              "name": "",
+              "content": [
+                {
+                  "_uid": "9ec85998-4208-4620-8959-a09f815b400b",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph"
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "component": "row-single-column"
+            },
+            {
+              "_uid": "83e155e2-c98a-4846-a1c0-c5f5d9f19861",
+              "name": "",
+              "image": {
+                "id": 3940980,
+                "alt": "Rebecca Petner enjoying a Marianna's Italian Hoagie on camera, in the Studio 814 Kitchen",
+                "name": "",
+                "focus": null,
+                "title": "",
+                "filename": "https://a.storyblok.com/f/133593/500x261/1fd933ac82/studio-814-image.jpg",
+                "copyright": "",
+                "fieldtype": "asset"
+              },
+              "content": [
+                {
+                  "_uid": "b7636772-ef95-43f9-bd4d-0818d6a36788",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "I joined Rebecca Petner in the Studio 814 Kitchen in January to show how you can elevate any Marianna’s hoagie by popping it into the oven — giving it a warm, melted, savory sandwich with a light crunch!",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "You want to heat it at 400° degrees from anywhere between 8-12 minutes... It’s up to you. Marianna’s pizzas and hoagies are a great way to create a quick and easy lunch or dinner. ",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": " Even if you don’t want to eat them right away, the hoagies will keep well in the fridge, and the pizzas can be frozen.",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "component": "row-big-image",
+              "badge_image": false,
+              "is_reversed": false,
+              "youTubeLink": "https://www.youtube.com/watch?v=9ET8KP79ku4",
+              "contain_image": false,
+              "extra_padding": false
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "default",
+          "is_reversed": false,
+          "padding_top": "small",
+          "margin_bottom": "default",
+          "decoration_top": "default",
+          "padding_bottom": "small",
+          "overflow_hidden": false,
+          "decoration_bottom": "none"
+        },
+        {
+          "_uid": "9c694fd1-a2b1-4631-97c5-1c1974544cb3",
+          "name": "Hoagie Heroes",
+          "width": "narrow",
+          "content": [
+            {
+              "_uid": "ac234ec5-482b-4f52-b52f-2042af841c74",
+              "name": "",
+              "content": [
+                {
+                  "_uid": "a3053872-0e75-4572-b4bf-64faf20c9f11",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "heading",
+                        "attrs": {
+                          "level": 2
+                        },
+                        "content": [
+                          {
+                            "text": "A Better Hoagie",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "The unique thing about Marianna’s hoagies is that they taste very fresh and are never soggy. That’s because all of the toppings are individually wrapped for you to add on yourself. ",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "All of our vegetables are vacuum sealed, so you just peel back the tab (or cut) and you can add whatever you would like. This is great for people who don't like all of the offered toppings on their hoagie, or who may have a certain allergy or sensitivity. ",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "All of our items are made fresh. They’re made the same day of your delivery.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "heading",
+                        "attrs": {
+                          "level": 2
+                        },
+                        "content": [
+                          {
+                            "text": "A Ton of Options",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "And no matter the organization, Marianna’s Fundraisers has a variety of options available when it comes to their pizzas and subs. We are known for having the largest hoagie (14”) in the fundraising arena for fresh food. We have nine different hoagie varieties and three pizzas, and they’re color coordinated so they’re easy to sort for the groups.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "heading",
+                        "attrs": {
+                          "level": 2
+                        },
+                        "content": [
+                          {
+                            "text": "Schedule a Free Tasting",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "If you’re considering using Marianna’s Fundraisers to make earn some money for your organization but you still aren’t convinced – you can try before you buy. We’ll come and bring free product and let your group sample it before you even set up a sale, so you actually get to see the product you’re selling.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "heading",
+                        "attrs": {
+                          "level": 2
+                        },
+                        "content": [
+                          {
+                            "text": "Widely Available ",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Marianna’s Fundraisers is available in three different states: Pennsylvania, Maryland, and West Virginia. We cover a 2½ hour radius from Tipton.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "heading",
+                        "attrs": {
+                          "level": 2
+                        },
+                        "content": [
+                          {
+                            "text": "Plan Your Next Fundraiser",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "The process to sign up your organization is pretty simple. ",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Non-profits, schools, any group, if they want to raise money, all they have to do is reach out to us.",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                },
+                {
+                  "_uid": "a3794cf5-94f6-4643-afd2-484d5e615f1a",
+                  "content": [
+                    {
+                      "_uid": "d5cd2b03-b3bf-4d3e-ab36-24f361386b7e",
+                      "icon": "chevron-right",
+                      "link": {
+                        "id": "a29a63b1-6c0b-46d3-93ad-637afea3d95d",
+                        "url": "",
+                        "linktype": "story",
+                        "fieldtype": "multilink",
+                        "cached_url": "schedule-a-free-tasting"
+                      },
+                      "text": "Schedule a free tasting with me today!",
+                      "style": "accent",
+                      "target": false,
+                      "component": "button",
+                      "icon_position": "right"
+                    }
+                  ],
+                  "component": "button-group"
+                }
+              ],
+              "component": "row-single-column"
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "default",
+          "is_reversed": false,
+          "padding_top": "none",
+          "margin_bottom": "default",
+          "decoration_top": "default",
+          "padding_bottom": "default",
+          "decoration_bottom": "none"
+        }
+      ],
+      "date": "2022-01-20 00:00",
+      "title": "As seen on TV :)",
+      "author": "juls",
+      "excerpt": "Regional Sales Manager Juls Bratton joined Rebecca Petner in the Studio 814 Kitchen in January to show how you can elevate any Marianna’s hoagie.",
+      "body_rte": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph"
+          }
+        ]
+      },
+      "component": "blog-post",
+      "seo_title": "Hoagies on TV",
+      "main_image": {
+        "id": 3940980,
+        "alt": "Rebecca Petner enjoying a Marianna's Italian Hoagie on camera, in the Studio 814 Kitchen",
+        "name": "",
+        "focus": null,
+        "title": "",
+        "filename": "https://a.storyblok.com/f/133593/500x261/1fd933ac82/studio-814-image.jpg",
+        "copyright": "",
+        "fieldtype": "asset"
+      },
+      "reading_time": "3",
+      "seo_description": "I joined Rebecca Petner in the Studio 814 Kitchen in January to show how you can elevate any Marianna’s hoagie by popping it into the oven."
+    }
+  }
+]

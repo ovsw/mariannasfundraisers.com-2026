@@ -18,9 +18,11 @@ const post = {
   _id: "post-1",
   _type: "post",
   _updatedAt: "2026-08-03T00:00:00.000Z",
-  body: [],
+  blocks: [],
   excerpt: "Post introduction",
   publishedAt: "2026-08-02T00:00:00.000Z",
+  readingTime: 2,
+  author: { _id: "author-amy", name: "Amy Mearkle", image: null },
   slug: { _type: "slug", current: "post-title" },
   title: "Post title",
 } as unknown as NonNullable<POST_QUERY_RESULT>;
@@ -41,16 +43,6 @@ const blogPostSidebar = {
     },
   ],
 } satisfies BlogPostSidebar;
-
-function heading(key: string, text: string) {
-  return {
-    _key: key,
-    _type: "block",
-    children: [{ _key: `${key}-span`, _type: "span", marks: [], text }],
-    markDefs: [],
-    style: "h2",
-  };
-}
 
 function isJsonLdType(value: unknown, type: string) {
   return (
@@ -104,58 +96,79 @@ describe("RootContentView", () => {
     expect(
       screen.getByRole("complementary", { name: "Post actions" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Post introduction")).toBeInTheDocument();
   });
 
-  it("omits the table of contents for a thin post and keeps the CTA after the article", () => {
-    const thinPost = {
+  it("draws the post header above the post's sections", () => {
+    const postWithSection = {
       ...post,
-      body: [heading("first", "First"), heading("second", "Second")],
+      blocks: [
+        {
+          _key: "section-1",
+          _type: "richTextBlock",
+          theme: "light",
+          eyebrow: null,
+          title: "Section heading",
+          anchorId: null,
+          richText: null,
+          buttons: null,
+        },
+      ],
     } as unknown as NonNullable<POST_QUERY_RESULT>;
     const { container } = render(
       <RootContentView
-        blogPostSidebar={blogPostSidebar}
-        content={thinPost}
+        content={postWithSection}
         perspective="published"
         stega={false}
       />,
     );
 
-    const layout = container.querySelector(
-      '[data-post-layout="single-column"]',
-    );
+    const title = screen.getByRole("heading", { level: 1, name: "Post title" });
+    expect(screen.getByText("Amy Mearkle")).toBeInTheDocument();
+    expect(screen.getByText("Aug 2, 2026")).toBeInTheDocument();
+    expect(screen.getByText("2 min read")).toBeInTheDocument();
+    const section = container.querySelector('[data-section-key="section-1"]');
+    expect(section).toHaveTextContent("Section heading");
     expect(
-      screen.queryByRole("navigation", { name: "Table of Contents" }),
-    ).not.toBeInTheDocument();
-    const article = layout?.querySelector("article");
-    const actions = screen.getByRole("complementary", { name: "Post actions" });
-    expect(
-      (article?.compareDocumentPosition(actions) ?? 0) &
+      title.compareDocumentPosition(section as Node) &
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
 
-  it("shows the table of contents for a heading-rich post", () => {
-    const headingRichPost = {
+  it("gives the author's photo the author's name as its alt text", () => {
+    const withPhoto = {
       ...post,
-      body: [
-        heading("first", "First"),
-        heading("second", "Second"),
-        heading("third", "Third"),
-      ],
+      author: {
+        _id: "author-todd",
+        name: "Todd Hill",
+        image: {
+          alt: "Amy Mearkle",
+          asset: { _id: "image-0123456789abcdef-160x160-jpg", metadata: null },
+        },
+      },
     } as unknown as NonNullable<POST_QUERY_RESULT>;
     render(
-      <RootContentView
-        blogPostSidebar={blogPostSidebar}
-        content={headingRichPost}
-        perspective="published"
-        stega={false}
-      />,
+      <RootContentView content={withPhoto} perspective="published" stega={false} />,
     );
-
+    expect(screen.getByRole("img", { name: "Todd Hill" })).toBeInTheDocument();
     expect(
-      screen.getByRole("navigation", { name: "Table of Contents" }),
+      screen.queryByRole("img", { name: "Amy Mearkle" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("draws a post without an author or a reading time", () => {
+    const bare = {
+      ...post,
+      author: null,
+      readingTime: null,
+    } as unknown as NonNullable<POST_QUERY_RESULT>;
+    render(
+      <RootContentView content={bare} perspective="published" stega={false} />,
+    );
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Post title" }),
     ).toBeInTheDocument();
+    expect(screen.getByText("Aug 2, 2026")).toBeInTheDocument();
+    expect(screen.queryByText(/min read/)).not.toBeInTheDocument();
   });
 
   it("emits exactly one BlogPosting script for posts and none for pages", () => {
@@ -185,7 +198,7 @@ describe("RootContentView", () => {
   it("emits VideoObject structured data when the content contains video blocks", () => {
     const videoPost = {
       ...post,
-      body: [
+      blocks: [
         {
           _key: "video-1",
           _type: "videoEmbed",

@@ -3,6 +3,7 @@ export const singletonDocumentTypes = new Set([
   "navigation",
   "blogIndex",
   "blogPostSettings",
+  "productPageSettings",
   "homePage",
 ]);
 

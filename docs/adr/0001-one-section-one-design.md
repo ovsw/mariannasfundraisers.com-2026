@@ -42,7 +42,8 @@ design through a field. A second design is a second section with its own
 added with the generator's `--preview` option, so the catalogue shows the
 design.
 
-The shared section `theme` field (Light, Dark) is colour, not a design. It
+The shared section `theme` field (Light, Shaded, Muslin, Primary on this
+site) is colour, not a design. It
 stays on every themed section.
 
 ## Consequences

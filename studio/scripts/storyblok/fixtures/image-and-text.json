@@ -1,0 +1,1131 @@
+[
+  {
+    "name": "Image and text",
+    "slug": "image-and-text",
+    "full_slug": "image-and-text",
+    "uuid": "0f1e2d3c-image-and-text-fixture",
+    "content": {
+      "component": "page",
+      "_uid": "fixture-page",
+      "body": [
+        {
+          "_uid": "e6ee9aff-9ed9-4a5c-85ce-ebb9d2414ba2",
+          "name": "Fresh",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "fabbb680-7683-402c-9ba5-2a249b65c754",
+              "name": "Fresh",
+              "image": {
+                "id": 3901824,
+                "alt": null,
+                "name": "",
+                "focus": null,
+                "title": null,
+                "filename": "https://a.storyblok.com/f/133593/2400x1602/fb09cdecd2/slicing-machine-close-up.jpg",
+                "copyright": null,
+                "fieldtype": "asset"
+              },
+              "content": [
+                {
+                  "_uid": "fa1019c5-4108-41be-9412-222b79e28ee9",
+                  "title": "Freshest Ingredients",
+                  "eyebrow": "Only the",
+                  "anchor_id": "",
+                  "component": "heading-group"
+                },
+                {
+                  "_uid": "fc8c3c10-acdd-4f44-99ce-6132594be9dc",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Hoagie Rolls are baked FRESH just hours before we prepare them for you.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Condiments are prepared FRESH on-site and are individually sealed.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Items are produced just hours before and delivered in a refrigerated truck.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph"
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "component": "row-big-image",
+              "is_reversed": false,
+              "youTubeLink": "",
+              "contain_image": false,
+              "extra_padding": true
+            }
+          ],
+          "component": "section",
+          "background": "shaded",
+          "margin_top": "none",
+          "padding_top": "",
+          "margin_bottom": "none",
+          "decoration_top": "",
+          "padding_bottom": "large",
+          "overflow_hidden": false,
+          "decoration_bottom": ""
+        },
+        {
+          "_uid": "73af8b65-1a79-4fb3-8593-728f398ae616",
+          "name": "Clean",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "94a3bed9-f7d4-41a4-b456-14594501bcb6",
+              "name": "Fresh",
+              "image": {
+                "id": 19652145,
+                "alt": "",
+                "name": "",
+                "focus": "",
+                "title": "",
+                "source": "",
+                "filename": "https://a.storyblok.com/f/133593/4124x3196/a6ce55b601/rev-jeannie-w-lettuce.jpg",
+                "copyright": "",
+                "fieldtype": "asset",
+                "meta_data": {},
+                "is_external_url": false
+              },
+              "content": [
+                {
+                  "_uid": "d0a06807-286f-4583-a713-0a0bb818f26d",
+                  "title": "Cleanest Environment",
+                  "eyebrow": "Only the",
+                  "anchor_id": "",
+                  "component": "heading-group"
+                },
+                {
+                  "_uid": "8ae7504d-e239-4004-b29a-15ab5bcce38c",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Prepared in an FDA registered facility with strict sanitation and food safety standards.",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Comprehensive food safety program that requires our staff to wear gloves, hair/beard nets, and white coats in our facility.",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "styled",
+                                "attrs": {
+                                  "class": ""
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph"
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Food safety training is provided to all new employees and highlighted yearly for the entire staff.",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "styled",
+                                "attrs": {
+                                  "class": ""
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "component": "row-big-image",
+              "is_reversed": true,
+              "contain_image": false,
+              "extra_padding": true
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "none",
+          "padding_top": "default",
+          "margin_bottom": "none",
+          "decoration_top": "brushed2",
+          "padding_bottom": "large",
+          "decoration_bottom": ""
+        },
+        {
+          "_uid": "af073849-6767-440a-bdf6-4d3995bf0b27",
+          "name": "Hoagie Heroes",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "79d1ff7f-1636-46ee-9cf3-89a189185ffd",
+              "name": "",
+              "image": {
+                "id": 3941887,
+                "alt": null,
+                "name": "",
+                "focus": null,
+                "title": null,
+                "filename": "https://a.storyblok.com/f/133593/1466x1304/46b25bb078/mfs_value.png",
+                "copyright": null,
+                "fieldtype": "asset"
+              },
+              "content": [
+                {
+                  "_uid": "a0dbffbb-0595-4644-8db9-11ad35f7fd31",
+                  "title": "You Control",
+                  "eyebrow": "Fundraiser Pricing",
+                  "anchor_id": "",
+                  "component": "heading-group"
+                },
+                {
+                  "_uid": "5a337129-e6bc-403b-82b4-f12e0ad1545a",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "You Select the Selling Price! You Select the Profit Amount!",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "You Keep the Profit Upfront. This is the fundraiser that YOU have control of!",
+                            "type": "text"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "heading",
+                        "attrs": {
+                          "level": 3
+                        },
+                        "content": [
+                          {
+                            "text": "14” Famous Hoagies ",
+                            "type": "text"
+                          },
+                          {
+                            "type": "hard_break"
+                          },
+                          {
+                            "text": "& 12” Delicious Pizzas",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                },
+                {
+                  "_uid": "32b3e9c5-413f-4659-8175-6bfbd5d036b2",
+                  "table": {
+                    "tbody": [
+                      {
+                        "_uid": "27592b31-ef6d-4796-ae54-2b11a8e2d3f8",
+                        "body": [
+                          {
+                            "_uid": "138ec5a7-b25b-418e-8d36-b5e2726db939",
+                            "value": "$7.50",
+                            "component": "_table_col"
+                          },
+                          {
+                            "_uid": "d445b2f6-6bea-468d-afb3-58f6d714cf49",
+                            "value": "$11.00",
+                            "component": "_table_col"
+                          },
+                          {
+                            "_uid": "8412840d-72e8-4ae6-8658-037237b49380",
+                            "value": "$3.50",
+                            "component": "_table_col"
+                          }
+                        ],
+                        "component": "_table_row"
+                      },
+                      {
+                        "_uid": "c24d47d5-2b2e-4449-a3ff-5eb82a44e3f7",
+                        "body": [
+                          {
+                            "_uid": "f6211361-3748-4419-84c2-4c6991031d71",
+                            "value": "$7.50",
+                            "component": "_table_col"
+                          },
+                          {
+                            "_uid": "4cd29acc-a1ad-4c15-b89d-cdec910de06c",
+                            "value": "$11.50",
+                            "component": "_table_col"
+                          },
+                          {
+                            "_uid": "66e24d34-e7c7-4170-9c6e-6acab44428a1",
+                            "value": "$4.00",
+                            "component": "_table_col"
+                          }
+                        ],
+                        "component": "_table_row"
+                      },
+                      {
+                        "_uid": "59f7850f-664c-4f0d-b387-220628a9ccce",
+                        "body": [
+                          {
+                            "_uid": "c4db3d0a-641b-4757-855a-7a4b6681fc12",
+                            "value": "$7.50",
+                            "component": "_table_col"
+                          },
+                          {
+                            "_uid": "64efac8a-cb24-4814-8fb9-ba21301a51cd",
+                            "value": "$12.00",
+                            "component": "_table_col"
+                          },
+                          {
+                            "_uid": "14499ac8-ef75-44de-9021-8c9d94daab7f",
+                            "value": "$4.50",
+                            "component": "_table_col"
+                          }
+                        ],
+                        "component": "_table_row"
+                      }
+                    ],
+                    "thead": [
+                      {
+                        "_uid": "b18026c4-7b42-4ad8-88b7-5b48b24d9cd2",
+                        "value": "COST",
+                        "component": "_table_head"
+                      },
+                      {
+                        "_uid": "810cd3ec-0f83-49ce-b976-6d7a44e60ddf",
+                        "value": "SELL PRICE",
+                        "component": "_table_head"
+                      },
+                      {
+                        "_uid": "7dc409ea-3cae-4028-ab9c-7c7f4a3644ff",
+                        "value": "PROFIT",
+                        "component": "_table_head"
+                      }
+                    ],
+                    "fieldtype": "table"
+                  },
+                  "component": "table",
+                  "remove_margins": true
+                }
+              ],
+              "component": "row-big-image",
+              "badge_image": false,
+              "is_reversed": true,
+              "youTubeLink": "",
+              "contain_image": true,
+              "extra_padding": true
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "none",
+          "is_reversed": false,
+          "padding_top": "none",
+          "margin_bottom": "none",
+          "decoration_top": "default",
+          "padding_bottom": "default",
+          "overflow_hidden": false,
+          "decoration_bottom": "none"
+        },
+        {
+          "_uid": "c7510360-ef36-40b7-a2a2-b98dec287d09",
+          "name": "Notes",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "d8d89aa9-ecca-421f-88dd-d7748ee809da",
+              "name": "",
+              "image": {
+                "id": 3734469,
+                "alt": null,
+                "name": "",
+                "focus": null,
+                "title": null,
+                "filename": "https://a.storyblok.com/f/133593/562x511/e76e4f06fd/mariannas-how-it-works-call-us.png",
+                "copyright": null,
+                "fieldtype": "asset"
+              },
+              "content": [
+                {
+                  "_uid": "286fd277-f8ae-429f-94b2-925f2e9dbb01",
+                  "title": "Note",
+                  "eyebrow": "Please",
+                  "anchor_id": "",
+                  "component": "heading-group"
+                },
+                {
+                  "_uid": "f7c2f942-bf37-4c6d-8d29-1656c23bc36a",
+                  "text": {
+                    "type": "doc",
+                    "attrs": {
+                      "backgroundColor": null
+                    },
+                    "content": [
+                      {
+                        "type": "bullet_list",
+                        "content": [
+                          {
+                            "type": "list_item",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "attrs": {
+                                  "textAlign": null
+                                },
+                                "content": [
+                                  {
+                                    "text": "State sales tax will be applied to your invoice for each hoagie if a ",
+                                    "type": "text"
+                                  },
+                                  {
+                                    "text": "Sales Tax Exempt Form",
+                                    "type": "text",
+                                    "marks": [
+                                      {
+                                        "type": "bold"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "text": " is not provided",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list_item",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "attrs": {
+                                  "textAlign": null
+                                },
+                                "content": [
+                                  {
+                                    "text": "Employer Identification Number (EIN) cannot be accepted as Sales Tax Exempt Numbers",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list_item",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "attrs": {
+                                  "textAlign": null
+                                },
+                                "content": [
+                                  {
+                                    "text": "Pizzas are not taxable",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list_item",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "attrs": {
+                                  "textAlign": null
+                                },
+                                "content": [
+                                  {
+                                    "text": "With tax, hoagies would be $7.95",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "list_item",
+                            "content": [
+                              {
+                                "type": "paragraph",
+                                "attrs": {
+                                  "textAlign": null
+                                },
+                                "content": [
+                                  {
+                                    "text": "Allegheny County deliveries are subject to an additional 1% sales tax",
+                                    "type": "text"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                },
+                {
+                  "_uid": "844e67c2-4475-49f6-a077-5afa783394a3",
+                  "content": [
+                    {
+                      "_uid": "8e352f02-49ca-4b00-a492-2b07beba7154",
+                      "icon": "chevron-right",
+                      "link": {
+                        "id": "fb430a87-626a-49f0-99c1-51e1ef9a1e8d",
+                        "url": "",
+                        "linktype": "story",
+                        "fieldtype": "multilink",
+                        "cached_url": "fundraiser-frequently-asked-questions"
+                      },
+                      "text": "FAQs",
+                      "style": "accent",
+                      "target": false,
+                      "component": "button",
+                      "icon_position": "right"
+                    }
+                  ],
+                  "component": "button-group"
+                }
+              ],
+              "component": "row-big-image",
+              "is_reversed": false,
+              "youTubeLink": "",
+              "contain_image": true,
+              "extra_padding": true
+            }
+          ],
+          "component": "section",
+          "background": "shaded",
+          "margin_top": "none",
+          "is_reversed": false,
+          "padding_top": "default",
+          "margin_bottom": "none",
+          "decoration_top": "brushed2",
+          "padding_bottom": "large",
+          "decoration_bottom": "none"
+        },
+        {
+          "_uid": "f1b61479-5881-4c88-b9bf-a383701bdf99",
+          "name": "Salsas",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "72e3e181-1cd7-4d38-b18b-5a44e8822297",
+              "name": "",
+              "image": {
+                "id": 22768913,
+                "alt": "",
+                "name": "",
+                "focus": "",
+                "title": "",
+                "source": "",
+                "filename": "https://a.storyblok.com/f/133593/3300x2550/ef12cf3b02/mfs-salsa-presentation-slide-2.jpg",
+                "copyright": "",
+                "fieldtype": "asset",
+                "meta_data": {},
+                "is_external_url": false
+              },
+              "content": [
+                {
+                  "_uid": "0ad512b6-80eb-494e-a35a-63ff645cde51",
+                  "title": "In Select Counties",
+                  "eyebrow": "Available Now",
+                  "anchor_id": "available-now",
+                  "component": "heading-group",
+                  "heading_level": "h2"
+                },
+                {
+                  "_uid": "ec93df02-0903-447a-8419-ea7693abec75",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": null
+                        },
+                        "content": [
+                          {
+                            "text": "Our Fund Fiesta Salsa Sales are available in over 25 Pennsylvania Counties and in 4 Maryland Counties!",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": null
+                        },
+                        "content": [
+                          {
+                            "text": "If you'd like to host a sale, please complete the interest form below.",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                },
+                {
+                  "_uid": "56320912-6b39-405e-b4e6-b8805f9f8487",
+                  "content": [
+                    {
+                      "_uid": "c59810ad-86fe-41e3-9c63-f223b663016e",
+                      "icon": "chevron-right",
+                      "link": {
+                        "id": "",
+                        "url": "https://forms.zohopublic.com/mariannafoodsinc1/form/MariannasSalsaFundraiserInterestForm/formperma/wxh9ZCngqp4Ah13XDxVjm8JJjdazaczqbmRzaDmZWM4",
+                        "linktype": "url",
+                        "fieldtype": "multilink",
+                        "cached_url": "https://forms.zohopublic.com/mariannafoodsinc1/form/MariannasSalsaFundraiserInterestForm/formperma/wxh9ZCngqp4Ah13XDxVjm8JJjdazaczqbmRzaDmZWM4"
+                      },
+                      "text": "Interest Form",
+                      "style": "accent",
+                      "target": true,
+                      "component": "button",
+                      "icon_position": "right"
+                    }
+                  ],
+                  "component": "button-group"
+                }
+              ],
+              "component": "row-big-image",
+              "badge_image": true,
+              "is_reversed": false,
+              "youTubeLink": "",
+              "contain_image": true,
+              "extra_padding": false
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "none",
+          "padding_top": "none",
+          "margin_bottom": "none",
+          "decoration_top": "",
+          "padding_bottom": "large",
+          "overflow_hidden": true,
+          "decoration_bottom": ""
+        },
+        {
+          "_uid": "4dc1830d-8584-42a2-951d-120ab4cd0e8f",
+          "name": "How To Videos",
+          "width": "full",
+          "content": [
+            {
+              "_uid": "0fdd03b0-0168-468d-b882-9fdbafc4a3f7",
+              "name": "",
+              "image": {
+                "id": 16982126,
+                "alt": "",
+                "name": "",
+                "focus": "",
+                "title": "",
+                "source": "",
+                "filename": "https://a.storyblok.com/f/133593/676x399/18a60ebf73/renee-in-front-of-truck.png",
+                "copyright": "",
+                "fieldtype": "asset",
+                "meta_data": {},
+                "is_private": false,
+                "is_external_url": false
+              },
+              "content": [
+                {
+                  "_uid": "8c069927-10d2-4bd2-9046-04f98a110414",
+                  "title": "Start a Sale",
+                  "eyebrow": "How To",
+                  "anchor_id": "how-to-start-a-sale",
+                  "component": "heading-group",
+                  "heading_level": ""
+                },
+                {
+                  "_uid": "142207d4-755e-44f0-9f16-3e452ddcbe3a",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Ready to kick off your sale but not sure where to begin? Our Sales Team has got you covered! Watch this informative video where we break down the simple steps to get your sale started smoothly and successfully.",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                }
+              ],
+              "component": "row-big-image",
+              "is_reversed": true,
+              "youTubeLink": "https://youtu.be/bAFYYdrAQBk",
+              "contain_image": false,
+              "extra_padding": true
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "default",
+          "is_reversed": false,
+          "padding_top": "default",
+          "margin_bottom": "default",
+          "decoration_top": "default",
+          "padding_bottom": "default",
+          "decoration_bottom": "none"
+        },
+        {
+          "_uid": "09b58222-052d-4593-bdc7-563f301198e1",
+          "name": "How it works 1",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "6478e5af-5622-44c3-9293-17137764dda6",
+              "name": "It's that Easy",
+              "image": {
+                "id": 4036210,
+                "alt": "Illustration of a town and a Marianna's refrigerated truck driving down the road",
+                "name": "",
+                "focus": "",
+                "title": "",
+                "source": "",
+                "filename": "https://a.storyblok.com/f/133593/6650x3117/9b0ade146d/mfs-truck-in-town.jpg",
+                "copyright": "",
+                "fieldtype": "asset",
+                "meta_data": {},
+                "is_external_url": false
+              },
+              "content": [
+                {
+                  "_uid": "84683ee6-3ca7-4a22-90e1-fcfb8ac27bd7",
+                  "title": "We Take Care of the Rest",
+                  "eyebrow": "That's it!",
+                  "anchor_id": "",
+                  "component": "heading-group"
+                },
+                {
+                  "_uid": "47064d7e-e457-460f-8262-694eaf5cea86",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "All that’s left is to receive your freshly prepared order, on the set date, at the location you specified.",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "styled",
+                                "attrs": {
+                                  "class": ""
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "We have tips and guides as well as detailed step-by-step instructions on how to prepare for the delivery and create the best experience on your event day! ",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "styled",
+                                "attrs": {
+                                  "class": ""
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Click the Step-by-Step Guide button to view our Fundraiser Guide Checklist & Helpful Videos! ",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "styled",
+                                "attrs": {
+                                  "class": ""
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "component": "rich-text-basic"
+                },
+                {
+                  "_uid": "45dc1871-5798-43fa-ba63-bb0a84a1acd7",
+                  "content": [
+                    {
+                      "_uid": "f2b1497c-9b1d-4446-a0b4-961417b566f6",
+                      "icon": "price-tag",
+                      "link": {
+                        "id": "61378474-efbd-4742-94da-475c6b09727f",
+                        "url": "",
+                        "linktype": "story",
+                        "fieldtype": "multilink",
+                        "cached_url": "pricing-info"
+                      },
+                      "text": "Pricing Info",
+                      "style": "accent",
+                      "target": false,
+                      "component": "button",
+                      "icon_position": "left"
+                    },
+                    {
+                      "_uid": "2b51ea56-b368-4108-a8fa-d40d3244d9d1",
+                      "icon": "book-spells",
+                      "link": {
+                        "id": "f813b1eb-abe7-4912-ae8c-ebbfa66aa464",
+                        "url": "",
+                        "linktype": "story",
+                        "fieldtype": "multilink",
+                        "cached_url": "10-steps-to-success"
+                      },
+                      "text": "Step-by-Step Guide",
+                      "style": "primary",
+                      "target": false,
+                      "component": "button",
+                      "icon_position": "left"
+                    }
+                  ],
+                  "component": "button-group"
+                }
+              ],
+              "component": "row-big-image",
+              "badge_image": false,
+              "is_reversed": false,
+              "youTubeLink": "https://youtu.be/Uil1c8p_jV0",
+              "contain_image": false,
+              "extra_padding": false
+            }
+          ],
+          "component": "section",
+          "background": "light",
+          "margin_top": "none",
+          "padding_top": "",
+          "margin_bottom": "default",
+          "decoration_top": "default",
+          "padding_bottom": "default",
+          "decoration_bottom": ""
+        },
+        {
+          "_uid": "470cb04a-1f76-4815-93eb-5076084bafd7",
+          "name": "Step 1",
+          "width": "default",
+          "content": [
+            {
+              "_uid": "1cad43cd-4762-414e-82ea-4b4dc9259cf6",
+              "name": "1 Contact Us",
+              "image": {
+                "id": 3684775,
+                "alt": "illustration of woman sitting at desk with headset",
+                "name": "",
+                "focus": null,
+                "title": "",
+                "filename": "https://a.storyblok.com/f/133593/562x511/a10f79e702/mariannas-how-it-works-call-us.png",
+                "copyright": "",
+                "fieldtype": "asset"
+              },
+              "content": [
+                {
+                  "_uid": "51c979e9-2f8b-4d51-a9d6-20b658dd76e6",
+                  "icon": "phone-ringing",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Call",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "(814) 684-2666",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "link",
+                                "attrs": {
+                                  "href": "tel:8146842666",
+                                  "uuid": null,
+                                  "anchor": null,
+                                  "target": null,
+                                  "linktype": "url"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "text": " ext. 206 ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "to set up",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " your ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "Delivery Date",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " and ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "Time",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "of your Sale",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": ". A Marianna's Customer Support Representative will help get you started and answer any questions you may have.",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "heading": "Call Us",
+                  "component": "feature-group",
+                  "heading_level": "h3"
+                },
+                {
+                  "_uid": "27603979-b8d2-4424-b139-a9ed4b0d86c4",
+                  "icon": "documents",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "If applicable, email your valid ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "Sales Tax Exempt Form",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " to",
+                            "type": "text"
+                          },
+                          {
+                            "text": " ",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": "mariannas@delgrossos.com",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "link",
+                                "attrs": {
+                                  "href": "mariannas@delgrossos.com",
+                                  "uuid": null,
+                                  "anchor": null,
+                                  "target": "_self",
+                                  "linktype": "email"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "text": ". ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "Please Note:",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " Employer Identification Numbers (EIN) cannot be accepted as Sales Tax Exempt Numbers.",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "heading": "Tax Exemption Form",
+                  "component": "feature-group",
+                  "heading_level": "h3"
+                },
+                {
+                  "_uid": "b3622a23-3ac0-4f6d-94ae-6ec72358f5c3",
+                  "icon": "envelope",
+                  "text": {
+                    "type": "doc",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "content": [
+                          {
+                            "text": "Order Forms and Sale Confirmation will be ",
+                            "type": "text"
+                          },
+                          {
+                            "text": "mailed out",
+                            "type": "text",
+                            "marks": [
+                              {
+                                "type": "bold"
+                              }
+                            ]
+                          },
+                          {
+                            "text": " to you via USPS 3-Day Priority. These will come in handy in the next step.",
+                            "type": "text"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "heading": "Receive Order Forms",
+                  "component": "feature-group",
+                  "heading_level": "h3"
+                }
+              ],
+              "component": "row-big-image",
+              "is_reversed": true,
+              "contain_image": true,
+              "extra_padding": false
+            }
+          ],
+          "component": "section",
+          "background": "",
+          "margin_top": "default",
+          "padding_top": "",
+          "margin_bottom": "default",
+          "decoration_top": "",
+          "padding_bottom": "",
+          "decoration_bottom": ""
+        }
+      ],
+      "seo_title": "",
+      "seo_description": "",
+      "seo_noindex": false
+    }
+  }
+]

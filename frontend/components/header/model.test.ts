@@ -23,6 +23,7 @@ describe("createHeaderNavigationModel", () => {
           _key: "services",
           kind: "group",
           label: "Services",
+          description: "  What we do for our clients.  ",
           links: [
             {
               _key: "strategy",
@@ -58,6 +59,7 @@ describe("createHeaderNavigationModel", () => {
           key: "services",
           kind: "group",
           label: "Services",
+          description: "What we do for our clients.",
           links: [
             {
               key: "strategy",
