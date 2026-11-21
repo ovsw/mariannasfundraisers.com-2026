@@ -30,10 +30,12 @@ export default function PostHero({ post, stega }: PostHeroProps) {
     // The old post header: an extra bold 56px green title, solid-leaded, in a
     // column 715px wide (65 characters of its 20px text), 3rem above the
     // author's photo and name.
+    // The headline is the old 3.5rem. On a phone it gives a little, so a long
+    // word ("Pennsylvania") stays inside our wider side margins.
     <header className="container py-10 md:pb-20">
       <div className="mx-auto max-w-[44.6875rem]">
         <h1
-          className="text-[3.5rem] leading-none font-extrabold text-emphasis"
+          className="text-[clamp(2.75rem,14vw,3.5rem)] leading-none font-extrabold wrap-break-word text-emphasis"
           data-sanity={postDataAttribute?.("title")}
         >
           {title}
