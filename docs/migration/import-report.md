@@ -40,10 +40,11 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | --- | --- |
 | badgeAndText | 2 |
 | callToActionWithImage | 2 |
-| cognitoForm | 4 |
+| contactForm | 2 |
 | cutoutLeftAndText | 23 |
 | cutoutRightAndText | 12 |
 | faqList | 2 |
+| findASaleForm | 1 |
 | hoagieMenu | 1 |
 | homeHero | 1 |
 | imageAndIconList | 6 |
@@ -57,6 +58,7 @@ Imported as published although unpublished in Storyblok (spec decision 4): /flav
 | richTextBlock | 24 |
 | salsaMenu | 2 |
 | steps | 1 |
+| tastingForm | 1 |
 | testimonials | 1 |
 | twoTextColumns | 2 |
 | videoLeftAndText | 3 |

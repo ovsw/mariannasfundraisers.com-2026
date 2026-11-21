@@ -63,7 +63,7 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   in `scripts/migration/block-inventory.mjs`. Built: the hero as **Page
   banner** (its edge colour as theme), **Page heading**, **Rich Text**
   with its button row, and the old "big image" rows as their image-and-text
-  sections, Cognito form, FAQ list and Two text columns, and the home page's
+  sections, the three form sections, FAQ list and Two text columns, and the home page's
   sections (below). Any other row becomes a **Scaffold** that holds the row's
   text and names its intended section; a later ticket replaces it by mapping
   its row in `studio/scripts/storyblok/transform.mjs`. The home page ends
@@ -83,14 +83,17 @@ into git. To start from the export of 2026-11-20 instead of a fresh one, unzip
   no image, no text, or a video link that is not a YouTube link stays a
   Scaffold and is listed under "needs a hand". News posts and product pages
   are below.
-- **Forms, FAQs and two text columns** (spec decisions 12 and 15, ticket
-  #19). A row that holds a Cognito form becomes **Cognito form**: the form by
-  its `cognito_form_id` (114, 168 or 173), never the pasted embed code one old
-  block stores (dropped and counted), and an accessible title from the form's
-  name in Cognito (`COGNITO_FORM_TITLES` in `transform.mjs`). The row's text
-  becomes the introduction: the heading group above the form (its eyebrow as
-  a paragraph, its title as a heading), or on `schedule-a-free-tasting` the
-  text column beside it. Each old FAQ list becomes **FAQ list** with its title,
+- **Forms, FAQs and two text columns** (spec decision 12, tickets #19 and
+  #35). A row that holds an old Cognito form becomes the form section for its
+  `cognito_form_id` (`FORM_SECTION_TYPES` in `transform.mjs`): 114 the
+  **Contact form**, 168 the **Free tasting form beside text**, 173 the **Find
+  a sale form**. The form itself is code; the pasted embed code one old block
+  stores is dropped and counted. The row's text becomes the contact and find
+  a sale forms' introduction (the heading group above the form: its eyebrow
+  as a paragraph, its title as a heading), and on `schedule-a-free-tasting`
+  the text column beside the form becomes the free tasting form's text. An
+  unknown form ID, or a free tasting form with no text beside it, stays a
+  Scaffold under "needs a hand". Each old FAQ list becomes **FAQ list** with its title,
   and each of its items a `faq` record (`faq-<story uuid>-<item _uid>`): the
   question, and the `answer_single` rich text the old site shows, lists and
   underline kept; the old `answer` blocks hold placeholder text the old site

@@ -72,6 +72,14 @@ Content available to public Website visitors.
 
 A permanent route from an old public URL to its current destination.
 
+**Office notification**
+
+The email Formspark sends the office for each entry a Website form receives: what happened, what to do next, and the visitor's answers. Written as code in `frontend/emails/` and pushed with `pnpm form-emails push`; Reply-To is the visitor.
+
+**Reply email**
+
+The email Formspark sends the visitor right after they send a Website form: what happens next and a copy of their answers. Written as code in `frontend/emails/`, like the office notification.
+
 ## Ownership rules
 
 - Code owns layout, rendering rules, validation, and safe fallbacks.

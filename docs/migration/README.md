@@ -107,9 +107,9 @@ PARITY_COOKIE='_vercel_jwt=<cookie value>' node scripts/migration/parity.mjs htt
   unique only within one array.
 - The stories `privacy-policy` and `terms-and-conditions` exist in Storyblok,
   but their URLs redirect to iubenda.
-- `schedule-a-free-tasting` has a text column beside its Cognito form. The
-  block inventory notes it as needing a hand; ticket #19 gave the Cognito form
-  section an optional introduction, and the importer puts that text there.
+- `schedule-a-free-tasting` has a text column beside its Cognito form. Since
+  ticket #35 it becomes the Free tasting form beside text section, and the
+  importer puts that text column beside the form.
 - Three page banners carry text (`schedule-a-free-tasting`,
   `advertising-templates`, `ingredients-list`). The Page banner section has no
   text field, so the block inventory lists the text as dropped.

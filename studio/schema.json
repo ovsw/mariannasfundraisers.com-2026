@@ -1102,7 +1102,7 @@
     }
   },
   {
-    "name": "cognitoFormAndText",
+    "name": "findASaleForm",
     "type": "type",
     "value": {
       "type": "object",
@@ -1111,7 +1111,56 @@
           "type": "objectAttribute",
           "value": {
             "type": "string",
-            "value": "cognitoFormAndText"
+            "value": "findASaleForm"
+          }
+        },
+        "theme": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "light"
+              },
+              {
+                "type": "string",
+                "value": "shaded"
+              },
+              {
+                "type": "string",
+                "value": "muslin"
+              },
+              {
+                "type": "string",
+                "value": "primary"
+              }
+            ]
+          },
+          "optional": true
+        },
+        "intro": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "richTextContent"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
+    "name": "tastingForm",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "tastingForm"
           }
         },
         "theme": {
@@ -1146,26 +1195,12 @@
             "name": "richTextContent"
           },
           "optional": true
-        },
-        "formId": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          },
-          "optional": true
-        },
-        "title": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          },
-          "optional": true
         }
       }
     }
   },
   {
-    "name": "cognitoForm",
+    "name": "contactForm",
     "type": "type",
     "value": {
       "type": "object",
@@ -1174,7 +1209,7 @@
           "type": "objectAttribute",
           "value": {
             "type": "string",
-            "value": "cognitoForm"
+            "value": "contactForm"
           }
         },
         "theme": {
@@ -1199,20 +1234,6 @@
                 "value": "primary"
               }
             ]
-          },
-          "optional": true
-        },
-        "formId": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          },
-          "optional": true
-        },
-        "title": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
           },
           "optional": true
         },
@@ -9718,7 +9739,7 @@
                 },
                 "rest": {
                   "type": "inline",
-                  "name": "cognitoForm"
+                  "name": "contactForm"
                 }
               },
               {
@@ -9733,7 +9754,22 @@
                 },
                 "rest": {
                   "type": "inline",
-                  "name": "cognitoFormAndText"
+                  "name": "tastingForm"
+                }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "findASaleForm"
                 }
               },
               {
@@ -10120,7 +10156,7 @@
                 },
                 "rest": {
                   "type": "inline",
-                  "name": "cognitoForm"
+                  "name": "contactForm"
                 }
               },
               {
@@ -10135,7 +10171,22 @@
                 },
                 "rest": {
                   "type": "inline",
-                  "name": "cognitoFormAndText"
+                  "name": "tastingForm"
+                }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "findASaleForm"
                 }
               },
               {

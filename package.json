@@ -35,6 +35,7 @@
     "page:check": "pnpm --dir studio page:check",
     "page:seed": "pnpm --dir studio page:seed",
     "raster:sync": "pnpm --dir studio raster:sync",
+    "form-emails": "pnpm --dir frontend form-emails",
     "storyblok:export": "pnpm --dir studio storyblok:export",
     "storyblok:import": "pnpm --dir studio storyblok:import",
     "sync:main": "node scripts/merge-refs.mjs origin/main",

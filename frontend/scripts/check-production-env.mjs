@@ -23,11 +23,16 @@ export function requiredKeys(example) {
 
 /**
  * The required keys that are empty or unset in `env`, or `null` when the
- * build is not a Vercel production build and the check does not apply.
+ * build is not a Vercel production build and the check does not apply. A
+ * Formspark form ID still set to "echo", Formspark's test form, counts as
+ * missing: the form would work and nobody would get the entry.
  */
 export function missingProductionKeys(example, env) {
   if (env.VERCEL_ENV !== "production") return null;
-  return requiredKeys(example).filter((key) => !env[key]?.trim());
+  return requiredKeys(example).filter((key) => {
+    const value = env[key]?.trim();
+    return !value || (key.startsWith("FORMSPARK_") && value === "echo");
+  });
 }
 
 function main() {
@@ -44,7 +49,7 @@ function main() {
   const missing = missingProductionKeys(example, process.env);
   if (missing.length > 0) {
     console.error(
-      `Production environment check failed. Missing keys:\n- ${missing.join("\n- ")}\n` +
+      `Production environment check failed. Missing keys (or a Formspark form still on "echo"):\n- ${missing.join("\n- ")}\n` +
         "Add each key to the Vercel project's Production environment, then redeploy.",
     );
     process.exitCode = 1;

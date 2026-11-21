@@ -112,13 +112,13 @@ export function pageRowSections(row) {
       return [bigImageSection(row)];
     case "row-single-column": {
       if (has(row.content, "page-heading")) return ["Page heading"];
-      if (has(row.content, "form_cognito")) return ["Cognito form"];
+      if (has(row.content, "form_cognito")) return ["Form"];
       const faqLists = row.content.filter((block) => block.component === "faq-list").length;
       if (faqLists) return Array(faqLists).fill("FAQ list");
       return ["Rich Text"];
     }
     case "row-two-columns":
-      return has(row.column_2, "form_cognito") ? ["Cognito form"] : ["Two text columns"];
+      return has(row.column_2, "form_cognito") ? ["Form"] : ["Two text columns"];
     case "row-two-columns-cta":
       return ["Call to action with image"];
     case "row-menu-listing": {
@@ -192,9 +192,6 @@ export function inventoryStory(story) {
 
       if (component === "page") {
         for (const name of pageRowSections(row)) entries.push({ ...base, becomes: { type: "section", name }, dropped });
-        if (row.component === "row-two-columns" && has(row.column_2, "form_cognito")) {
-          notes.push(`${source}: the text column beside the form has no field in the Cognito form section; it needs a hand (for example a Rich Text section before the form).`);
-        }
       } else if (component === "blog-post") {
         let name;
         if (row.component === "row-big-image") name = bigImageSection(row);

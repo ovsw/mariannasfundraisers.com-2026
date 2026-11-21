@@ -80,8 +80,9 @@ const schema = createSchema({
         { name: "boxedVideoLeftAndText", type: "boxedVideoLeftAndText" },
         { name: "imageAndIconList", type: "imageAndIconList" },
         { name: "latestNews", type: "latestNews" },
-        { name: "cognitoForm", type: "cognitoForm" },
-        { name: "cognitoFormAndText", type: "cognitoFormAndText" },
+        { name: "contactForm", type: "contactForm" },
+        { name: "tastingForm", type: "tastingForm" },
+        { name: "findASaleForm", type: "findASaleForm" },
         { name: "faqList", type: "faqList" },
         { name: "twoTextColumns", type: "twoTextColumns" },
         { name: "hoagieMenu", type: "hoagieMenu" },
@@ -431,31 +432,15 @@ test("a news post needs a reading time in whole minutes and takes only post sect
   assert.equal(postType.fields.some((field) => field.name === "body"), false);
 });
 
-test("a Cognito form needs a form ID (the number only, never embed code) and an accessible title", async () => {
-  assert.deepEqual(
-    await errorPaths({ _type: "testHost", cognitoForm: { _type: "cognitoForm", theme: "light", title: "  " } }),
-    ["cognitoForm.formId", "cognitoForm.title"],
-  );
-  for (const formId of [
-    '<script src="https://www.cognitoforms.com/f/seamless.js" data-form="1"></script>',
-    "https://www.cognitoforms.com/f/xPoircp7HEGoNo_tpFEirg/114",
-    "114a",
-  ]) {
-    const found = await errors({ _type: "testHost", cognitoForm: { _type: "cognitoForm", theme: "light", title: "Contact form", formId } });
-    assert.deepEqual(Object.keys(found), ["cognitoForm.formId"], formId);
-    assert.match(found["cognitoForm.formId"], /number only/);
-  }
-  // The introduction is optional.
-  assert.deepEqual(
-    await errors({ _type: "testHost", cognitoForm: { _type: "cognitoForm", theme: "light", title: "Contact form", formId: "114" } }),
-    {},
-  );
+test("the contact and find a sale forms need nothing but their theme: the form is code", async () => {
+  assert.deepEqual(await errors({ _type: "testHost", contactForm: { _type: "contactForm", theme: "light" } }), {});
+  assert.deepEqual(await errors({ _type: "testHost", findASaleForm: { _type: "findASaleForm", theme: "light" } }), {});
 });
 
-test("a Cognito form beside text needs its text, a form ID and an accessible title", async () => {
+test("the free tasting form needs the text beside it", async () => {
   assert.deepEqual(
-    await errorPaths({ _type: "testHost", cognitoFormAndText: { _type: "cognitoFormAndText", theme: "light", title: "  " } }),
-    ["cognitoFormAndText.formId", "cognitoFormAndText.richText", "cognitoFormAndText.title"],
+    await errorPaths({ _type: "testHost", tastingForm: { _type: "tastingForm", theme: "light" } }),
+    ["tastingForm.richText"],
   );
 });
 

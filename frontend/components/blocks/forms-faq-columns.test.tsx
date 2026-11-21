@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { describe, expect, it } from "vitest";
-import CognitoForm, { hasCognitoFormContent } from "./cognito-form";
 import FaqList, { hasFaqListContent } from "./faq-list";
 import TwoTextColumns, { hasTwoTextColumnsContent } from "./two-text-columns";
 
@@ -11,50 +10,6 @@ const paragraph = (key: string, text: string) => ({
   children: [{ _key: `${key}-span`, _type: "span", marks: [], text }],
   markDefs: [],
   style: "normal",
-});
-
-function cognitoProps(overrides: Record<string, unknown> = {}) {
-  return {
-    _key: "form",
-    _type: "cognitoForm",
-    formId: "168",
-    intro: [paragraph("intro", "If you are interested, complete the form.")],
-    theme: "light",
-    title: "Schedule a free tasting form",
-    ...overrides,
-  } as unknown as ComponentProps<typeof CognitoForm>;
-}
-
-describe("Cognito form section", () => {
-  it("draws the form from its ID with the site's fixed account key, named by its title", () => {
-    render(<CognitoForm {...cognitoProps()} />);
-
-    const form = screen.getByTitle("Schedule a free tasting form");
-    expect(form.tagName).toBe("IFRAME");
-    expect(form).toHaveAttribute(
-      "src",
-      "https://www.cognitoforms.com/f/xPoircp7HEGoNo_tpFEirg/168",
-    );
-    expect(
-      screen.getByRole("region", { name: "Schedule a free tasting form" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("If you are interested, complete the form."),
-    ).toBeInTheDocument();
-  });
-
-  it("draws nothing for embed code or a missing title", () => {
-    const embedCode =
-      '<script src="https://www.cognitoforms.com/f/seamless.js" data-form="1"></script>';
-    for (const overrides of [{ formId: embedCode }, { formId: "" }, { title: " " }]) {
-      const { container, unmount } = render(
-        <CognitoForm {...cognitoProps(overrides)} />,
-      );
-      expect(container).toBeEmptyDOMElement();
-      expect(hasCognitoFormContent(cognitoProps(overrides))).toBe(false);
-      unmount();
-    }
-  });
 });
 
 function faqProps(overrides: Record<string, unknown> = {}) {
