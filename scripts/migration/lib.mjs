@@ -26,6 +26,60 @@ export const OLD_REDIRECTS = [
   { source: "/selling-tools", destination: "/fundraiser-resources", permanent: true },
 ];
 
+/** The sharing tags the inventory records, by presence. */
+export const SHARING_TAGS = [
+  "og:title",
+  "og:description",
+  "og:url",
+  "og:type",
+  "og:site_name",
+  "og:locale",
+  "og:image",
+  "og:image:alt",
+  "og:image:width",
+  "og:image:height",
+  "twitter:card",
+  "twitter:title",
+  "twitter:description",
+  "twitter:image",
+];
+
+export function decodeEntities(text) {
+  return text
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");
+}
+
+function attributes(tag) {
+  const result = {};
+  for (const match of tag.matchAll(/([a-zA-Z:-]+)\s*=\s*"([^"]*)"/g)) result[match[1].toLowerCase()] = decodeEntities(match[2]);
+  return result;
+}
+
+/** The SEO fields of a page from its `<head>`. */
+export function parseHead(html) {
+  const head = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? "";
+  const metas = [...head.matchAll(/<meta\b[^>]*>/gi)].map((m) => attributes(m[0]));
+  const links = [...head.matchAll(/<link\b[^>]*>/gi)].map((m) => attributes(m[0]));
+  const meta = (key) => metas.find((m) => m.name === key || m.property === key)?.content ?? null;
+  const titleMatch = head.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  const robots = meta("robots");
+  return {
+    title: titleMatch ? decodeEntities(titleMatch[1]) : null,
+    description: meta("description"),
+    robots,
+    noindex: robots ? /\bnoindex\b/i.test(robots) : false,
+    canonical: links.find((l) => l.rel === "canonical")?.href ?? null,
+    sharing: Object.fromEntries(SHARING_TAGS.map((tag) => [tag, meta(tag) !== null])),
+  };
+}
+
 /** Paths from the sitemap XML, without the origin and without a trailing slash. */
 export function sitemapPaths(xml) {
   return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => normalizePath(new URL(match[1].trim()).pathname));

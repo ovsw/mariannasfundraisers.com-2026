@@ -43,6 +43,11 @@ export function reportMarkdown(report, { source }) {
   lines.push("## News addresses that change", "");
   lines.push("Malformed old news slugs get a clean one and a permanent redirect from the old address (spec decision 5).", "");
   lines.push(table((report.newsRedirects ?? []).map((r) => [r.from, r.to]), ["Old address", "New address"]));
+  lines.push("## Old redirects", "");
+  lines.push("The redirects of the old site (spec decision 6). The internal ones become `redirect` documents:", "");
+  lines.push(table((report.seedRedirects?.documents ?? []).map((r) => [r.source, r.destination]), ["Source", "Destination"]));
+  lines.push("The ones to another site stay in the Website's config (`EXTERNAL_REDIRECTS` in `shared/content-routes.ts`), since a `redirect` document points at a page:", "");
+  lines.push(table((report.seedRedirects?.external ?? []).map((r) => [r.source, r.destination]), ["Source", "Destination"]));
   lines.push("## Not imported here", "");
   lines.push(table(report.skipped.map((s) => [s.story, s.reason]), ["Story", "Why"]));
   lines.push("## Needs a hand", "");

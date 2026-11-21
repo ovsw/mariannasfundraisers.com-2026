@@ -77,7 +77,8 @@ test("a malformed slug gets a clean slug and a permanent redirect from the old a
   const post = postFor(documents, source.slug);
   assert.equal(post.slug.current, "winner-2024-hometown-favorite-sandwich");
 
-  const redirects = documents.filter((document) => document._type === "redirect");
+  // The seed's own redirects (redirects.test.mjs) are left aside here.
+  const redirects = documents.filter((document) => document._type === "redirect" && document._id.startsWith("redirect-post-"));
   assert.deepEqual(redirects, [
     {
       _id: `redirect-${post._id}`,

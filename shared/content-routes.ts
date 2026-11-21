@@ -97,10 +97,38 @@ export function normalizePublicPath(value?: string | null) {
   return segments.length ? `/${segments.join("/")}` : "/";
 }
 
+/**
+ * Redirects to another site, which a `redirect` document cannot hold (its
+ * destination is a page): the old site sent its policy addresses to iubenda
+ * (spec decision 6). The Website's config answers them, permanently, as the
+ * old site did, so their sources belong to the application.
+ */
+export const EXTERNAL_REDIRECTS = [
+  {
+    source: "/terms-and-conditions",
+    destination: "https://www.iubenda.com/terms-and-conditions/52141374",
+    permanent: true,
+  },
+  {
+    source: "/cookie-policy",
+    destination: "https://www.iubenda.com/privacy-policy/52141374/cookie-policy",
+    permanent: true,
+  },
+  {
+    source: "/privacy-policy",
+    destination: "https://www.iubenda.com/privacy-policy/52141374",
+    permanent: true,
+  },
+] as const;
+
 /** Paths owned by the application rather than an editor-created document. */
 export function isApplicationPath(value?: string | null) {
   const path = normalizePublicPath(value);
   if (!path) return false;
+
+  if (EXTERNAL_REDIRECTS.some((redirect) => redirect.source === path)) {
+    return true;
+  }
 
   if (
     path === "/" ||

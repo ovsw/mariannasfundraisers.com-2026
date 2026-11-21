@@ -48,6 +48,9 @@ test("recognizes application-owned routes", () => {
     "/_next/static/file.js",
     "/robots.txt",
     "/sitemap.xml",
+    "/privacy-policy",
+    "/cookie-policy",
+    "/terms-and-conditions",
   ]) {
     assert.equal(isApplicationPath(path), true, path);
   }

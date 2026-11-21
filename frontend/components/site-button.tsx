@@ -52,6 +52,9 @@ export function SiteButton({
       variant: buttonVariantForColour(button.colour),
       size: "cta",
     }),
+    // An editor's long text wraps at phone width instead of running off the
+    // page ("Schedule a free tasting with me today!" in a news post).
+    "max-w-full whitespace-normal text-center",
     className,
   );
 
