@@ -2,7 +2,7 @@
 // small fixtures in the shape of docs/migration/url-inventory.json.
 import assert from "node:assert/strict";
 import test from "node:test";
-import { compareInventory, locationOf, newPath, ON_PURPOSE } from "./migration/parity.mjs";
+import { compareInventory, locationOf, newPath, ON_PURPOSE, parseArguments, requestHeaders } from "./migration/parity.mjs";
 import { parseHead } from "./migration/lib.mjs";
 
 const sharing = (image, alt) => ({ "og:image": image, "og:image:alt": alt });
@@ -132,4 +132,42 @@ test("the head of a new page reads like the old inventory", () => {
   assert.equal(head.description, null);
   assert.equal(head.sharing["og:image"], true);
   assert.equal(head.sharing["og:image:alt"], false);
+});
+
+test("the arguments name the origin and, optionally, the report", () => {
+  assert.deepEqual(parseArguments(["http://localhost:3460/"]), { origin: "http://localhost:3460", report: "parity-report", preview: false });
+  assert.deepEqual(parseArguments(["https://preview.vercel.app", "--report", "parity-report-vercel", "--preview"]), { origin: "https://preview.vercel.app", report: "parity-report-vercel", preview: true });
+  assert.throws(() => parseArguments([]), /Usage/);
+  assert.throws(() => parseArguments(["https://a.test", "--report"]), /--report needs a name/);
+  assert.throws(() => parseArguments(["https://a.test", "--report", "../elsewhere"]), /--report needs a name/);
+  assert.throws(() => parseArguments(["https://a.test", "https://b.test"]), /Unexpected argument/);
+});
+
+test("a preview cookie is sent only when PARITY_COOKIE is set", () => {
+  assert.equal(requestHeaders({}).cookie, undefined);
+  assert.equal(requestHeaders({ PARITY_COOKIE: "  " }).cookie, undefined);
+  assert.equal(requestHeaders({ PARITY_COOKIE: "_vercel_jwt=abc" }).cookie, "_vercel_jwt=abc");
+});
+
+test("on a preview, every page is noindex on purpose and the sitemap follows the old site", () => {
+  const { inventory, observed } = fixture();
+  for (const page of Object.values(observed.pages)) if (page.status === 200) page.noindex = true;
+  const without = compareInventory(inventory, observed).differences.map((d) => `${d.path} ${d.field}`);
+  assert.ok(without.includes("/jobs noindex") && without.includes("/jobs sitemap"));
+
+  const result = compareInventory(inventory, observed, { preview: true });
+  assert.deepEqual(result.differences, []);
+  assert.deepEqual(
+    result.onPurpose.filter((d) => d.why === ON_PURPOSE.previewNoindex).map((d) => d.path),
+    ["/", "/jobs", "/news/a-post", "/news/fund-fiesta-is-here"],
+  );
+  assert.equal(result.sitemapExpected, 4);
+
+  // A real difference still shows on a preview.
+  observed.sitemap = observed.sitemap.filter((entry) => entry !== "/jobs");
+  observed.pages["/"].title = "Other";
+  assert.deepEqual(
+    compareInventory(inventory, observed, { preview: true }).differences.map((d) => `${d.path} ${d.field}`),
+    ["/ title", "/jobs sitemap"],
+  );
 });

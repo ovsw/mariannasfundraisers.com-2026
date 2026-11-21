@@ -1,0 +1,828 @@
+{
+  "checkedAt": "2026-11-21T00:31:23.259Z",
+  "origin": "https://mariannasfundraisers-com-2026-git-feat-imple-4fdc2b-del-grossos.vercel.app",
+  "differences": [],
+  "onPurpose": [
+    {
+      "path": "/",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news",
+      "field": "og:image",
+      "old": "absent",
+      "new": "present",
+      "why": "a page without a sharing image falls back to the generated card (spec decision 19)"
+    },
+    {
+      "path": "/news",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/winner-2025-hometown-favorite-sandwich",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Winner: 2025 Hometown Favorite Sandwich | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/winner-2025-hometown-favorite-sandwich",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/winner-2025-hometown-favorite-sandwich",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/salsa-sales-supporting-waly-warmth-",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/salsa-sales-supporting-waly-warmth",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/salsa-sales-supporting-waly-warmth",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Salsa Sales Supporting Waly Warmth! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/salsa-sales-supporting-waly-warmth",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/salsa-sales-supporting-waly-warmth",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/fund-fiesta-is-here-",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/fund-fiesta-is-here",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/fund-fiesta-is-here",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Fund Fiesta is Here! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/fund-fiesta-is-here",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/fund-fiesta-is-here",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/promotion-spotlight-",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/promotion-spotlight",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/promotion-spotlight",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Promotion Spotlight! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/promotion-spotlight",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/promotion-spotlight",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/exciting-promotion-",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/exciting-promotion",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/exciting-promotion",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Exciting Promotion! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/exciting-promotion",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/exciting-promotion",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/winner:-2024-hometown-favorite-sandwich",
+      "field": "redirect",
+      "old": "200",
+      "new": "301 /news/winner-2024-hometown-favorite-sandwich",
+      "why": "malformed news address: the post moves to a clean address and the old one redirects to it permanently (spec decision 5)"
+    },
+    {
+      "path": "/news/winner-2024-hometown-favorite-sandwich",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Winner: 2024 Hometown Favorite Sandwich | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/winner-2024-hometown-favorite-sandwich",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Marianna's Teaming Up With The Four Diamonds Mini-THON | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/marianna-s-teaming-up-with-the-four-diamonds-mini-thon",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Proud To Partner With SkillsUSA Pennsylvania | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/proud-to-partner-with-skillsusa-pennsylvania",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/menu",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/menu",
+      "field": "sitemap",
+      "old": true,
+      "new": false,
+      "why": "the sitemap leaves out noindex pages (spec decision 19)"
+    },
+    {
+      "path": "/news/winner-2023-hometown-favorite-sandwich",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Winner: 2023 Hometown Favorite Sandwich | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/winner-2023-hometown-favorite-sandwich",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/flavored-salsas",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas",
+      "field": "sitemap",
+      "old": true,
+      "new": false,
+      "why": "the sitemap leaves out noindex pages (spec decision 19)"
+    },
+    {
+      "path": "/products",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/a-scary-successful-sampling",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "A \"Scary\" Successful Sampling | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/a-scary-successful-sampling",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/a-scary-successful-sampling",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "A New Hoagie Is Joining The Marianna's Lineup | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/a-new-hoagie-is-joining-the-marianna-s-lineup",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/a-positive-partnership",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "A Positive Partnership! | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/a-positive-partnership",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/a-positive-partnership",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/order-received",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/order-received",
+      "field": "og:image",
+      "old": "absent",
+      "new": "present",
+      "why": "a page without a sharing image falls back to the generated card (spec decision 19)"
+    },
+    {
+      "path": "/order-received",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/winner-2022-hometown-favorite-sandwich",
+      "field": "title",
+      "old": "NOTITLE Marianna's Fundraisers",
+      "new": "Winner: 2022 Hometown Favorite Sandwich | Marianna's Fundraisers",
+      "why": "the old site wrote NOTITLE where a news post has no SEO title; the new site names the post (spec decision 19)"
+    },
+    {
+      "path": "/news/winner-2022-hometown-favorite-sandwich",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/national-hoagie-day",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/flavored-salsas/sunset-salsa",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/flavored-salsas/sunset-salsa",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/how-it-works",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/we-re-hiring-february-2022",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/ham-club-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/ham-and-swiss-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/mariannas-hoagies-on-tv",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/hours-of-operation",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/hours-of-operation",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/products/white-pizza",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/traditional-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/smoked-ham-cheddar-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/smoked-ham-cheddar-hoagie",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/products/roast-turkey-with-cheese-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/all-american-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/roast-beef-cheese-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/cheese-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/cheese-pizza",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/sweet-lebanon-bologna-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/italian-hoagie",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/italian-hoagie",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/products/pepperoni-pizza",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/products/pepperoni-pizza",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/salsa-pricing-info",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/flavored-salsas/salsa-pricing-info",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/pricing-info",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/the-fundraiser-that-sells-itself",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/flavored-salsas/cowboy-salsa",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/flavored-salsas/cowboy-salsa",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/national-pizza-day-february-9th-2022",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/national-pizza-day-february-9th-2022",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/flavored-salsas/mph-salsa",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/flavored-salsas/mph-salsa",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/news/mariannas-fundraisers-wins-hometown-favorite-sandwich-2021",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/fundraiser-resources",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/get-assistance",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/schedule-a-free-tasting",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/schedule-a-free-tasting",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/special-fundraising-events",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/special-fundraising-events",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/fresh-and-clean-obsessed",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/fresh-and-clean-obsessed",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/hoagie-heroes",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/hoagie-heroes",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/how-it-is-made",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/our-story-and-promise",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/our-leadership",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/success-stories",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/video-guides",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/video-guides",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/10-steps-to-success",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/submit-your-order",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/contact-us",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/find-a-sale",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/documents-and-forms",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/documents-and-forms",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/advertising-templates",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/fundraiser-frequently-asked-questions",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/fundraiser-frequently-asked-questions",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/jobs",
+      "field": "noindex",
+      "old": false,
+      "new": true,
+      "why": "a preview deployment marks every page noindex, since NEXT_PUBLIC_SITE_ENV is production only on the live site (checked with --preview)"
+    },
+    {
+      "path": "/jobs",
+      "field": "og:image:alt",
+      "old": "absent",
+      "new": "present",
+      "why": "the new site gives every sharing image an alt text (spec decision 21)"
+    },
+    {
+      "path": "/ingredients-list",
+      "field": "sitemap",
+      "old": true,
+      "new": false,
+      "why": "the sitemap leaves out noindex pages (spec decision 19)"
+    }
+  ],
+  "sitemapExpected": 62,
+  "sitemapFound": 62
+}
