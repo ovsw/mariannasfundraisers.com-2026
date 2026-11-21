@@ -123,7 +123,7 @@ export default function Testimonials({
           section's bottom edge and rises a little above its top one, over the
           brush stroke there. Below xl it is left out, as it was there. */}
       <div className="relative container">
-        <div className="pt-10 sm:pt-20 xl:w-1/2 min-[1344px]:-ml-6" data-sanity={dataAttribute?.("testimonials")}>
+        <div className="pt-10 sm:pt-20 xl:w-1/2" data-sanity={dataAttribute?.("testimonials")}>
           <TestimonialCarousel heading={heading} slides={slides} />
         </div>
         <div className="absolute -top-24 right-6 -bottom-10 z-10 hidden aspect-[668/872] sm:-bottom-20 xl:block min-[1344px]:right-0">

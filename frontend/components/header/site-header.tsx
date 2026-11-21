@@ -152,7 +152,7 @@ export function Header({ model }: { model: HeaderModel }) {
       className="sticky top-0 z-50 bg-background shadow-md"
       data-header-state="ready"
     >
-      <div className="container py-4 md:py-6">
+      <div className="container py-4 md:py-6 min-[84rem]:px-8">
         <div className="hidden items-center gap-10 lg:flex">
           <HomeLink className="w-36 xl:w-40" model={model} />
           <HeaderNavigation navigation={model.navigation} />

@@ -1,4 +1,4 @@
-// Shadcnblocks blogpost1: centered prose body.
+// A heading group over a centred prose body and buttons; each part is optional.
 import RichTextContent from "@/components/rich-text-content";
 import { SiteButton, hasSiteButtonContent } from "@/components/site-button";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
@@ -36,9 +36,10 @@ export default function RichTextBlock({
 }: RichTextBlockProps) {
   const displayEyebrow = stegaClean(eyebrow)?.trim();
   const displayTitle = stegaClean(title)?.trim();
-  const headingId = displayTitle
-    ? `rich-text-${stegaClean(_key)}-title`
-    : undefined;
+  const headingId =
+    displayEyebrow || displayTitle
+      ? `rich-text-${stegaClean(_key)}-title`
+      : undefined;
 
   if (!(displayEyebrow || displayTitle || richText?.length)) return null;
 
@@ -56,28 +57,29 @@ export default function RichTextBlock({
       id={anchor || undefined}
     >
       <div className="container">
-        <div className="mx-auto max-w-3xl">
+        {/* The old site's heading group: a red condensed eyebrow over a large
+            green title, at the left edge of the content. */}
         {displayEyebrow || displayTitle ? (
-          <header className="mb-8 space-y-4">
+          <h2 className={cn("text-emphasis", richText?.length && "mb-10")} id={headingId}>
             {displayEyebrow ? (
-              <p
-                className="text-sm font-medium text-muted-foreground"
+              <span
+                className="block font-condensed text-[2.25rem] leading-none font-bold text-link italic md:text-[2.625rem]"
                 data-sanity={dataAttribute?.("eyebrow")}
               >
                 {eyebrow}
-              </p>
+              </span>
             ) : null}
             {displayTitle ? (
-              <h2
-                className="text-3xl font-extrabold tracking-tight"
+              <span
+                className="block text-[2.875rem] leading-none font-bold md:text-[3.8125rem]"
                 data-sanity={dataAttribute?.("title")}
-                id={headingId}
               >
                 {title}
-              </h2>
+              </span>
             ) : null}
-          </header>
+          </h2>
         ) : null}
+        <div className="mx-auto max-w-3xl">
         {richText?.length ? (
           <RichTextContent
             dataSanity={dataAttribute?.("richText")}

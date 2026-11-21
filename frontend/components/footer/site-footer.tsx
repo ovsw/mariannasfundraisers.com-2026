@@ -76,7 +76,7 @@ export function SiteFooter({
     >
       {/* Opens the iubenda policy links in iubenda's lightbox. */}
       <Script src={IUBENDA_EMBED_SRC} strategy="lazyOnload" />
-      <div className="container pt-16 pb-12">
+      <div className="container pt-16 pb-12 min-[84rem]:px-6">
         <div className="mb-10 flex flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex items-center gap-10">
             <Link

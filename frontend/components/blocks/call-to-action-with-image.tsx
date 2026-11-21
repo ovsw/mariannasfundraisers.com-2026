@@ -66,7 +66,7 @@ export default function CallToActionWithImage({
       data-sanity={dataAttribute?.("theme")}
     >
       <div className="relative container flex min-h-[290px] items-center justify-center lg:justify-start">
-        <div className="space-y-8 px-[4%] lg:max-w-[33rem] lg:px-1 xl:max-w-[39rem]">
+        <div className="space-y-8 px-[4%] lg:max-w-[33rem] lg:px-1 xl:max-w-[39rem] min-[84rem]:max-w-[42rem] min-[84rem]:px-7">
           <div className="space-y-4 text-center lg:text-left">
             <h2
               className="text-4xl leading-none font-bold text-emphasis md:text-5xl"

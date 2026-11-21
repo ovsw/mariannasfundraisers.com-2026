@@ -26,6 +26,7 @@ export function hasTwoTextColumnsContent(
   return Boolean(block.leftText?.length && block.rightText?.length);
 }
 
+// The old site's two columns of running text, at its larger text size from xl.
 export default function TwoTextColumns({
   bottom = "outer",
   dataAttribute,
@@ -44,10 +45,12 @@ export default function TwoTextColumns({
       <div className="container">
         <div className="grid gap-6 md:grid-cols-2 md:gap-14">
           <RichTextContent
+            className="prose-base xl:prose-xl"
             dataSanity={dataAttribute?.("leftText")}
             value={leftText as PortableTextProps["value"]}
           />
           <RichTextContent
+            className="prose-base xl:prose-xl"
             dataSanity={dataAttribute?.("rightText")}
             value={rightText as PortableTextProps["value"]}
           />
