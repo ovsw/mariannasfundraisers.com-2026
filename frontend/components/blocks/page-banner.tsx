@@ -3,7 +3,9 @@ import { urlFor } from "@/sanity/lib/image";
 import { cn } from "@/lib/utils";
 import { stegaClean } from "next-sanity";
 import Image from "next/image";
+import { PortableText, type PortableTextProps } from "@portabletext/react";
 import type { ReactNode } from "react";
+import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import { objectPosition, savedCrop } from "./image-and-text";
 import { resolveSectionTheme } from "./section-boundaries";
 
@@ -99,6 +101,13 @@ export function HeroPanel({
   );
 }
 
+/**
+ * The old hero's text under its title: light stone grey, 20px from the lg
+ * breakpoint, at most 32rem wide.
+ */
+export const heroTextClassName =
+  "mt-6 space-y-4 text-base text-primary-foreground/90 md:max-w-[40%] lg:text-xl lg:leading-relaxed 2xl:max-w-lg";
+
 /** The old hero's title: white, extra bold and tight, at most 36rem wide on a wide screen. */
 export const heroTitleClassName =
   "max-w-[7em] text-left text-4xl font-extrabold tracking-tight sm:text-5xl lg:max-w-md lg:text-6xl xl:max-w-xl xl:text-7xl";
@@ -108,16 +117,19 @@ export const heroTitleClassName =
 // the colour of its theme (the section below it). A banner with a title stands
 // 40vh tall, as the old titled banners did; one without a title gives the
 // photo more room, as the old title-less banners did: 30vh on a phone, 60vh
-// from the md breakpoint.
+// from the md breakpoint. The old banner showed its text under the title from
+// the md breakpoint only: a phone's banner is too short for it.
 export default function PageBanner({
   dataAttribute,
   image,
+  text,
   theme,
   title,
 }: PageBannerProps) {
   if (!image?.asset?.url || !hasPageBannerContent({ image })) return null;
 
   const displayTitle = stegaClean(title)?.trim();
+  const hasText = Boolean(displayTitle && text?.length);
 
   return (
     <HeroPanel
@@ -130,11 +142,22 @@ export default function PageBanner({
         // The old banner kept the 1.5rem gap above its text from the md
         // breakpoint even with no text, so the title sat that much higher.
         <h1
-          className={cn(heroTitleClassName, "md:mb-6")}
+          className={cn(heroTitleClassName, !hasText && "md:mb-6")}
           data-sanity={dataAttribute?.("title")}
         >
           {title}
         </h1>
+      ) : null}
+      {hasText ? (
+        <div
+          className={cn(heroTextClassName, "hidden md:block")}
+          data-sanity={dataAttribute?.("text")}
+        >
+          <PortableText
+            components={simpleRichTextComponents}
+            value={text as PortableTextProps["value"]}
+          />
+        </div>
       ) : null}
     </HeroPanel>
   );

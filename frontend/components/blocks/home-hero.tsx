@@ -6,7 +6,7 @@ import { stegaClean } from "next-sanity";
 import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import { SiteButton, hasSiteButtonContent } from "@/components/site-button";
 import { youTubeVideoId, youTubeWatchUrl } from "../../../shared/youtube";
-import { HeroPanel, heroTitleClassName } from "./page-banner";
+import { HeroPanel, heroTextClassName, heroTitleClassName } from "./page-banner";
 
 type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
@@ -84,10 +84,8 @@ export default function HomeHero({
         </p>
       ) : null}
       {text?.length ? (
-        // The old hero's text: light stone grey, 20px from the lg breakpoint,
-        // at most 32rem wide.
         <div
-          className="mt-6 space-y-4 text-base text-primary-foreground/90 md:max-w-[40%] lg:text-xl lg:leading-relaxed 2xl:max-w-lg"
+          className={heroTextClassName}
           data-sanity={dataAttribute?.("text")}
         >
           <PortableText

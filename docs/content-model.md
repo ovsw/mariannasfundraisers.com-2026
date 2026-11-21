@@ -9,7 +9,9 @@ The Website reads structured content from one Sanity project and dataset.
 - `blogIndex` is the news index and owns `/news`: its eyebrow and title above
   every published post as a card, newest first by publish date, 20 per page,
   then `/news/2` and onward.
-- `post` is a news post and owns `/news/<slug>`. It has a title, slug,
+- `post` is a news post and owns `/news/<slug>`. It has a title (the name on
+  its card, in search results and when shared), an optional headline for its
+  own page (`heading`; the page shows the title when it is empty), slug,
   excerpt, author, publish date, main image (the card and sharing photo) and
   reading time in minutes (`readingTime`). The post page draws a fixed header
   (title, the author's photo and name, the date and the reading time) above
@@ -81,7 +83,9 @@ colour and an optional icon; see `docs/design.md`.
   sits in and of the brushed edge at its foot: choose the theme of the section
   below it. Use it as the first section of the home page. Available on the home page.
 - `pageBanner` (Page banner). A wide photo at the top of an inner page, with
-  an optional title over it. When it has a title, the title is the page's
+  an optional title over it and an optional short text (a sentence or two)
+  under the title; the text shows only with a title, and not on a phone.
+  When it has a title, the title is the page's
   main heading, and the banner is shorter than one without a title. Its theme
   is the colour of the band the photo sits in and of the brushed edge at its
   foot: choose the theme of the section below it. Use it as the
@@ -159,8 +163,14 @@ sits under the text. Each is available on every page.
   Cognito, with an optional introduction (headings, text and links) above it.
   Takes the form ID (the number at the end of the form's address in Cognito
   Forms, as in 114; never embed code) and an accessible title that names the
-  form for screen readers and is not shown. Use it for the contact, tasting
+  form for screen readers and is not shown. Use it for the contact
   and support forms. Available on pages, not the home page.
+- `cognitoFormAndText` (Cognito form beside text). One of the site's Cognito
+  forms in the right half of the page, with a text (headings, text and links;
+  required) beside it on the left; on a phone the text comes first. Takes the
+  form ID and the accessible title, as the Cognito form section does. Use it
+  when a text explains the form, as on the free tasting page. Available on
+  pages, not the home page.
 - `latestNews` (Latest news). The three newest news posts as cards, newest
   first, under an optional eyebrow and a title (required). The posts are not
   chosen: the section always shows the newest. With no published posts it

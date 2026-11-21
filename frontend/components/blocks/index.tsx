@@ -33,6 +33,7 @@ import BoxedVideoRightAndText, { hasBoxedVideoRightAndTextContent } from "@/comp
 import ImageAndIconList, { hasImageAndIconListContent } from "@/components/blocks/image-and-icon-list";
 import LatestNews, { hasLatestNewsContent } from "@/components/blocks/latest-news";
 import CognitoForm, { hasCognitoFormContent } from "@/components/blocks/cognito-form";
+import CognitoFormAndText, { hasCognitoFormAndTextContent } from "@/components/blocks/cognito-form-and-text";
 import FaqList, { hasFaqListContent } from "@/components/blocks/faq-list";
 import TwoTextColumns, { hasTwoTextColumnsContent } from "@/components/blocks/two-text-columns";
 import HoagieMenu, { hasHoagieMenuContent } from "@/components/blocks/hoagie-menu";
@@ -74,6 +75,7 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "imageAndIconList",
   "latestNews",
   "cognitoForm",
+  "cognitoFormAndText",
   "faqList",
   "twoTextColumns",
   "hoagieMenu",
@@ -110,6 +112,7 @@ const componentMap: Partial<{
   imageAndIconList: ImageAndIconList,
   latestNews: LatestNews,
   cognitoForm: CognitoForm,
+  cognitoFormAndText: CognitoFormAndText,
   faqList: FaqList,
   twoTextColumns: TwoTextColumns,
   hoagieMenu: HoagieMenu,
@@ -306,6 +309,7 @@ function isRenderableBlock(block: Block) {
   if (block._type === "imageAndIconList") return hasImageAndIconListContent(block);
   if (block._type === "latestNews") return hasLatestNewsContent(block);
   if (block._type === "cognitoForm") return hasCognitoFormContent(block);
+  if (block._type === "cognitoFormAndText") return hasCognitoFormAndTextContent(block);
   if (block._type === "faqList") return hasFaqListContent(block);
   if (block._type === "twoTextColumns") return hasTwoTextColumnsContent(block);
   if (block._type === "hoagieMenu") return hasHoagieMenuContent(block);

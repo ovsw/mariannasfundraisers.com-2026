@@ -440,6 +440,17 @@ export const starterDocuments = [
         ),
       },
       {
+        _key: "starter-page-cognitoFormAndText",
+        _type: "cognitoFormAndText",
+        theme: "light",
+        formId: "114",
+        title: "Contact form beside text",
+        richText: simpleText(
+          "starter-page-cognito-form-and-text",
+          "This tests the text beside a Cognito form.",
+        ),
+      },
+      {
         _key: "starter-page-steps",
         _type: "steps",
         theme: "light",

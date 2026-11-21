@@ -10,6 +10,7 @@ const POST_PROJECTION = groq`{
     _id,
     _type,
     title,
+    heading,
     slug,
     publishedAt,
     "excerpt": pt::text(excerpt),

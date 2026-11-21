@@ -81,6 +81,7 @@ const schema = createSchema({
         { name: "imageAndIconList", type: "imageAndIconList" },
         { name: "latestNews", type: "latestNews" },
         { name: "cognitoForm", type: "cognitoForm" },
+        { name: "cognitoFormAndText", type: "cognitoFormAndText" },
         { name: "faqList", type: "faqList" },
         { name: "twoTextColumns", type: "twoTextColumns" },
         { name: "hoagieMenu", type: "hoagieMenu" },
@@ -448,6 +449,13 @@ test("a Cognito form needs a form ID (the number only, never embed code) and an 
   assert.deepEqual(
     await errors({ _type: "testHost", cognitoForm: { _type: "cognitoForm", theme: "light", title: "Contact form", formId: "114" } }),
     {},
+  );
+});
+
+test("a Cognito form beside text needs its text, a form ID and an accessible title", async () => {
+  assert.deepEqual(
+    await errorPaths({ _type: "testHost", cognitoFormAndText: { _type: "cognitoFormAndText", theme: "light", title: "  " } }),
+    ["cognitoFormAndText.formId", "cognitoFormAndText.richText", "cognitoFormAndText.title"],
   );
 });
 

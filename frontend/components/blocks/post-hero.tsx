@@ -8,6 +8,7 @@ import {
   PostDateLine,
 } from "@/components/blog-card";
 import type { POST_QUERY_RESULT } from "@/sanity.types";
+import { stegaClean } from "next-sanity";
 
 type PostHeroProps = {
   post: NonNullable<POST_QUERY_RESULT>;
@@ -15,7 +16,8 @@ type PostHeroProps = {
 };
 
 export default function PostHero({ post, stega }: PostHeroProps) {
-  const { title } = post;
+  // The old site let a post's page carry a longer headline than its card.
+  const hasHeading = Boolean(stegaClean(post.heading)?.trim());
   const author = post.author?._id ? post.author : null;
   const postDataAttribute = documentDataAttribute({
     id: post._id,
@@ -36,9 +38,9 @@ export default function PostHero({ post, stega }: PostHeroProps) {
       <div className="mx-auto max-w-[44.6875rem]">
         <h1
           className="text-[clamp(2.75rem,14vw,3.5rem)] leading-none font-extrabold wrap-break-word text-emphasis"
-          data-sanity={postDataAttribute?.("title")}
+          data-sanity={postDataAttribute?.(hasHeading ? "heading" : "title")}
         >
-          {title}
+          {hasHeading ? post.heading : post.title}
         </h1>
         <div className="mt-12 flex items-center gap-4">
           {author ? <AuthorPhoto author={author} size={80} stega={stega} /> : null}

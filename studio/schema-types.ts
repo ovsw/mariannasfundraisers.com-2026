@@ -59,6 +59,7 @@ import boxedVideoRightAndText from "./schemas/blocks/boxed-video-right-and-text"
 import imageAndIconList from "./schemas/blocks/image-and-icon-list";
 import latestNews from "./schemas/blocks/latest-news";
 import cognitoForm from "./schemas/blocks/cognito-form";
+import cognitoFormAndText from "./schemas/blocks/cognito-form-and-text";
 import faqList from "./schemas/blocks/faq-list";
 import twoTextColumns from "./schemas/blocks/two-text-columns";
 import hoagieMenu from "./schemas/blocks/hoagie-menu";
@@ -131,6 +132,7 @@ export const schemaTypes = [
   imageAndIconList,
   latestNews,
   cognitoForm,
+  cognitoFormAndText,
   faqList,
   twoTextColumns,
   hoagieMenu,

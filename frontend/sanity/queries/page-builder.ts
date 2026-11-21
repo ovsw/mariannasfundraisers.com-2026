@@ -16,6 +16,7 @@ import { boxedVideoRightAndTextQuery } from "./boxed-video-right-and-text";
 import { imageAndIconListQuery } from "./image-and-icon-list";
 import { latestNewsQuery } from "./latest-news";
 import { cognitoFormQuery } from "./cognito-form";
+import { cognitoFormAndTextQuery } from "./cognito-form-and-text";
 import { faqListQuery } from "./faq-list";
 import { twoTextColumnsQuery } from "./two-text-columns";
 import { hoagieMenuQuery } from "./hoagie-menu";
@@ -50,6 +51,7 @@ export const pageBuilderQuery = `
     ${imageAndIconListQuery},
     ${latestNewsQuery},
     ${cognitoFormQuery},
+    ${cognitoFormAndTextQuery},
     ${faqListQuery},
     ${twoTextColumnsQuery},
     ${hoagieMenuQuery},

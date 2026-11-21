@@ -31,7 +31,17 @@ export default defineType({
       title: "Title",
       type: "string",
       group: "content",
+      description:
+        "The post's name: on its card in the news list, in search results and when shared.",
       validation: (rule) => [requiredText(rule), rule.max(96)],
+    }),
+    defineField({
+      name: "heading",
+      title: "Headline on the post's page",
+      type: "string",
+      group: "content",
+      description:
+        "Optional. The large headline at the top of the post's own page, when it should differ from the title. Leave empty to show the title.",
     }),
     defineField({
       name: "slug",

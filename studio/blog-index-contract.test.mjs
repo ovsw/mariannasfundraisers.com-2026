@@ -26,6 +26,7 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
     [
       "pageBanner",
       "cognitoForm",
+      "cognitoFormAndText",
       "faqList",
       "twoTextColumns",
       "hoagieMenu",

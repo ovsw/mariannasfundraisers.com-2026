@@ -3,7 +3,7 @@ import { defineField, defineType } from "sanity";
 import sectionTheme from "./shared/section-theme";
 
 // The photo band at the top of an inner page, at one height, with an optional
-// title over the photo. The photo has no background of its own, so its theme
+// title, and a short text under it, over the photo. The photo has no background of its own, so its theme
 // is the colour of the brushed edge it draws at its foot: the theme of the
 // section below it.
 export default defineType({
@@ -12,7 +12,7 @@ export default defineType({
   type: "object",
   icon: ImageIcon,
   description:
-    "A full-width photo at the top of a page, with an optional title over it.",
+    "A full-width photo at the top of a page, with an optional title and short text over it.",
   fields: [
     defineField({
       ...sectionTheme,
@@ -46,6 +46,13 @@ export default defineType({
       type: "string",
       description:
         "Optional. Shown over the photo as the page's main heading; leave empty when a Page heading section follows.",
+    }),
+    defineField({
+      name: "text",
+      title: "Text",
+      type: "simpleRichText",
+      description:
+        "Optional. A sentence or two under the title. Shown only with a title, and not on a phone.",
     }),
   ],
   preview: {
