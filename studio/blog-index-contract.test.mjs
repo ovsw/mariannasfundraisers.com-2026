@@ -25,8 +25,9 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
     [...pageBuilderBlockTypes],
     [
       "pageBanner",
-      "cognitoForm",
-      "cognitoFormAndText",
+      "contactForm",
+      "tastingForm",
+      "findASaleForm",
       "faqList",
       "twoTextColumns",
       "hoagieMenu",

@@ -36,7 +36,7 @@ The Handmade food block and the call to action are written once into `productPag
 | productPageSettings: Preparing a fundraiser? call to action (shared on every product page) | 0 | 0 | 16 | 16 |
 | section: Badge and text | 2 | 0 | 0 | 2 |
 | section: Call to action with image | 2 | 0 | 0 | 2 |
-| section: Cognito form | 4 | 0 | 0 | 4 |
+| section: Form | 4 | 0 | 0 | 4 |
 | section: Cutout left and text | 19 | 0 | 0 | 19 |
 | section: Cutout right and text | 12 | 0 | 0 | 12 |
 | section: FAQ list | 2 | 0 | 0 | 2 |
@@ -647,7 +647,7 @@ Dropped story fields: `item_type`, `nt_total_fat`, `nt_total_fat_p`, `nt_saturat
 | 1 | body[0] hero | – | section: Page banner | height="empty", border_color="shaded", background_color="shaded" |
 | 2 | body[1] section > content[0] row-single-column | Shaded | section: Page heading | name="Main Page Heading", width="default", margin_top="none", margin_bottom="default", padding_top="small", padding_bottom="small", decoration_top="default", decoration_bottom="brushed2" |
 | 3 | body[2] section > content[0] row-single-column | Light | section: Rich Text | name="Hoagie Heroes", width="narrow", margin_top="none", margin_bottom="default", padding_top="default", padding_bottom="default", decoration_top="default", decoration_bottom="none" |
-| 4 | body[3] section > content[0] row-single-column | Shaded | section: Cognito form | name="Support Form", width="narrow", margin_top="none", margin_bottom="none", padding_top="default", padding_bottom="default", decoration_top="brushed1", decoration_bottom="none", embed_code="(pasted embed code; the form is imported by its form ID)" |
+| 4 | body[3] section > content[0] row-single-column | Shaded | section: Form | name="Support Form", width="narrow", margin_top="none", margin_bottom="none", padding_top="default", padding_bottom="default", decoration_top="brushed1", decoration_bottom="none", embed_code="(pasted embed code; the form is imported by its form ID)" |
 
 ### `/schedule-a-free-tasting` (page)
 
@@ -655,9 +655,7 @@ Dropped story fields: `item_type`, `nt_total_fat`, `nt_total_fat_p`, `nt_saturat
 | --- | --- | --- | --- | --- |
 | 1 | body[0] hero | – | section: Page banner | height="short", border_color="light", background_color="white", text="(rich text; Page banner has no text field)" |
 | 2 | body[1] section > content[0] row-single-column | Light | section: Rich Text | name="Hoagie Heroes", width="default", margin_top="none", margin_bottom="large", padding_top="default", padding_bottom="none", decoration_top="default", decoration_bottom="none" |
-| 3 | body[1] section > content[1] row-two-columns | Light | section: Cognito form | – |
-
-Note: body[1] section > content[1] row-two-columns: the text column beside the form has no field in the Cognito form section; it needs a hand (for example a Rich Text section before the form).
+| 3 | body[1] section > content[1] row-two-columns | Light | section: Form | – |
 
 ### `/special-fundraising-events` (page)
 
@@ -766,7 +764,7 @@ Note: body[1] section > content[1] row-two-columns: the text column beside the f
 | 1 | body[0] hero | – | section: Page banner | height="short", border_color="shaded", background_color="shaded" |
 | 2 | body[1] section > content[0] row-big-image | Shaded | section: Cutout left and text | name="Hoagie Heroes", width="default", margin_top="none", margin_bottom="none", padding_top="default", padding_bottom="large", decoration_top="default", decoration_bottom="none", extra_padding=true |
 | 3 | body[1] section > content[1] row-single-column | Shaded | section: Rich Text | name="Contact Form", heading_level="h2" |
-| 4 | body[1] section > content[2] row-single-column | Shaded | section: Cognito form | name="Support Form" |
+| 4 | body[1] section > content[2] row-single-column | Shaded | section: Form | name="Support Form" |
 
 ### `/contact-us` (page)
 
@@ -774,7 +772,7 @@ Note: body[1] section > content[1] row-two-columns: the text column beside the f
 | --- | --- | --- | --- | --- |
 | 1 | body[0] hero | – | section: Page banner | height="short", border_color="shaded", background_color="shaded" |
 | 2 | body[1] section > content[0] row-big-image | Shaded | section: Cutout left and text | name="Hoagie Heroes", width="default", margin_top="none", margin_bottom="none", padding_top="default", padding_bottom="large", decoration_top="default", decoration_bottom="none", extra_padding=true |
-| 3 | body[1] section > content[1] row-single-column | Shaded | section: Cognito form | name="Support Form" |
+| 3 | body[1] section > content[1] row-single-column | Shaded | section: Form | name="Support Form" |
 
 ### `/documents-and-forms` (page)
 

@@ -54,7 +54,11 @@ Variables, Production:
 - [ ] `NEXT_PUBLIC_SITE_URL` = `https://www.mariannasfundraisers.com`
 - [ ] `NEXT_PUBLIC_SITE_ENV` = `production` (without it every page stays
       noindex)
-- [ ] Redeploy production, so the build reads both and the redirects
+- [ ] `FORMSPARK_CONTACT_FORM_ID`, `FORMSPARK_TASTING_FORM_ID` and
+      `FORMSPARK_FIND_A_SALE_FORM_ID`: the three Formspark form IDs (from
+      `~/.config/mariannas/formspark.env`), in Production and Preview. A
+      production build fails while one is missing or still `echo`.
+- [ ] Redeploy production, so the build reads them and the redirects
       imported in step 2.
 
 ## 4. Move the domains
@@ -67,6 +71,11 @@ Variables, Production:
       same team, so DNS does not change.
 - [ ] Open https://www.mariannasfundraisers.com and
       https://mariannasfundraisers.com and check both land on the new site.
+- [ ] In Formspark (DelGrosso workspace), set the office inbox as the
+      notification recipient of each of the three forms (Contact form, Free
+      tasting form, Find a sale form) in place of Ovi, then send one test
+      entry per form on the live site and check both emails arrive
+      (`docs/agents/form-notifications.md`).
 
 ## 5. Publish-time refresh and redirects
 
@@ -147,6 +156,10 @@ From the import (`import-report.md`) and the launch check:
   selections, Pricing Info).
 - Three empty rows at the top or middle of three news posts are gone; on the
   old site they were blank space.
+- The three forms are the Website's own (issue #35), not Cognito's. Each
+  entry now also sends the visitor a reply email, which Cognito did not, and
+  the office notification's subject names the group or person instead of
+  Cognito's running entry number ("[#123]"), which Formspark does not have.
 - Nine page titles and the News Index stay as the old site had them, although
   Studio warns that the titles are long and the News Index has no header
   text (`launch-report.md`, "Document check").

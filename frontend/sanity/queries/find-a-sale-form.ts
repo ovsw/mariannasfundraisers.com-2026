@@ -2,11 +2,9 @@ import { groq } from "next-sanity";
 import { richTextContentQuery } from "./shared/rich-text-content";
 
 // @sanity-typegen-ignore
-export const cognitoFormQuery = groq`
-  _type == "cognitoForm" => {
+export const findASaleFormQuery = groq`
+  _type == "findASaleForm" => {
     theme,
-    formId,
-    title,
     intro[]{
       ${richTextContentQuery}
     }

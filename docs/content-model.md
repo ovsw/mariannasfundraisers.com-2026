@@ -159,18 +159,23 @@ sits under the text. Each is available on every page.
   picked in the order they are shown, so an FAQ used twice is edited once. Use
   one per topic, as Selling and Product Info on the FAQ page. Available on
   pages, not the home page.
-- `cognitoForm` (Cognito form). One of the site's Cognito forms, drawn by
-  Cognito, with an optional introduction (headings, text and links) above it.
-  Takes the form ID (the number at the end of the form's address in Cognito
-  Forms, as in 114; never embed code) and an accessible title that names the
-  form for screen readers and is not shown. Use it for the contact
-  and support forms. Available on pages, not the home page.
-- `cognitoFormAndText` (Cognito form beside text). One of the site's Cognito
-  forms in the right half of the page, with a text (headings, text and links;
-  required) beside it on the left; on a phone the text comes first. Takes the
-  form ID and the accessible title, as the Cognito form section does. Use it
-  when a text explains the form, as on the free tasting page. Available on
-  pages, not the home page.
+- `contactForm` (Contact form). The site's contact form, with an optional
+  introduction (headings, text and links) above it. The form is code: the
+  visitor chooses a topic (Book a Fundraiser, General Info or Submit
+  Testimonial) and the fields under it follow the topic. Each entry emails
+  the office and sends the visitor a reply email, both written in code
+  (`docs/agents/form-notifications.md`).
+  Use it on the contact and get assistance pages; it takes no settings but
+  its theme and introduction. Available on pages, not the home page.
+- `tastingForm` (Free tasting form beside text). The free tasting request
+  form in the right half of the page, with a text (headings, text and links;
+  required) beside it on the left; on a phone the text comes first. The form
+  is code, as in the Contact form section. Use it on the free tasting page.
+  Available on pages, not the home page.
+- `findASaleForm` (Find a sale form). The form visitors send to hear about
+  fundraisers near them (name, email, phone, hometown), with an optional
+  introduction above it. The form is code, as in the Contact form section.
+  Use it on the find a sale page. Available on pages, not the home page.
 - `latestNews` (Latest news). The three newest news posts as cards, newest
   first, under an optional eyebrow and a title (required). The posts are not
   chosen: the section always shows the newest. With no published posts it

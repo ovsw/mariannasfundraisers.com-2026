@@ -32,7 +32,8 @@
     "cutoutLeftAndText": 23,
     "photoRightAndText": 14,
     "cutoutRightAndText": 12,
-    "cognitoForm": 4,
+    "contactForm": 2,
+    "findASaleForm": 1,
     "badgeAndText": 2,
     "salsaMenu": 2,
     "faqList": 2,
@@ -47,7 +48,8 @@
     "videoLeftAndText": 3,
     "twoTextColumns": 2,
     "hoagieMenu": 1,
-    "pizzaMenu": 1
+    "pizzaMenu": 1,
+    "tastingForm": 1
   },
   "scaffolds": {},
   "skipped": [

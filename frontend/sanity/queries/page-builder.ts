@@ -15,8 +15,9 @@ import { boxedVideoLeftAndTextQuery } from "./boxed-video-left-and-text";
 import { boxedVideoRightAndTextQuery } from "./boxed-video-right-and-text";
 import { imageAndIconListQuery } from "./image-and-icon-list";
 import { latestNewsQuery } from "./latest-news";
-import { cognitoFormQuery } from "./cognito-form";
-import { cognitoFormAndTextQuery } from "./cognito-form-and-text";
+import { contactFormQuery } from "./contact-form";
+import { tastingFormQuery } from "./tasting-form";
+import { findASaleFormQuery } from "./find-a-sale-form";
 import { faqListQuery } from "./faq-list";
 import { twoTextColumnsQuery } from "./two-text-columns";
 import { hoagieMenuQuery } from "./hoagie-menu";
@@ -50,8 +51,9 @@ export const pageBuilderQuery = `
     ${boxedVideoRightAndTextQuery},
     ${imageAndIconListQuery},
     ${latestNewsQuery},
-    ${cognitoFormQuery},
-    ${cognitoFormAndTextQuery},
+    ${contactFormQuery},
+    ${tastingFormQuery},
+    ${findASaleFormQuery},
     ${faqListQuery},
     ${twoTextColumnsQuery},
     ${hoagieMenuQuery},

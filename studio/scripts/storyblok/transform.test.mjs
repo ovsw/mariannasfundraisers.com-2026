@@ -42,7 +42,7 @@ test("a dry run counts the stories by kind and the files", () => {
   assert.deepEqual(report.documents, { page: 4, post: 1, redirect: 1 });
   assert.deepEqual(report.sections, {
     callToActionWithImage: 1,
-    cognitoForm: 1,
+    contactForm: 1,
     cutoutLeftAndText: 1,
     imageAndIconList: 3,
     pageBanner: 3,
@@ -328,14 +328,23 @@ test("a big image row that cannot be its section stays a Scaffold and the report
   assert.ok(report.needsHand.some(({ issue }) => /has no image/.test(issue)));
 });
 
-// The Cognito form rows, the FAQ row and a two-column text row, cut from the
-// real export (issue #19): get-assistance (a heading group over the one form
-// block that stores pasted embed code), schedule-a-free-tasting (a text column
-// beside the form), the FAQ page (two lists) and products (two text columns).
+// The old Cognito form rows, the FAQ row and a two-column text row, cut from
+// the real export (issues #19 and #35): get-assistance (a heading group over
+// the one form block that stores pasted embed code), schedule-a-free-tasting
+// (a text column beside the form), the FAQ page (two lists) and products (two
+// text columns).
 const formStories = read("./fixtures/forms-faq-columns.json");
 const formPlan = (stories = formStories) => planImport({ stories }, { overrides, fileRef });
 const formRow = (index) => formStories[0].content.body[index].content[0];
 const textOf = (blocks) => blocks.map((block) => (block.children ?? []).map((span) => span.text).join("")).join("\n");
+const formBlock = (row) => [...(row.content ?? []), ...(row.column_1 ?? []), ...(row.column_2 ?? [])].find((block) => block.component === "form_cognito");
+
+/** The fixture with the first form row's form set to `formId`, planned. */
+function withFormId(formId) {
+  const story = structuredClone(formStories[0]);
+  formBlock(story.content.body[0].content[0]).cognito_form_id = formId;
+  return formPlan([story]);
+}
 
 test("the form, FAQ and two-column rows become their sections, with no Scaffold", () => {
   const { documents, report } = formPlan();
@@ -343,8 +352,8 @@ test("the form, FAQ and two-column rows become their sections, with no Scaffold"
   assert.deepEqual(
     page.blocks.map((block) => [block._type, block.theme, block._key]),
     [
-      ["cognitoForm", "shaded", formRow(0)._uid],
-      ["cognitoForm", "light", formRow(1)._uid],
+      ["contactForm", "shaded", formRow(0)._uid],
+      ["tastingForm", "light", formRow(1)._uid],
       // A row with two FAQ lists becomes two sections.
       ["faqList", "light", formRow(2)._uid],
       ["faqList", "light", `${formRow(2)._uid}-2`],
@@ -357,36 +366,57 @@ test("the form, FAQ and two-column rows become their sections, with no Scaffold"
   assert.deepEqual(formPlan().documents, documents);
 });
 
-test("a Cognito form is imported by its form ID and no document holds embed code", () => {
+test("an old form becomes the form section for its ID, and no document holds embed code", () => {
   const { documents, report } = formPlan();
   const [byEmbed, beside] = documents.find((document) => document._type === "page").blocks;
-  // The one old block that stores pasted embed code keeps only its form ID.
-  assert.ok(formRow(0).content.find((block) => block.component === "form_cognito").embed_code.includes("<script"));
-  assert.deepEqual(
-    [byEmbed.formId, byEmbed.title, beside.formId, beside.title],
-    ["114", "Contact form", "168", "Schedule a free tasting form"],
-  );
+  // The one old block that stores pasted embed code becomes the contact form.
+  assert.ok(formBlock(formRow(0)).embed_code.includes("<script"));
+  assert.equal(byEmbed._type, "contactForm");
+  assert.deepEqual(Object.keys(byEmbed).sort(), ["_key", "_type", "intro", "theme"]);
   const stored = JSON.stringify(documents);
-  for (const fragment of ["embed_code", "<script", "seamless.js", "data-key"]) assert.ok(!stored.includes(fragment), fragment);
+  for (const fragment of ["embed_code", "<script", "seamless.js", "data-key", "cognito", "formId"]) {
+    assert.ok(!stored.includes(fragment), fragment);
+  }
   assert.equal(report.dropped["option: form_cognito.embed_code"], 1);
   // The heading group above the form is its introduction: eyebrow, then heading.
   assert.deepEqual(
     byEmbed.intro.map((block) => [block.style, textOf([block])]),
     [["normal", "Marianna's Fundraisers"], ["h2", "Contact Form"]],
   );
-  // The text column beside the form is its introduction, word for word.
+  // The text column beside the free tasting form is its text, word for word.
+  assert.equal(beside._type, "tastingForm");
   const column = richTextToBlocks(formRow(1).column_1[0].text, richTextContext().context);
-  assert.equal(textOf(beside.intro), textOf(column));
-  assert.ok(beside.intro.every((block) => block._key));
+  assert.equal(textOf(beside.richText), textOf(column));
+  assert.ok(beside.richText.every((block) => block._key));
 });
 
-test("a Cognito form without a form ID stays a Scaffold and the report says why", () => {
+test("forms 114, 168 and 173 become the contact, free tasting and find a sale forms", () => {
+  const typeOf = (formId) => withFormId(formId).documents[0].blocks[0];
+  assert.equal(typeOf("114")._type, "contactForm");
+  assert.equal(typeOf("173")._type, "findASaleForm");
+  // The intro stays the row's text for both one-column forms.
+  assert.deepEqual(typeOf("173").intro, typeOf("114").intro);
+  // Form 168 in a one-column row takes the heading group as its text.
+  assert.equal(typeOf("168")._type, "tastingForm");
+  assert.ok(typeOf("168").richText.length);
+});
+
+test("an unknown or missing form ID stays a Scaffold and the report says why", () => {
+  for (const formId of ["999", "", "constructor", "toString"]) {
+    const { documents, report } = withFormId(formId);
+    const blocks = documents[0].blocks;
+    assert.deepEqual([blocks[0]._type, blocks[0].name], ["scaffold", "Form"], formId);
+    assert.ok(report.needsHand.some(({ issue }) => /has no form section on the new site/.test(issue)), formId);
+  }
+});
+
+test("a free tasting form with no text beside it stays a Scaffold and the report says why", () => {
   const story = structuredClone(formStories[0]);
-  story.content.body[0].content[0].content[1].cognito_form_id = "";
+  story.content.body[1].content[0].column_1 = [];
   const { documents, report } = formPlan([story]);
-  const blocks = documents[0].blocks;
-  assert.deepEqual([blocks[0]._type, blocks[0].name], ["scaffold", "Cognito form"]);
-  assert.ok(report.needsHand.some(({ issue }) => /has no form ID/.test(issue)));
+  const section = documents.find((document) => document._type === "page").blocks[1];
+  assert.deepEqual([section._type, section.name], ["scaffold", "Form"]);
+  assert.ok(report.needsHand.some(({ issue }) => /free tasting form has no text beside it/.test(issue)));
 });
 
 test("the 14 old FAQ items become faq records, listed in the old order under the two titles", () => {
@@ -435,7 +465,7 @@ test("a two-column text row keeps each column's text in its own field", () => {
   assert.match(textOf(section.rightText), /^Plus, our hoagies come with either/);
 });
 
-test("a hidden Cognito form beside a text column leaves the row Two text columns", () => {
+test("a hidden old form beside a text column leaves the row Two text columns", () => {
   const story = structuredClone(formStories[0]);
   const row = story.content.body[1].content[0];
   row.column_2 = [{ ...row.column_2.find((block) => block.component === "form_cognito"), hidden: true }, { ...row.column_1[0], _uid: "visible-right-text" }];

@@ -32,8 +32,9 @@ import BoxedVideoLeftAndText, { hasBoxedVideoLeftAndTextContent } from "@/compon
 import BoxedVideoRightAndText, { hasBoxedVideoRightAndTextContent } from "@/components/blocks/boxed-video-right-and-text";
 import ImageAndIconList, { hasImageAndIconListContent } from "@/components/blocks/image-and-icon-list";
 import LatestNews, { hasLatestNewsContent } from "@/components/blocks/latest-news";
-import CognitoForm, { hasCognitoFormContent } from "@/components/blocks/cognito-form";
-import CognitoFormAndText, { hasCognitoFormAndTextContent } from "@/components/blocks/cognito-form-and-text";
+import ContactForm, { hasContactFormContent } from "@/components/blocks/contact-form";
+import TastingForm, { hasTastingFormContent } from "@/components/blocks/tasting-form";
+import FindASaleForm, { hasFindASaleFormContent } from "@/components/blocks/find-a-sale-form";
 import FaqList, { hasFaqListContent } from "@/components/blocks/faq-list";
 import TwoTextColumns, { hasTwoTextColumnsContent } from "@/components/blocks/two-text-columns";
 import HoagieMenu, { hasHoagieMenuContent } from "@/components/blocks/hoagie-menu";
@@ -74,8 +75,9 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "boxedVideoRightAndText",
   "imageAndIconList",
   "latestNews",
-  "cognitoForm",
-  "cognitoFormAndText",
+  "contactForm",
+  "tastingForm",
+  "findASaleForm",
   "faqList",
   "twoTextColumns",
   "hoagieMenu",
@@ -111,8 +113,9 @@ const componentMap: Partial<{
   boxedVideoRightAndText: BoxedVideoRightAndText,
   imageAndIconList: ImageAndIconList,
   latestNews: LatestNews,
-  cognitoForm: CognitoForm,
-  cognitoFormAndText: CognitoFormAndText,
+  contactForm: ContactForm,
+  tastingForm: TastingForm,
+  findASaleForm: FindASaleForm,
   faqList: FaqList,
   twoTextColumns: TwoTextColumns,
   hoagieMenu: HoagieMenu,
@@ -308,8 +311,9 @@ function isRenderableBlock(block: Block) {
   if (block._type === "boxedVideoRightAndText") return hasBoxedVideoRightAndTextContent(block);
   if (block._type === "imageAndIconList") return hasImageAndIconListContent(block);
   if (block._type === "latestNews") return hasLatestNewsContent(block);
-  if (block._type === "cognitoForm") return hasCognitoFormContent(block);
-  if (block._type === "cognitoFormAndText") return hasCognitoFormAndTextContent(block);
+  if (block._type === "contactForm") return hasContactFormContent();
+  if (block._type === "tastingForm") return hasTastingFormContent(block);
+  if (block._type === "findASaleForm") return hasFindASaleFormContent();
   if (block._type === "faqList") return hasFaqListContent(block);
   if (block._type === "twoTextColumns") return hasTwoTextColumnsContent(block);
   if (block._type === "hoagieMenu") return hasHoagieMenuContent(block);

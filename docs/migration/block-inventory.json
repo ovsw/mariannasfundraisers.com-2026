@@ -33,7 +33,7 @@
       "productPageSettings: Preparing a fundraiser? call to action (shared on every product page)": 16,
       "section: Badge and text": 2,
       "section: Call to action with image": 2,
-      "section: Cognito form": 4,
+      "section: Form": 4,
       "section: Cutout left and text": 19,
       "section: Cutout right and text": 12,
       "section: FAQ list": 2,
@@ -58,7 +58,7 @@
     "page": {
       "section: Badge and text": 2,
       "section: Call to action with image": 2,
-      "section: Cognito form": 4,
+      "section: Form": 4,
       "section: Cutout left and text": 19,
       "section: Cutout right and text": 12,
       "section: FAQ list": 2,
@@ -10188,7 +10188,7 @@
           ],
           "becomes": {
             "type": "section",
-            "name": "Cognito form"
+            "name": "Form"
           },
           "dropped": [
             {
@@ -10348,16 +10348,14 @@
           ],
           "becomes": {
             "type": "section",
-            "name": "Cognito form"
+            "name": "Form"
           },
           "dropped": []
         }
       ],
       "hidden": [],
       "droppedStoryFields": [],
-      "notes": [
-        "body[1] section > content[1] row-two-columns: the text column beside the form has no field in the Cognito form section; it needs a hand (for example a Rich Text section before the form)."
-      ]
+      "notes": []
     },
     {
       "path": "/special-fundraising-events",
@@ -13180,7 +13178,7 @@
           ],
           "becomes": {
             "type": "section",
-            "name": "Cognito form"
+            "name": "Form"
           },
           "dropped": [
             {
@@ -13300,7 +13298,7 @@
           ],
           "becomes": {
             "type": "section",
-            "name": "Cognito form"
+            "name": "Form"
           },
           "dropped": [
             {

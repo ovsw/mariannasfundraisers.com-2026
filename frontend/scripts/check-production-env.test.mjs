@@ -52,6 +52,18 @@ test("lists the required keys a production build is missing", () => {
   );
 });
 
+test("counts a Formspark form ID still on the echo test form as missing", () => {
+  const forms = "FORMSPARK_CONTACT_FORM_ID=echo\nFORMSPARK_TASTING_FORM_ID=echo\n# Optional\n";
+  assert.deepEqual(
+    missingProductionKeys(forms, {
+      VERCEL_ENV: "production",
+      FORMSPARK_CONTACT_FORM_ID: "echo",
+      FORMSPARK_TASTING_FORM_ID: "abc123",
+    }),
+    ["FORMSPARK_CONTACT_FORM_ID"],
+  );
+});
+
 test("skips the check outside a Vercel production build", () => {
   assert.equal(missingProductionKeys(example, {}), null);
   assert.equal(missingProductionKeys(example, { VERCEL_ENV: "preview" }), null);

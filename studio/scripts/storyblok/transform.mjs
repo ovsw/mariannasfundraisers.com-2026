@@ -5,8 +5,9 @@
 //
 // Built here: the home page and every page, with Page banner, Page heading,
 // Rich Text (with its button row), the eight image-and-text sections of the
-// old "big image" row (issue #15), and Cognito form, FAQ list (with its `faq`
-// records) and Two text columns (issue #19), and the home page's Home hero,
+// old "big image" row (issue #15), the three form sections (Contact form,
+// Free tasting form beside text, Find a sale form; issue #35), FAQ list (with
+// its `faq` records) and Two text columns (issue #19), and the home page's Home hero,
 // Steps, Menu teaser, Call to action with image and Testimonials (with its
 // `testimonial` records, issue #18). Every other row becomes a Scaffold that
 // holds the row's text and names its intended section. Product
@@ -22,7 +23,6 @@ import {
 } from "../../../scripts/migration/block-inventory.mjs";
 import { headingAnchorId } from "../../../shared/heading-anchor.ts";
 import { buttonColours, defaultButtonColour, isSiteIconName } from "../../../shared/site-design.ts";
-import { cognitoFormId } from "../../../shared/cognito.ts";
 import { collectFiles, imageFromAsset } from "./files.mjs";
 import { customUrlFor, normalizeMultilink, normalizeSitePath } from "./links.mjs";
 import { outlineHeadings, paragraph, richTextToBlocks, withKeys } from "./rich-text.mjs";
@@ -419,40 +419,44 @@ function visibleChildren(blocks, context) {
 }
 
 /**
- * The accessible title of each form the old site uses, from its name in
- * Cognito. A form not listed here takes the title of the heading above it.
+ * The form section each old Cognito form becomes, by its form ID (issue #35):
+ * the contact form (114, also the one block that stores pasted embed code),
+ * the free tasting form (168) and the find a sale form (173).
  */
-export const COGNITO_FORM_TITLES = {
-  114: "Contact form",
-  168: "Schedule a free tasting form",
-  173: "Find a sale form",
+export const FORM_SECTION_TYPES = {
+  114: "contactForm",
+  168: "tastingForm",
+  173: "findASaleForm",
 };
 
 /**
- * A row that holds a Cognito form as the Cognito form section (spec decision
- * 15, issue #19): the form by its ID, never its pasted embed code, and the
- * row's text (the heading group above it, or the text column beside it) as
- * the introduction. Null when the form has no valid ID: it stays a Scaffold.
+ * A row that holds an old Cognito form as the form section for its form ID.
+ * The form itself is code; only the row's text is imported: the heading
+ * group and text above the form become the introduction of the contact and
+ * find a sale forms, and the text column beside the free tasting form becomes
+ * its text. Null, so the row stays a Scaffold, for an unknown form ID or a
+ * free tasting form with no text beside it.
  */
-function cognitoFormSection(row, theme, context) {
+function formSection(row, theme, context) {
   const blocks = row.component === "row-two-columns" ? [...row.column_1, ...row.column_2] : row.content;
   const forms = blocks.filter((block) => block.component === "form_cognito");
-  if (forms.length > 1) context.note("needs a hand", `the row holds ${forms.length} Cognito forms; only the first is imported`);
-  const formId = cognitoFormId(forms[0]?.cognito_form_id);
-  if (!formId) {
-    context.note("needs a hand", `the Cognito form has no form ID ("${forms[0]?.cognito_form_id ?? ""}"); it stays a Scaffold`);
+  if (forms.length > 1) context.note("needs a hand", `the row holds ${forms.length} forms; only the first is imported`);
+  const formId = String(forms[0]?.cognito_form_id ?? "").trim();
+  const type = Object.hasOwn(FORM_SECTION_TYPES, formId) ? FORM_SECTION_TYPES[formId] : undefined;
+  if (!type) {
+    context.note("needs a hand", `the old Cognito form "${formId}" has no form section on the new site; it stays a Scaffold`);
     return null;
   }
-  const textBlocks = blocks.filter((block) => block.component !== "form_cognito");
-  const heading = textBlocks[0]?.component === "heading-group" ? textBlocks[0].title?.trim() : "";
-  const title = COGNITO_FORM_TITLES[formId] ?? heading;
-  if (!title) {
-    context.note("needs a hand", `the Cognito form ${formId} has no accessible title; it stays a Scaffold`);
-    return null;
+  const text = columnRichText(blocks.filter((block) => block.component !== "form_cognito"), context, type);
+  if (type === "tastingForm") {
+    if (!text.length) {
+      context.note("needs a hand", "the free tasting form has no text beside it; it stays a Scaffold");
+      return null;
+    }
+    return { _key: row._uid, _type: type, theme, richText: text };
   }
-  const section = { _key: row._uid, _type: "cognitoForm", theme, formId, title };
-  const intro = columnRichText(textBlocks, context, "cognitoForm");
-  if (intro.length) section.intro = intro;
+  const section = { _key: row._uid, _type: type, theme };
+  if (text.length) section.intro = text;
   return section;
 }
 
@@ -850,7 +854,7 @@ function pageSections(story, context, { post = false } = {}) {
         let built = null;
         if (IMAGE_AND_TEXT_TYPES[name]) built = imageAndTextSection(row, name, theme, context);
         else if (PRODUCT_MENU_TYPES[name]) built = productMenuSection(row, name, theme, context);
-        else if (name === "Cognito form") built = cognitoFormSection(row, theme, context);
+        else if (name === "Form") built = formSection(row, theme, context);
         else if (name === "FAQ list") built = faqListSection(faqLists[index], key, theme, context);
         else if (name === "Two text columns") built = twoTextColumnsSection(row, theme, context);
         else if (name === "Steps") built = stepsSection(row, theme, context);

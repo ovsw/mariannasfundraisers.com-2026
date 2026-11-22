@@ -93,6 +93,13 @@ Whenever you add, remove, rename, or change a section, update its entry in the
 same change. `studio/schemas/blocks/section-library.test.mjs` fails when the
 list and the code name different sections.
 
+### Website forms and their emails
+
+Before changing a Website form (Contact form, Free tasting form, Find a sale
+form), its Formspark payload, or its office notification and reply email,
+read `docs/agents/form-notifications.md`. The emails are code in
+`frontend/emails/`; never edit them in Formspark.
+
 ### Development workflow
 
 Before changing workspace dependencies, Sanity schemas, GROQ queries, or development scripts, consult the relevant section of `README.md`.

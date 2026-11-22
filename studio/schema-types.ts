@@ -58,8 +58,9 @@ import boxedVideoLeftAndText from "./schemas/blocks/boxed-video-left-and-text";
 import boxedVideoRightAndText from "./schemas/blocks/boxed-video-right-and-text";
 import imageAndIconList from "./schemas/blocks/image-and-icon-list";
 import latestNews from "./schemas/blocks/latest-news";
-import cognitoForm from "./schemas/blocks/cognito-form";
-import cognitoFormAndText from "./schemas/blocks/cognito-form-and-text";
+import contactForm from "./schemas/blocks/contact-form";
+import tastingForm from "./schemas/blocks/tasting-form";
+import findASaleForm from "./schemas/blocks/find-a-sale-form";
 import faqList from "./schemas/blocks/faq-list";
 import twoTextColumns from "./schemas/blocks/two-text-columns";
 import hoagieMenu from "./schemas/blocks/hoagie-menu";
@@ -131,8 +132,9 @@ export const schemaTypes = [
   boxedVideoRightAndText,
   imageAndIconList,
   latestNews,
-  cognitoForm,
-  cognitoFormAndText,
+  contactForm,
+  tastingForm,
+  findASaleForm,
   faqList,
   twoTextColumns,
   hoagieMenu,

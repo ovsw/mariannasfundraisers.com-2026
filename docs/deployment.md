@@ -21,6 +21,27 @@ expose System Environment Variables** on in the project's Environment Variables
 settings (it is on by default); with it off, production builds skip the check
 too.
 
+### Form variables
+
+Each of the three Website forms posts, from the Website's server, to its own
+Formspark form in the DelGrosso workspace
+(`docs/agents/form-notifications.md`):
+
+- `FORMSPARK_CONTACT_FORM_ID`: the Contact form.
+- `FORMSPARK_TASTING_FORM_ID`: the Free tasting form.
+- `FORMSPARK_FIND_A_SALE_FORM_ID`: the Find a sale form.
+
+Set them in Vercel for Production and Preview, and in `frontend/.env.local`;
+the IDs are in `~/.config/mariannas/formspark.env` on Ovi's machine and never
+in the repository. `.env.local.example` sets each to `echo`, Formspark's test
+form, which accepts entries and emails nobody. A production build fails while
+one is missing or still `echo`. The template token in the same file is only
+for `pnpm form-emails`; it never goes to Vercel.
+
+At go-live, set the office inbox as each form's notification recipient in
+Formspark (until then it is Ovi), then send one test entry per form
+(`docs/migration/go-live.md`, step 4).
+
 ## Studio on Sanity
 
 Deploy the Studio after every merge into `main` that changes the Studio code
