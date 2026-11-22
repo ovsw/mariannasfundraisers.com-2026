@@ -55,7 +55,7 @@ export function TastingFormFields() {
         <AddressFields form={form} label="Address (we'll come to you)" />
         <NewsletterField form={form} />
         <Honeypot inputRef={honeypotRef} />
-        {result.status === "failed" ? <FormFailed contact={result.contact} key={attempt} /> : null}
+        {result.status === "failed" ? <FormFailed key={attempt} /> : null}
         <SubmitButton pending={pending} />
       </form>
     </Form>

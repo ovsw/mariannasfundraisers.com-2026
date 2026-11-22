@@ -124,7 +124,7 @@ export function ContactFormFields() {
 
         <NewsletterField form={form} />
         <Honeypot inputRef={honeypotRef} />
-        {result.status === "failed" ? <FormFailed contact={result.contact} key={attempt} /> : null}
+        {result.status === "failed" ? <FormFailed key={attempt} /> : null}
         <SubmitButton pending={pending} />
       </form>
     </Form>

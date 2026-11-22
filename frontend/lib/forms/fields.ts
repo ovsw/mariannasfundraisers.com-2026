@@ -159,7 +159,7 @@ export type FormResult =
   | { status: "idle" }
   | { status: "sent" }
   | { status: "invalid"; errors: Record<string, string> }
-  | { status: "failed"; contact?: OfficeContact };
+  | { status: "failed" };
 
 /** How a visitor reaches the office when their entry did not go through: from the site settings. */
 export type OfficeContact = { phone?: string; email?: string };

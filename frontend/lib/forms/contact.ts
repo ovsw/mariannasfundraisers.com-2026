@@ -50,7 +50,34 @@ export function contactSections(topic: string | undefined, customerType: string 
   return sections;
 }
 
-export const contactSchema = z
+/** The fields each group shows; a field shown by several groups is listed in each. */
+const SECTION_FIELDS: Record<ContactSection, readonly string[]> = {
+  booking: ["customerType", "deliveryTimeline", "orderForms", "comments"],
+  deliveryAddress: ["addressLine1", "addressLine2", "city", "state", "zip", "heardAbout"],
+  general: ["city", "state", "heardAbout", "discuss"],
+};
+
+/**
+ * Empties the fields the chosen topic hides. The browser keeps a hidden
+ * field's value, and a hidden field must never block the send with an error
+ * the visitor cannot see.
+ */
+function clearHiddenFields(input: ContactInput): ContactInput {
+  // The server hands over whatever the request held, so check the shape first.
+  if (!input || typeof input !== "object" || Array.isArray(input)) return input;
+  const values: Record<string, unknown> = { ...input };
+  const topic = typeof values.topic === "string" ? values.topic : undefined;
+  const customerType = typeof values.customerType === "string" ? values.customerType : undefined;
+  const shown = new Set([...contactSections(topic, customerType)].flatMap((section) => SECTION_FIELDS[section]));
+  for (const field of new Set(Object.values(SECTION_FIELDS).flat())) {
+    if (shown.has(field)) continue;
+    if (field === "customerType") delete values[field];
+    else values[field] = field === "heardAbout" ? [] : "";
+  }
+  return values as ContactInput;
+}
+
+const contactFields = z
   .object({
     topic: z.enum(CONTACT_TOPICS, { message: "Choose a topic." }),
     ...nameFields,
@@ -92,7 +119,11 @@ export const contactSchema = z
     }
   });
 
-export type ContactValues = z.infer<typeof contactSchema>;
+type ContactInput = z.input<typeof contactFields>;
+
+export const contactSchema = z.preprocess(clearHiddenFields, contactFields);
+
+export type ContactValues = z.output<typeof contactFields>;
 
 /** The answers as Formspark stores them; fields not shown for the topic are left out. */
 export function contactPayload(values: ContactValues, meta: Parameters<typeof metaFields>[0]) {

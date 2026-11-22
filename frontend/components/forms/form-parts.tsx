@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { useOfficeContact } from "@/components/forms/office-contact";
 import type { FormMeta } from "@/lib/form-delivery";
 import {
   HEARD_ABOUT_OPTIONS,
@@ -20,7 +21,6 @@ import {
   NEWSLETTER_LABEL,
   NEWSLETTER_OPTION,
   type FormResult,
-  type OfficeContact,
 } from "@/lib/forms/fields";
 import {
   type FormEvent,
@@ -434,11 +434,10 @@ export function FormThanks({ children }: { children: ReactNode }) {
 }
 
 /** Shown when the entry did not reach the office: try again, or reach the office directly. */
-export function FormFailed({ contact }: { contact?: OfficeContact }) {
+export function FormFailed() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => ref.current?.focus(), []);
-  const phone = contact?.phone;
-  const email = contact?.email;
+  const { phone, email } = useOfficeContact();
   const link = "text-link underline underline-offset-4 hover:text-link-hover";
   return (
     <div

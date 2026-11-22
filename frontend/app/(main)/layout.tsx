@@ -6,6 +6,8 @@ import { draftMode } from "next/headers";
 import { SanityLive } from "@/sanity/lib/live";
 import { SiteAnalytics } from "@/components/privacy/site-analytics";
 import { Suspense } from "react";
+import { OfficeContactProvider } from "@/components/forms/office-contact";
+import { fetchSanitySettings } from "@/sanity/lib/fetch";
 
 export default async function MainLayout({
   children,
@@ -13,6 +15,12 @@ export default async function MainLayout({
   children: React.ReactNode;
 }) {
   const { isEnabled: isDraftMode } = await draftMode();
+  // For the forms' failure message (components/forms/office-contact.tsx).
+  const settings = await fetchSanitySettings({ perspective: "published", stega: false });
+  const officeContact = {
+    phone: settings?.contact?.phone?.trim() || undefined,
+    email: settings?.contact?.email?.trim() || undefined,
+  };
 
   return (
     <>
@@ -28,7 +36,7 @@ export default async function MainLayout({
         <CachedHeader perspective="published" stega={false} />
       )}
       <main id="main-content" tabIndex={-1}>
-        {children}
+        <OfficeContactProvider contact={officeContact}>{children}</OfficeContactProvider>
       </main>
       {/* In production, the Sanity Function in studio/functions/invalidate-tags
           expires changed content on publish. Open pages wait for it, so they

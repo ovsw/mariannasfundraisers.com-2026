@@ -402,7 +402,7 @@ test("forms 114, 168 and 173 become the contact, free tasting and find a sale fo
 });
 
 test("an unknown or missing form ID stays a Scaffold and the report says why", () => {
-  for (const formId of ["999", ""]) {
+  for (const formId of ["999", "", "constructor", "toString"]) {
     const { documents, report } = withFormId(formId);
     const blocks = documents[0].blocks;
     assert.deepEqual([blocks[0]._type, blocks[0].name], ["scaffold", "Form"], formId);

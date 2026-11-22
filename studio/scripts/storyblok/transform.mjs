@@ -442,7 +442,7 @@ function formSection(row, theme, context) {
   const forms = blocks.filter((block) => block.component === "form_cognito");
   if (forms.length > 1) context.note("needs a hand", `the row holds ${forms.length} forms; only the first is imported`);
   const formId = String(forms[0]?.cognito_form_id ?? "").trim();
-  const type = FORM_SECTION_TYPES[formId];
+  const type = Object.hasOwn(FORM_SECTION_TYPES, formId) ? FORM_SECTION_TYPES[formId] : undefined;
   if (!type) {
     context.note("needs a hand", `the old Cognito form "${formId}" has no form section on the new site; it stays a Scaffold`);
     return null;

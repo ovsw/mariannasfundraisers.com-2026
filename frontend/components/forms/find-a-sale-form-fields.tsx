@@ -41,7 +41,7 @@ export function FindASaleFormFields() {
         </div>
         <TextField autoComplete="address-level2" form={form} label="Hometown" name="hometown" required />
         <Honeypot inputRef={honeypotRef} />
-        {result.status === "failed" ? <FormFailed contact={result.contact} key={attempt} /> : null}
+        {result.status === "failed" ? <FormFailed key={attempt} /> : null}
         <SubmitButton pending={pending} />
       </form>
     </Form>

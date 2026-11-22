@@ -96,6 +96,29 @@ describe("contact form rules", () => {
       expect(contactSchema.safeParse({ ...contactBase, topic, zip: "x" }).success, topic).toBe(true);
     }
   });
+
+  it("never blocks the send with a hidden field the visitor left too long", () => {
+    const long = "x".repeat(3001);
+    const general = contactSchema.safeParse({
+      ...newBooking,
+      topic: "General Info",
+      orderForms: long,
+      deliveryTimeline: long,
+      comments: long,
+      addressLine1: long,
+      zip: long,
+    });
+    expect(errorFields(general)).toEqual([]);
+    expect(general.data).toMatchObject({ orderForms: "", comments: "", addressLine1: "", zip: "" });
+
+    const booking = contactSchema.safeParse({ ...newBooking, discuss: long });
+    expect(errorFields(booking)).toEqual([]);
+
+    const returning = contactSchema.safeParse({ ...newBooking, customerType: "Returning Customer", addressLine1: long });
+    expect(errorFields(returning)).toEqual([]);
+    // A shown field keeps its limit.
+    expect(errorFields(contactSchema.safeParse({ ...newBooking, orderForms: "x".repeat(101) }))).toEqual(["orderForms"]);
+  });
 });
 
 describe("contact form payload", () => {
