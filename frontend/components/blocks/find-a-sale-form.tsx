@@ -25,7 +25,7 @@ export function hasFindASaleFormContent() {
 }
 
 // The find a sale form (old Cognito form 173), under an optional
-// introduction, in one column: the design of the old Cognito form section.
+// introduction, in one centred column.
 export default function FindASaleForm({
   bottom = "outer",
   dataAttribute,
@@ -41,12 +41,12 @@ export default function FindASaleForm({
       <div className="container">
         {intro?.length ? (
           <RichTextContent
-            className="mb-10 max-w-3xl"
+            className="mx-auto mb-10 max-w-3xl"
             dataSanity={dataAttribute?.("intro")}
             value={intro as PortableTextProps["value"]}
           />
         ) : null}
-        <div className="max-w-3xl">
+        <div className="mx-auto max-w-3xl">
           <FindASaleFormFields />
         </div>
       </div>

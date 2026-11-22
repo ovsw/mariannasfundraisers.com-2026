@@ -25,7 +25,7 @@ export function hasContactFormContent() {
 }
 
 // The contact form (old Cognito form 114), under an optional introduction,
-// in one column: the design of the old Cognito form section.
+// in one centred column.
 export default function ContactForm({
   bottom = "outer",
   dataAttribute,
@@ -41,12 +41,12 @@ export default function ContactForm({
       <div className="container">
         {intro?.length ? (
           <RichTextContent
-            className="mb-10 max-w-3xl"
+            className="mx-auto mb-10 max-w-3xl"
             dataSanity={dataAttribute?.("intro")}
             value={intro as PortableTextProps["value"]}
           />
         ) : null}
-        <div className="max-w-3xl">
+        <div className="mx-auto max-w-3xl">
           <ContactFormFields />
         </div>
       </div>
